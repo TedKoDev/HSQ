@@ -25,7 +25,7 @@
         </div><br>
         <div id = "name" class = "text-lg"></div><br>
         <div class = "text-sm">
-          <a id = "age"></a> <a id = "sex"></a><a id = "from_nation"></a><a id = "now_nation"></a>
+          <a id = "age"></a> <a id = "sex"></a><a id = "country"></a><a id = "residence"></a>
         </div>        
       </div>
       <!-- 우측의 유저 정보 (자기소개, 국적, 언어 구사수준등등) -->

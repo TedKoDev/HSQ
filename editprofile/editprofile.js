@@ -35,7 +35,8 @@
         token : value,
       };
 
-      const res = await fetch('./myinfoProcess.php', {
+      // 어짜피 내 정보 가져오는건 myinfoProcess랑 똑같으니까 거기에서 가져옴
+      const res = await fetch('../myinfo/myinfoProcess.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;'
@@ -60,44 +61,47 @@
       const user_language = userinfo_parse.language; 
       const user_korean = userinfo_parse.korean;       
       const user_intro = userinfo_parse.intro; 
-
-    //   console.log("user_id : "+user_id);
-    //   console.log("user_name : "+user_name);
-    //   console.log("user_email : "+user_email);
-    //   console.log("user_p_img : "+user_p_img);
-    //   console.log("user_bday : "+user_bday);
-    //   console.log("user_sex : "+user_sex);
-    //   console.log("user_contact : "+user_contact);
-    //   console.log("user_country : "+user_country);
-    //   console.log("user_residence : "+user_residence);
-    //   console.log("user_point : "+user_point);
-    //   console.log("user_languege : "+user_language);
-    //   console.log("user_korean : "+user_korean);
-    //   console.log("user_teacher : "+user_teacher);      
-    //   console.log("user_intro : "+user_intro);
+    
 
       // 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
       let name = document.getElementById("name"); 
-      let age = document.getElementById("age"); 
+      let bday = document.getElementById("bday"); 
       let sex = document.getElementById("sex"); 
-      let from_nation = document.getElementById("from_nation"); 
-      let now_nation = document.getElementById("now_nation"); 
+      let country = document.getElementById("country"); 
+      let residence = document.getElementById("residence"); 
       let intro = document.getElementById("intro");
 
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;    
-      setInfo(age, user_bday, "세, ");
-      setInfo(sex, user_sex, ", ");
-      setInfo(from_nation, user_country, " 출신, ");
-      setInfo(now_nation, user_residence, " 거주");
-      intro.innerText = user_intro;      
+      setInfo(bday, user_bday);
+      setInfo(sex, user_sex);      
+      setInfo(country, user_country);
+      setInfo(residence, user_residence);
+      setInfo(intro, user_intro);
+      // intro.innerText = user_intro;      
       
     }
 
+    // 수정 버튼 클릭 시 수정 가능하도록 뷰 변경
+    // 이름 수정
+    function editingName(name, namediv_not_edit) {        
+        
+        // 현재 이름 가져오기
+        const user_name = document.getElementById(name);
+
+        const namediv = document.getElementById(namediv_not_edit);
+        
+        namediv.style.display = 'none';
+
+    }
+
     // 값이 있을 경우에만 브라우저에 출력
-    function setInfo(key, value, text) {
+    function setInfo(key, value) {
 
       if (value != null) {
-        key.innerText = value+text;
+        key.innerText = value;
+      }
+      else {
+        key.innerText = "없음";
       }
     }
