@@ -25,7 +25,7 @@
         </div><br>
         <div id = "name" class = "text-lg"></div><br>
         <div class = "text-sm">
-          <a id = "age"></a> <a id = "sex"></a><a id = "from_nation"></a><a id = "now_nation"></a>
+          <a id = "age"></a> <a id = "sex"></a><a id = "country"></a><a id = "residence"></a>
         </div>        
       </div>
       <!-- 우측의 유저 정보 (자기소개, 국적, 언어 구사수준등등) -->
@@ -33,7 +33,8 @@
         <div class = "bg-gray-50 px-6 py-4 shadow rounded-lg">
           <div class = "flex justify-between">
             <span class = " text-xl">프로필</span>
-            <a href = "../editprofile/editprofile.php" class = "py-1 px-3 bg-gray-300 text-gray-900 hover:bg-gray-400 hover:text-black rounded border border-">프로필 편집</a>          
+            <a href = "../editprofile/editprofile.php" class = "py-1 px-3 bg-gray-300 text-gray-900 hover:bg-gray-400
+             hover:text-black rounded border border-">프로필 편집</a>          
           </div><br>    
           <div id = "intro" class = "text-sm">
           </div><br><br>

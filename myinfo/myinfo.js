@@ -1,22 +1,20 @@
     // 토큰 보내서 유저 정보 가져오기 
     // 가져올 정보 목록 :
-    // - userId 아이디
-    // - name 이름
-    // - email 이메일
+    
+    // - name 이름    
     // - p_img 프로필이미지
     // - bday 생일
-    // --sex 성별
-    // - contact 연락처
+    // --sex 성별    
     // - country 출신국가
     // - residence 거주국가
-    // - point 포인트
+    
     // - language 구사 가능 언어
     // - korean 한국어 구사 수준
     // - teacher 강사여부 (학생, 튜터, 전문강사)
     // - intro 자기소개
     
     // 쿠기 값(토큰) 가져오기
-    let tokenValue = getCookie("user_info");   
+    let tokenValue = getCookie(cookieName);   
     // 토큰 서버에 전송
     sendToken();
 
@@ -86,16 +84,17 @@
       let name = document.getElementById("name"); 
       let age = document.getElementById("age"); 
       let sex = document.getElementById("sex"); 
-      let from_nation = document.getElementById("from_nation"); 
-      let now_nation = document.getElementById("now_nation"); 
+      let country = document.getElementById("country"); 
+      let residence = document.getElementById("residence"); 
       let intro = document.getElementById("intro");
 
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;    
-      setInfo(age, user_bday, "세, ");
+      setInfo(age, user_bday, ", ");
       setInfo(sex, user_sex, ", ");
-      setInfo(from_nation, user_country, " 출신, ");
-      setInfo(now_nation, user_residence, " 거주");
+      setInfo(country, user_country, " 출신, ");
+      setInfo(residence, user_residence, " 거주");
+      setInfo()
       intro.innerText = user_intro;      
       
     }

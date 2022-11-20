@@ -9,7 +9,7 @@
 <script src = "../components/navbar.js"></script> 
 
 <!-- 네비바 -->
-<nav class = "bg-gray-100">
+<nav class = "bg-white border border-b-0 shadow">
   <div class = "max-w-6xl mx-auto">
     <div class = "flex justify-between">
       <div class = "flex">
