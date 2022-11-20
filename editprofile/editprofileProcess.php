@@ -2,19 +2,33 @@
 // == Myinfo 이미지 업로드 프로세스==
 //   #요구되는 파라미터 (fetch형태도 요청 ) 
 //1. 토큰값  - token 
-//2. 이미지값  - image 
+//2. 항목    - position 
+//3. 내용    - desc 
 
 
 # 보낼 줄 때 형태 
 // {
-//  "token" : "토큰값 "
+//  "token"    : "토큰값".
+//  "position" : "항목".
+//  "desc"     : "내용" 
 // }
 
+//항목 
+//이미지     -  "p_img"   
+//이름       -  "name"
+//생일       -  "bday"
+//성별       -  "sex"
+//연락처     -  "contact"
+//국가       -  "country"
+//거주지     -  "residence"
+//가능언어   - "language" 
+//한국어수준 -  "korean"
+//자기소개   -  "intro"
 
-// #반환되는 데미터 
-// ==성공시  (예시)
 
-
+// 요청사항 
+// language 값의 경우 "언어:수준" (영어:B1)으로 전달 요청 바랍니다. 
+// korean 값의 경우 "수준"만 전달 바랍니다.  (A1,A2, B1,B2, C1,C2)
 
 
 
@@ -77,8 +91,8 @@ if ($checkresult->num_rows = 0) {
 
 
 // data update 부분 
-//프로필이미지
-//$desc 가 image인경우 
+//프로필이미지 변경
+//$desc 가 '프로필이미지'인경우 
 if ($position === "p_img") {
   
 
@@ -110,8 +124,7 @@ if ($position === "p_img") {
         echo json_encode($send);
         mysqli_close($conn);
     }
-}
-//이름변경
+}//이름변경
 //$desc 가 '이름'인경우 
 else if ($position === "name") {
 
@@ -135,7 +148,9 @@ else if ($position === "name") {
         echo json_encode($send);
         mysqli_close($conn);
     }
-} else if ($position === "bday") {
+}//생일변경
+//$desc 가 '생일'인경우 
+ else if ($position === "bday") {
     $select = "UPDATE User_Detail SET U_D_Bday = '$desc' where User_Id = '$User_ID' ";
 
 
@@ -157,85 +172,168 @@ else if ($position === "name") {
     }
 
 
-} else if ($position === "sex") {
-} else if ($position === "contact") {
-} else if ($position === "country") {
-} else if ($position === "residence") {
-} else if ($position === "language") {
-} else if ($position === "korean") {
-} else if ($position === "intro") {
+}//성별변경
+//$desc 가 '성별'인경우 
+ else if ($position === "sex") {
+    $select = "UPDATE User_Detail SET U_D_Sex = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "sex";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "sex";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+
+
+    
+}//연락처 변경
+//$desc 가 '연락처'인경우 
+ else if ($position === "contact") {
+    $select = "UPDATE User_Detail SET U_D_Contact = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "contact";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "contact";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+} //국가변경
+//$desc 가 '국가'인경우 
+else if ($position === "country") {
+    $select = "UPDATE User_Detail SET U_D_Country = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "country";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "country";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+} //거주지변경
+//$desc 가 '거주지'인경우 
+else if ($position === "residence") {
+    $select = "UPDATE User_Detail SET U_D_Residence = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "residence";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "residence";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+
+
+
+}//사용가능언어변경
+//$desc 가 '사용가능언어'인경우 
+ else if ($position === "language") {
+    $select = "UPDATE User_Detail SET U_D_Language = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "language";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "language";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+
+} //한국어수준변경
+//$desc 가 '한국어수준'인경우 
+else if ($position === "korean") {
+    $select = "UPDATE User_Detail SET U_D_Korean = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "korean";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "korean";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+} //자기소개변경
+//$desc 가 '자기소개 '인경우 
+else if ($position === "intro") {
+    $select = "UPDATE User_Detail SET U_D_Intro = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "intro";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "intro";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// DB 정보 가져오기 
-$sql = "SELECT User.User_ID, User.U_Name, User.U_Email,  U_D_Img, U_D_Bday, U_D_Sex, U_D_Contact, U_D_Country, U_D_Residence ,U_D_Point, U_D_Language ,U_D_Korean, U_D_T_add , U_D_Intro FROM HANGLE.User left join User_Detail on User.User_ID = User_Detail.User_Id where User.User_ID = '{$User_ID}'";
-// {$User_ID}
-
-$result = mysqli_query($conn, $sql);
-
-
-
-$row = mysqli_fetch_array($result);
-
-
-// 값 변수 설정 
-$userid      = $row['User_ID'];
-$name        = $row['U_Name'];
-$email       = $row['U_Email'];
-$p_img       = $row['U_D_Img'];
-$bday        = $row['U_D_Bday'];
-$sex         = $row['U_D_Sex'];
-$contact     = $row['U_D_Contact'];
-$country     = $row['U_D_Country'];
-$residence   = $row['U_D_Residence'];
-$point       = $row['U_D_Point'];
-$language    = $row['U_D_Language'];
-$korean      = $row['U_D_Korean'];
-$teacher     = $row['U_D_T_add'];
-$intro       = $row['U_D_Intro'];
-
-
-
-
-$send["userid"]   =  $userid;
-$send["name"]   =  $name;
-$send["email"]   =  $email;
-$send["p_img"]   =  $p_img;
-$send["bday"]   =  $bday;
-$send["sex"]   =  $sex;
-$send["contact"]   =  $contact;
-$send["country"]   =  $country;
-$send["residence"]   =  $residence;
-$send["point"]   =  $point;
-$send["language"]   =  $language;
-$send["korean"]   =  $korean;
-$send["teacher"]   =  $teacher;
-$send["intro"]   =  $intro;
-
-
-
-echo json_encode($send);
-mysqli_close($conn);
