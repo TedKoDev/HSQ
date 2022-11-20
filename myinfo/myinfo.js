@@ -16,7 +16,7 @@
     // - intro 자기소개
     
     // 쿠기 값(토큰) 가져오기
-    let tokenValue = getCookie("user_info");   
+    let tokenValue = getCookie(cookieName);   
     // 토큰 서버에 전송
     sendToken();
 

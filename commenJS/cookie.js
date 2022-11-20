@@ -1,6 +1,9 @@
 // 쿠키 생성, 가져오기, 삭제
 
 
+// 쿠키 이름 (user_info)
+let cookieName = 'user_info';
+
 // 쿠키 생성 함수
 function setCookie(cName, cValue, cDay){
     
