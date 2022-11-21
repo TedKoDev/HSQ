@@ -82,19 +82,6 @@
       
     }
 
-    // 수정 버튼 클릭 시 수정 가능하도록 뷰 변경
-    // 이름 수정
-    function editingName(name, namediv_not_edit) {        
-        
-        // 현재 이름 가져오기
-        const user_name = document.getElementById(name);
-
-        const namediv = document.getElementById(namediv_not_edit);
-        
-        namediv.style.display = 'none';
-
-    }
-
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value) {
 
@@ -105,3 +92,47 @@
         key.innerText = "없음";
       }
     }
+
+
+    // 수정 버튼 클릭 시 수정 가능하도록 뷰 변경
+
+    // 이름 수정
+    function editing_name(attribute, not_edit, click_edit) {        
+        
+        // 현재 이름 가져오기
+        const user_name = document.getElementById(attribute);
+
+        // 이름이랑 편집 아이콘 있는 div 가져오기
+        const not_edit_div = document.getElementById(not_edit);
+        // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+        const click_edit_div = document.getElementById(click_edit); 
+
+        // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+        click_edit_div.style.display = 'block';
+        // 이름이랑 편집 아이콘 안보이게 처리
+        not_edit_div.style.display = 'none';        
+      
+    }
+
+    // 이름 수정 완료
+    function edit_done_name(attribute, not_edit, click_edit) {
+
+      // 현재 이름 가져오기
+      const user_name = document.getElementById(attribute);
+
+      // 이름이랑 편집 아이콘 있는 div 가져오기
+      const not_edit_div = document.getElementById(not_edit);
+      // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+      const click_edit_div = document.getElementById(click_edit);         
+
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      click_edit_div.style.display = 'none';
+      // 이름이랑 편집 아이콘 안보이게 처리
+      not_edit_div.style.display = 'block';    
+
+      
+    }
+
+    
+
+    
