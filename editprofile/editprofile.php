@@ -37,7 +37,7 @@
               <!-- 이름 수정 클릭 안했을 때 -->
               <div id = "namediv_not_edit" class = "flex justify-between text-sm text-gray-500">
                 <span id = "name">안해인</span>                                   
-                <span><svg id = "name_edit" onclick = "editing_name()" class="float-right w-6 h-6 text-gray-500" 
+                <span><svg id = "name_edit" onclick = "editing_name()" class="float-right my-auto w-6 h-6 text-gray-500" 
                 fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
@@ -57,14 +57,32 @@
               <!-- 생년월일 수정 클릭 안했을 때 -->
               <div id = "bdaydiv_not_edit" class = "flex justify-between text-sm text-gray-500">
                 <div id = "bday">1997년 1월 27일</div>                                   
-                <div><svg id = "bday_edit" onclick = "editingBday('bday', 'bdaydiv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div><svg id = "bday_edit" onclick = "editing_bday()" onclick = "editingBday('bday', 'bdaydiv_not_edit')" class="float-right my-auto w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
                 </div>
               </div>
               <!-- 생년월일 수정 클릭했을 때 -->
               <div id = "bdaydiv_click_edit" class = "hidden ">
-                
+                <div class = "flex mb-3">
+                  <select id = "select_year" class = "w-28 px-1 py-1 rounded border border-gray-200 mr-2">
+                    <?php for ($i = 2021; $i >= 1900; $i = $i - 1) {
+                      ?> <option value = "<?php echo $i; ?>"><?php echo $i; ?></option> <?php 
+                    } ?>
+                  </select>
+                  <select id = "select_month" class = "w-28 px-1 py-1 rounded border border-gray-200 mr-2">
+                    <?php for ($i = 1; $i <= 12; $i = $i + 1) {
+                      ?> <option value = "<?php echo $i; ?>"><?php echo $i; ?></option> <?php 
+                    } ?>
+                  </select>
+                  <select id = "select_day" class = "w-28 px-1 py-1 rounded border border-gray-200 mr-2">
+                    <?php for ($i = 1; $i <= 31; $i = $i + 1) {
+                      ?> <option value = "<?php echo $i; ?>"><?php echo $i; ?></option> <?php 
+                    } ?>
+                  </select>                
+                </div> 
+                <button onclick = "edit_done_bday()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_bday()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
               </div>
             </div>     
           </div>
