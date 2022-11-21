@@ -67,21 +67,7 @@
       const user_korean = userinfo_parse.korean; 
       const user_teacher = userinfo_parse.teacher; 
       const user_intro = userinfo_parse.intro; 
-
-      console.log("user_id : "+user_id);
-      console.log("user_name : "+user_name);
-      console.log("user_email : "+user_email);
-      console.log("user_p_img : "+user_p_img);
-      console.log("user_bday : "+user_bday);
-      console.log("user_sex : "+user_sex);
-      console.log("user_contact : "+user_contact);
-      console.log("user_country : "+user_country);
-      console.log("user_residence : "+user_residence);
-      console.log("user_point : "+user_point);
-      console.log("user_languege : "+user_language);
-      console.log("user_korean : "+user_korean);
-      console.log("user_teacher : "+user_teacher);      
-      console.log("user_intro : "+user_intro);
+      
 
       // 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
       let name = document.getElementById("name"); 
@@ -105,15 +91,8 @@
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value, text) {
 
-      if (value != 'default') {        
-        
-        // 생년월일일경우 받아온 것 파싱해서 년월일 글자 붙여서 출력
-        // if (key == 'bday') {
-          
-        //   const bday_array = value.split('.');
-
-        //   key.innerText = bday_array[0]+'년 '+bday_array[1]+'월 '+bday_array[2]+'일';
-        // }
+      if (value != 'default') {                
+       
         key.innerText = value;
 
         console.log(key.value);

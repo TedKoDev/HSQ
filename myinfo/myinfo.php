@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
      <!-- 쿠기 생성, 가져오기, 삭제 -->        
     <script defer src = "../commenJS/cookie.js"></script>  
-    <script defer src = "./myinfo.js"></script>   
+    <script defer src = "./myinfo2.js"></script>   
     <script>
       
     </script>    

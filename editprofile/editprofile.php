@@ -114,14 +114,27 @@
               <!-- 국적 수정 클릭 안했을 때 -->
               <div id = "countrydiv_not_edit" class = "flex justify-between text-sm text-gray-500">
                 <div id = "country">대한민국</div>                                   
-                <div><svg id = "country_edit" onclick = "editingCountry('country', 'countrydiv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div><svg id = "country_edit" onclick = "editing_country()" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
                 </div>
               </div>
               <!-- 국적 수정 클릭했을 때 -->
               <div id = "countrydiv_click_edit" class = "hidden ">
-              
+                <select id = "select_country" class = "w-44 px-1 py-1 rounded border border-gray-200 mb-3">
+                  <option value = "대한민국">대한민국</option>
+                  <option value = "일본">일본</option> 
+                  <option value = "미국">미국</option>
+                  <option value = "중국">중국</option>
+                  <option value = "영국">영국</option>
+                  <option value = "프랑스">프랑스</option>
+                  <option value = "이탈리아">이탈리아</option>
+                  <option value = "스페인">스페인</option>
+                  <option value = "독일">독일</option>
+                  <option value = "러시아">러시아</option> 
+                  </select><br>                  
+                <button onclick = "edit_done_country()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_country()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
               </div>
             </div>     
           </div>
@@ -131,14 +144,27 @@
               <!-- 거주 국가 수정 클릭 안했을 때 -->
               <div id = "residencediv_not_edit" class = "flex justify-between text-sm text-gray-500">
                 <div id = "residence">대한민국</div>                                   
-                <div><svg id = "residence_edit" onclick = "editingResidence('residence', 'residencediv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div><svg id = "residence_edit" onclick = "editing_residence('residence', 'residencediv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
                 </div>
               </div>
               <!-- 거주 국가 수정 클릭했을 때 -->
-              <div id = "residencediv_click_edit" class = "hidden ">
-              
+              <div id = "residencediv_click_edit" class = "hidden ">                
+                <select id = "select_residence" class = "w-44 px-1 py-1 rounded border border-gray-200 mb-3">
+                    <option value = "대한민국">대한민국</option>
+                    <option value = "일본">일본</option> 
+                    <option value = "미국">미국</option>
+                    <option value = "중국">중국</option>
+                    <option value = "영국">영국</option>
+                    <option value = "프랑스">프랑스</option>
+                    <option value = "이탈리아">이탈리아</option>
+                    <option value = "스페인">스페인</option>
+                    <option value = "독일">독일</option>
+                    <option value = "러시아">러시아</option> 
+                  </select><br>                  
+                <button onclick = "edit_done_residence()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_residence()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>                
               </div>
             </div>     
           </div> 
@@ -201,11 +227,12 @@
         </div>   
 
     </div>       
-    <!-- <custom-input name = "hihi"></custom-input>
+    <custom-input name = "hihi"></custom-input>
 
     <template id = 'template1'>
       <label class = "text-red-500">이메일 입력</label><input>
     </template>
+
     
     <script>
       class 클래스 extends HTMLElement {
@@ -231,7 +258,7 @@
        
       }
       customElements.define('custom-input', 클래스);
-    </script> -->
+    </script>
       
     </body><br><br><br><br><br><br>
 </html>

@@ -91,14 +91,7 @@
     function setInfo(key, value) {
 
       if (value != 'default') {        
-        
-        // 생년월일일경우 받아온 것 파싱해서 년월일 글자 붙여서 출력
-        // if (key == 'bday') {
-          
-        //   const bday_array = value.split('.');
-
-        //   key.innerText = bday_array[0]+'년 '+bday_array[1]+'월 '+bday_array[2]+'일';
-        // }
+               
         key.innerText = value;
 
         console.log(key.value);
@@ -284,6 +277,19 @@
       // 서버로 저장 요청
       post_edit(checkCookie, "sex", now_sex.innerHTML);
     }
+
+
+    // 5. 국적 수정
+    // 현재 국적 가져오기
+    let now_country = document.getElementById('country');
+    // 국적 입력 id 가져오기
+    let input_country = document.getElementById('select_country');        
+    // 국적이랑 편집 아이콘 있는 div 가져오기
+    let country_not_edit_div = document.getElementById('countrydiv_not_edit');
+    // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+    let country_click_edit_div = document.getElementById('countrydiv_click_edit');
+
+    
     
 
     // 수정 사항 서버에 전달하는 함수 (백엔드 부분 처리될 때까지 보류)
