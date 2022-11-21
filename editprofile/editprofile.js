@@ -167,7 +167,7 @@
     }
 
 
-     // 3. 생년월일 수정
+    // 3. 생년월일 수정
     // 현재 생년월일 가져오기
     let now_bday = document.getElementById('bday');
     // 년/월/일 id 가져오기
@@ -185,9 +185,8 @@
       // 생년월일 값이 있을 경우에만 년/월/일을 대입
       if (now_bday.innerHTML != '') {
         
-        // 서버에서 1997.1.27 이런 식으로 올 예정이므로 .를 기준으로 파싱 우선은 예시로 1997.1.27이라는 문자열로 테스트
+        
         const bday_string = now_bday.innerHTML;
-
         const bday_array = bday_string.split('.');
 
         console.log(bday_array);
@@ -232,6 +231,60 @@
       
     }
 
+
+    // 4. 성별 수정
+    // 현재 성별 가져오기
+    let now_sex = document.getElementById('sex');
+    // 성별 입력 id 가져오기
+    let input_sex = document.getElementById('select_sex');        
+    // 생년월일이랑 편집 아이콘 있는 div 가져오기
+    let sex_not_edit_div = document.getElementById('sexdiv_not_edit');
+    // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+    let sex_click_edit_div = document.getElementById('sexdiv_click_edit'); 
+
+    // 성별 수정 클릭
+    function editing_sex() {
+
+      // 성별 값이 있을 경우에만 년/월/일을 대입
+      if (sex.innerHTML != '') {
+        
+       
+        const sex_string = sex.innerHTML;
+
+        input_sex.value = sex_string;            
+      }
+
+       // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+       sex_click_edit_div.style.display = 'block';
+       // 이름이랑 편집 아이콘 안보이게 처리
+       sex_not_edit_div.style.display = 'none';   
+      
+    }
+
+    // 성별 수정 취소
+    function edit_cancel_sex() {
+
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      sex_click_edit_div.style.display = 'none';
+      // 이름이랑 편집 아이콘 안보이게 처리
+      sex_not_edit_div.style.display = 'block'; 
+    }
+
+    // 성별 수정 완료
+    function edit_done_sex() {
+
+      // 입력창에서 수정한 성별을 화면에 표시
+      now_sex.innerHTML = input_sex.value;
+
+      // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+      sex_click_edit_div.style.display = 'none';
+      // 이름이랑 편집 아이콘 다시 보이게 처리
+      sex_not_edit_div.style.display = 'block';
+
+      // 서버로 저장 요청
+      post_edit(checkCookie, "sex", now_sex.innerHTML);
+    }
+    
 
     // 수정 사항 서버에 전달하는 함수 (백엔드 부분 처리될 때까지 보류)
     async function post_edit(token, position, desc) {

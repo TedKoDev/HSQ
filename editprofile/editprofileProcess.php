@@ -49,7 +49,7 @@ $desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
-error_log("$time_now, $position, $desc\n", "3", "../php.log");
+// error_log("$time_now, $position, $desc\n", "3", "../php.log");
 
 
 
@@ -71,7 +71,7 @@ $U_Name  = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 
-error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
+// error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
 
 
 
@@ -81,7 +81,7 @@ error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
 $check = "SELECT * FROM User_Detail where User_Id = '$User_ID'";
 $checkresult = mysqli_query($conn, $check);
 
-error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
+// error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
 
 
 
@@ -90,7 +90,7 @@ if ($checkresult->num_rows <1) {
     date_default_timezone_set('Asia/Seoul');
     $time_now = date("Y-m-d H:i:s");
     
-    error_log("$time_now, 's'\n", "3", "../php.log");
+    // error_log("$time_now, 's'\n", "3", "../php.log");
     
     // 중복값이 없을때 때 실행할 내용
     // 없으면 insert로  data 만들고  
