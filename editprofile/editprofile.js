@@ -239,10 +239,9 @@
     function editing_sex() {
 
       // 성별 값이 있을 경우에만 년/월/일을 대입
-      if (sex.innerHTML != '') {
-        
-       
-        const sex_string = sex.innerHTML;
+      if (now_sex.innerHTML != '') {
+               
+        const sex_string = now_sex.innerHTML;
 
         input_sex.value = sex_string;            
       }
@@ -279,7 +278,7 @@
     }
 
 
-    // 5. 국적 수정
+    // 5. 국적/거주지 수정
     // 현재 국적 가져오기
     let now_country = document.getElementById('country');
     // 국적 입력 id 가져오기
@@ -288,6 +287,104 @@
     let country_not_edit_div = document.getElementById('countrydiv_not_edit');
     // 편집 아이콘 클릭했을 때 나오는 div 가져오기
     let country_click_edit_div = document.getElementById('countrydiv_click_edit');
+    
+    // 현재 거주지 가져오기
+    let now_residence = document.getElementById('residence');
+    // 거주지 입력 id 가져오기
+    let input_residence = document.getElementById('select_residence');        
+    // 거주지랑 편집 아이콘 있는 div 가져오기
+    let residence_not_edit_div = document.getElementById('residencediv_not_edit');
+    // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+    let residence_click_edit_div = document.getElementById('residencediv_click_edit');
+
+    // 국적 수정 클릭
+    function editing_country() {
+
+      editing_nation(now_country, input_country, country_click_edit_div, country_not_edit_div); 
+      
+    }
+
+    // 거주지 수정 클릭
+    function editing_residence() {
+
+      editing_nation(now_residence, input_residence, residence_click_edit_div, residence_not_edit_div);
+      
+    }
+
+    // 국적/거주지 수정 함수
+    function editing_nation(now_, input_, click_edit, not_edit) {
+
+        // 값이 있을 경우에만 대입
+        if (now_.innerHTML != '') {        
+        
+          const string = now_.innerHTML;
+
+          input_.value = string;            
+        }
+
+        // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+        click_edit.style.display = 'block';
+        // 텍스트랑 편집 아이콘 안보이게 처리
+        not_edit.style.display = 'none';   
+    }
+
+    // 국적 수정 취소 클릭
+    function edit_cancel_country() {
+
+      edit_cancel_nation(country_click_edit_div, country_not_edit_div);
+    }
+
+    // 거주지 수정 취소 클릭
+    function edit_cancel_residence() {
+     
+      edit_cancel_nation(residence_click_edit_div, residence_not_edit_div);
+    }
+
+    // 국적/거주지 수정 취소 함수
+    function edit_cancel_nation(click_edit, not_edit) {
+
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      click_edit.style.display = 'none';
+      // 텍스트랑 편집 아이콘 안보이게 처리
+      not_edit.style.display = 'block'; 
+    }
+
+    // 국적 수정 완료
+    function edit_done_country() {
+
+      edit_done_nation('country', now_country, input_country, country_click_edit_div, country_not_edit_div);
+    }
+
+    // 거주지 수정 완료
+    function edit_done_residence() {
+
+      edit_done_nation('residence', now_residence, input_residence, residence_click_edit_div, residence_not_edit_div);
+    }
+
+    // 국적/거주지 수정 완료 함수
+    function edit_done_nation(nation, now_, input_, click_edit, not_edit) {
+
+      // 입력창에서 수정한 값을 화면에 표시
+      now_.innerHTML = input_.value;
+
+      // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+      click_edit.style.display = 'none';
+      // 텍스트랑 편집 아이콘 다시 보이게 처리
+      not_edit.style.display = 'block';
+
+      // 서버로 저장 요청
+      post_edit(checkCookie, nation, now_.innerHTML);
+    }
+
+
+
+
+
+
+
+    
+
+
 
     
     
