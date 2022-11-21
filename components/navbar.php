@@ -9,8 +9,8 @@
 <script src = "../components/navbar.js"></script> 
 
 <!-- 네비바 -->
-<nav class = "bg-gray-100">
-  <div class = "max-w-6xl mx-auto">
+<nav class = "bg-white border border-b-0 shadow">
+  <div class = "max-w-full mx-auto px-4">
     <div class = "flex justify-between">
       <div class = "flex">
         <!-- 한글스퀘어 로고 -->

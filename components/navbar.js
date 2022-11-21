@@ -56,7 +56,7 @@ async function postToken(tokenValue) {
     token: tokenValue
   };
 
-  const res = await fetch('../components/navbarProcess.php/', {
+  const res = await fetch('../components/navbarProcess.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -114,7 +114,7 @@ function logout() {
 
 // 쿠키 삭제하는 함수
 function deleteCookie(name) {
-	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
 }
 
 
