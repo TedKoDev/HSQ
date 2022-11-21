@@ -6,6 +6,7 @@
     <!-- <link href="/dist/output.css" rel="stylesheet"> -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>  
+  <script defer src = "../commenJS/cookie.js"></script> 
   <script src = "./login.js"></script>  
   <body class = "bg-gray-100">   
     <!-- 네비바 -->

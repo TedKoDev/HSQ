@@ -96,8 +96,11 @@
 
     // 수정 버튼 클릭 시 수정 가능하도록 뷰 변경
 
+    // 1. 프로필 이미지 수정
     
-    // 1. 이름 수정
+
+
+    // 2. 이름 수정
 
     // 현재 이름 가져오기
     let now_name = document.getElementById('name');
@@ -141,12 +144,13 @@
       // 이름이랑 편집 아이콘 안보이게 처리
       not_edit_div.style.display = 'block';       
       
+      console.log(checkCookie);
       post_edit(checkCookie, "name", now_name.innerHTML);
-
       
     }
 
-    // 수정 사항 서버에 전달하는 함수
+
+    // 수정 사항 서버에 전달하는 함수 (백엔드 부분 처리될 때까지 보류)
     async function post_edit(token, position, desc) {
 
       const body = {
@@ -165,8 +169,8 @@
       // 받아온 json 형태의 객체를 string으로 변환하여 파싱
       const response = await res.json();   
       console.log(response);  
-      // const userinfo_json = JSON.stringify(response);     
-      // const userinfo_parse = JSON.parse(userinfo_json);
+      const userinfo_json = JSON.stringify(response);     
+      const userinfo_parse = JSON.parse(userinfo_json);
 
     }
 
