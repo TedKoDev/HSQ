@@ -10,7 +10,7 @@
 
 <!-- 네비바 -->
 <nav class = "bg-white border border-b-0 shadow">
-  <div class = "max-w-6xl mx-auto">
+  <div class = "max-w-full mx-auto px-4">
     <div class = "flex justify-between">
       <div class = "flex">
         <!-- 한글스퀘어 로고 -->

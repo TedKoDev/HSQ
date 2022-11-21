@@ -24,7 +24,7 @@
         <div class = "w-full px-4 pb-4 flex border-b-2">           
           <img class = "w-32 h-32 border border-gray-900 p-2 rounded-full" 
           src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>
-          <button class = " ml-12 max-h-10 px-3 py-1 my-auto bg-gray-300 text-gray-900 hover:bg-gray-400 hover:text-black 
+          <button class = " ml-12 max-h-10 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-900 hover:bg-gray-400 hover:text-black 
                 rounded border">업로드</button>
         </div>          
 
@@ -37,14 +37,17 @@
               <!-- 이름 수정 클릭 안했을 때 -->
               <div id = "namediv_not_edit" class = "flex justify-between text-sm text-gray-500">
                 <span id = "name">안해인</span>                                   
-                <span><svg id = "name_edit" onclick = "editing_name('name', 'namediv_not_edit', 'namediv_click_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <span><svg id = "name_edit" onclick = "editing_name()" class="float-right w-6 h-6 text-gray-500" 
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
                 </span>
               </div>              
-              <!-- 이름 수정 클릭했을 때 -->
-              <div onclick = "edit_done_name('name', 'namediv_not_edit', 'namediv_click_edit')" id = "namediv_click_edit" class = "hidden">
-                <span>test11</span><span>test22</span><span>test33</span>
+              <!-- 이름 수정 클릭했을 때 --> 
+              <div id = "namediv_click_edit" class = "hidden">
+                <div><input id = "input_name" class = "text-sm px-1 py-1 rounded border border-gray-200 mb-3"></input></div>
+                <button onclick = "edit_done_name()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_name()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
               </div>              
             </div>            
           </div>
@@ -61,7 +64,7 @@
               </div>
               <!-- 생년월일 수정 클릭했을 때 -->
               <div id = "bdaydiv_click_edit" class = "hidden ">
-              
+                
               </div>
             </div>     
           </div>
