@@ -27,8 +27,7 @@ window.onload = function () {
   let login = document.getElementById("id_login");
   let signup = document.getElementById("id_signup");
 
-  if (checkCookie) { // 쿠키가 있을 경우 (로그인이 되어 있는 상태일 경우)
-    console.log("값있음");    
+  if (checkCookie) { // 쿠키가 있을 경우 (로그인이 되어 있는 상태일 경우)       
 
     userinfo.style.display = 'block';
     login.style.display = 'none';
@@ -38,8 +37,7 @@ window.onload = function () {
     postToken(checkCookie);
   }
   else {
-    console.log("값없음"); // 쿠키가 없을 경우 (로그인이 되어 있지 않는 상태일 경우)
-
+    
     userinfo.style.display = 'none';
     login.style.display = 'block';
     signup.style.display = 'block';

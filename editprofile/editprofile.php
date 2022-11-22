@@ -230,7 +230,7 @@
         </div>   
 
     </div>       
-    <custom-input name = "hihi"></custom-input>
+    <!-- <custom-input name = "hihi"></custom-input>
 
     <template id = 'template1'>
       <label class = "text-red-500">이메일 입력</label><input>
@@ -256,12 +256,10 @@
           this.appendChild(라벨);
 
           
-        }
-
-       
+        }       
       }
       customElements.define('custom-input', 클래스);
-    </script>
+    </script> -->
       
     </body><br><br><br><br><br><br>
 </html>

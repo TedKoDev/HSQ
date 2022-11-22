@@ -21,7 +21,7 @@
     async function sendToken() {     
            
       // 서버에 토큰값 전달
-      postToken(tokenValue);
+      postToken(tokenValue);     
     
     }
 
@@ -63,6 +63,8 @@
       const user_korean = userinfo_parse.korean;       
       const user_intro = userinfo_parse.intro; 
 
+      const user_intro_parsing = user_intro.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+
       // console.log(user_name);
       // console.log(user_bday);
       
@@ -85,6 +87,7 @@
       setInfo(country, user_country);
       setInfo(residence, user_residence);
       setInfo(intro, user_intro);
+      // setInfo(intro, user_intro_parsing);
       // intro.innerText = user_intro;      
       
     }
@@ -96,7 +99,7 @@
                
         key.innerText = value;
 
-        console.log(key.value);
+        // console.log(key.value);
       }
       else {
         key.innerText = "";
@@ -401,7 +404,7 @@
       // 자기소개 값이 있을 경우에만 현재 자기소개 입력창에 넣기
       if (now_intro.innerHTML != '') {
 
-        input_intro.value = now_intro.innerHTML;
+        input_intro.value = now_intro.innerHTML.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
       } 
     }
 
@@ -418,7 +421,10 @@
     function edit_done_intro() {           
 
       // 입력창에서 수정한 값을 자기소개에 적용하기
-      now_intro.innerHTML = input_intro.value;
+      now_intro.innerHTML = input_intro.value.replace(/(\n|\r\n)/g, '<br>');
+
+      // 줄바꿈 치환해서 서버에 저장
+      let string = now_intro.innerHTML.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
 
       // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
       intro_click_edit_div.style.display = 'none';
@@ -426,7 +432,7 @@
       intro_not_edit_div.style.display = 'block';       
       
       // 서버에 저장 요청
-      post_edit(checkCookie, "intro", now_intro.innerHTML);
+      post_edit(checkCookie, "intro", string);
       
     }
         
