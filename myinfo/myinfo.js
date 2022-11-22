@@ -23,9 +23,7 @@
     async function sendToken() {     
            
       // 서버에 토큰값 전달
-      postToken(tokenValue);
-
-      
+      postToken(tokenValue);      
     
     }
 

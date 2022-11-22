@@ -34,7 +34,7 @@ window.onload = function () {
     signup.style.display = 'none';
 
     // 서버에 토큰값 전달
-    postToken(checkCookie);
+    postToken_nav(checkCookie);
   }
   else {
     
@@ -45,9 +45,9 @@ window.onload = function () {
 }
 
 // 쿠키가 있을 경우 쿠키의 토큰값을 서버로 전달한 뒤 프로필 이미지, 유저 이름, 강사여부 받아오기
-async function postToken(tokenValue) {
+async function postToken_nav(tokenValue) {
 
-  console.log(tokenValue);
+  // console.log(tokenValue);
 
   const body = {
     
@@ -62,7 +62,7 @@ async function postToken(tokenValue) {
     body: JSON.stringify(body)
   });  
   
-  console.log(res);
+  // console.log(res);
   // 받아온 json 파싱
   const response = await res.json();      
   const userinfo_json = JSON.stringify(response);     
@@ -72,11 +72,11 @@ async function postToken(tokenValue) {
   const user_name = userinfo_parse.name;
   const user_teacher = userinfo_parse.teacher;
 
-  console.log(userinfo_json);
-  console.log(userinfo_parse);
-  console.log(user_profile);
-  console.log(user_name);
-  console.log(user_teacher);
+  // console.log(userinfo_json);
+  // console.log(userinfo_parse);
+  // console.log(user_profile);
+  // console.log(user_name);
+  // console.log(user_teacher);
 }
 
 // 네비바 우측 상단 유저 프로필 아이콘 클릭 시 드롭다운 메뉴
@@ -110,10 +110,10 @@ function logout() {
 
 }
 
-// 쿠키 삭제하는 함수
-function deleteCookie(name) {
-	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
-}
+// // 쿠키 삭제하는 함수
+// function deleteCookie(name) {
+// 	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+// }
 
 
 

@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="/dist/output.css" rel="stylesheet"> -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../dist/output.css" rel="stylesheet">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
      <!-- 쿠기 생성, 가져오기, 삭제 -->        
     <script defer src = "../commenJS/cookie.js"></script>  
     <script defer src = "./editprofile2.js"></script>   
@@ -152,17 +152,17 @@
               <!-- 거주 국가 수정 클릭했을 때 -->
               <div id = "residencediv_click_edit" class = "hidden ">                
                 <select id = "select_residence" class = "w-44 px-1 py-1 rounded border border-gray-200 mb-3">
-                    <option value = "대한민국">대한민국</option>
-                    <option value = "일본">일본</option> 
-                    <option value = "미국">미국</option>
-                    <option value = "중국">중국</option>
-                    <option value = "영국">영국</option>
-                    <option value = "프랑스">프랑스</option>
-                    <option value = "이탈리아">이탈리아</option>
-                    <option value = "스페인">스페인</option>
-                    <option value = "독일">독일</option>
-                    <option value = "러시아">러시아</option> 
-                  </select><br>                  
+                  <option value = "대한민국">대한민국</option>
+                  <option value = "일본">일본</option> 
+                  <option value = "미국">미국</option>
+                  <option value = "중국">중국</option>
+                  <option value = "영국">영국</option>
+                  <option value = "프랑스">프랑스</option>
+                  <option value = "이탈리아">이탈리아</option>
+                  <option value = "스페인">스페인</option>
+                  <option value = "독일">독일</option>
+                  <option value = "러시아">러시아</option> 
+                </select><br>                  
                 <button onclick = "edit_done_residence()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
                 <button onclick = "edit_cancel_residence()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>                
               </div>
@@ -198,15 +198,55 @@
             <div id = "" class = "w-9/12 justify-between">
               <!-- 구사가능 언어 수정 클릭 안했을 때 -->
               <div id = "languagediv_not_edit" class = "flex justify-between text-sm text-gray-500">
-                <div id = "language">영어 : C2</div>                                   
-                <div><svg id = "language_edit" onclick = "editingLanguage('language', 'languagediv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <span id = "language"></span>                                   
+                <span><svg id = "language_edit" onclick = "editing_language()" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
-                </div>
+                </span>
               </div>
               <!-- 구사가능 언어 수정 클릭했을 때 -->
               <div id = "languagediv_click_edit" class = "hidden ">
-              
+
+                <!-- 예제 -->
+                <script>
+                  const add_textbox = () => {
+                      const box = document.getElementById("box");
+                      const newP = document.createElement('div');
+                      newP.setAttribute("name", "test");
+                      newP.innerHTML = [
+                      "<select id = 'select_language' class = 'w-44 px-1 py-1 rounded border border-gray-200 mb-3 mr-3'>",
+                      "<option value = '영어'>영어</option>",
+                      "<option value = '스페인어'>스페인어</option>",
+                      "<option value = '중국어'>중국어</option>",
+                      "<option value = '일본어'>일본어</option>",
+                      "</select>",
+                      "<select id = 'select_level' class = 'w-44 px-1 py-1 rounded border border-gray-200 mb-3 mr-3'>",
+                      "<option value = 'A1'>A1:초보</option>",
+                      "<option value = 'A2'>A2:기초</option>",
+                      "<option value = 'B1'>B1:중급</option>",
+                      "<option value = 'B2'>B2:중상급</option>",
+                      "<option value = 'C1'>C1:고급</option>",
+                      "<option value = 'C2'>C2:고급 이상</option>",
+                      "<option value = 'native'>원어민</option>",
+                      "</select>"].join("");
+
+                      box.appendChild(newP);                      
+                  }
+                  const remove = (obj) => {
+                      document.getElementById('box').removeChild(obj.parentNode);
+                  }
+                </script>
+                <!-- <form> -->
+                  <div id="box">
+                    
+                  </div>
+                <!-- </form> -->
+
+                <div id = "add_language" class = "text-sm" onclick="add_textbox()">+ 더 추가</div>
+                <div class = "mt-2">
+                <button onclick = "edit_done_language()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_language()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
+                </div>
               </div>
             </div>     
           </div>
@@ -223,14 +263,15 @@
               </div>
               <!-- 한국어 구사 수정 클릭했을 때 -->
               <div id = "namediv_click_edit" class = "hidden ">
-              
+                
+               
               </div>
             </div>     
           </div>                          
         </div>   
 
     </div>       
-    <!-- <custom-input name = "hihi"></custom-input>
+    <!-- <custom-input id = ""></custom-input>
 
     <template id = 'template1'>
       <label class = "text-red-500">이메일 입력</label><input>

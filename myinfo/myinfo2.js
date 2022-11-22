@@ -25,7 +25,7 @@
       // 서버에 토큰값 전달
       postToken(tokenValue);
 
-      
+      console.log("testst1");
     
     }
 
@@ -38,7 +38,7 @@
         
         token : value,
       };
-
+      console.log("testst2");
       const res = await fetch('./myinfoProcess.php', {
         method: 'POST',
         headers: {

@@ -12,6 +12,7 @@
     // - korean 한국어 구사 수준    
     // - intro 자기소개
     
+    
     // 쿠기 값(토큰) 가져오기
     let tokenValue = getCookie(cookieName);   
     // 토큰 서버에 전송
@@ -24,7 +25,7 @@
       postToken(tokenValue);     
     
     }
-
+    
     // 토큰값을 서버로 전달한 뒤 유저 정보 받아오기
     async function postToken(tokenValue) {
 
@@ -34,7 +35,7 @@
         
         token : value,
       };
-
+      
       // 어짜피 내 정보 가져오는건 myinfoProcess랑 똑같으니까 거기에서 가져옴
       const res = await fetch('../myinfo/myinfoProcess.php', {
         method: 'POST',
@@ -47,7 +48,7 @@
       // 받아온 json 파싱
       const response = await res.json();
       
-      // console.log(response);
+      console.log(response);
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
@@ -66,10 +67,7 @@
       const user_intro_parsing = user_intro.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
 
       // console.log(user_name);
-      // console.log(user_bday);
-      
-      console.log(user_intro);   
-    
+      // console.log(user_bday);                 
 
       // 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
       let name = document.getElementById("name"); 
@@ -78,6 +76,8 @@
       let country = document.getElementById("country"); 
       let residence = document.getElementById("residence"); 
       let intro = document.getElementById("intro");
+      let language = document.getElementById("language");
+      let korean = document.getElementById("korean");
 
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;   
@@ -87,15 +87,24 @@
       setInfo(country, user_country);
       setInfo(residence, user_residence);
       setInfo(intro, user_intro);
-      // setInfo(intro, user_intro_parsing);
-      // intro.innerText = user_intro;      
+
+      // 구사 가능 언어 불러오는 테스트용
+      let language_test = '{"영어" : "A2", "일본어" : "B1"}';             
+      let json_parse = JSON.parse(language_test);
+
+      setLanguage(language, json_parse);
       
+                              
     }
 
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value) {
 
-      if (value != 'default') {        
+      if (value != 'default') {     
+        
+        for (let i = 1; i < value.length; i++) {
+
+        }
                
         key.innerText = value;
 
@@ -104,6 +113,41 @@
       else {
         key.innerText = "";
       }
+    }
+    
+     // 구사 가능 언어 출력은 별도의 함수로 처리
+     function setLanguage(key, value) {
+        
+      if (value != 'default') {       
+        
+        for (let key_l in value) {
+
+          let output_test = document.createElement('span');          
+          output_test.innerHTML = ['<span class = "mr-4">'+key_l+' : '+value[key_l]+'</span>'].join("");
+          key.appendChild(output_test);
+
+          console.log(key_l, value[key_l]);
+        }                 
+                             
+      }       
+      else {
+        key.innerText = "";
+      }
+    }
+   
+
+    // 구사가능 언어 수정 (아래에는 주석처리 해놨음. 여기서 테스트 용도)
+    function editing_language() {           
+                                      
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      language_click_edit_div.style.display = 'block';
+      // 이름이랑 편집 아이콘 안보이게 처리
+      language_not_edit_div.style.display = 'none';          
+
+      // 자기소개 값이 있을 경우에만 현재 자기소개 입력창에 넣기
+      if (language.innerHTML != '') {
+        
+      } 
     }
 
 
@@ -435,6 +479,41 @@
       post_edit(checkCookie, "intro", string);
       
     }
+
+    // 7. 구사 가능 언어
+    // 현재 구사 가능 언어 가져오기
+    let now_language = document.getElementById('language');
+    // 자기소개 입력 id 가져오기
+    let input_language = document.getElementById('input_language');        
+    // 자기소개랑 편집 아이콘 있는 div 가져오기
+    let language_not_edit_div = document.getElementById('languagediv_not_edit');
+    // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+    let language_click_edit_div = document.getElementById('languagediv_click_edit');
+
+    // 구사가능 언어 수정   
+    // function editing_language() {           
+                                      
+    //   // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+    //   language_click_edit_div.style.display = 'block';
+    //   // 이름이랑 편집 아이콘 안보이게 처리
+    //   language_not_edit_div.style.display = 'none';          
+
+    //   // 자기소개 값이 있을 경우에만 현재 자기소개 입력창에 넣기
+    //   if (now_language.innerHTML != '') {
+        
+    //   } 
+    // }
+
+    // 구사가능언어 수정 취소
+    function edit_cancel_language() {              
+
+      // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+      language_click_edit_div.style.display = 'none';
+      // 텍스트랑 편집 아이콘 다시 보이게 처리
+      language_not_edit_div.style.display = 'block'; 
+    }
+
+
         
     // 수정 사항 서버에 전달하는 함수 (백엔드 부분 처리될 때까지 보류)
     async function post_edit(token, position, desc) {
