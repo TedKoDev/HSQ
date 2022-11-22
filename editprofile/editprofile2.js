@@ -47,7 +47,7 @@
       // 받아온 json 파싱
       const response = await res.json();
       
-      console.log(response);
+      // console.log(response);
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
@@ -63,8 +63,10 @@
       const user_korean = userinfo_parse.korean;       
       const user_intro = userinfo_parse.intro; 
 
-      console.log(user_name);
-      console.log(user_bday);
+      // console.log(user_name);
+      // console.log(user_bday);
+      
+      console.log(user_intro);   
     
 
       // 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
@@ -390,7 +392,7 @@
 
     // 자기소개 수정   
     function editing_intro() {           
-      
+                                   
       // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
       intro_click_edit_div.style.display = 'block';
       // 이름이랑 편집 아이콘 안보이게 처리
@@ -400,8 +402,7 @@
       if (now_intro.innerHTML != '') {
 
         input_intro.value = now_intro.innerHTML;
-      }             
-      
+      } 
     }
 
     // 자기소개 수정 취소
@@ -414,8 +415,8 @@
     }
 
     // 자기소개 수정 완료
-    function edit_done_intro() {
-      
+    function edit_done_intro() {           
+
       // 입력창에서 수정한 값을 자기소개에 적용하기
       now_intro.innerHTML = input_intro.value;
 
@@ -428,17 +429,7 @@
       post_edit(checkCookie, "intro", now_intro.innerHTML);
       
     }
-
-
-
-
-    
-
-
-
-    
-    
-
+        
     // 수정 사항 서버에 전달하는 함수 (백엔드 부분 처리될 때까지 보류)
     async function post_edit(token, position, desc) {
 
@@ -462,7 +453,3 @@
       const userinfo_parse = JSON.parse(userinfo_json);
 
     }
-
-    
-
-    

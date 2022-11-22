@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
      <!-- 쿠기 생성, 가져오기, 삭제 -->        
     <script defer src = "../commenJS/cookie.js"></script>  
-    <script defer src = "./editprofile.js"></script>   
+    <script defer src = "./editprofile2.js"></script>   
     <script>
       
     </script>    
@@ -173,16 +173,19 @@
             <div id = "" class = "flex flex-col w-9/12 justify-between">
               <!-- 자기소개 수정 클릭 안했을 때 -->
               <div id = "introdiv_not_edit" class = "flex justify-between text-sm text-gray-500">
-                <div id = "intro">안녕하세요</div>                                   
-                <div><svg id = "intro_edit" onclick = "editingIntre('intro', 'introdiv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <span id = "intro" class = "w-80"></span>                                   
+                <span onclick = "editing_intro()" ><svg id = "intro_edit" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
-                </div>
+                </span>
               </div>
               <!-- 자기소개 수정 클릭했을 때 -->
               <div id = "introdiv_click_edit" class = "hidden">
-                <div>hhih</div>
-              </div>
+                <div><textarea rows = "5" id = "input_intro" class = "w-80 text-sm px-1 py-1 rounded border border-gray-200 mb-3"
+                ></textarea></div>
+                <button onclick = "edit_done_intro()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_intro()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
+              </div> 
             </div>     
           </div>                 
         </div>   
