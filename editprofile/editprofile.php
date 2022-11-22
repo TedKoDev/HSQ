@@ -24,7 +24,7 @@
         <div class = "w-full px-4 pb-4 flex border-b-2">           
           <img class = "w-32 h-32 border border-gray-900 p-2 rounded-full" 
           src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>
-          <button class = " ml-12 max-h-10 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-900 hover:bg-gray-400 hover:text-black 
+          <button class = "ml-12 max-h-10 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-900 hover:bg-gray-400 hover:text-black 
                 rounded border">업로드</button>
         </div>          
 
@@ -191,65 +191,37 @@
         </div>   
         
         <!-- 언어 (구사가능 언어, 한국어 수준) -->
-        <div class = "text-base mt-8 px-4">언어</div><br>
-        <div class = "flex flex-col w-full px-4 py-4 border-b-2"> 
+        <div class = "text-base mt-8 px-4">언어 
+          <span id = "language_return_btn" onclick = "language_return()" class = "hidden px-2 float-right font-semibold bg-gray-500 text-xs text-white
+                hover:bg-gray-700 hover:text-white rounded-full border">X
+          </span>   
+        </div><br>                
+        <div class = "flex-col w-full px-4 py-4 border-b-2">             
           <div class = "flex justify-between items-center my-auto py-2">
-            <div class = "text-sm w-3/12">구사 가능 언어</div>
-            <div id = "" class = "w-9/12 justify-between">
-              <!-- 구사가능 언어 수정 클릭 안했을 때 -->
+            <div class = "text-sm w-3/12">구사 가능 언어</div>                             
+            <div id = "" class = "w-9/12 justify-between">                            
+              <!-- 구사가능 언어 수정 클릭 안했을 때 -->              
               <div id = "languagediv_not_edit" class = "flex justify-between text-sm text-gray-500">
                 <span id = "language"></span>                                   
                 <span><svg id = "language_edit" onclick = "editing_language()" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
-                </span>
-              </div>
-              <!-- 구사가능 언어 수정 클릭했을 때 -->
-              <div id = "languagediv_click_edit" class = "hidden ">
-
-                <!-- 예제 -->
-                <script>
-                  const add_textbox = () => {
-                      const box = document.getElementById("box");
-                      const newP = document.createElement('div');
-                      newP.setAttribute("name", "test");
-                      newP.innerHTML = [
-                      "<select id = 'select_language' class = 'w-44 px-1 py-1 rounded border border-gray-200 mb-3 mr-3'>",
-                      "<option value = '영어'>영어</option>",
-                      "<option value = '스페인어'>스페인어</option>",
-                      "<option value = '중국어'>중국어</option>",
-                      "<option value = '일본어'>일본어</option>",
-                      "</select>",
-                      "<select id = 'select_level' class = 'w-44 px-1 py-1 rounded border border-gray-200 mb-3 mr-3'>",
-                      "<option value = 'A1'>A1:초보</option>",
-                      "<option value = 'A2'>A2:기초</option>",
-                      "<option value = 'B1'>B1:중급</option>",
-                      "<option value = 'B2'>B2:중상급</option>",
-                      "<option value = 'C1'>C1:고급</option>",
-                      "<option value = 'C2'>C2:고급 이상</option>",
-                      "<option value = 'native'>원어민</option>",
-                      "</select>"].join("");
-
-                      box.appendChild(newP);                      
-                  }
-                  const remove = (obj) => {
-                      document.getElementById('box').removeChild(obj.parentNode);
-                  }
-                </script>
-                <!-- <form> -->
-                  <div id="box">
-                    
-                  </div>
-                <!-- </form> -->
-
-                <div id = "add_language" class = "text-sm" onclick="add_textbox()">+ 더 추가</div>
-                <div class = "mt-2">
-                <button onclick = "edit_done_language()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
-                <button onclick = "edit_cancel_language()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
-                </div>
-              </div>
-            </div>     
+                </span>                
+              </div>                            
+              <!-- 구사가능 언어 수정 클릭했을 때 -->                             
+              <div id = "languagediv_click_edit" class = "hidden flex-col">                               
+                <div id = "now_select"></div>
+                <div id = "select_box"></div>
+                <span id = "add_language" class = "text-sm" onclick="add_select()">+ 더 추가</span>
+                <div class = "flex mt-2">
+                  <button id = "save_language_btn" onclick = "edit_done_language()" class = "mr-3 py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                  <button id = "cancel_language_btn" onclick = "edit_cancel_language()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
+                </div>                                
+              </div>   
+            </div>             
           </div>
+           
+                
           <div class = "flex justify-between items-center my-auto py-2">
             <div class = "text-sm w-3/12">한국어 구사 수준</div>
             <div id = "" class = "w-9/12 justify-between">
