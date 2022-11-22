@@ -113,36 +113,65 @@ if ($checkresult->num_rows <1) {
 //프로필이미지 변경
 //$desc 가 '프로필이미지'인경우 
 if ($position === "p_img") {
-  
-
-    //인스턴스내 www/html/image 폴더 내에 이미지 저장됨 (임시 추후 S3로 변경할 예정)
-    // image 저장되는 루트 
-    $saveroot = "image"; // 저장되는 루트 
-
-    $imagestore = rand() . "_" . time() . ".jpeg";
-    $saveroot = $saveroot . "/" . $imagestore;
-    file_put_contents($saveroot, base64_decode($desc));
 
 
+ 
+    date_default_timezone_set('Asia/Seoul');
+    $time_now = date("Y-m-d");
+    
+        $extension = pathinfo($_FILES['sample_image']['name'], PATHINFO_EXTENSION);
+    
+        $new_name = $User_ID.'.'. $time_now .'.'. $extension;
+    
+        move_uploaded_file($_FILES['sample_image']['tmp_name'], 'image/' . $new_name);
 
-    $select = "UPDATE User_Detail SET U_D_Img = '$imagestore' where User_Id = '$User_ID' ";
 
-    $response = mysqli_query($conn, $select);
+        // DB내 이미지 이름 저장 
+        $select = "UPDATE User_Detail SET U_D_Img = '$new_name' where User_Id = '$User_ID' ";
+        $response = mysqli_query($conn, $select);
+
+      
+    
+        // echo json_encode($data);
+        if ($response) { //정상적으로 이미지가 저장되었을때 
+          // Json 화  'image_source' 이름으로 프론트에서 수령하기  
+          $data = array(
+            'image_source'		=>	'image/' . $new_name,
+            'success'           =>  'yes'
+        );
+        } else {
+        // Json 화  'image_source' 이름으로 프론트에서 수령하기  
+        $data = array(
+            'image_source'		=>	'no',
+            'success'           =>  'no'
+        );
+        }
+ 
+
+    // //인스턴스내 www/html/image 폴더 내에 이미지 저장됨 (임시 추후 S3로 변경할 예정)
+    // // image 저장되는 루트 
+    // $saveroot = "image"; // 저장되는 루트 
+
+    // $imagestore = rand() . "_" . time() . ".jpeg";
+    // $saveroot = $saveroot . "/" . $imagestore;
+    // file_put_contents($saveroot, base64_decode($desc));
+
+
+
+    // $select = "UPDATE User_Detail SET U_D_Img = '$imagestore' where User_Id = '$User_ID' ";
+
+    // $response = mysqli_query($conn, $select);
+
+    // $data = array(
+	// 	'image_source'		=>	'image/' . $new_name
+	// );
+
+	// echo json_encode($data);
 
 
 
 
-    if ($response) { //정상적으로 이미지가 저장되었을때 
-        $send["position"]   =  "p_img";
-        $send["success"]   =  "yes";
-        echo json_encode($send);
-        mysqli_close($conn);
-    } else {
-        $send["position"]   =  "p_img";
-        $send["success"]   =  "no";
-        echo json_encode($send);
-        mysqli_close($conn);
-    }
+
 }//이름변경
 //$desc 가 '이름'인경우 
 else if ($position === "name") {
