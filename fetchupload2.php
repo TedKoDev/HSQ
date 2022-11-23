@@ -13,6 +13,8 @@ if(isset($_FILES['sample_image']))
 
   $new_name = $time_now .'.'.'userid'.'.'. $extension;
 
+	error_log("$time_now, 	$new_name\n", "3", "./php.log");
+
 	move_uploaded_file($_FILES['sample_image']['tmp_name'], 'image/' . $new_name);
 
 	$data = array(

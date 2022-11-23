@@ -51,8 +51,8 @@ const upload_image = (file) => {
   //FormData형태에 file을 담아 fetch로 php로  넘기기
 	const form_data = new FormData();
 
-	form_data.append('sample_image', file);
-	form_data.append('token', 'ttokken');
+	form_data.append('sample_image', file); // 파일값 
+	form_data.append('token', 'ttokken');   // 토큰값 
 	console.log(66);
 	console.log(form_data);
 
@@ -62,8 +62,7 @@ const upload_image = (file) => {
 		method:"POST",
 
     	body:form_data
-
-			
+		
 
 	})
 	
