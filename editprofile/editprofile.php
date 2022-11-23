@@ -113,7 +113,7 @@
             <div id = "" class = "w-9/12 justify-between">
               <!-- 국적 수정 클릭 안했을 때 -->
               <div id = "countrydiv_not_edit" class = "flex justify-between text-sm text-gray-500">
-                <span id = "country">대한민국</span>                                   
+                <span id = "country"></span>                                   
                 <span><svg id = "country_edit" onclick = "editing_country()" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
@@ -143,7 +143,7 @@
             <div id = "" class = "w-9/12 justify-between">
               <!-- 거주 국가 수정 클릭 안했을 때 -->
               <div id = "residencediv_not_edit" class = "flex justify-between text-sm text-gray-500">
-                <span id = "residence">대한민국</span>                                   
+                <span id = "residence"></span>                                   
                 <span><svg id = "residence_edit" onclick = "editing_residence('residence', 'residencediv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
