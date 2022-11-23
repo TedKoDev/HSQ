@@ -4,7 +4,7 @@
 
 </head>
 <body>
-    <?php include 'filezipup.php'; ?>
+   
     <div class="row">
     	<div class="page-container row-12">
     		<h4 class="col-12 text-center mb-5">Create Zip File of Multiple Uploaded Files </h4>
@@ -20,7 +20,7 @@
             <a href="uploads/<?php echo $success; ?>" target="__blank">Click here to download the zip file</a>
             </p>
 	    	 
-		    	<form action="" method="post" enctype="multipart/form-data">
+		    	<form action="filezipup.php" method="post" enctype="multipart/form-data">
 				    <div class="input-group">
 						<div class="input-group-prepend">
 						    <input type="submit" class="btn btn-primary" value="Upload">

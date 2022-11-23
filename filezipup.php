@@ -5,7 +5,7 @@ include("./conn.php");
 
 
 
-if ( $_FILES['img']) {
+if (isset( $_FILES['img'])) {
     
     if (!empty($_FILES['img']['name'][0])) {
         

@@ -26,14 +26,16 @@ include("../jwt.php");
 
 $jwt = new JWT();
 
+// 토큰값 전달 받음 
+file_get_contents("php://input") . "<br/>";
+$token = json_decode(file_get_contents("php://input"))->{"token"};
+$tintro = json_decode(file_get_contents("php://input"))->{"tintro"};
+$certi = json_decode(file_get_contents("php://input"))->{"certi"};
+$filename = json_decode(file_get_contents("php://input"))->{"filename"};
+
+
 
 // 토큰값 받는곳 
-if (isset($_POST['token'])) {
-	$token = $_POST['token'];
-
-	error_log("'1!!!!!   ',$time_now, 	$token\n", "3", "../php.log");
-}
-
 
 
 //토큰 해체 
@@ -52,7 +54,7 @@ $U_Name  = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 
-error_log("'1!!!!! User_ID  ',$U_Name, 	$User_ID\n", "3", "../php.log");
+// error_log("'1!!!!! User_ID  ',$U_Name, 	$User_ID\n", "3", "../php.log");
 
 // U_D에 해당 user _ID로 등록된것이 있는지 확인
 
@@ -69,24 +71,21 @@ if ($checkresult->num_rows < 1) {
 	// 없으면 insert로  data 만들고  
 	$result = "INSERT INTO User_Teacher (User_Id) VALUES ('$User_ID') ";
 	$insert = mysqli_query($conn, $result);
-	//   $send["message"] = "no";
-	//   $send["message"] = "no";
 
-	// echo json_encode($send);
-	// mysqli_close($conn);
 }
 
-$check1 = 0; // 강사자기소개 저장  yes =1 no = 0
-$check2 = 0; // 파일설명 저장 yes =1 no = 0
+$check1 = 0; // 강사자기소개 및 다른 데이터 저장 완료시   yes =1 no = 0
 
 
 
-//formdata로 받은 이미지 받는곳 
-if (isset($_POST['tintro'])) {
-    $tintro = $_POST['tintro'];
-    error_log("'1!!!!! intro  ',$tintro\n", "3", "../php.log");
+
+
+
+
 //강사-자기소개
-$select = "UPDATE User_Teacher SET U_T_Intro = '$tintro' where User_Id = '$User_ID' ";
+//파일설명 (자격증설명)
+//첨부파일 
+$select = "UPDATE User_Teacher SET U_T_Intro = '$tintro', U_T_Certificate = '$certi' ,U_T_FILE = '$filename' where User_Id = '$User_ID' ";
 $result6 = mysqli_query($conn, $select);
 
 if ($result6) { //정상적으로 자기소개 저장되었을때 
@@ -100,103 +99,15 @@ if ($result6) { //정상적으로 자기소개 저장되었을때
     echo json_encode($send);
    
 }
-}
 
 
 
 
-//파일설명 (자격증설명)
-
-if (isset($_POST['certi'])) {
 
 
-    $select = "UPDATE User_Teacher SET U_T_Certificate = '$certi' where User_Id = '$User_ID' ";
-    $result7 = mysqli_query($conn, $select);
+//강사등록완료 부분 
 
-    if ($result7) { //정상적으로 자격증 저장되었을때 
-        $send["position"]   =  "certi";
-        $send["success"]   =  "yes";
-        echo json_encode($send);
-        $check2 = 1; 
-    } else {
-        $send["position"]   =  "certi";
-        $send["success"]   =  "no";
-        echo json_encode($send);
-       
-    }
- }
-    
-
-
-
-  
-
-
-//첨부파일 
-
-if (isset($_FILES['file'])) {
-   
-    if (!empty($_FILES['img']['name'][0])) {
-        
-        $zip = new ZipArchive();
-        $zip_time = time();
-        $zip_name1 = getcwd() . "/uploads/USER_" . $zip_time . ".zip";
-        $zip_name2 = "USER_" . $zip_time . ".zip";
-        
-        // Create a zip target
-        if ($zip->open($zip_name1, ZipArchive::CREATE) !== TRUE) {
-            $error .= "Sorry ZIP creation is not working currently.<br/>";
-        }
-        
-        $imageCount = count($_FILES['img']['name']);
-        for($i=0;$i<$imageCount;$i++) {
-        
-            if ($_FILES['img']['tmp_name'][$i] == '') {
-                continue;
-            }
-            // $newname = date('YmdHis', time()) . mt_rand() . '.jpg';
-            
-            // Moving files to zip.
-            $zip->addFromString($_FILES['img']['name'][$i], file_get_contents($_FILES['img']['tmp_name'][$i]));
-            
-            // // moving files to the target folder.
-            // move_uploaded_file($_FILES['img']['tmp_name'][$i], './uploads/' . $newname);
-        }
-        $zip->close();
-        
-        // Create HTML Link option to download zip
-        // $success = basename($zip_name1);
-    } else {
-        $error = '<strong>Error!! </strong> Please select a file.';
-    }
-
-    
-    $select = "UPDATE User_Teacher SET U_T_FILE = '$zip_name2' where User_Id = '$User_ID'";  
-    $result8 = mysqli_query($conn, $select);
-      
-    
-   
-    if ($result8) { //정상적으로 파일 저장되었을때 
-        $send["position"]   =  "file";
-        $send["success"]   =  "yes";
-        echo json_encode($send);
-    
-    } else {
-        $send["position"]   =  "file";
-        $send["success"]   =  "no";
-        echo json_encode($send);
-       
-    }
-
-
- }
-    
-
-
-
-//강사 전환 부분 
-
-if($check1 = 1 && $check2 =1 ){
+if($check1 = 1 ){
     $select = "UPDATE User_Detail SET U_D_T_add = 'yes' where User_Id = '$User_ID'";  
     $result9 = mysqli_query($conn, $select);
 
