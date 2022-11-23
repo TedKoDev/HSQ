@@ -126,4 +126,4 @@
       email_check2.innerHTML = '이미 등록된 이메일 주소입니다.'
       input.style.borderColor = '#EF4444'; // 경고 텍스트와 같은 색깔로 테두리도 변경
     }
-  }  
+  } 

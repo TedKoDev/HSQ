@@ -3,14 +3,15 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="./css/tailwind.css"> -->
-    <script src="https://cdn.tailwindcss.com"></script>    
+    <link rel="stylesheet" href="./dist/output.css">
+    <!-- <script src="https://cdn.tailwindcss.com"></script>     -->
   </head>      
   <body class = "bg-gray-100">   
     <!-- 네비바 -->
     <?php include './components/navbar.php' ?>
     <!-- 한글스퀘어 소개하는 블록 -->
     <br>    
+    
     <div class = "max-w-4xl mx-auto">
       <div class = "flex justify-between">
         <div class = "flex flex-col max-w-lg mr-4 bg-gray-50 px-4 py-4 shadow rounded-lg">
