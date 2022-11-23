@@ -17,6 +17,8 @@
 //   "userid": "33",
 //   "name": "haein1",
 //   "p_img": "default",
+//   "bday": "default",
+//   "sex": "default",
 //   "country": "default",
 //   "residence": "default",
 //   "language": "default",
@@ -116,7 +118,7 @@ if ($checkresult->num_rows <1) {
 
 
 $select = "SELECT
-User.User_ID, User.U_Name, User_Detail.U_D_Img,  User_Detail.U_D_Country, User_Detail.U_D_Residence , User_Detail.U_D_Language , User_Teacher.U_T_Intro, User_Teacher.U_T_Certificate, User_Teacher.U_T_File
+User.User_ID, User.U_Name, User_Detail.U_D_Img, User_Detail.U_D_Bday,User_Detail.U_D_Sex, User_Detail.U_D_Country, User_Detail.U_D_Residence , User_Detail.U_D_Language , User_Teacher.U_T_Intro, User_Teacher.U_T_Certificate, User_Teacher.U_T_File
 FROM User
 JOIN User_Detail
   ON User.User_ID = User_Detail.User_Id
@@ -131,6 +133,8 @@ $row = mysqli_fetch_array($result);
  $userid      = $row['User_ID'];
  $name        = $row['U_Name'];
  $p_img       = $row['U_D_Img'];
+ $bday       = $row['U_D_Bday'];
+ $sex       = $row['U_D_Sex'];
  $country     = $row['U_D_Country'];
  $residence   = $row['U_D_Residence'];
  $language    = $row['U_D_Language'];
@@ -143,6 +147,8 @@ $row = mysqli_fetch_array($result);
  $send["userid"]   =  $userid   ;
  $send["name"]   =  $name     ;
  $send["p_img"]   =  $p_img    ;
+ $send["bday"]   =  $bday    ;
+ $send["sex"]   =  $sex    ;
  $send["country"]   =  $country  ;
  $send["residence"]   =  $residence  ;
  $send["language"]   =  $language ;
