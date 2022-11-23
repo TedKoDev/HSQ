@@ -1,6 +1,8 @@
 <?php
 
 
+
+//이미지 받는곳 
 if(isset($_FILES['sample_image']))
 {
 
@@ -21,6 +23,8 @@ if(isset($_FILES['sample_image']))
 
 }
 
+
+// 토큰값 받는곳 
 if(isset($_POST['token']))
 {
 	$test = $_POST['token'];
