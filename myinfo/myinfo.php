@@ -21,7 +21,7 @@
       <!-- 왼쪽 상단에 유저 이미지, 이름등의 정보 블록 -->
       <div class = "flex flex-col w-1/3 bg-gray-50 px-4 py-4 shadow rounded-lg">
         <div class = "mx-auto">                  
-          <img class = "w-24 h-24 border border-gray-900 p-2 rounded-full" src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>            
+          <img id = "profile_image" class = "w-24 h-24 border-3 border-gray-900 rounded-full" src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>            
         </div><br>
         <div id = "name" class = "text-lg"></div><br>
         <div class = "text-sm">

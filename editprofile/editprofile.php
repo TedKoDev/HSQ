@@ -7,11 +7,9 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
      <!-- 쿠기 생성, 가져오기, 삭제 -->        
     <script defer src = "../commenJS/cookie.js"></script>  
-    <script defer src = "./editprofile.js"></script>   
-    <script>
-      
-    </script>    
+    <script defer src = "./editprofile.js"></script>           
   </head>       
+  
   <body class = "bg-gray-100">      
     <!-- 네비바 -->    
     <?php include '../components/navbar.php' ?>
@@ -21,11 +19,15 @@
       
         <!-- 프로필 수정 -->
         <div class = "text-base px-4">프로필 사진</div><br>
+        <div class="text-center" id="uploaded_image"></div>
         <div class = "w-full px-4 pb-4 flex border-b-2">           
-          <img class = "w-32 h-32 border border-gray-900 p-2 rounded-full" 
+          <img id = "profile_image" class = "w-32 h-32 border-3 border-gray-900 rounded-full " 
           src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>
-          <button class = "ml-12 max-h-10 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-900 hover:bg-gray-400 hover:text-black 
-                rounded border">업로드</button>
+          <div class = "my-auto">
+            <label for = "image" class = "ml-12 max-h-10 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black 
+                rounded border">업로드</label>
+            <input onclick = "image_change()" type="file" id = "image" name = "image" class = "invisible">
+          </div>         
         </div>          
 
         <!-- 기본 정보 (이름, 생년월일, 성별, 국적, 거주국가, 자기소개)                       -->

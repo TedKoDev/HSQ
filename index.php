@@ -11,8 +11,7 @@
     <!-- 네비바 -->
     <?php include './components/navbar.php' ?>
     <!-- 한글스퀘어 소개하는 블록 -->
-    <br>    
-    <div>안해인</div>
+    <br>        
     <div class = "max-w-4xl mx-auto">
       <div class = "flex justify-between">
         <div class = "flex flex-col max-w-lg mr-4 bg-gray-50 px-4 py-4 shadow rounded-lg">

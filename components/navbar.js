@@ -4,9 +4,7 @@
 // 쿠키 값 가져오기 
 let checkCookie = getCookie("user_info");    
 let haein = 11;
-let taeeui = 12;
 console.log(haein);
-console.log(taeeui);
 // 쿠키 가져오는 함수
 function getCookie(cName) {
   cName = cName + '=';
@@ -34,7 +32,7 @@ window.onload = function () {
 
     userinfo.style.display = 'block';
     login.style.display = 'none';
-    signup.style.display = 'none';
+    signup.style.display = 'none';    
 
     // 서버에 토큰값 전달
     postToken_nav(checkCookie);
@@ -71,9 +69,36 @@ async function postToken_nav(tokenValue) {
   const userinfo_json = JSON.stringify(response);     
   const userinfo_parse = JSON.parse(userinfo_json);
 
-  const user_profile = userinfo_parse.p_img;
+  // console.log(response);
+
+  const user_p_img = userinfo_parse.p_img;
   const user_name = userinfo_parse.name;
   const user_teacher = userinfo_parse.teacher;
+
+  
+
+  // 프로필 이미지 가져오기
+  let p_img = document.getElementById("user_image");
+  setInfo(p_img, user_p_img, "image");
+
+  // 값이 있을 경우에만 브라우저에 출력
+  function setInfo(key, value, text) {
+
+    
+
+    if ((value != 'default') && (value != null)) {        
+      
+      // 프로필 이미지일 경우
+      if (text == 'image') {      
+          
+          key.src = "../editprofile/image/"+value;        
+      }   
+         
+    }
+    else {
+      key.innerText = "";
+    }
+  }
 
   // console.log(userinfo_json);
   // console.log(userinfo_parse);
@@ -101,6 +126,20 @@ document.addEventListener('mouseup', function(e) {
     dropdown_ct.style.display = 'none';
   }
 });
+
+
+// 강사되기/강사페이지 클릭 시
+function go_teacher_page() {
+ 
+  // 드롭다운의 값 가져오기 (강사되기 or 강사페이지)
+  let teacher_dropdown = document.getElementById('teacher_page').innerHTML;
+  
+  // 강사 신청 안한 계정이면 강사 등록 페이지로 이동
+  if (teacher_dropdown == '강사되기') {
+        
+    location.replace("../registeacher/registeacher.php");
+  }
+}
 
 // 로그아웃 클릭시
 function logout() {

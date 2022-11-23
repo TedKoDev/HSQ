@@ -50,7 +50,7 @@
 
       // 받아온 json 파싱
       const response = await res.json();
-            
+      console.log(response);
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
@@ -71,7 +71,8 @@
       // console.log(user_name);
       // console.log(user_bday);                 
 
-      // 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
+      // 프로필이미지, 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
+      let p_img = document.getElementById("profile_image");
       let name = document.getElementById("name"); 
       let bday = document.getElementById("bday"); 
       let sex = document.getElementById("sex"); 
@@ -83,13 +84,13 @@
 
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;   
-      // bday.innerText = user_bday;
-      setInfo(bday, user_bday);
-      setInfo(sex, user_sex);      
-      setInfo(country, user_country);
-      setInfo(residence, user_residence);
-      setInfo(intro, user_intro);
-      setInfo(korean, user_korean);
+      setInfo(p_img, user_p_img, "image");
+      setInfo(bday, user_bday, "");
+      setInfo(sex, user_sex, "");      
+      setInfo(country, user_country, "");
+      setInfo(residence, user_residence, "");
+      setInfo(intro, user_intro, "");
+      setInfo(korean, user_korean, "");
 
       // 구사 가능 언어 전역 변수에 서버에서 가져온 string 대입   
       language_can = user_language;      
@@ -104,15 +105,19 @@
     }
 
     // 값이 있을 경우에만 브라우저에 출력
-    function setInfo(key, value) {
+    function setInfo(key, value, text) {
 
-      if (value != null&&value !='default') {     
+      if ((value != 'default') && (value != null)) {     
         
-        for (let i = 1; i < value.length; i++) {
-
+        // 프로필 이미지일 경우
+        if (text == 'image') {
+          
+          key.src = "../editprofile/image/"+value;
         }
-               
-        key.innerText = value;
+
+        else {
+          key.innerText = value+text;
+        }     
 
         // console.log(key.value);
       }
@@ -125,7 +130,7 @@
      function setLanguage(key, value) {
         
       // 값이 있을 경우에만 등록한 구사 가능 언어 수만큼 화면에 출력
-      if (value != 'default') {  
+      if ((value != 'default') && (value != null)) {  
 
         const json_parse = JSON.parse(language_can);      
         
@@ -157,10 +162,51 @@
     // 수정 버튼 클릭 시 수정 가능하도록 뷰 변경
 
     // 1. 프로필 이미지 수정
-    
-    
+    function image_change() {
 
+      const sample_image = document.getElementsByName('image')[0]; 
+      sample_image.addEventListener('change', () => {
+        
+        
+        upload_image(sample_image.files[0]);          
+            
+      });
+    }
 
+    function upload_image(file) {
+      
+        //FormData형태에 file을 담아 fetch로 php로  넘기기
+        const form_data = new FormData();
+
+        console.log(checkCookie);
+        
+        form_data.append('sample_image', file); // 파일값 
+        form_data.append('token', checkCookie);   // 토큰값 
+        
+        console.log(form_data);
+        
+        fetch("./editimage.php", {
+
+          method:"POST",
+
+            body:form_data            
+
+        })
+
+        .then(function(response){
+
+          console.log(response);
+          return response.json();
+
+        }).then(function(responseData){
+          
+          console.log(responseData.image_source);
+          document.getElementById('profile_image').src = responseData.image_source;                      
+          document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
+
+        });
+    }
+    
 
     // 2. 이름 수정
 
@@ -554,7 +600,7 @@
       console.log("language_can : "+language_can);
 
       // 만약 기존 값이 있을 경우
-      if (language_can != 'default') {
+      if ((language_can != 'default') && (language_can != null)) {
 
         let json_parse = JSON.parse(language_can);
 
@@ -646,7 +692,7 @@
 
       // 구사 가능 언어 불러와서 파싱  
       // 기존 값이 있을 경우
-      if (language_can != 'default') {
+      if ((language_can != 'default') && (language_can != null)) {
 
         let json_parse = JSON.parse(language_can);
 
