@@ -7,57 +7,7 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
      <!-- 쿠기 생성, 가져오기, 삭제 -->        
     <script defer src = "../commenJS/cookie.js"></script>  
-    <script defer src = "./editprofile.js"></script>   
-    <script defer>
-      
-      function test_function() {
-
-        const sample_image = document.getElementsByName('image')[0]; 
-        sample_image.addEventListener('change', () => {
-          
-          console.log(1);
-          upload_image(sample_image.files[0]);          
-              
-        });
-      }
-
-      function upload_image(file) {
-
-        console.log(2);
-            //FormData형태에 file을 담아 fetch로 php로  넘기기
-            const form_data = new FormData();
-
-            console.log(3);
-            form_data.append('sample_image', file); // 파일값 
-            form_data.append('token', 'eyJhbGciOiJzaGEyNTYiLCJ0eXAiOiJKV1QifS57IlVzZXJfSUQiOiJNekk9IiwiVV9OYW1lIjoiN0pXSTdaVzA3SjI0TWpJeSIsIlVfRW1haWwiOiJZV2h1YUdGbGFXNUFibUYyWlhJdVkyOXQifS40MWY1NDg4MTg5MGQ3ZGRhZTRlNDI3YjY3ZTdiZjRiMjljMTk1MGY5ZmQwZTk1N2NlNDE4MTc1ZTlmMjFhNmEw');   // 토큰값 
-            console.log(4);
-            console.log(form_data);
-
-            console.log(5);
-            fetch("./editimage.php", {
-
-              method:"POST",
-
-                body:form_data
-              
-
-            })
-
-            .then(function(response){
-
-              console.log(response);
-              return response.json();
-
-            }).then(function(responseData){
-              
-              console.log(responseData.image_source);
-              document.getElementById('profile_image').src = responseData.image_source;                      
-              document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
-
-            });
-      }
-      
-    </script>    
+    <script defer src = "./editprofile.js"></script>           
   </head>       
   <body class = "bg-gray-100">      
     <!-- 네비바 -->    
@@ -75,7 +25,7 @@
           <div class = "my-auto">
             <label for = "image" class = "ml-12 max-h-10 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black 
                 rounded border">업로드</label>
-            <input onclick = "test_function()" type="file" id = "image" name = "image" class = "invisible">
+            <input onclick = "image_change()" type="file" id = "image" name = "image" class = "invisible">
           </div>         
         </div>          
 

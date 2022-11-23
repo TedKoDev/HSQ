@@ -31,9 +31,7 @@ window.onload = function () {
 
     userinfo.style.display = 'block';
     login.style.display = 'none';
-    signup.style.display = 'none';
-
-    console.log("token : "+checkCookie);
+    signup.style.display = 'none';    
 
     // 서버에 토큰값 전달
     postToken_nav(checkCookie);
@@ -70,9 +68,13 @@ async function postToken_nav(tokenValue) {
   const userinfo_json = JSON.stringify(response);     
   const userinfo_parse = JSON.parse(userinfo_json);
 
+  // console.log(response);
+
   const user_p_img = userinfo_parse.p_img;
   const user_name = userinfo_parse.name;
   const user_teacher = userinfo_parse.teacher;
+
+  
 
   // 프로필 이미지 가져오기
   let p_img = document.getElementById("user_image");
@@ -81,18 +83,16 @@ async function postToken_nav(tokenValue) {
   // 값이 있을 경우에만 브라우저에 출력
   function setInfo(key, value, text) {
 
-    if (value != 'default' || value != null) {        
+    
+
+    if ((value != 'default') && (value != null)) {        
       
       // 프로필 이미지일 경우
-      if (text == 'image') {
-        
-        key.src = "../editprofile/image/"+value;
-      }
-
-      else {
-        key.innerText = value+text;
-      }     
-              
+      if (text == 'image') {      
+          
+          key.src = "../editprofile/image/"+value;        
+      }   
+         
     }
     else {
       key.innerText = "";

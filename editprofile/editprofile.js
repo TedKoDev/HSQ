@@ -50,7 +50,7 @@
 
       // 받아온 json 파싱
       const response = await res.json();
-            
+      console.log(response);
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
@@ -107,7 +107,7 @@
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value, text) {
 
-      if (value != 'default' || value != null) {     
+      if ((value != 'default') && (value != null)) {     
         
         // 프로필 이미지일 경우
         if (text == 'image') {
@@ -130,7 +130,7 @@
      function setLanguage(key, value) {
         
       // 값이 있을 경우에만 등록한 구사 가능 언어 수만큼 화면에 출력
-      if (value != 'default' || value != null) {  
+      if ((value != 'default') && (value != null)) {  
 
         const json_parse = JSON.parse(language_can);      
         
@@ -162,10 +162,51 @@
     // 수정 버튼 클릭 시 수정 가능하도록 뷰 변경
 
     // 1. 프로필 이미지 수정
-    
-    
+    function image_change() {
 
+      const sample_image = document.getElementsByName('image')[0]; 
+      sample_image.addEventListener('change', () => {
+        
+        
+        upload_image(sample_image.files[0]);          
+            
+      });
+    }
 
+    function upload_image(file) {
+      
+        //FormData형태에 file을 담아 fetch로 php로  넘기기
+        const form_data = new FormData();
+
+        console.log(checkCookie);
+        
+        form_data.append('sample_image', file); // 파일값 
+        form_data.append('token', checkCookie);   // 토큰값 
+        
+        console.log(form_data);
+        
+        fetch("./editimage.php", {
+
+          method:"POST",
+
+            body:form_data            
+
+        })
+
+        .then(function(response){
+
+          console.log(response);
+          return response.json();
+
+        }).then(function(responseData){
+          
+          console.log(responseData.image_source);
+          document.getElementById('profile_image').src = responseData.image_source;                      
+          document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
+
+        });
+    }
+    
 
     // 2. 이름 수정
 
