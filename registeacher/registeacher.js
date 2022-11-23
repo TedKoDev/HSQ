@@ -5,6 +5,7 @@ let tokenValue = getCookie(cookieName);
 
 sendToken();
 
+
 // 화면 모두 로드되면 토큰 보내서 유저 정보 받아오기
 async function sendToken() {     
        
@@ -23,7 +24,7 @@ async function postToken(tokenValue) {
     token : value,
   };
 
-  const res = await fetch('../myinfo/myinfoProcess.php', {
+  const res = await fetch('./regiscallprocess.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;'
@@ -53,7 +54,7 @@ async function postToken(tokenValue) {
   const user_teacher = userinfo_parse.teacher; 
   const user_intro = userinfo_parse.intro; 
   
-  console.log("source : "+user_p_img);
+  // console.log("source : "+user_p_img);
   // 프로필 이미지, 이름, 나이, 성별, 출신국가, 거주국가 대입, 구사 가능 언어, 한국어 구사 수준 대입
   let p_img = document.getElementById("profile_image");
   let name = document.getElementById("name"); 
@@ -67,10 +68,10 @@ async function postToken(tokenValue) {
   // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
   name.innerText = user_name;    
   setInfo(p_img, user_p_img, "image");
-  setInfo(bday, user_bday, " 출생, ");
+  setInfo(bday, user_bday, "");
   setInfo(sex, user_sex, ", ");
-  setInfo(country, user_country, " 출신, ");
-  setInfo(residence, user_residence, " 거주");
+  setInfo(country, user_country, "");
+  setInfo(residence, user_residence, "");
   // setInfo(intro_t, user_intro, "");
   // setInfo(korean, user_korean, "")
   // intro.innerText = user_intro;      
@@ -125,4 +126,9 @@ async function postToken(tokenValue) {
       key.innerText = "";
     }
   }
+
+  // 토큰 input창에 토큰 값 넣기
+  let token_input = document.getElementById("token_value");
+  token_input.value = tokenValue; 
+
 }

@@ -42,7 +42,6 @@
 
 
 
-
 include("../conn.php");
 include("../jwt.php");
 
@@ -73,8 +72,8 @@ $payload = json_decode($parted[1], true);
 //ar_dump($payload);
 
 
-// $User_ID =  base64_decode($payload['User_ID']);
-$User_ID = '33';
+$User_ID =  base64_decode($payload['User_ID']);
+// $User_ID = '33';
 
 $U_Name  = base64_decode($payload['U_Name']);
 

@@ -9,24 +9,19 @@
  
   <script src = "../commenJS/cookie.js"></script> 
   <script src = "./registeacher.js"></script>  
-  <script> 
-
-    // console.log(getCookie("user_info"));
-    // document.getElementById("token").value = getCookie("user_info");
-
-  </script>
+  
   <body class = "bg-gray-100">   
     <!-- 네비바 -->
     <?php include '../components/navbar.php' ?>    
     <br>
-    <!-- 강사등록 블록   -->
+    <!-- 강사등록 블록   -->    
     <form action="./regisuploadprocess.php" method="post" enctype="multipart/form-data">
-    <input type="text" id="token" name="token"  value="eyJhbGciOiJzaGEyNTYiLCJ0eXAiOiJKV1QifS57IlVzZXJfSUQiOiJNekk9IiwiVV9OYW1lIjoiN0pXSTdaVzA3SjI0TWpJeSIsIlVfRW1haWwiOiJZV2h1YUdGbGFXNUFibUYyWlhJdVkyOXQifS40MWY1NDg4MTg5MGQ3ZGRhZTRlNDI3YjY3ZTdiZjRiMjljMTk1MGY5ZmQwZTk1N2NlNDE4MTc1ZTlmMjFhNmEw">
+    <textarea id = "token_value" name="token" value="" class = "invisible"></textarea>
         <div class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-50 shadow rounded-lg  ">
             <div class = "py-4 mx-auto">                  
             <img id = "profile_image" class = "w-24 h-24 border-3 border-gray-900 rounded-full" src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>            
             </div>    
-            <div class = "flex flex-col ">
+            <div id = "test" class = "flex flex-col ">
                 <div class = "flex my-2 mx-auto">
                     <div class = "w-48 text-sm">이름</div><div id = "name" class = "w-96 text-sm text-gray-600"></div>
                 </div>
@@ -86,5 +81,8 @@
             </div>            
         </div>
     </form>
+    <script> 
+        
+    </script>
     </body><br><br><br><br><br>     
 </html>
