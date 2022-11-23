@@ -32,15 +32,15 @@
         <!-- 유저 아이콘 -->
         <div id = "test" class="relative inline-block text-left">
           <a id = "id_user_info" class = "hidden py-2 px-2 text-gray-700" onclick = "userIcon_click()">            
-            <img class = "w-9 h-9 border border-gray-900 rounded-full p-1" src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>          
+            <img id = "user_image" class = "w-9 h-9 border-2 border-gray-900 rounded-full" src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>          
           </a>      
           <!-- 유저 아이콘의 드롭다운 메뉴     -->
           <div id = "user_dropdown" class="hidden absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="id_user_info" tabindex="-1">
             <div class="py-1" role="none">              
-              <a id = "edit_profile" href="../myinfo/myinfo.php" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">내 정보</a>
-              <a id = "regis_class" href="#" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">강사되기</a>
-              <a id = "check_message" href="#" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">설정</a>
-              <a id = "logout" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2"
+              <a id = "edit_profile" href="../myinfo/myinfo.php" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" >내 정보</a>
+              <a onclick = "go_teacher_page()" id = "teacher_page" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" >강사되기</a>
+              <a id = "check_message" href="#" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" >설정</a>
+              <a id = "logout" class="text-gray-700 hover:bg-gray-200 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" 
               onclick = "logout()">로그아웃</a>
               <!-- <form method="POST" action="#" role="none">
                 <button type="submit" class="text-gray-700 hover:bg-gray-200 block w-full px-4 py-2 text-left text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
