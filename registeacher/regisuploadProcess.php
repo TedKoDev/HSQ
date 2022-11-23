@@ -89,6 +89,9 @@ if ($checkresult->num_rows < 1) {
 	// mysqli_close($conn);
 }
 
+$check1 = 0; // 강사자기소개 저장  yes =1 no = 0
+$check2 = 0; // 파일설명 저장 yes =1 no = 0
+
 
 
 //formdata로 받은 이미지 받는곳 
@@ -103,7 +106,7 @@ if ($result6) { //정상적으로 자기소개 저장되었을때
     $send["position"]   =  $tintro;
     $send["success"]   =  "yes";
     echo json_encode($send);
-
+    $check1 = 1 ;
 } else {
     $send["position"]   =  "tintro";
     $send["success"]   =  "no";
@@ -115,9 +118,9 @@ if ($result6) { //정상적으로 자기소개 저장되었을때
 
 
 
-//자격증
+//파일설명 (자격증설명)
 
-if (isset($_FILES['certi'])) {
+if (isset($_POST['certi'])) {
 
 
     $select = "UPDATE User_Teacher SET U_T_Certificate = '$certi' where User_Id = '$User_ID' ";
@@ -127,7 +130,7 @@ if (isset($_FILES['certi'])) {
         $send["position"]   =  "certi";
         $send["success"]   =  "yes";
         echo json_encode($send);
-    
+        $check2 = 1; 
     } else {
         $send["position"]   =  "certi";
         $send["success"]   =  "no";
@@ -144,22 +147,47 @@ if (isset($_FILES['certi'])) {
 
 //첨부파일 
 
-if (isset($_FILES['myfile'])) {
+if (isset($_FILES['file'])) {
+   
+    if (!empty($_FILES['img']['name'][0])) {
+        
+        $zip = new ZipArchive();
+        $zip_time = time();
+        $zip_name1 = getcwd() . "/uploads/USER_" . $zip_time . ".zip";
+        $zip_name2 = "USER_" . $zip_time . ".zip";
+        
+        // Create a zip target
+        if ($zip->open($zip_name1, ZipArchive::CREATE) !== TRUE) {
+            $error .= "Sorry ZIP creation is not working currently.<br/>";
+        }
+        
+        $imageCount = count($_FILES['img']['name']);
+        for($i=0;$i<$imageCount;$i++) {
+        
+            if ($_FILES['img']['tmp_name'][$i] == '') {
+                continue;
+            }
+            // $newname = date('YmdHis', time()) . mt_rand() . '.jpg';
+            
+            // Moving files to zip.
+            $zip->addFromString($_FILES['img']['name'][$i], file_get_contents($_FILES['img']['tmp_name'][$i]));
+            
+            // // moving files to the target folder.
+            // move_uploaded_file($_FILES['img']['tmp_name'][$i], './uploads/' . $newname);
+        }
+        $zip->close();
+        
+        // Create HTML Link option to download zip
+        // $success = basename($zip_name1);
+    } else {
+        $error = '<strong>Error!! </strong> Please select a file.';
+    }
 
-    date_default_timezone_set('Asia/Seoul');
-    $time_now = date("Y-m-d H:i:s");
-   
-    $uploaded_file_name_tmp = $_FILES[ 'myfile' ][ 'tmp_name' ];
-    $uploaded_file_name = "$User_ID" . $time_now .$file; 
-    $upload_folder = "uploads/";
-    move_uploaded_file( $uploaded_file_name_tmp, $upload_folder . $uploaded_file_name );
-   
     
-   
-    $select = "UPDATE User_Teacher SET U_T_FILE = '$uploaded_file_name' where User_Id = '$User_ID' ";  
+    $select = "UPDATE User_Teacher SET U_T_FILE = '$zip_name2' where User_Id = '$User_ID'";  
     $result8 = mysqli_query($conn, $select);
       
-   
+    
    
     if ($result8) { //정상적으로 파일 저장되었을때 
         $send["position"]   =  "file";
@@ -172,5 +200,25 @@ if (isset($_FILES['myfile'])) {
         echo json_encode($send);
        
     }
+
+
  }
     
+
+
+
+//강사 전환 부분 
+
+if($check1 = 1 && $check2 =1 ){
+    $select = "UPDATE User_Detail SET U_D_T_add = 'yes' where User_Id = '$User_ID'";  
+    $result9 = mysqli_query($conn, $select);
+
+    
+    $send["tadd"]   =  "yes";
+    echo json_encode( $send);
+ 
+}else {
+
+    $send["tadd"]   =  "no";
+    echo json_encode( $send);
+}
