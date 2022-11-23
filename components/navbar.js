@@ -4,6 +4,7 @@
 // 쿠키 값 가져오기 
 let checkCookie = getCookie("user_info");    
 let haein = 11;
+console.log(haein);
 // 쿠키 가져오는 함수
 function getCookie(cName) {
   cName = cName + '=';
