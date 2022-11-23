@@ -95,7 +95,6 @@ if ($checkresult->num_rows = 0) {
 //$desc 가 '프로필이미지'인경우 
 if ($position === "p_img") {
 
-
  
     date_default_timezone_set('Asia/Seoul');
     $time_now = date("Y-m-d");
