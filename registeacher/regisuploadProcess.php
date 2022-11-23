@@ -1,33 +1,20 @@
 <?php
 
-// error_reporting( E_ALL );
-// ini_set( "display_errors", 1 );
-// == 강사등록 프로세스==
-//   #요구되는 파라미터 (fetch형태도 요청 ) 
+// == regisupload 프로세스==
+//   #요구되는 파라미터 (fetch형태 formdat 형태로 요청 ) 
 //1. 토큰값  - token 
-//2. 항목    - p_img 
-//3. 내용    - name
-//3. 언어    - language
-//3. 국가    - country
-//3. 거주지    - residence
-//3. 강사자기소개    - tintro
-//3. 자격증여부    - certi
-//3. 첨부파일     - file
+//2. 강사자기소개 - tintro 
+//3. 자격증설명 - certi
+//3. 첨부파일  - file
 
 
-// 보낼 줄 때 형태 
-// {
-//  "token"    : "토큰값".
-//  "name"     : "이름" 
-//  "p_img" : "이미지"
-//  "country"     : "국적" 
-//  "residence"     : "거주지"
-//  "language"     : "언어"  
-//  "tintro"     : "강사자기소개" 
-//  "certi"     : "자격증내역" 
-//  "file"     : "첨부파일" 
-// }
+    // form_data.append('file', file); // 파일값 
+	// form_data.append('token', 'token fjaoidfjl..');   // 토큰값 
+	// form_data.append('tintro', 'iam teacher..');   // 강사자기소개 
+	// form_data.append('certi', '1.한국어교원 2급,....');   // 자격증설명 
 
+
+// 완료시 User_Detail 내 U_D_T_add 부분이 yes로 변경됨 (강사등록 완료 )
 
 
 
