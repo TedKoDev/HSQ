@@ -7,7 +7,7 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
      <!-- 쿠기 생성, 가져오기, 삭제 -->        
     <script defer src = "../commenJS/cookie.js"></script>  
-    <script defer src = "./editprofile2.js"></script>   
+    <script defer src = "./editprofile.js"></script>   
     <script>
       
     </script>    
@@ -188,9 +188,8 @@
               </div> 
             </div>     
           </div>                 
-        </div>   
-        
-        <!-- 언어 (구사가능 언어, 한국어 수준) -->
+        </div>           
+        <!-- 구사 가능 언어 -->
         <div class = "text-base mt-8 px-4">언어 
           <span id = "language_return_btn" onclick = "language_return()" class = "hidden px-2 float-right font-semibold bg-gray-500 text-xs text-white
                 hover:bg-gray-700 hover:text-white rounded-full border">X
@@ -219,24 +218,32 @@
                 </div>                                
               </div>   
             </div>             
-          </div>
-           
-                
+          </div>           
+          <!-- 한국어 구사 수준 -->
           <div class = "flex justify-between items-center my-auto py-2">
             <div class = "text-sm w-3/12">한국어 구사 수준</div>
             <div id = "" class = "w-9/12 justify-between">
               <!-- 한국어 구사 수정 클릭 안했을 때 -->
               <div id = "koreandiv_not_edit" class = "flex justify-between text-sm text-gray-500">
-                <div id = "korean">B2</div>                                   
-                <div><svg id = "korean_edit" onclick = "editingKorean('korean', 'koreandiv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <span id = "korean"></span>                                   
+                <span onclick = "editing_korean()"><svg id = "korean_edit" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
-                </div>
+                </span>
               </div>
               <!-- 한국어 구사 수정 클릭했을 때 -->
-              <div id = "namediv_click_edit" class = "hidden ">
-                
-               
+              <div id = "koreandiv_click_edit" class = "hidden ">
+                <select id = "select_korean" class = "w-44 px-1 py-1 text-sm text-gray-500 border-gray-200 rounded border mb-3">
+                  <option value = 'A1'>A1 : 초보</option>
+                  <option value = 'A2'>A2 : 기초</option>
+                  <option value = 'B1'>B1 : 중급</option>
+                  <option value = 'B2'>B2 : 중상급</option>
+                  <option value = 'C1'>C1 : 고급</option>
+                  <option value = 'C2'>C2 : 고급 이상</option>
+                  <option value = 'native'>원어민</option>
+                </select><br>                  
+                <button onclick = "edit_done_korean()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_korean()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>               
               </div>
             </div>     
           </div>                          

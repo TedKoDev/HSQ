@@ -7,7 +7,7 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
      <!-- 쿠기 생성, 가져오기, 삭제 -->        
     <script defer src = "../commenJS/cookie.js"></script>  
-    <script defer src = "./myinfo2.js"></script>   
+    <script defer src = "./myinfo.js"></script>   
     <script>
       
     </script>    
@@ -38,9 +38,9 @@
           </div><br>    
           <div id = "intro" class = "text-sm">
           </div><br><br>
-            <a class = "text-xs mb-2">구사 가능 언어 : </a>
+            <a class = "text-sm mb-2">구사 가능 언어 : </a> <a id = "language" class = "text-sm ml-4"></a>
             <br>
-            <a class = "text-xs mb-2 ">한국어 구사 능력 : </a>              
+            <a class = "text-sm mb-2 ">한국어 구사 능력 : </a> <a id = "korean" class = "text-sm ml-4"></a>           
         </div><br>        
       </div>                        
     </div>
