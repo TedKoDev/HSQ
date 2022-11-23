@@ -82,7 +82,7 @@ if ($checkresult->num_rows < 1) {
 	//   $send["message"] = "no";
 
 	// echo json_encode($send);
-	mysqli_close($conn);
+	// mysqli_close($conn);
 }
 
 
