@@ -49,9 +49,40 @@
                 ></textarea>
                 </div>
             </div>
-
+            <div class = "flex my-2 mx-auto">                
+                <div class = "w-48 text-sm">전문 강사 인증</div>                   
+                <div class = "flex flex-col">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <div class="">
+                            <div class="">
+                                <input type="submit" class="btn btn-primary" value="Upload">
+                            </div>
+                            <div class="">
+                                <input type="file" class="" name="img[]" multiple>
+                                <label class="" >Choose File</label>
+                            </div>
+                        </div>
+                    </form>                  
+                </div>                                
+            </div> 
+            <div class = "flex my-2 mx-auto">                
+                <div class = "w-48 text-sm">제출 서류 설명</div>                   
+                <div class = "flex flex-col">
+                    <div>
+                        <textarea rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
+                        ></textarea>
+                    </div>
+                    <div class = "text-sm w-96 text-gray-600">
+                        전문강사 인증을 위한 항목은 <br><br>
+                        1. 교원 자격증<br>2. 경력증명서<br><br> 위 두 가지이며 교원 자격증 2급 이상, 혹은 교원 자격증 3급이상이면서 경력 5년이상일 경우 전문강사 인증이 승인됩니다.
+                    </div>
+                
+                    </div>                   
+                </div>                                
+            </div>                  
         </div>
+        
     </div>
-
-    </body>        
+    
+    </body><br><br><br><br><br>     
 </html>
