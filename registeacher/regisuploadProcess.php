@@ -1,18 +1,20 @@
 <?php
 
 // == regisupload 프로세스==
-//   #요구되는 파라미터 (fetch형태 formdat 형태로 요청 ) 
+//   #요구되는 파라미터 (fetch형태 json 형태로 요청 ) 
 //1. 토큰값  - token 
 //2. 강사자기소개 - tintro 
 //3. 자격증설명 - certi
-//3. 첨부파일  - file
+//3. 첨부파일이름  - file
 
 
-    // form_data.append('file', file); // 파일값 
-	// form_data.append('token', 'token fjaoidfjl..');   // 토큰값 
-	// form_data.append('tintro', 'iam teacher..');   // 강사자기소개 
-	// form_data.append('certi', '1.한국어교원 2급,....');   // 자격증설명 
-
+# 보낼 줄 때 형태 
+// {
+//  "token" : "토큰값 "
+//  "tintro" : "강사자기소개 "
+//  "certi" : "자격증설명 "
+//  "file" : "첨부파일이름 "
+// }
 
 // 완료시 User_Detail 내 U_D_T_add 부분이 yes로 변경됨 (강사등록 완료 )
 
@@ -89,12 +91,12 @@ $select = "UPDATE User_Teacher SET U_T_Intro = '$tintro', U_T_Certificate = '$ce
 $result6 = mysqli_query($conn, $select);
 
 if ($result6) { //정상적으로 자기소개 저장되었을때 
-    $send["position"]   =  $tintro;
+  
     $send["success"]   =  "yes";
     echo json_encode($send);
     $check1 = 1 ;
 } else {
-    $send["position"]   =  "tintro";
+
     $send["success"]   =  "no";
     echo json_encode($send);
    
