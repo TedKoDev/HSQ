@@ -1,5 +1,5 @@
 <?php
-// == Myinfo 이미지 업로드 프로세스==
+// == editprofileProcess 프로세스==
 //   #요구되는 파라미터 (fetch형태도 요청 ) 
 //1. 토큰값  - token 
 //2. 항목    - position 
@@ -39,7 +39,7 @@ include("../jwt.php");
 
 $jwt = new JWT();
 
-// 토큰값, 이미지  전달 받음 
+// 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token = json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
 $position = json_decode(file_get_contents("php://input"))->{"position"}; //항목
