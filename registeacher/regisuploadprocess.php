@@ -16,9 +16,10 @@
 
 // 완료시 User_Detail 내 U_D_T_add 부분이 yes로 변경됨 (강사등록 완료 )
 
-
-
-
+echo $_POST['token'];
+echo $_POST['tintro'];
+echo $_POST['certi'];
+echo $_FILES['img'];
 
 include("../conn.php");
 include("../jwt.php");
@@ -109,7 +110,7 @@ if ($result6) { //정상적으로 자기소개 저장되었을때
 
 if (isset($_POST['certi'])) {
 
-
+    $certi = $_POST['certi'];
     $select = "UPDATE User_Teacher SET U_T_Certificate = '$certi' where User_Id = '$User_ID' ";
     $result7 = mysqli_query($conn, $select);
 
@@ -134,13 +135,14 @@ if (isset($_POST['certi'])) {
 
 //첨부파일 
 
-if (isset($_FILES['file'])) {
+if (isset($_FILES['img'])) {
    
     if (!empty($_FILES['img']['name'][0])) {
         
         $zip = new ZipArchive();
         $zip_time = time();
-        $zip_name1 = getcwd() . "/uploads/USER_" . $zip_time . ".zip";
+        // $zip_name1 = getcwd() . "/uploads/USER_" . $zip_time . ".zip";
+        $zip_name1 = "../uploads/USER_" . $zip_time . ".zip";
         $zip_name2 = "USER_" . $zip_time . ".zip";
         
         // Create a zip target

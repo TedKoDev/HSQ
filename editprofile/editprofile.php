@@ -9,6 +9,7 @@
     <script defer src = "../commenJS/cookie.js"></script>  
     <script defer src = "./editprofile.js"></script>           
   </head>       
+  
   <body class = "bg-gray-100">      
     <!-- 네비바 -->    
     <?php include '../components/navbar.php' ?>

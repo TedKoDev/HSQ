@@ -600,7 +600,7 @@
       console.log("language_can : "+language_can);
 
       // 만약 기존 값이 있을 경우
-      if (language_can != 'default' || value != null) {
+      if ((language_can != 'default') && (language_can != null)) {
 
         let json_parse = JSON.parse(language_can);
 
@@ -692,7 +692,7 @@
 
       // 구사 가능 언어 불러와서 파싱  
       // 기존 값이 있을 경우
-      if (language_can != 'default' || value != null) {
+      if ((language_can != 'default') && (language_can != null)) {
 
         let json_parse = JSON.parse(language_can);
 

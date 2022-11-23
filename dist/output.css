@@ -561,6 +561,10 @@ video {
   margin-bottom: auto;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .mr-4 {
   margin-right: 1rem;
 }
@@ -898,10 +902,6 @@ video {
 
 .fill-current {
   fill: currentColor;
-}
-
-.p-2 {
-  padding: 0.5rem;
 }
 
 .px-4 {
