@@ -106,7 +106,7 @@
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value) {
 
-      if (value != 'default') {     
+      if (value != null&&value !='default') {     
         
         for (let i = 1; i < value.length; i++) {
 

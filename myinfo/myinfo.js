@@ -91,11 +91,11 @@
 
       setLanguage(language, user_language);
     }
-
+   
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value, text) {
-
-      if (value != 'default') {                
+      console.log(value)
+      if (value != null&&value !='default') {                
        
         key.innerText = value+text;
 
