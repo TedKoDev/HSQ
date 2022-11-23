@@ -32,52 +32,42 @@
 </html>
 
 <script>
-
+console.log(1);
 const sample_image = document.getElementsByName('sample_image')[0];
-
+console.log(2);
 sample_image.addEventListener('change', () => {
-
+	console.log(3);
 	upload_image(sample_image.files[0]);
+	console.log(4);
 
+	
 });
-
+console.log(5);
 //파일 업로드 기능 
 const upload_image = (file) => {
 
-
-  //이미지 파일 확장자 검사 
-	if(!['image/jpeg', 'image/png'].includes(file.type))
-	{
-		document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-danger">Only .jpg and .png image are allowed</div>';
-
-		document.getElementsByName('sample_image')[0].value = '';
-
-		return;
-	}
-
-
- //이미지 파일 사이즈 검사 
-	if(file.size > 2 * 1024 * 1024)
-	{
-		document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-danger">File must be less than 2 MB</div>';
-
-		document.getElementsByName('sample_image')[0].value = '';
-
-		return;
-	}
-
+	// console.log(token,file);  
+ 
   //FormData형태에 file을 담아 fetch로 php로  넘기기
 	const form_data = new FormData();
 
 	form_data.append('sample_image', file);
+	form_data.append('token', 'ttokken');
+	console.log(66);
+	console.log(form_data);
 
-	fetch("fetchupload.php", {
+
+	fetch("fetchupload2.php", {
 
 		method:"POST",
 
     	body:form_data
 
-	}).then(function(response){
+			
+
+	})
+	
+	.then(function(response){
 
 		return response.json();
 
@@ -87,8 +77,10 @@ const upload_image = (file) => {
 
 		document.getElementsByName('sample_image')[0].value = '';
 
-	});
+	})
+	;
 
 }
+
 
 </script>
