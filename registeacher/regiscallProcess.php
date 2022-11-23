@@ -112,8 +112,7 @@ if ($checkresult->num_rows <1) {
 
 // 값 불러 오기  
 //2중 left join 으로  User 테이블, User_Detail 테이블, User_Teacher 테이블에서 필요 항목값을 토큰으로 부터 받은 User_ID 값을 기준으로 불러옴 
-//  
-//
+
 
 
 $select = "SELECT

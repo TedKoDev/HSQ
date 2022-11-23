@@ -92,7 +92,7 @@
       // intro.innerText = user_intro;      
       setLanguage(language, JSON.parse(user_language));
     }
-
+   
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value, text) {
 
