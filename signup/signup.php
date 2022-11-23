@@ -8,7 +8,7 @@
   </head>    
   <!-- 회원가입 관련 js -->
   <script defer src = "../commenJS/cookie.js"></script> 
-  <script src = "./signup2.js"></script>
+  <script src = "./signup.js"></script>
   
   <script>
   

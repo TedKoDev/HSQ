@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="./dist/output.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script>     -->
   </head>      
-  <body class = "bg-gray-100">   
+  <script defer src = "./commenJS/cookie.js"></script> 
+  <body class = "bg-gray-100">       
     <!-- 네비바 -->
     <?php include './components/navbar.php' ?>
     <!-- 한글스퀘어 소개하는 블록 -->
-    <br>    
-    
+    <br>        
     <div class = "max-w-4xl mx-auto">
       <div class = "flex justify-between">
         <div class = "flex flex-col max-w-lg mr-4 bg-gray-50 px-4 py-4 shadow rounded-lg">

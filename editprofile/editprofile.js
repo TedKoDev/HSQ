@@ -1,4 +1,4 @@
-    // 토큰 보내서 유저 정보 가져오기 
+// 토큰 보내서 유저 정보 가져오기 
     // 가져올 정보 목록 :
     
     // - name 이름    
@@ -50,7 +50,7 @@
 
       // 받아온 json 파싱
       const response = await res.json();
-            
+      console.log(response);
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
@@ -71,7 +71,8 @@
       // console.log(user_name);
       // console.log(user_bday);                 
 
-      // 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
+      // 프로필이미지, 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
+      let p_img = document.getElementById("profile_image");
       let name = document.getElementById("name"); 
       let bday = document.getElementById("bday"); 
       let sex = document.getElementById("sex"); 
@@ -83,19 +84,20 @@
 
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;   
-      // bday.innerText = user_bday;
-      setInfo(bday, user_bday);
-      setInfo(sex, user_sex);      
-      setInfo(country, user_country);
-      setInfo(residence, user_residence);
-      setInfo(intro, user_intro);
-      setInfo(korean, user_korean);
+      setInfo(p_img, user_p_img, "image");
+      setInfo(bday, user_bday, "");
+      setInfo(sex, user_sex, "");      
+      setInfo(country, user_country, "");
+      setInfo(residence, user_residence, "");
+      setInfo(intro, user_intro, "");
+      setInfo(korean, user_korean, "");
 
       // 구사 가능 언어 전역 변수에 서버에서 가져온 string 대입   
-      language_can = user_language;      
+      language_can = user_language;
+      const json_parse = JSON.parse(language_can);      
       
       // 구사 가능 언어는 별도의 함수로 출력
-      setLanguage(language, language_can);     
+      setLanguage(language, json_parse);     
 
       console.log("first : "+language_can);
 
@@ -104,15 +106,19 @@
     }
 
     // 값이 있을 경우에만 브라우저에 출력
-    function setInfo(key, value) {
+    function setInfo(key, value, text) {
 
-      if (value != 'default') {     
+      if ((value != 'default') && (value != null)) {     
         
-        for (let i = 1; i < value.length; i++) {
-
+        // 프로필 이미지일 경우
+        if (text == 'image') {
+          
+          key.src = "../editprofile/image/"+value;
         }
-               
-        key.innerText = value;
+
+        else {
+          key.innerText = value+text;
+        }     
 
         // console.log(key.value);
       }
@@ -126,8 +132,6 @@
         
       // 값이 있을 경우에만 등록한 구사 가능 언어 수만큼 화면에 출력
       if (value != 'default') {  
-
-        const json_parse = JSON.parse(language_can);      
         
         // 처음에는 key 값 초기화 (리턴 클릭했을 경우 기존 값들 없애줘야 함)
         while (key.hasChildNodes())
@@ -135,10 +139,10 @@
           key.removeChild(key.firstChild);       
         }
         
-        for (let key_l in json_parse) {
+        for (let key_l in value) {
 
           let language_list = document.createElement('span');          
-          language_list.innerHTML = ['<span class = "mr-4">'+key_l+' : '+json_parse[key_l]+'</span>'].join("");
+          language_list.innerHTML = ['<span class = "mr-4">'+key_l+' : '+value[key_l]+'</span>'].join("");
           key.appendChild(language_list);
 
           // console.log(key_l, value[key_l]);          
@@ -157,10 +161,51 @@
     // 수정 버튼 클릭 시 수정 가능하도록 뷰 변경
 
     // 1. 프로필 이미지 수정
-    
-    
+    function image_change() {
 
+      const sample_image = document.getElementsByName('image')[0]; 
+      sample_image.addEventListener('change', () => {
+        
+        
+        upload_image(sample_image.files[0]);          
+            
+      });
+    }
 
+    function upload_image(file) {
+      
+        //FormData형태에 file을 담아 fetch로 php로  넘기기
+        const form_data = new FormData();
+
+        console.log(checkCookie);
+        
+        form_data.append('sample_image', file); // 파일값 
+        form_data.append('token', checkCookie);   // 토큰값 
+        
+        console.log(form_data);
+        
+        fetch("./editimage.php", {
+
+          method:"POST",
+
+            body:form_data            
+
+        })
+
+        .then(function(response){
+
+          console.log(response);
+          return response.json();
+
+        }).then(function(responseData){
+          
+          console.log(responseData.image_source);
+          document.getElementById('profile_image').src = responseData.image_source;                      
+          document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
+
+        });
+    }
+    
 
     // 2. 이름 수정
 
@@ -549,37 +594,13 @@
         delete_l[i].style.display = 'none';
       }      
 
-      // 구사 가능 언어 불러오기      
+      // 구사 가능 언어 불러오기                 
+      let json_parse = JSON.parse(language_can);
+
+      // div와 select에 id값 부여하기 위한 index (현재 json 길이에 1 추가)
+      let index = Object.keys(json_parse).length + 1;
+      console.log("index : "+index);
       
-      console.log("language_can : "+language_can);
-
-      // 만약 기존 값이 있을 경우
-      if (language_can != 'default') {
-
-        let json_parse = JSON.parse(language_can);
-
-        // div와 select에 id값 부여하기 위한 index (현재 json 길이에 1 추가)
-        let index = Object.keys(json_parse).length + 1;
-        console.log("index : "+index);
-        
-        // selector 추가
-        add_language_select(index);
-        
-      } 
-      // 기존 값이 없을 경우 
-      else {
-
-        // index 0으로 할당
-        let index = 0;     
-        
-        add_language_select(index);
-      }
-      
-    }
-
-    // 구사 가능 언어 선택 추가 함수
-    function add_language_select(index) {
-
       // select 용 div 가져오기
       let select_box = document.getElementById('select_box');
       // select를 담을 div 태그 생성
@@ -632,6 +653,9 @@
      
       // 언어용 select 뒤에 레벨용 select 배치
       select_language.after(select_level);
+
+
+      
     }
 
     // 구사 가능 언어 저장 (현재 보이는 select의 정보를 기존의 json과 합치기)
@@ -644,165 +668,59 @@
         delete_l[i].style.display = 'block';
       }  
 
-      // 구사 가능 언어 불러와서 파싱  
-      // 기존 값이 있을 경우
-      if (language_can != 'default') {
+      // 구사 가능 언어 불러와서 파싱                  
+      let json_parse = JSON.parse(language_can);
 
-        let json_parse = JSON.parse(language_can);
+      //  추가한 select의 id값을 가져오기 위한 index (현재 json 길이에 1 추가)
+      let index = Object.keys(json_parse).length + 1;
 
-        //  추가한 select의 id값을 가져오기 위한 index (현재 json 길이에 1 추가)
-        let index = Object.keys(json_parse).length + 1;
-
-        // 언어 select랑 레벨 select값 가져오기
-        const select_language = document.getElementById("select_language_"+index).value;
-        const select_level = document.getElementById("select_level_"+index).value;
+      // 언어 select랑 레벨 select값 가져오기
+      const select_language = document.getElementById("select_language_"+index).value;
+      const select_level = document.getElementById("select_level_"+index).value;
+     
+      // 기존의 json과 새로운 key,value 합체
+      json_parse[select_language] = select_level;
       
-        // 기존의 json과 새로운 key,value 합체
-        json_parse[select_language] = select_level;
-        
-        // 전역 변수에 json 추가된 내역 string으로 변환해서 대입
-        language_can = JSON.stringify(json_parse);
+      // 전역 변수에 json 추가된 내역 string으로 변환해서 대입
+      language_can = JSON.stringify(json_parse);
 
-        // 서버에 저장 요청
-        post_edit(checkCookie, "language", language_can);
+      // 서버에 저장 요청
+      post_edit(checkCookie, "language", language_can);
 
-        console.log(language_can);
+      console.log(language_can);
 
-        // 1)저장,취소 버튼 안보이게 하고 2)더추가 버튼 보이게하고 3) select 삭제
-        const add_language = document.getElementById('add_language');
-        const save_btn = document.getElementById('save_language_btn');
-        const cancel_btn = document.getElementById('cancel_language_btn');
-        const select_box = document.getElementById('select_box');
+      // 1)저장,취소 버튼 안보이게 하고 2)더추가 버튼 보이게하고 3) select 삭제
+      const add_language = document.getElementById('add_language');
+      const save_btn = document.getElementById('save_language_btn');
+      const cancel_btn = document.getElementById('cancel_language_btn');
+      const select_box = document.getElementById('select_box');
 
-        add_language.style.display = 'block';
-        save_btn.style.display = 'none';
-        cancel_btn.style.display = 'none';           
-        // select용 div 안에 자식 요소 (이 경우 select) 모두 삭제
-        while (select_box.hasChildNodes()) {
+      add_language.style.display = 'block';
+      save_btn.style.display = 'none';
+      cancel_btn.style.display = 'none';           
+      // select용 div 안에 자식 요소 (이 경우 select) 모두 삭제
+      while (select_box.hasChildNodes()) {
 
-          select_box.removeChild(select_box.firstChild);
-        }
+        select_box.removeChild(select_box.firstChild);
+      }
 
-        
-          // 변경 사항에 맞추어 재 렌더링
-          // 구사 가능 언어 div의 id값을 다르게 주기 위한 index
-          let index_after = 0;        
+      
+        // 변경 사항에 맞추어 재 렌더링
+        // 구사 가능 언어 div의 id값을 다르게 주기 위한 index
+        let index_after = 0;        
 
-          // 구사 가능한 언어 목록 표시용 div 가져오기
-          let now_select = document.getElementById('now_select');  
-          // now_select의 값 초기화     
-          while (now_select.hasChildNodes()) {
+        // 구사 가능한 언어 목록 표시용 div 가져오기
+        let now_select = document.getElementById('now_select');  
+        // now_select의 값 초기화     
+        while (now_select.hasChildNodes()) {
 
-            now_select.removeChild(now_select.firstChild);
-          }        
+          now_select.removeChild(now_select.firstChild);
+        }        
 
-          // 수정 반영해서 재 렌더링
-          language_render(index_after, json_parse);    
-
-        }
-        // 기존 값이 없을 경우
-        else {
-          
-          // index 0으로 할당
-          let index = 0;
-
-          // 언어 select랑 레벨 select값 가져오기
-          const select_language = document.getElementById("select_language_"+index).value;
-          const select_level = document.getElementById("select_level_"+index).value;
-        
-          // 기존의 json과 새로운 key,value 합체
-          // json_parse[select_language] = select_level;
-          
-          // 새로운 json 생성
-          const new_json = new Object();
-          new_json[select_language] = select_level;
-
-          // 전역 변수에 새로운 json string으로 변환해서 대입
-          language_can = JSON.stringify(new_json);
-
-          // 서버에 저장 요청
-          post_edit(checkCookie, "language", language_can);
-
-          console.log(language_can);
-
-          // 1)저장,취소 버튼 안보이게 하고 2)더추가 버튼 보이게하고 3) select 삭제
-          const add_language = document.getElementById('add_language');
-          const save_btn = document.getElementById('save_language_btn');
-          const cancel_btn = document.getElementById('cancel_language_btn');
-          const select_box = document.getElementById('select_box');
-
-          add_language.style.display = 'block';
-          save_btn.style.display = 'none';
-          cancel_btn.style.display = 'none';           
-          // select용 div 안에 자식 요소 (이 경우 select) 모두 삭제
-          while (select_box.hasChildNodes()) {
-
-            select_box.removeChild(select_box.firstChild);
-          }
-
-          
-            // 변경 사항에 맞추어 재 렌더링
-            // 구사 가능 언어 div의 id값을 다르게 주기 위한 index
-            let index_after = 0;        
-
-            // 구사 가능한 언어 목록 표시용 div 가져오기
-            let now_select = document.getElementById('now_select');  
-            // now_select의 값 초기화     
-            while (now_select.hasChildNodes()) {
-
-              now_select.removeChild(now_select.firstChild);
-            }        
-
-            // 새롭게 생성한 json 랜더링
-            language_render(index_after, new_json);
-        }       
+        // 수정 반영해서 재 렌더링
+        language_render(index_after, json_parse);    
+       
     }
-
-    // function language_render_setting(json, select_language, select_level) {
-
-    //   // 새로운 json 생성
-    //   json = new Object();
-    //   json[select_language] = select_level;
-
-    //   // 전역 변수에 새로운 json string으로 변환해서 대입
-    //   language_can = JSON.stringify(new_json);
-
-    //   // 서버에 저장 요청
-    //   post_edit(checkCookie, "language", language_can);
-
-    //   console.log(language_can);
-
-    //   // 1)저장,취소 버튼 안보이게 하고 2)더추가 버튼 보이게하고 3) select 삭제
-    //   const add_language = document.getElementById('add_language');
-    //   const save_btn = document.getElementById('save_language_btn');
-    //   const cancel_btn = document.getElementById('cancel_language_btn');
-    //   const select_box = document.getElementById('select_box');
-
-    //   add_language.style.display = 'block';
-    //   save_btn.style.display = 'none';
-    //   cancel_btn.style.display = 'none';           
-    //   // select용 div 안에 자식 요소 (이 경우 select) 모두 삭제
-    //   while (select_box.hasChildNodes()) {
-
-    //     select_box.removeChild(select_box.firstChild);
-    //   }
-
-      
-    //     // 변경 사항에 맞추어 재 렌더링
-    //     // 구사 가능 언어 div의 id값을 다르게 주기 위한 index
-    //     let index_after = 0;        
-
-    //     // 구사 가능한 언어 목록 표시용 div 가져오기
-    //     let now_select = document.getElementById('now_select');  
-    //     // now_select의 값 초기화     
-    //     while (now_select.hasChildNodes()) {
-
-    //       now_select.removeChild(now_select.firstChild);
-    //     }        
-
-    //     // 새롭게 생성한 json 랜더링
-    //     language_render(index_after, json);
-    // }
 
     // 구사가능언어 수정 취소 (구사가능언어에서는 아예 취소되는게 아니라 select하던 것만 취소되는 형태)
     function edit_cancel_language() {        
@@ -1011,4 +929,4 @@
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
-    }
+  }
