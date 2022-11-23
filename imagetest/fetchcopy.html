@@ -32,57 +32,69 @@
 </html>
 
 <script>
-console.log(1);
+
 const sample_image = document.getElementsByName('sample_image')[0];
-console.log(2);
+
 sample_image.addEventListener('change', () => {
-	console.log(3);
+	tokentransfer("eyJhbGciOiJzaGEyNTYiLCJ0eXAiOiJKV1QifS57IlVzZXJfSUQiOiJNekk9IiwiVV9OYW1lIjoiN0pXSTdaVzA3SjI0TWc9PSIsIlVfRW1haWwiOiJZV2h1YUdGbGFXNUFibUYyWlhJdVkyOXQifS4xMmE0MmVkZmQ3YjhkYWViNzNlYjJlOTAzZmE0Nzc1Mzg2YWE1Mjc1YTZjNTM3YWM5YTY3ZWQyNThmYzRjMTEy");
+
 	upload_image(sample_image.files[0]);
-	console.log(4);
 
-	
 });
-console.log(5);
-//파일 업로드 기능 
-const upload_image = (file) => {
 
-	// console.log(token,file);  
- 
-  //FormData형태에 file을 담아 fetch로 php로  넘기기
-	const form_data = new FormData();
 
-	form_data.append('sample_image', file);
-	form_data.append('token', 'ttokken');
-	console.log(66);
-	console.log(form_data);
 
-	const token1 = "token";
-	const pos1 = "position";
+ // 수정 사항 서버에 전달하는 함수
+ async function tokentransfer(token) {
 
-	fetch("fetchupload.php", {
 
-		method:"POST",
+const body = {
+	token: token,
+};
+console.log(body)
+const res = await fetch('./fetchuploadcopy.php', {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json;charset=utf-8'
+	},
+	body: JSON.stringify(body)
+});
 
-    	body:form_data
+ }
 
-			
+
+ const upload_image = (file) => {
+
+// console.log(token,file);  
+
+//FormData형태에 file을 담아 fetch로 php로  넘기기
+const form_data = new FormData();
+
+form_data.append('sample_image', file);
+
+
+
+fetch("fetchuploadcopy.php", {
+
+	method:"POST",
+
+		body:form_data
+
+		
+})	.then(function(response){
+
+		return response.json();
+
+	}).then(function(responseData){
+
+		document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-success">Image Uploaded Successfully</div> <img src="'+responseData.image_source+'" class="img-thumbnail" />';
+
+		document.getElementsByName('sample_image')[0].value = '';
 
 	})
-	
-	// .then(function(response){
 
-	// 	return response.json();
 
-	// }).then(function(responseData){
-
-	// 	document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-success">Image Uploaded Successfully</div> <img src="'+responseData.image_source+'" class="img-thumbnail" />';
-
-	// 	document.getElementsByName('sample_image')[0].value = '';
-
-	// })
-	;
 
 }
-
 
 </script>

@@ -45,42 +45,27 @@ sample_image.addEventListener('change', () => {
 console.log(5);
 //파일 업로드 기능 
 const upload_image = (file) => {
+  const formData = new FormData();
+const fileField = document.querySelector('input[type="file"]');
 
-	// console.log(token,file);  
- 
-  //FormData형태에 file을 담아 fetch로 php로  넘기기
-	const form_data = new FormData();
+formData.append('username', 'abc123');
+formData.append('avatar', fileField.files[0]);
 
-	form_data.append('sample_image', file);
-	form_data.append('token', 'ttokken');
-	console.log(66);
-	console.log(form_data);
+fetch('formdata.php', {
+  method: 'POST',
+  body: formData
+})
 
-	const token1 = "token";
-	const pos1 = "position";
-
-	fetch("fetchupload.php", {
-
-		method:"POST",
-
-    	body:form_data
-
-			
-
-	})
+console.log(formData)
+// .then((response) => response.json())
+// .then((result) => {
+//   console.log('Success:', result);
+// })
+// .catch((error) => {
+//   console.error('Error:', error);
+// })
+;
 	
-	// .then(function(response){
-
-	// 	return response.json();
-
-	// }).then(function(responseData){
-
-	// 	document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-success">Image Uploaded Successfully</div> <img src="'+responseData.image_source+'" class="img-thumbnail" />';
-
-	// 	document.getElementsByName('sample_image')[0].value = '';
-
-	// })
-	;
 
 }
 

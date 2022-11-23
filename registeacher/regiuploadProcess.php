@@ -1,7 +1,7 @@
 <?php
 
-error_reporting( E_ALL );
-ini_set( "display_errors", 1 );
+// error_reporting( E_ALL );
+// ini_set( "display_errors", 1 );
 // == 강사등록 프로세스==
 //   #요구되는 파라미터 (fetch형태도 요청 ) 
 //1. 토큰값  - token 
