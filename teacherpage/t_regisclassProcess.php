@@ -68,7 +68,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 // Class_List에 수업 등록 
-$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type',,now()) ";
+$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type',now()) ";
 
 $insert = mysqli_query($conn, $result);
 
@@ -100,11 +100,11 @@ foreach ($R as $row) {
 if ($insert) { //정상적으로 저장되었을때 
 
   $send["success"]   =  "yes";
-  echo json_encode($send);
+ //  echo json_encode($send);
   mysqli_close($conn);
 } else {
 
   $send["success"]   =  "no";
-  echo json_encode($send);
+  // echo json_encode($send);
   mysqli_close($conn);
 }
