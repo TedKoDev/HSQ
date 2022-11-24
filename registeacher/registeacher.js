@@ -227,13 +227,14 @@ function submitForm() {
       }
   }
 
+  // 같은 사이트에서 한번 새로고침
   fetch('#',{
     method:'POST',
     body : formData
   })
   .then(
     alert("강사 등록되었습니다."),
-    location.replace('../teacherpage/t_myclass.php')
+    location.replace('../teacherpage/t_myclass.php')    
   );
 }
 

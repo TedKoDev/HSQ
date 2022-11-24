@@ -74,6 +74,13 @@ async function postToken_nav(tokenValue) {
   const user_name = userinfo_parse.name;
   const user_teacher = userinfo_parse.teacher;
 
+  console.log("user_teacher : "+user_teacher);
+
+  // 강사일 경우 드롭다운 메뉴에 '강사페이지'라고 표시
+  if (user_teacher == 'yes') {
+
+    document.getElementById("teacher_page").innerHTML = '강사페이지';
+  }
   
 
   // 프로필 이미지 가져오기
@@ -129,14 +136,19 @@ document.addEventListener('mouseup', function(e) {
 
 // 강사되기/강사페이지 클릭 시
 function go_teacher_page() {
- 
+   
+
   // 드롭다운의 값 가져오기 (강사되기 or 강사페이지)
   let teacher_dropdown = document.getElementById('teacher_page').innerHTML;
   
   // 강사 신청 안한 계정이면 강사 등록 페이지로 이동
   if (teacher_dropdown == '강사되기') {
         
-    location.replace("../registeacher/registeacher.php");
+    location.assign("../registeacher/registeacher.php");
+  }
+  // 강사일 경우 강사페이지로 이동
+  else {
+    location.assign("../teacherpage/t_myclass.php");
   }
 }
 
