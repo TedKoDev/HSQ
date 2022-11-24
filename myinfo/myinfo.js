@@ -17,6 +17,7 @@
     let tokenValue = getCookie(cookieName);   
     // 토큰 서버에 전송
   
+    console.log("token : "+tokenValue);
     sendToken();
 
     // 화면 모두 로드되면 토큰 보내서 유저 정보 받아오기
@@ -49,7 +50,7 @@
 
       // 받아온 json 파싱
       const response = await res.json();
-            
+      console.log(response);
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
