@@ -138,7 +138,6 @@ async function postToken(tokenValue) {
 let fileNo = 0;
 let filesArr = new Array();
 
-// Ver2.
 /* 첨부파일 추가 */
 function addFile(obj){
 
@@ -213,39 +212,32 @@ function validation(obj){
     }
 }
 
-// /* 첨부파일 삭제 */
-// function deleteFile(num) {
-//     document.querySelector("#file" + num).remove();
-//     filesArr[num].is_delete = true;
-// }
+function submitForm() {
 
-// /* 폼 전송 */
-// function submitForm() {
-//     // 폼데이터 담기
-//     var form = document.querySelector("form");
-//     var formData = new FormData(form);
-//     for (var i = 0; i < filesArr.length; i++) {
-//         // 삭제되지 않은 파일만 폼데이터에 담기
-//         if (!filesArr[i].is_delete) {
-//             formData.append("attach_file", filesArr[i]);
-//         }
-//     }
+  let formData = new FormData();
+  formData.append('token', document.getElementById('token_value').value);
+  formData.append('tintro', document.getElementById('intro_t').value);
+  formData.append('certi', document.getElementById('certi').value);
+  // formData.append('img', document.getElementById('file_upload').files[0]);
 
-//     $.ajax({
-//         method: 'POST',
-//         url: '/register',
-//         dataType: 'json',
-//         data: formData,
-//         async: true,
-//         timeout: 30000,
-//         cache: false,
-//         headers: {'cache-control': 'no-cache', 'pragma': 'no-cache'},
-//         success: function () {
-//             alert("파일업로드 성공");
-//         },
-//         error: function (xhr, desc, err) {
-//             alert('에러가 발생 하였습니다.');
-//             return;
-//         }
-//     })
-// }
+    for (var i = 0; i < filesArr.length; i++) {
+      // 삭제되지 않은 파일만 폼데이터에 담기
+      if (!filesArr[i].is_delete) {
+          formData.append("img", filesArr[i]);
+      }
+  }
+
+  // 같은 사이트에서 한번 새로고침
+  fetch('#',{
+    method:'POST',
+    body : formData
+  })
+  .then(
+    alert("강사 등록되었습니다."),
+    location.replace('../teacherpage/t_myclass.php')    
+  );
+}
+
+
+
+

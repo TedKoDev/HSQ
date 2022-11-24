@@ -16,10 +16,10 @@
 
 // 완료시 User_Detail 내 U_D_T_add 부분이 yes로 변경됨 (강사등록 완료 )
 
-echo $_POST['token'];
-echo $_POST['tintro'];
-echo $_POST['certi'];
-echo $_FILES['img'];
+// echo $_POST['token'];
+// echo $_POST['tintro'];
+// echo $_POST['certi'];
+// echo $_FILES['img'];
 
 include("../conn.php");
 include("../jwt.php");
@@ -204,10 +204,17 @@ if($check1 = 1 && $check2 =1 ){
 
     
     $send["tadd"]   =  "yes";
-    echo json_encode( $send);
+    // echo json_encode( $send);
  
 }else {
 
     $send["tadd"]   =  "no";
-    echo json_encode( $send);
+    // echo json_encode( $send);
 }
+?>
+<!-- <script>
+
+    등록 완료 되면강사 페이지의 내 수업으로 이동
+    alert("강사 등록되었습니다.");
+    location.replace('../teacherpage/t_myclass.php');
+</script> -->

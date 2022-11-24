@@ -12,10 +12,11 @@
   
   <body class = "bg-gray-100">   
     <!-- 네비바 -->
-    <?php include '../components/navbar.php' ?>    
+    <?php include '../components/navbar.php' ?>     
+    <?php include './regisuploadProcess.php' ?>   
     <br>
     <!-- 강사등록 블록   -->    
-    <form action="./regisuploadProcess.php" method="post" enctype="multipart/form-data">
+    
     <textarea id = "token_value" name="token" value="" class = "invisible"></textarea>        
         <div class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-50 shadow rounded-lg  "><br>
             <div class = "mx-auto font-bold text-2xl mb-3">강사 신청</div>
@@ -46,7 +47,8 @@
                         <div class = "w-48 text-sm mb-1">강사 소개</div>                        
                     </div>                
                     <div>
-                        <textarea placeholder = "경력, 강의 스타일등" name = "tintro" rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
+                        <textarea placeholder = "경력, 강의 스타일등" name = "tintro" rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 
+                        rounded border-2 border-gray-300 mb-3" required 
                     ></textarea>
                     </div>
                 </div>
@@ -69,21 +71,18 @@
                     <div class = "w-48 text-sm">제출 서류 설명 (선택)</div>                   
                         <div class = "flex flex-col">
                             <div>
-                                <textarea placeholder = "첨부한 파일에 대한 설명을 입력해주세요" name = "certi" rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
+                                <textarea placeholder = "첨부한 파일에 대한 설명을 입력해주세요" name = "certi" rows = "5" id = "certi" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
                                 ></textarea>
                             </div>                                              
                         </div>                   
                     </div>                                
                 </div>    
-                <div class=" mx-auto py-2 px-4 border-2 rounded-lg bg-blue-500  hover:bg-blue-700">
+                <button type = "button" class = " mx-auto py-2 px-4 border-2 rounded-lg bg-blue-500  hover:bg-blue-700 text-white" onclick = "submitForm()">등록</button>
+                <!-- <div class=" mx-auto py-2 px-4 border-2 rounded-lg bg-blue-500  hover:bg-blue-700">
                     <input type="submit" class="font-semibold text-white" value="등록">
-                </div>    
+                </div>     -->
                 <br><br>            
             </div> 
-        </div>
-    </form>
-    <script> 
-        
-    </script>
+        </div>        
     </body><br><br><br><br><br>     
 </html>
