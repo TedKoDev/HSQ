@@ -10,7 +10,7 @@
 
 //5. "people"   : "수업인원" 
 //6. "type"     : "수업유형" 
- 
+
 
 // 보낼 줄 때 형태 
 // {
@@ -44,8 +44,8 @@ $cintro     =   json_decode(file_get_contents("php://input"))->{"cintro"}; //수
 $timeprice  =   json_decode(file_get_contents("php://input"))->{"timeprice"};  //수업시간, 수업가격 
 $people     =   json_decode(file_get_contents("php://input"))->{"people"};  //수업인원
 $type       =   json_decode(file_get_contents("php://input"))->{"type"};  //수업유형
-$schedule   =   json_decode(file_get_contents("php://input"))->{"schedule"};  //수업일정
 
+error_log("$token, $cname, $cintro,$timeprice,$people,$type  \n", "3", "../php.log");
 
 
 // date_default_timezone_set('Asia/Seoul');
@@ -68,7 +68,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 // Class_List에 수업 등록 
-$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type, CL_Schedule, CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type','$schedule',now()) ";
+$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type',,now()) ";
 
 $insert = mysqli_query($conn, $result);
 

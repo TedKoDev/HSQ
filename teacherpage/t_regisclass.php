@@ -10,11 +10,89 @@
 
     <script>
 
-    function click_add_type() {
+        let type_num = 0;
+        let type_array = new Array();
+        function click_add_type() {
+            
+            let add_btn = document.getElementById("add_type_btn");
+            // 현재 select의 값 가져오기
+            let selete_type = document.getElementById("select_type").value;
+            // 새롭게 생성되는 타입들이 붙을 div 가져오기
+            let type_list = document.getElementById("type_list");
 
-        let add_btn = document.getElementById("add_type_btn");
-        let selete_type = document.getElementById("select_type");
-    }
+            // 1증가
+            type_num = type_num + 1;
+            // 새로운 div 생성
+            let type_item = document.createElement('div');
+            // type_1 이런식으로 id 부여
+            type_item.setAttribute("id", "type_"+type_num);
+
+            // 추가될 뷰 대입
+            type_item.innerHTML = [         
+            '<div class = "flex bg-gray-500 mr-2">',   
+                '<div class = "">'+selete_type+'</div>',
+                '<div class = "ml-1" onclick = "delete_type('+type_num+')"> X</div>',
+            '</div>'].join(""); 
+
+            // select를 div 아래에 연결
+            type_list.appendChild(type_item);
+
+            // array에 해당 type 추가
+            type_array.push(selete_type);
+        }
+
+        function delete_type(type_num) {
+            
+            // 해당 배열 삭제
+            delete type_array[type_num-1];
+
+            // 삭제할 div 태그 가져오기
+            let delete_div = document.getElementById("type_"+type_num);
+            // 삭제
+            delete_div.remove();
+        }
+
+        async function regisclass_btn() {
+
+             // 전송할 수업명, 수업소개, 수업 유형, 수업료
+            let cname = document.getElementById("class_name").value;
+            let cintro = document.getElementById('class_intro').value;
+            let price_30 = document.getElementById('price_30').value;
+            let price_60 = document.getElementById('price_60').value;
+
+            let price_json = new Object();
+            let thirty = '30';
+            let sixthy = '60';
+            // price_json[thirty] = price_30;
+            // price_json[sixthy] = price_60;
+
+            console.log("token : "+checkCookie);
+            console.log("cname : "+cname);
+            console.log("cintro : "+cintro);
+            console.log("type : "+type_array);
+            console.log("timeprice : "+price_json);
+
+
+            let body = {     
+                token : checkCookie,
+                cname : cname,
+                cintro : cintro,
+                people : 1,
+                type : '문법, 읽기',
+                timeprice : '[{"time":"30","price":"10"},{"time":"40","price":"20"},{"time":"50","price":"30"}]',
+            };
+            let res = await fetch('./t_regisclassProcess.php', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(body)
+            });
+
+            let response = await res.json();  
+
+            console.log(response);
+        }
 
     </script>
     <body class="bg-gray-100">
@@ -54,7 +132,7 @@
                 </div>
                 <div class = "flex my-2 px-10">
                     <div class = "w-2/12"></div>
-                    <div id = "type_list" class = "w-10/12 flex ">sss</div>
+                    <div id = "type_list" class = "w-10/12 flex "></div>
                 </div>               
                 <div class = "flex my-2 px-10">
                     <div class = "w-2/12 text-sm">수업료</div>
@@ -70,7 +148,7 @@
                     </div>                    
                 </div>                
                 <br>                    
-                <button type = "button" class = " mx-auto py-2 px-4 border-2 rounded-lg bg-blue-500  hover:bg-blue-700 text-white">등록</button>
+                <button type = "button" onclick = "regisclass_btn()" class = " mx-auto py-2 px-4 border-2 rounded-lg bg-blue-500  hover:bg-blue-700 text-white">등록</button>
                 
                 <br><br>            
             </div> 
