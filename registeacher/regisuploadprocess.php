@@ -211,3 +211,10 @@ if($check1 = 1 && $check2 =1 ){
     $send["tadd"]   =  "no";
     echo json_encode( $send);
 }
+?>
+<!-- <script>
+
+    등록 완료 되면강사 페이지의 내 수업으로 이동
+    alert("강사 등록되었습니다.");
+    location.replace('../teacherpage/t_myclass.php');
+</script> -->

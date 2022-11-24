@@ -138,7 +138,6 @@ async function postToken(tokenValue) {
 let fileNo = 0;
 let filesArr = new Array();
 
-// Ver2.
 /* 첨부파일 추가 */
 function addFile(obj){
 
@@ -213,13 +212,38 @@ function validation(obj){
     }
 }
 
+function submitForm() {
+
+  let formData = new FormData();
+  formData.append('token', document.getElementById('token_value').value);
+  formData.append('tintro', document.getElementById('intro_t').value);
+  formData.append('certi', document.getElementById('certi').value);
+  // formData.append('img', document.getElementById('file_upload').files[0]);
+
+    for (var i = 0; i < filesArr.length; i++) {
+      // 삭제되지 않은 파일만 폼데이터에 담기
+      if (!filesArr[i].is_delete) {
+          formData.append("img", filesArr[i]);
+      }
+  }
+
+  fetch('#',{
+    method:'POST',
+    body : formData
+  })
+  .then(
+    alert("강사 등록되었습니다."),
+    location.replace('../teacherpage/t_myclass.php')
+  );
+}
+
 // /* 첨부파일 삭제 */
 // function deleteFile(num) {
 //     document.querySelector("#file" + num).remove();
 //     filesArr[num].is_delete = true;
 // }
 
-// /* 폼 전송 */
+/* 폼 전송 */
 // function submitForm() {
 //     // 폼데이터 담기
 //     var form = document.querySelector("form");
@@ -227,25 +251,22 @@ function validation(obj){
 //     for (var i = 0; i < filesArr.length; i++) {
 //         // 삭제되지 않은 파일만 폼데이터에 담기
 //         if (!filesArr[i].is_delete) {
-//             formData.append("attach_file", filesArr[i]);
+//             formData.append("img", filesArr[i]);
 //         }
 //     }
+//     formData.append("token", "token");
+//     formData.append("tintro", "tintro");
+//     formData.append("certi", "certi");
 
-//     $.ajax({
-//         method: 'POST',
-//         url: '/register',
-//         dataType: 'json',
-//         data: formData,
-//         async: true,
-//         timeout: 30000,
-//         cache: false,
-//         headers: {'cache-control': 'no-cache', 'pragma': 'no-cache'},
-//         success: function () {
-//             alert("파일업로드 성공");
-//         },
-//         error: function (xhr, desc, err) {
-//             alert('에러가 발생 하였습니다.');
-//             return;
-//         }
+//     fetch('./regisuploadProcess.php', {
+
+//       method: 'POST',      
+//       body: formData,
+
 //     })
+//     .then(res => res.json())
+//     .then(data => console.log(data));
 // }
+
+
+
