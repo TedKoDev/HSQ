@@ -15,7 +15,7 @@
     <?php include '../components/navbar.php' ?>    
     <br>
     <!-- 강사등록 블록   -->    
-    <form action="./regisuploadprocess.php" method="post" enctype="multipart/form-data">
+    <form action="./regisuploadProcess.php" method="post" enctype="multipart/form-data">
     <textarea id = "token_value" name="token" value="" class = "invisible"></textarea>
         <div class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-50 shadow rounded-lg  ">
             <div class = "py-4 mx-auto">                  
@@ -46,17 +46,14 @@
                         <div class = "w-48 text-sm">(경력, 강의 스타일등)</div>
                     </div>                
                     <div>
-                        <textarea name = "tintro" rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
+                        <textarea placeholder = "경력, 강의 스타일등" name = "tintro" rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
                     ></textarea>
                     </div>
                 </div>
                 <div class = "flex my-2 mx-auto">                
-                    <div class = "w-48 text-sm">전문 강사 인증</div>                   
+                    <div class = "w-48 text-sm">전문 강사 인증 (선택)</div>                   
                     <div class = "flex flex-col">      
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <input type="submit" class="btn btn-primary" value="저장">
-                            </div>
+                        <div class="input-group">                            
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" name="img[]" multiple>
                                 <label class="custom-file-label" >Choose File</label>
@@ -65,10 +62,10 @@
                     </div>                                
                 </div>             
                 <div class = "flex my-2 mx-auto">                
-                    <div class = "w-48 text-sm">제출 서류 설명</div>                   
+                    <div class = "w-48 text-sm">제출 서류 설명 (선택)</div>                   
                         <div class = "flex flex-col">
                             <div>
-                                <textarea name = "certi" rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
+                                <textarea placeholder = "첨부한 파일에 대한 설명을 입력해주세요" name = "certi" rows = "5" id = "intro_t" class = "w-96 text-sm px-1 py-1 rounded border-2 border-gray-300 mb-3"
                                 ></textarea>
                             </div>
                             <div class = "text-sm w-96 text-gray-600">
@@ -77,8 +74,12 @@
                             </div>                    
                         </div>                   
                     </div>                                
-                </div>                  
-            </div>            
+                </div>    
+                <div class="mx-auto">
+                    <input type="submit" class="btn btn-primary" value="등록">
+                </div>               
+            </div>    
+                   
         </div>
     </form>
     <script> 

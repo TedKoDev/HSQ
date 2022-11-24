@@ -24,7 +24,7 @@ async function postToken(tokenValue) {
     token : value,
   };
 
-  const res = await fetch('./regiscallprocess.php', {
+  const res = await fetch('./regiscallProcess.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;'
