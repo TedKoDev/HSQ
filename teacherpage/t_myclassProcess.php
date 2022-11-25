@@ -18,15 +18,18 @@
 
 //4.Json 형태로 담아 프론트로 전송한다. 
 
-// {"data":[{"class_id":"4","clname":"korean 1","cldisc":"koreanclass","clpeople":"1","cltype":"speaking"},{"class_id":"5","clname":"korean 2 ","cldisc":"koreanclass","clpeople":"1","cltype":"writing"}]}
-
+// {"data":
+// [{"class_id":"16","clname":"korean 4","cldisc":"class 4","clpeople":"1","cltype":"speaking,writing","tp":[{"Time":"30","Price":"2"},{"Time":"60","Price":"3"},{"Time":"90","Price":"10"}]},
+// {"class_id":"17","clname":"korean 5","cldisc":"class 5","clpeople":"1","cltype":"speaking,writing","tp":[{"Time":"30","Price":"2"},{"Time":"60","Price":"3"},{"Time":"90","Price":"10"},{"Time":"30","Price":"177"},{"Time":"60","Price":"200"}]},
+// {"class_id":"18","clname":"korean 6","cldisc":"class 6","clpeople":"1","cltype":"talk, writing","tp":[{"Time":"30","Price":"2"},{"Time":"60","Price":"3"},{"Time":"90","Price":"10"},{"Time":"30","Price":"177"},{"Time":"60","Price":"200"},{"Time":"30","Price":"123"},{"Time":"60","Price":"333"}]}],"success":"1"}
 
 // 각 key 값   62번쨰줄 이하 참고 while ($row = mysqli_fetch_array($response)){
 // 'class_id'
 // 'clname'
 // 'cldisc' 
 // 'clpeople'
-// 'cltype' 
+// 'cltype'
+// 'tp[{"Time":"30","Price":"2"}]' 
 
 
 
@@ -51,24 +54,46 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
-
-// Class_List에서 정보 가져오기 
+//Class_List에 수업 목록확인  
 $sql = "SELECT * FROM Class_List WHERE User_Id = '{$User_ID}'";
-$response = mysqli_query($conn, $sql);
+$response1 = mysqli_query($conn, $sql);
 
 
+$result1['data'] = array();
+$result2['timeprice'] = array();
 
-$result['data'] = array();
-while ($row = mysqli_fetch_array($response)){
-  $send['class_id'] = $row['0'];
-  $send['clname'] = $row['2'];
-  $send['cldisc'] = $row['4'];
-  $send['clpeople'] = $row['5'];
-  $send['cltype'] = $row['6'];
 
-array_push($result['data'],$send);
+while ($row1 = mysqli_fetch_array($response1)){
+  $clid= $row1['0'];
+
+  $send['class_id'] = $row1['0'];
+  $send['clname'] = $row1['2'];
+  $send['cldisc'] = $row1['3'];
+  $send['clpeople'] = $row1['4'];
+  $send['cltype'] = $row1['5'];
+ 
+
+//Class_List_Time_Price 수업 시간, 가격 확인   
+$sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+$response2 = mysqli_query($conn, $sql);
+
+while ($row2 = mysqli_fetch_array($response2)){
+
+   $tp['Time'] = $row2['2'];
+   $tp['Price'] = $row2['3']; 
+
+ array_push($result2['timeprice'],$tp);
+
+ }
+//  echo json_encode($result2);
+
+ $send['tp'] = $result2['timeprice'];
+
+array_push($result1['data'],$send);
+
 }
 
-
-echo json_encode($result);
+$result1["success"] = "1";
+echo json_encode($result1);
+echo '<br/>';
 mysqli_close($conn);
