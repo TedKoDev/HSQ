@@ -136,7 +136,7 @@ document.addEventListener('mouseup', function(e) {
 
 
 // 강사되기/강사페이지 클릭 시
-function go_teacher_page() {
+async function go_teacher_page() {
    
 
   // 드롭다운의 값 가져오기 (강사되기 or 강사페이지)
@@ -145,10 +145,40 @@ function go_teacher_page() {
   // 강사 신청 안한 계정이면 강사 등록 페이지로 이동
   if (teacher_dropdown == '강사되기') {
         
-    location.assign("../registeacher/registeacher.php");
+    // 유저 프로필에 항목 다 채운 경우에만 강사 등록 화면으로 이동
+    const body = {
+    
+      token: checkCookie
+    };
+  
+    const res = await fetch('../registeacher/regischeckProcess.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(body)
+    });    
+    
+    const response = await res.json();     
+    
+
+    // 모두 채웠을 경우 강사 등록 화면으로 이동
+    
+    if (response.success == 'yes') {
+
+      location.replace("../registeacher/registeacher.php");
+
+    }
+    else {
+
+      alert("강사 등록 시 회원 정보를 모두 작성해야 합니다.");
+      location.replace("../editprofile/editprofile.php");
+    }
+    
   }
   // 강사일 경우 강사페이지로 이동
   else {
+    
     location.assign("../teacherpage/t_myclass.php");
   }
 }

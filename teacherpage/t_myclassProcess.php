@@ -96,4 +96,5 @@ $result2['timeprice'] = array();
 $result1["success"] = "1";
 echo json_encode($result1);
 
+
 mysqli_close($conn);
