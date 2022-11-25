@@ -90,12 +90,11 @@ while ($row2 = mysqli_fetch_array($response2)){
  $send['tp'] = $result2['timeprice'];
 
 array_push($result1['data'],$send);
-
+$result2['timeprice'] = array();
 }
 
 $result1["success"] = "1";
 echo json_encode($result1);
-echo '<br/>';
-error_log("$result1", "3", "../php.log");
-// error_log($result1);
+
+
 mysqli_close($conn);
