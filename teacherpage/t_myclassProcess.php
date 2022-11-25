@@ -78,7 +78,7 @@ $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
 $response2 = mysqli_query($conn, $sql);
 
 while ($row2 = mysqli_fetch_array($response2)){
-
+ 
    $tp['Time'] = $row2['2'];
    $tp['Price'] = $row2['3']; 
 
@@ -87,13 +87,13 @@ while ($row2 = mysqli_fetch_array($response2)){
  }
 //  echo json_encode($result2);
 
- $send['tp'] = $result2['timeprice'];
+$send['tp'] = $result2['timeprice'];
 
 array_push($result1['data'],$send);
-
+$result2['timeprice'] = array();
 }
 
 $result1["success"] = "1";
 echo json_encode($result1);
-echo '<br/>';
+
 mysqli_close($conn);
