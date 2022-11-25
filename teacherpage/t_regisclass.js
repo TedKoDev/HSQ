@@ -21,12 +21,14 @@ function click_add_type() {
         let type_item = document.createElement('div');
         // type_1 이런식으로 id 부여
         type_item.setAttribute("id", "type_" + type_num);
+        
 
+        console.log("pass");
         // 추가될 뷰 대입
         type_item.innerHTML = [
-            '<div class = "flex bg-gray-500 mr-2">', '<div class = "">' +
+            '<div class = "flex bg-gray-500 mr-2 rounded-lg">', '<div class = "pl-2">' +
                     selete_type + '</div>',
-            '<div class = "ml-1" onclick = "delete_type(' + type_num + ')"> X</div>',
+            '<div class = "ml-1 px-1 text-white rounded-full" onclick = "delete_type(' + type_num + ')"> X</div>',
             '</div>'
         ].join("");
 
