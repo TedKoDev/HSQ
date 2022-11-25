@@ -58,9 +58,12 @@ $korean                = $row['U_D_Korean'];
 
 if($img !='default'&&$bday !='default'&&$sex !='default'&&$country !='default'&&$residence !='default'&&$language !='default'&& $korean !='default'){
 
-  echo 'yes'; 
+  $send["success"]   =  "yes";
+  echo json_encode($send);
+
 }else{
-  echo 'no';
+  $send["success"]   =  "no";
+  echo json_encode($send);
 }
 
 
