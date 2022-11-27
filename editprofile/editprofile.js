@@ -61,7 +61,8 @@
       const user_sex = userinfo_parse.sex; 
       const user_contact = userinfo_parse.contact; 
       const user_country = userinfo_parse.country; 
-      const user_residence = userinfo_parse.residence;       
+      const user_residence = userinfo_parse.residence;   
+      const user_utc = userinfo_parse.utc;    
       const user_language = userinfo_parse.language; 
       const user_korean = userinfo_parse.korean;       
       const user_intro = userinfo_parse.intro; 
@@ -78,6 +79,7 @@
       let sex = document.getElementById("sex"); 
       let country = document.getElementById("country"); 
       let residence = document.getElementById("residence"); 
+      let utc = document.getElementById("utc"); 
       let intro = document.getElementById("intro");
       let language = document.getElementById("language");
       let korean = document.getElementById("korean");
@@ -89,6 +91,7 @@
       setInfo(sex, user_sex, "");      
       setInfo(country, user_country, "");
       setInfo(residence, user_residence, "");
+      setInfo(utc, user_utc, "");
       setInfo(intro, user_intro, "");
       setInfo(korean, user_korean, "");
 
@@ -474,8 +477,54 @@
       post_edit(checkCookie, nation, now_.innerHTML);
     }
 
+    // 6. 시간대 수정
+    // 현재 시간대 가져오기
+    let now_utc = document.getElementById('utc');
+    // 시간대 입력 id 가져오기
+    let input_utc = document.getElementById('select_utc');        
+    // 시간대랑 편집 아이콘 있는 div 가져오기
+    let utc_not_edit_div = document.getElementById('utcdiv_not_edit');
+    // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+    let utc_click_edit_div = document.getElementById('utcdiv_click_edit');
 
-    // 6. 자기 소개 수정
+    // 시간대 수정 아이콘 클릭
+    function editing_utc() {
+
+       // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+       utc_click_edit_div.style.display = 'block';
+       // 텍스트랑 편집 아이콘 안보이게 처리
+       utc_not_edit_div.style.display = 'none'; 
+
+    }
+
+    // 시간대 수정 취소 클릭
+    function edit_cancel_utc() {
+
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      utc_click_edit_div.style.display = 'none';
+      // 텍스트랑 편집 아이콘 보이게 처리
+      utc_not_edit_div.style.display = 'block'; 
+    }
+  
+    // 시간대 수정 완료 클릭
+    function edit_done_utc() {
+      
+      // 입력창에서 수정한 값을 화면에 표시
+      now_utc.innerHTML = input_utc.options[input_utc.selectedIndex].text;
+
+      // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+      utc_click_edit_div.style.display = 'none';
+      // 텍스트랑 편집 아이콘 다시 보이게 처리
+      utc_not_edit_div.style.display = 'block';
+
+      // 서버로 저장 요청
+      post_edit(checkCookie, "utc", input_utc.value);
+    }
+
+
+
+
+    // 7. 자기 소개 수정
     // 현재 자기소개 가져오기
     let now_intro = document.getElementById('intro');
     // 자기소개 입력 id 가져오기
@@ -529,7 +578,7 @@
       
     }
 
-    // 7. 구사 가능 언어
+    // 8. 구사 가능 언어 수정
     // 현재 구사 가능 언어 가져오기
     let now_language = document.getElementById('language');
     // 자기소개 입력 id 가져오기
@@ -982,7 +1031,7 @@
     }
 
 
-    // 8. 한국어 수준 수정
+    // 9. 한국어 수준 수정
     // 현재 한국어 수준 가져오기
     let now_korean = document.getElementById('korean');
     // 수준 입력 id 가져오기
