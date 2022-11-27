@@ -46,6 +46,7 @@ $position = json_decode(file_get_contents("php://input"))->{"position"}; //항�
 $desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
 
 
+
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
@@ -348,6 +349,28 @@ else if ($position === "intro") {
         mysqli_close($conn);
     } else {
         $send["position"]   =  "intro";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+}//타임존
+//$desc 가 'utc '인경우 
+else if ($position === "utc") {
+    $select = "UPDATE User_Detail SET U_D_Timezone = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "utc";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "utc";
         $send["success"]   =  "no";
         echo json_encode($send);
         mysqli_close($conn);
