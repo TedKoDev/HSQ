@@ -26,82 +26,69 @@ include("./conn.php");
 
 
 
-// UTC -12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
-// $plan = '1_2_3_4_5_6_7_8';
 
 
-$plan = "333_334_335_336";
-// print_r(explode("_", $plan));
+//U_D_Timeze 값을 가져옴   
+$sql = "SELECT U_D_Timeze FROM User_Detail WHERE User_Id = '32'";
+$response1 = mysqli_query($conn, $sql);
+$row1 = mysqli_fetch_array($response1); 
+$timezone = $row1['0'];
+
+
+
+
+$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '32'";
+$response1 = mysqli_query($conn, $sql);
+$row1 = mysqli_fetch_array($response1); 
+ $plan = $row1['0'];
+
+
+//db에서 가져온 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
 $result = (explode("_", $plan));
 
 // echo $result;
   
-$result1 = array();
+$resultarray = array();
 //
-$timezone = '2';
+
 foreach($result as $val){
 
-  $val."</br>";
+ $val."</br>";
 
-  $save = $val + $timezone*2;
-   $save;
+  $save = $val - $timezone * 2;
 
+  // echo $save;
   if($save > 336) {
 
     $save = $save - 336; 
   }
 
 
-  
-  array_push($result1,$save);
+  array_push($resultarray,$save);
 
 }
 
-
-// echo json_encode($result1);
+// echo json_encode($resultarray);
 // echo '</br>';
 // echo $plan;
 // echo '</br>';
 
-
-echo $string = implode("_",$result1);
-
-
-// U_D에 해당 user _ID로 등록된것이 있는지 확인
-
-$check = "SELECT * FROM Teacher_Schedule where User_Id = '18'";
-$checkresult = mysqli_query($conn, $check);
-
-// error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
-
-
-
-// U_D에 해당 user _ID로 등록된것이 있는지  확인
-if ($checkresult->num_rows <1) {
-    // date_default_timezone_set('Asia/Seoul');
-    // $time_now = date("Y-m-d H:i:s");
-    // // error_log("$time_now,'???', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
-    // error_log("$time_now, 's'\n", "3", "../php.log");
-    
-    // 중복값이 없을때 때 실행할 내용
-    // 없으면 insert로  data 만들고  
-    // 아래의 update로 data 삽입 
-    $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('18', ' $string') ";
-    $insert = mysqli_query($conn, $result);
-    //   $send["message"] = "no";
-    //   $send["message"] = "no";
-
-    // echo json_encode($send);
-    // mysqli_close($conn);
-}else {
+ $string = implode("_",$resultarray);
   
-// $result = "INSERT INTO User_Detail (User_Id) VALUES ('$User_ID') ";
-// $insert = mysqli_query($conn, $result);
+     
+ if ($response1) { //정상일떄  
+  $data = array(
+    'schedule'	=>	$string,
+    'success'        	=>	'yes'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
+} else {//비정상일떄 
+  $data = array(
 
-
-
-$select = "UPDATE Teacher_Schedule SET Schedule = '$string' where User_Id = '18' ";
-
-$insert = mysqli_query($conn, $select);
-
+    'success'        	=>	'no'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
 }
+  
