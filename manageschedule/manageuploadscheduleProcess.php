@@ -108,7 +108,23 @@ foreach($result as $val){
      // 없으면 insert로  data 만들고  
      // 아래의 update로 data 삽입 
      $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('{$User_ID}', ' $string') ";
-     $insert = mysqli_query($conn, $result);
+     $response = mysqli_query($conn, $result);
+     
+ if ($response) { //정상일떄  
+  $data = array(
+ 
+    'success'        	=>	'yes'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
+} else {//비정상일떄 
+  $data = array(
+
+    'success'        	=>	'no'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
+}
   
  }else {
    
@@ -116,8 +132,25 @@ foreach($result as $val){
  
  $select = "UPDATE Teacher_Schedule SET Schedule = '$string' where User_Id = '{$User_ID}' ";
  
- $insert = mysqli_query($conn, $select);
+ $response = mysqli_query($conn, $select);
  
+
+ if ($response) {//정상일떄 
+  $data = array(
+ 
+    'success'        	=>	'yes'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
+} else {//비정상일떄 
+  $data = array(
+
+    'success'        	=>	'no'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
+}
+
  }
 
 
