@@ -112,14 +112,14 @@ foreach($result as $val){
      
  if ($response) { //정상일떄  
   $data = array(
- 
+    'plan'            =>  $plan,
     'success'        	=>	'yes'
   );
   echo json_encode($data);
   mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
-
+ 
     'success'        	=>	'no'
   );
   echo json_encode($data);
@@ -137,7 +137,7 @@ foreach($result as $val){
 
  if ($response) {//정상일떄 
   $data = array(
- 
+    'plan'            =>  $plan,
     'success'        	=>	'yes'
   );
   echo json_encode($data);
