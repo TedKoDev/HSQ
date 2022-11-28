@@ -1,5 +1,3 @@
-
-
 // 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
 let header_s = document.getElementById("header_s");
 
@@ -10,23 +8,40 @@ let todayDate = now.getDate();
 let week = new Array('일', '월', '화', '수', '목', '금', '토');
 
 time = time - (1000 * 60 * 60 * 24)
-for (let i = 0; i < 7; i++) {
+for (let i = 0; i < 8; i++) {
 
-    time = time + (1000 * 60 * 60 * 24);
+    if (i == 0) {
 
-    let new_Date = new Date(time);
+        let utc_show = document.createElement("div");
+        utc_show.innerHTML = [
+            '<div class = "flex flex-col w-20">', '<div class = "mx-auto"></div>',            
+            '</div>'
+        ].join("");
 
-    let date = new_Date.getDate();
+        header_s.appendChild(utc_show);
 
-    let day_array = new_Date.getDay();
-    let day = week[day_array];
-    console.log(date);
-    console.log(day);
+    } else {
 
-    let date_day = document.createElement("div");
-    date_day.innerHTML = ['<div class = "flex flex-col">', '<div>'+day+'</div>', '<div>'+date+'</div>', '</div>'].join(
-        ""
-    );
+        time = time + (1000 * 60 * 60 * 24);
 
-    header_s.appendChild(date_day);
+        let new_Date = new Date(time);
+
+        let date = new_Date.getDate();
+
+        let day_array = new_Date.getDay();
+        let day = week[day_array];
+        console.log(date);
+        console.log(day);
+
+        let date_day = document.createElement("div");
+        date_day.innerHTML = [
+            '<div class = "flex flex-col w-20">', '<div class = "mx-auto">' + day +
+                    '</div>',
+            '<div class = "mx-auto">' + date + '</div>',
+            '</div>'
+        ].join("");
+
+        header_s.appendChild(date_day);
+    }
+
 }
