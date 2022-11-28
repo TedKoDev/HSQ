@@ -171,6 +171,32 @@
             </div>     
           </div> 
           <div class = "flex justify-between items-center my-auto py-2">
+            <div class = "text-sm w-3/12">시간대</div>
+            <div id = "" class = "w-9/12 justify-between">
+              <!-- 시간대 클릭 안했을 때 -->
+              <div id = "utcdiv_not_edit" class = "flex justify-between text-sm text-gray-500">
+                <span id = "utc">UTC+09:00</span>                                   
+                <span><svg id = "utc_edit" onclick = "editing_utc('utc', 'utcdiv_not_edit')" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
+                  002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
+                  </span>
+              </div>
+              <!-- 시간대 수정 클릭했을 때 -->
+              <div id = "utcdiv_click_edit" class = "hidden ">                
+                <select id = "select_utc" class = "w-44 px-1 py-1 rounded border border-gray-200 mb-3">    
+                  <?php for($i = 0; $i < 27; $i++) {
+                    $utc = $i-12; ?>
+                      <option value = <?php echo $utc; ?>>UTC<?PHP echo sprintf('%+02d', $utc); ?>:00</option>
+                    <?php 
+                  } ?>       
+                  
+                </select><br>                  
+                <button onclick = "edit_done_utc()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                <button onclick = "edit_cancel_utc()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>                
+              </div>
+            </div>     
+          </div> 
+          <div class = "flex justify-between items-center my-auto py-2">
             <div class = "text-sm w-3/12">자기 소개</div>
             <div id = "" class = "flex flex-col w-9/12 justify-between">
               <!-- 자기소개 수정 클릭 안했을 때 -->
