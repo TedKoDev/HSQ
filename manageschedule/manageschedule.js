@@ -1,5 +1,10 @@
 // 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
-let header_s = document.getElementById("header_s");
+
+getDate("header_s");
+
+function getDate(header_date) {
+
+    let header_s = document.getElementById(header_date);
 
 let now = new Date();
 let time = now.getTime();
@@ -30,8 +35,8 @@ for (let i = 0; i < 8; i++) {
 
         let day_array = new_Date.getDay();
         let day = week[day_array];
-        console.log(date);
-        console.log(day);
+        // console.log(date);
+        // console.log(day);
 
         let date_day = document.createElement("div");
         date_day.innerHTML = [
@@ -41,7 +46,8 @@ for (let i = 0; i < 8; i++) {
             '</div>'
         ].join("");
 
-        header_s.appendChild(date_day);
+        header_s.appendChild(date_day);        
     }
 
+}
 }
