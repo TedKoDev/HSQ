@@ -32,6 +32,113 @@
                 // console.log(result);
             }
         }
+
+        // 모달 관련 코드     
+      
+        // 일정 수정 완료 (서버에 저장)
+        async function edit_done() {
+
+            let send_array = new Array();
+
+            for (let i = 1; i <= 336; i++) {
+
+                let input_check = document.getElementById(i+"_m");
+
+                if (input_check.checked) {
+
+                    send_array.push(input_check.value);
+                    
+                }                        
+            }
+
+            let send_string = send_array.join("_");
+
+            console.log(send_string);                    
+
+            const body = {
+
+                token: checkCookie,
+                plan: send_string,  
+
+                };
+            const res = await fetch('./managescheduleProcess.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(body)
+            });
+
+            const body2 = document.getElementsByTagName('body')[0];
+
+            const overlay2 = document.querySelector('#overlay')
+
+            // 모달창 내리기
+            overlay2
+                .classList
+                .toggle('hidden')
+            overlay2
+                .classList
+                .toggle('flex')
+
+            body2
+                .classList
+                .remove('scrollLock');
+        }
+        
+        // 모달창 보여주기, 모달창 다시 내리기
+        window.addEventListener('DOMContentLoaded', () => {
+
+            const body = document.getElementsByTagName('body')[0];
+
+            const overlay = document.querySelector('#overlay')
+            const edit_btn = document.getElementById('edit_schedule_btn')
+            const closeBtn = document.querySelector('#close-modal')
+
+            const edit_done_btn = document.getElementById('edit_done_btn')
+            const edit_cancel_btn = document.getElementById('edit_cancel_btn')
+
+            const show_modal = () => {
+                overlay
+                    .classList
+                    .toggle('hidden')
+                overlay
+                    .classList
+                    .toggle('flex')
+
+                body
+                    .classList
+                    .add('scrollLock');
+
+                // 날짜 뿌려주기
+                getDate("header_s_m");
+
+                // 일정 있는 곳에만 색깔 변환
+                setschedule("_m_l");
+
+            }
+
+            const cancel_modal = () => {
+                overlay
+                    .classList
+                    .toggle('hidden')
+                overlay
+                    .classList
+                    .toggle('flex')
+
+                body
+                    .classList
+                    .remove('scrollLock');
+
+            }            
+
+            edit_btn.addEventListener('click', show_modal)
+
+            closeBtn.addEventListener('click', cancel_modal)
+            edit_cancel_btn.addEventListener('click', cancel_modal)
+        })
+
+
     </script>
     <style>
         .scrollLock {
@@ -52,7 +159,7 @@
                     <div class="mx-auto font-bold text-2xl mb-3">나의 일정</div>
                 </div><br>
                 <a
-                    id="edit_schedule_btn"
+                    id="edit_schedule_btn"                    
                     class="mx-auto px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black
                     rounded border">일정 편집</a>
 
@@ -113,116 +220,16 @@
                     <?php } ?>
                 </div>
             </div>
-        </div>
-        <script>
-
-            window.addEventListener('DOMContentLoaded', () => {
-
-                const body = document.getElementsByTagName('body')[0];
-
-                const overlay = document.querySelector('#overlay')
-                const edit_btn = document.getElementById('edit_schedule_btn')
-                const closeBtn = document.querySelector('#close-modal')
-
-                const edit_done_btn = document.getElementById('edit_done_btn')
-                const edit_cancel_btn = document.getElementById('edit_cancel_btn')
-
-                const show_modal = () => {
-                    overlay
-                        .classList
-                        .toggle('hidden')
-                    overlay
-                        .classList
-                        .toggle('flex')
-
-                    body
-                        .classList
-                        .add('scrollLock');
-
-                    // 날짜 뿌려주기
-                    getDate("header_s_m");
-
-                    // 일정 있는 곳에만 색깔 변환
-                    setschedule("_m_l");
-
-                }
-
-                const cancel_modal = () => {
-                    overlay
-                        .classList
-                        .toggle('hidden')
-                    overlay
-                        .classList
-                        .toggle('flex')
-
-                    body
-                        .classList
-                        .remove('scrollLock');
-
-                }
-
-                const edit_done = () => {
-
-                    let send_array = new Array();
-
-                    for (let i = 1; i <= 336; i++) {
-
-                        let input_check = document.getElementById(i+"_m");
-                       
-                        if (input_check.checked) {
-
-                            send_array.push(input_check.value);
-                            
-                        }                        
-                    }
-
-                    let send_string = send_array.join("_");
-
-                    console.log(send_string);                    
-
-                    const body = {
-
-                        token: checkCookie,
-                        plan: send_string,  
-
-                        };
-                    const res = await fetch('./managescheduleProcess.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                    body: JSON.stringify(body)
-                    });
-
-                    overlay
-                        .classList
-                        .toggle('hidden')
-                    overlay
-                        .classList
-                        .toggle('flex')
-
-                    body
-                        .classList
-                        .remove('scrollLock');
-                }
-
-
-                edit_btn.addEventListener('click', show_modal)
-
-                closeBtn.addEventListener('click', cancel_modal)
-                edit_cancel_btn.addEventListener('click', cancel_modal)
-
-                edit_done_btn.addEventListener('click', edit_done)
-
-            })
-        </script>
+        </div>   
+               
+        
         <div
             class="bg-gray-700 bg-opacity-50 absolute inset-0 hidden justify-center items-center border-2"
             id="overlay">
             <div class="bg-gray-200 max-w-2xl py-2 px-3 rounded shadow-xl text-gray-800">
                 <div class="flex justify-between items-center">
                     <h4 class="text-lg font-bold">일정 편집</h4>                    
-                    <svg
+                    <svg                        
                         class="h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                         id="close-modal"
                         fill="currentColor"
@@ -290,7 +297,7 @@
                 </div>
                 <div class="mt-3 flex justify-end space-x-3">
                     <button id = "edit_cancel_btn" class="px-3 py-1 rounded hover:bg-red-300 hover:bg-opacity-50 hover:text-red-900">닫기</button>
-                    <button id = "edit_done_btn" class="px-3 py-1 bg-red-800 text-gray-200 hover:bg-red-600 rounded">저장</button>
+                    <button onclick = "edit_done()" id = "edit_done_btn" class="px-3 py-1 bg-red-800 text-gray-200 hover:bg-red-600 rounded">저장</button>
                 </div>    
             </div>
         </div>
