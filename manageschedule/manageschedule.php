@@ -92,21 +92,21 @@
 
                                     $num = $num + 1;                                
                                     ?>
-                        <div class="flex items-center w-20">
-                            <input
-                                type="checkbox"
-                                id="<?php echo $num; ?>"
-                                name="A3-confirmation"
-                                value="yes"
-                                class="hidden"
-                                onclick='test_click(event)'/>
-                            <label
-                                for="<?php echo $num; ?>"
-                                id="<?php echo $num; ?>_l"
-                                class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
-                                    rounded border"
-                                name="test_label"></label>
-                        </div>
+                                <div class="flex items-center w-20">
+                                    <input
+                                        type="checkbox"
+                                        id="<?php echo $num; ?>"
+                                        name=""
+                                        value="<?php echo $num; ?>"
+                                        class="hidden"
+                                        onclick='test_click(event)'/>
+                                    <label
+                                        for="<?php echo $num; ?>"
+                                        id="<?php echo $num; ?>_l"
+                                        class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
+                                            rounded border"
+                                        name="test_label"></label>
+                                </div>
                         <?php }
                         } ?>
                     </div>
@@ -127,7 +127,7 @@
                 const edit_done_btn = document.getElementById('edit_done_btn')
                 const edit_cancel_btn = document.getElementById('edit_cancel_btn')
 
-                const toggleModal = () => {
+                const show_modal = () => {
                     overlay
                         .classList
                         .toggle('hidden')
@@ -142,9 +142,12 @@
                     // 날짜 뿌려주기
                     getDate("header_s_m");
 
+                    // 일정 있는 곳에만 색깔 변환
+                    setschedule("_m_l");
+
                 }
 
-                const toggleModal2 = () => {
+                const cancel_modal = () => {
                     overlay
                         .classList
                         .toggle('hidden')
@@ -158,9 +161,59 @@
 
                 }
 
-                edit_btn.addEventListener('click', toggleModal)
+                const edit_done = () => {
 
-                closeBtn.addEventListener('click', toggleModal2)
+                    let send_array = new Array();
+
+                    for (let i = 1; i <= 336; i++) {
+
+                        let input_check = document.getElementById(i+"_m");
+                       
+                        if (input_check.checked) {
+
+                            send_array.push(input_check.value);
+                            
+                        }                        
+                    }
+
+                    let send_string = send_array.join("_");
+
+                    console.log(send_string);                    
+
+                    const body = {
+
+                        token: checkCookie,
+                        plan: send_string,  
+
+                        };
+                    const res = await fetch('./managescheduleProcess.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(body)
+                    });
+
+                    overlay
+                        .classList
+                        .toggle('hidden')
+                    overlay
+                        .classList
+                        .toggle('flex')
+
+                    body
+                        .classList
+                        .remove('scrollLock');
+                }
+
+
+                edit_btn.addEventListener('click', show_modal)
+
+                closeBtn.addEventListener('click', cancel_modal)
+                edit_cancel_btn.addEventListener('click', cancel_modal)
+
+                edit_done_btn.addEventListener('click', edit_done)
+
             })
         </script>
         <div
@@ -217,8 +270,8 @@
                                 <input
                                     type="checkbox"
                                     id="<?php echo $num; ?>_m"
-                                    name="A3-confirmation"
-                                    value="yes"
+                                    name=""
+                                    value="<?php echo $num; ?>"
                                     class="hidden"
                                     onclick='test_click(event)'/>
                                 <label
