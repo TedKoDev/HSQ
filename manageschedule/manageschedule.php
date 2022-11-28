@@ -7,139 +7,7 @@
 
     </head>
     <script src="../commenJS/cookie.js"></script>
-    <script defer="defer" src="./manageschedule.js"></script>
-    <script>
-
-        // check일 경우 빨간색으로
-        function test_click(event) {
-
-            let label_id = event.target.id;
-
-            let label = document.getElementById(label_id + "_l");
-
-            let result = "";
-            if (event.target.checked) {
-                result = event.target.value;
-
-                console.log(event.target.id);
-                label.style.backgroundColor = 'red';
-
-            } else {
-                result = "0";
-
-                label.style.backgroundColor = '#9CA3AF';
-
-                // console.log(result);
-            }
-        }
-
-        // 모달 관련 코드     
-      
-        // 일정 수정 완료 (서버에 저장)
-        async function edit_done() {
-
-            let send_array = new Array();
-
-            for (let i = 1; i <= 336; i++) {
-
-                let input_check = document.getElementById(i+"_m");
-
-                if (input_check.checked) {
-
-                    send_array.push(input_check.value);
-                    
-                }                        
-            }
-
-            let send_string = send_array.join("_");
-
-            console.log(send_string);                    
-
-            const body = {
-
-                token: checkCookie,
-                plan: send_string,  
-
-                };
-            const res = await fetch('./managescheduleProcess.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(body)
-            });
-
-            const body2 = document.getElementsByTagName('body')[0];
-
-            const overlay2 = document.querySelector('#overlay')
-
-            // 모달창 내리기
-            overlay2
-                .classList
-                .toggle('hidden')
-            overlay2
-                .classList
-                .toggle('flex')
-
-            body2
-                .classList
-                .remove('scrollLock');
-        }
-        
-        // 모달창 보여주기, 모달창 다시 내리기
-        window.addEventListener('DOMContentLoaded', () => {
-
-            const body = document.getElementsByTagName('body')[0];
-
-            const overlay = document.querySelector('#overlay')
-            const edit_btn = document.getElementById('edit_schedule_btn')
-            const closeBtn = document.querySelector('#close-modal')
-
-            const edit_done_btn = document.getElementById('edit_done_btn')
-            const edit_cancel_btn = document.getElementById('edit_cancel_btn')
-
-            const show_modal = () => {
-                overlay
-                    .classList
-                    .toggle('hidden')
-                overlay
-                    .classList
-                    .toggle('flex')
-
-                body
-                    .classList
-                    .add('scrollLock');
-
-                // 날짜 뿌려주기
-                getDate("header_s_m");
-
-                // 일정 있는 곳에만 색깔 변환
-                setschedule("_m_l");
-
-            }
-
-            const cancel_modal = () => {
-                overlay
-                    .classList
-                    .toggle('hidden')
-                overlay
-                    .classList
-                    .toggle('flex')
-
-                body
-                    .classList
-                    .remove('scrollLock');
-
-            }            
-
-            edit_btn.addEventListener('click', show_modal)
-
-            closeBtn.addEventListener('click', cancel_modal)
-            edit_cancel_btn.addEventListener('click', cancel_modal)
-        })
-
-
-    </script>
+    <script defer="defer" src="./manageschedule.js"></script>    
     <style>
         .scrollLock {
             height: 100%;
@@ -212,7 +80,7 @@
                                         id="<?php echo $num; ?>_l"
                                         class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
                                             rounded border"
-                                        name="test_label"></label>
+                                        name="schedule_label"></label>
                                 </div>
                         <?php }
                         } ?>
@@ -222,7 +90,7 @@
             </div>
         </div>   
                
-        
+        <!-- 모달창 -->
         <div
             class="bg-gray-700 bg-opacity-50 absolute inset-0 hidden justify-center items-center border-2"
             id="overlay">
@@ -242,7 +110,7 @@
                 </div>
 
                 <!-- 스케줄 부분 스크롤 되게 처리 -->
-                <div class="h-96 overflow-auto">
+                <div id = "schedule" class="h-96 overflow-auto">
                     <div id="header_s_m" class="flex mx-auto"></div>
                     
                     <?php 
@@ -250,7 +118,7 @@
                             for ($i = 0; $i < 8; $i++) {                
                         
                             ?>
-                    <div id="body_s_<?php echo $i; ?>" class="flex mx-auto">
+                    <div id="body_s_m_<?php echo $i; ?>" class="flex mx-auto">
                         <div class="flex flex-col">
 
                             <?php if ($i == 0) {
