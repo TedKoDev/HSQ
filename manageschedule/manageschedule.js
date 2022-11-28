@@ -112,14 +112,14 @@ async function setschedule(type) {
                     let input = document.getElementById(i+"_m");
 
                     input.checked = true;
-                    label.style.backgroundColor = 'red';
+                    label.style.backgroundColor = 'blue';
                 }               
             }
         }
     }
 }
 
-// check일 경우 빨간색으로
+// check일 경우 파란색으로
 function test_click(event) {
 
     let label_id = event.target.id;
@@ -131,7 +131,7 @@ function test_click(event) {
         result = event.target.value;
 
         console.log(event.target.id);
-        label.style.backgroundColor = 'red';
+        label.style.backgroundColor = 'blue';
 
     } else {
         result = "0";
@@ -214,7 +214,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const overlay = document.querySelector('#overlay')
     const edit_btn = document.getElementById('edit_schedule_btn')
-    const closeBtn = document.querySelector('#close-modal')
+    // const closeBtn = document.querySelector('#close-modal')
 
     const edit_done_btn = document.getElementById('edit_done_btn')
     const edit_cancel_btn = document.getElementById('edit_cancel_btn')
@@ -253,13 +253,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
         body
             .classList
-            .remove('scrollLock');                                
+            .remove('scrollLock');    
+            
+        // 일정 다시 세팅
+        setschedule("_l");
 
     }            
 
     edit_btn.addEventListener('click', show_modal)
 
-    closeBtn.addEventListener('click', cancel_modal)
+    // closeBtn.addEventListener('click', cancel_modal)
     edit_cancel_btn.addEventListener('click', cancel_modal)
 })
 

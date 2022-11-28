@@ -92,12 +92,12 @@
                
         <!-- 모달창 -->
         <div
-            class="bg-gray-700 bg-opacity-50 absolute inset-0 hidden justify-center items-center border-2"
+            class="bg-gray-700 bg-opacity-50 fixed inset-0 hidden justify-center items-center border-2"
             id="overlay">
             <div class="bg-gray-200 max-w-2xl py-2 px-3 rounded shadow-xl text-gray-800">
                 <div class="flex justify-between items-center">
                     <h4 class="text-lg font-bold">일정 편집</h4>                    
-                    <svg                        
+                    <!-- <svg                        
                         class="h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                         id="close-modal"
                         fill="currentColor"
@@ -106,18 +106,19 @@
                             fill-rule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                             clip-rule="evenodd"></path>
-                    </svg>
-                </div>
-
+                    </svg> -->
+                    <div class="mt-3 flex justify-end space-x-3 mb-3">
+                        <button id = "edit_cancel_btn" class="px-3 py-1 rounded bg-blue-300 hover:bg-blue-500 hover:bg-opacity-50 hover:text-blue-900">닫기</button>
+                        <button onclick = "edit_done()" id = "edit_done_btn" class="px-3 py-1 bg-blue-800 text-gray-200 hover:bg-blue-600 rounded">저장</button>             
+                    </div>  
+                </div>               
                 <!-- 스케줄 부분 스크롤 되게 처리 -->
-                <div id = "schedule" class="h-96 overflow-auto">
-                    <div id="header_s_m" class="flex mx-auto"></div>
-                    
+                <div id = "schedule" class="flex flex-col h-96 overflow-auto">
+                    <div id="header_s_m" class="flex mx-auto"></div>                    
                     <?php 
                         $num = 0;
-                            for ($i = 0; $i < 8; $i++) {                
-                        
-                            ?>
+                            for ($i = 0; $i < 8; $i++) {               
+                        ?>
                     <div id="body_s_m_<?php echo $i; ?>" class="flex mx-auto">
                         <div class="flex flex-col">
 
@@ -160,15 +161,12 @@
                             } ?>
                         </div>
                         <?php } ?>
-                    </div>                    
-                                 
-                </div>
-                <div class="mt-3 flex justify-end space-x-3">
-                    <button id = "edit_cancel_btn" class="px-3 py-1 rounded hover:bg-red-300 hover:bg-opacity-50 hover:text-red-900">닫기</button>
-                    <button onclick = "edit_done()" id = "edit_done_btn" class="px-3 py-1 bg-red-800 text-gray-200 hover:bg-red-600 rounded">저장</button>
-                </div>    
-            </div>
-        </div>
+                   </div>             
+                                            
+                </div>                
+            </div>                
+            
+        </div>        
     </body>
 
 </html>
