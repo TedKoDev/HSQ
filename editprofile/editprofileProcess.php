@@ -74,7 +74,7 @@ $U_Name  = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 
-// error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
+error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
 
 
 
@@ -92,7 +92,7 @@ $checkresult = mysqli_query($conn, $check);
 if ($checkresult->num_rows <1) {
     date_default_timezone_set('Asia/Seoul');
     $time_now = date("Y-m-d H:i:s");
-    
+    error_log("$time_now,'???', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
     // error_log("$time_now, 's'\n", "3", "../php.log");
     
     // 중복값이 없을때 때 실행할 내용
