@@ -47,7 +47,30 @@
                 <div class = "flex my-2 px-10">
                     <div class = "w-2/12"></div>
                     <div id = "type_list" class = "w-10/12 flex "></div>
-                </div>               
+                </div>   
+                <div class = "flex my-2 px-10">
+                    <div class = "w-2/12 text-sm">레벨</div>
+                    <div class = "w-10/12 flex">
+                    <select id = "select_level_from" class = "w-44 px-1 py-1 text-sm text-gray-900 border-gray-700 rounded border mb-3">
+                        <option value = 'A1'>A1 : 초보</option>
+                        <option value = 'A2'>A2 : 기초</option>
+                        <option value = 'B1'>B1 : 중급</option>
+                        <option value = 'B2'>B2 : 중상급</option>
+                        <option value = 'C1'>C1 : 고급</option>
+                        <option value = 'C2'>C2 : 고급 이상</option>
+                        <option value = 'native'>원어민</option>
+                </select><div class = "px-4"> ~</div>
+                    <select id = "select_level_to" class = "w-44 px-1 py-1 text-sm text-gray-900 border-gray-700 rounded border mb-3">
+                        <option value = 'A1'>A1 : 초보</option>
+                        <option value = 'A2'>A2 : 기초</option>
+                        <option value = 'B1'>B1 : 중급</option>
+                        <option value = 'B2'>B2 : 중상급</option>
+                        <option value = 'C1'>C1 : 고급</option>
+                        <option value = 'C2'>C2 : 고급 이상</option>
+                        <option value = 'native'>원어민</option>
+                    </select>
+                    </div>
+                </div>            
                 <div class = "flex my-2 px-10">
                     <div class = "w-2/12 text-sm">수업료</div>
                     <div class = "w-10/12 flex flex-col">
