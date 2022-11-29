@@ -44,7 +44,7 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 $token = json_decode(file_get_contents("php://input"))->{"token"};
 
-
+error_log(" $token\n", "3", "../php.log");
 //토큰 해체 
 $data = $jwt->dehashing($token);
 

@@ -13,7 +13,7 @@ $jwt = new JWT();
 
 // 토큰값 전달 받음 
 // file_get_contents("php://input") ;
-$token = json_decode(file_get_contents("php://input"))->{token};
+$token = json_decode(file_get_contents("php://input"))->{'token'};
 // $token = 'eyJhbGciOiJzaGEyNTYiLCJ0eXAiOiJKV1QifS57IlVzZXJfSUQiOiJNemc9IiwiVV9OYW1lIjoiYUdGbGFXNDIiLCJVX0VtYWlsIjoiWVdodWFHRmxhVzQyUUc1aGRtVnlMbU52YlE9PSJ9LjYwZjZiMmE0NDUzOTlhZjg2MzNmOWEyZmZkZGJkNGQ3OTQzNGEzMWNhYWNmNzNlNmE0NDhmMWYxYjZhMGEwZjk=';
 
 
