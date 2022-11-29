@@ -74,7 +74,8 @@
                                         name=""
                                         value="<?php echo $num; ?>"
                                         class="hidden"
-                                        onclick='test_click(event)'/>
+                                        onclick='test_click(event)'
+                                        disabled/>
                                     <label
                                         for="<?php echo $num; ?>"
                                         id="<?php echo $num; ?>_l"
