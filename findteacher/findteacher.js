@@ -82,9 +82,10 @@ function setData(response) {
     // 태그 생성하고 id에 해당 유저의 id 대입
     const div = document.createElement("div");
     div.setAttribute("id", User_Id);
+    // div.setAttribute("href", "../teacherdetail/teacherdetail.php");
 
     div.innerHTML = [
-       
+      '<a href = "../teacherdetail/teacherdetail.php">',
         '<div class = "flex border-2">',
             '<div class = "flex flex-col border-2 w-1/6 py-2">',
                 '<img id = "profile_image" class = "mx-auto w-20 h-20 border-3 border-gray-900 rounded-full "', 
@@ -98,11 +99,12 @@ function setData(response) {
                     '<div class = "text-gray-500">'+U_T_Special+'</div>',
                     '<div id = "'+User_Id+'_l'+'" class = "flex">',
                         '<div>Speaks : </div>',
-                    '</div>',                    
+                    '</div>',                                      
                     '<div class = "mt-2">'+U_T_Intro+'</div>',
                     '<div class = "ml-auto border-2">$ '+Price+'</div>',
                 '</div>',
-            '</div>'
+            '</div>',
+      '</a>',
     ].join("");    
 
     teacher_list.appendChild(div);
@@ -127,6 +129,23 @@ function setData(response) {
         // key.innerText = "";
       }
 
+      // 생성한 div 클릭 시 강사 상세 화면으로 이동하면서 유저 id 전달
+      move_teacher_detail(div, User_Id);
   } 
+}
+
+function move_teacher_detail(div, user_id) {
+
+  // 유저 id localstorage로 전달
+  const user_info = {
+
+    id : user_id,
+  }
+  
+  div.addEventListener('click', () => {
+
+    console.log("test");
+   localStorage.setItem("user_id", JSON.stringify(user_info));
+  });
 }
 
