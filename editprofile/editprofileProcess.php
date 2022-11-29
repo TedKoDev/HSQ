@@ -52,7 +52,7 @@ $desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
-// error_log("$time_now, $position, $desc\n", "3", "../php.log");
+error_log(" $token\n", "3", "../php.log");
 
 
 

@@ -23,72 +23,81 @@
 
 
 include("./conn.php");
+include("./jwt.php");
+
+
+//아이디 중복 체크 
+$check = "SELECT * FROM User where U_Email = '{$email}'";
+$checkresult = mysqli_query($conn, $check);
+
+
+//중복 값이 있는지 없는지 확인한다
+if ($checkresult->num_rows > 0) {
+    // 중복값이 있을 때 실행할 내용
+   
+      $send["message"] = "no";
+      $send["message1"] = "no";
+    
+    echo json_encode($send);
+    mysqli_close($conn);
+
+} else 
+{
+    // 값이 없을 때 실행할 내용
+
+
+
+    $sql = " INSERT INTO User (U_Email, U_PW, U_Name, U_Google_key, U_Facebook_key, U_Register_Date)
+ VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null', NOW() )";
+    // echo $sql;
+    $result = mysqli_query($conn, $sql);
+    if ($result === false) {
+        echo "저장에 문제가 생겼습니다. 관리자에게 문의해주세요.";
+        echo mysqli_error($conn);
+    } else {
+
+// DB 정보 가져오기 
+$sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
+$result = mysqli_query($conn, $sql);
+
+$row = mysqli_fetch_array($result);
+$hashedPassword = $row['U_PW'];
+
+
+//토큰화를 base64인코딩을 진행 
+ $tokenemail = $row['U_Email'];
+ $tokenemail = base64_encode($tokenemail);
+
+ $tokenuserid = $row['User_ID'];
+ $tokenuserid = base64_encode($tokenuserid);
+
+ $tokenusername = $row['U_Name'];
+ $name = $row['U_Name'];
+ $tokenusername = base64_encode($tokenusername);
 
 
 
 
+// DB 정보를 가져왔으니 
+// 비밀번호 검증 로직을 실행하면 된다.
+  $jwt = new JWT();
 
-//U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timeze FROM User_Detail WHERE User_Id = '32'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'];
-
-
-
-
-$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '32'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
- $plan = $row1['0'];
-
-
-//db에서 가져온 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
-$result = (explode("_", $plan));
-
-// echo $result;
+    // 로그인 성공
+    // 토큰 생성  id, name, email 값 저장
   
-$resultarray = array();
-//
+    $token = $jwt->hashing(array(
+        'User_ID' => $tokenuserid,
+        'U_Name'  =>  $tokenusername,
+        'U_Email' => $tokenemail,      
+    ));
 
-foreach($result as $val){
+        $send["token"] = "$token";
+        $send["name"] = "$name";
+        $send["message"] = "yes";
+        
+        echo json_encode($send);
+        mysqli_close($conn);
 
- $val."</br>";
-
-  $save = $val - $timezone * 2;
-
-  // echo $save;
-  if($save > 336) {
-
-    $save = $save - 336; 
-  }
-
-
-  array_push($resultarray,$save);
-
+    }
 }
-
-// echo json_encode($resultarray);
-// echo '</br>';
-// echo $plan;
-// echo '</br>';
-
- $string = implode("_",$resultarray);
-  
-     
- if ($response1) { //정상일떄  
-  $data = array(
-    'schedule'	=>	$string,
-    'success'        	=>	'yes'
-  );
-  echo json_encode($data);
-  mysqli_close($conn);
-} else {//비정상일떄 
-  $data = array(
-
-    'success'        	=>	'no'
-  );
-  echo json_encode($data);
-  mysqli_close($conn);
-}
-  
+?>
