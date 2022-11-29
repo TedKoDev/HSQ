@@ -54,7 +54,7 @@ function delete_type(type_num) {
 
 async function regisclass_btn() {
 
-    // 전송할 수업명, 수업소개, 수업 유형, 수업료
+    // 전송할 수업명, 수업소개, 수업 유형, 수업료, 수업 레벨
     let cname = document
         .getElementById("class_name")
         .value;
@@ -67,6 +67,11 @@ async function regisclass_btn() {
     let price_60 = document
         .getElementById('price_60')
         .value;
+
+    let level_from = document.getElementById("select_level_from").value;
+    let level_to = document.getElementById("select_level_to").value;
+
+    let level_total = level_from+'_'+level_to;
 
     // 수업 유형 array string으로 변환
     let type_list = type_array.join();
@@ -96,6 +101,7 @@ async function regisclass_btn() {
         cintro: cintro,
         people: 1,
         type: type_list,
+        level: level_total,
         timeprice: test
     };
     let res = await fetch('#', {
