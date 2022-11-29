@@ -37,7 +37,7 @@ async function postToken(tokenValue) {
   let class_parse = JSON.parse(class_json);
   
   let data = class_parse.data;
-  // console.log(class_parse.data);
+  // console.log(data);
 
   // 수업 개수 만큼 반복문 돌린 뒤 태그 생성해서 출력
   let class_list = document.getElementById("class_list");
