@@ -1,4 +1,3 @@
-
 <?php 
 // == 강사 찾기 페이지  프로세스==  추후 출력항목 추가될 예정 
 //   #요구되는 파라미터 (fetch형태 json 구조로 전달) 
@@ -43,6 +42,7 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
+$plus       =   json_decode(file_get_contents("php://input"))->{"plus"}; // 더보기 
 
 //토큰 해체 
 $data = $jwt->dehashing($token);
@@ -54,10 +54,22 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
-//Class_List에 수업 목록확인  
-$sql = "SELECT * FROM User_Teacher ";
-$response1 = mysqli_query($conn, $sql);
 
+
+
+$i= 0 ;
+
+
+
+
+$start =  $i + (20* $plus);
+$till = 20;
+
+
+
+//Class_List에 수업 목록확인  
+$sql = "SELECT * FROM User_Teacher order by  User_T_Id DESC LIMIT $start, $till ";
+$response1 = mysqli_query($conn, $sql);
 
 
 $result1['data'] = array();
@@ -125,4 +137,8 @@ On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id
 $result1["success"] = "1";
 echo json_encode($result1);
 
+<<<<<<< HEAD
 mysqli_close($conn);
+=======
+mysqli_close($conn);
+>>>>>>> 3243dcdde23b2ca67220eb0933a99cb534658236

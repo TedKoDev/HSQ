@@ -1,3 +1,5 @@
+
+
 <?php
 
 // == 내수업 목록 출력 프로세스==
@@ -27,8 +29,21 @@ include("./jwt.php");
 
 
 
+
+
+
+$i= 0 ;
+
+$plus = 2;
+
+
+$start =  $i + (20* $plus);
+$till = 20;
+
+
+
 //Class_List에 수업 목록확인  
-$sql = "SELECT * FROM User_Teacher ";
+$sql = "SELECT * FROM User_Teacher order by  User_T_Id DESC LIMIT $start, $till ";
 $response1 = mysqli_query($conn, $sql);
 
 
