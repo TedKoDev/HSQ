@@ -103,12 +103,12 @@ foreach ($R as $row) {
 if ($insert) { //정상적으로 저장되었을때 
 
   $send["success"]   =  "yes";
-  echo json_encode($send);
+ //  echo json_encode($send);
   mysqli_close($conn);
 } else {
 
   $send["success"]   =  "no";
-  echo json_encode($send);
+  // echo json_encode($send);
   mysqli_close($conn);
 }
 
