@@ -3,11 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="/dist/output.css" rel="stylesheet"> -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>    
-  <!-- 회원가입 관련 js -->
+    <link href="../dist/output.css" rel="stylesheet">    
+  </head>      
+  <script defer src = "../commenJS/cookie.js"></script> 
   <script src = "./signup.js"></script>
+  
+  <script>
+  
+  </script>
   <body class = "bg-gray-100">   
     <!-- 네비바 -->
     <?php include '../components/navbar.php' ?>
@@ -47,7 +50,7 @@
               <label class="block text-gray-700 text-sm font-bold mb-1" for="name">
                   이름
               </label>
-              <input id = "name" onkeyup = "printName()" class="border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="">
+              <input id = "name" onkeyup = 'printName()' class="border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="">
               <div id = "nameCheck" class = "invisible text-[12px] font-semibold text-red-400 mb-1">
                   3~20자 이내로 입력하세요.
               </div>            

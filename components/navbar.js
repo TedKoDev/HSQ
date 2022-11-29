@@ -3,7 +3,8 @@
 
 // 쿠키 값 가져오기 
 let checkCookie = getCookie("user_info");    
-
+let haein = 11;
+console.log(haein);
 // 쿠키 가져오는 함수
 function getCookie(cName) {
   cName = cName + '=';
@@ -27,19 +28,17 @@ window.onload = function () {
   let login = document.getElementById("id_login");
   let signup = document.getElementById("id_signup");
 
-  if (checkCookie) { // 쿠키가 있을 경우 (로그인이 되어 있는 상태일 경우)
-    console.log("값있음");    
+  if (checkCookie) { // 쿠키가 있을 경우 (로그인이 되어 있는 상태일 경우)       
 
     userinfo.style.display = 'block';
     login.style.display = 'none';
-    signup.style.display = 'none';
+    signup.style.display = 'none';    
 
     // 서버에 토큰값 전달
-    postToken(checkCookie);
+    postToken_nav(checkCookie);
   }
   else {
-    console.log("값없음"); // 쿠키가 없을 경우 (로그인이 되어 있지 않는 상태일 경우)
-
+    
     userinfo.style.display = 'none';
     login.style.display = 'block';
     signup.style.display = 'block';
@@ -47,9 +46,9 @@ window.onload = function () {
 }
 
 // 쿠키가 있을 경우 쿠키의 토큰값을 서버로 전달한 뒤 프로필 이미지, 유저 이름, 강사여부 받아오기
-async function postToken(tokenValue) {
+async function postToken_nav(tokenValue) {
 
-  console.log(tokenValue);
+  // console.log(tokenValue);
 
   const body = {
     
@@ -64,21 +63,55 @@ async function postToken(tokenValue) {
     body: JSON.stringify(body)
   });  
   
-  console.log(res);
+  // console.log(res);
   // 받아온 json 파싱
   const response = await res.json();      
   const userinfo_json = JSON.stringify(response);     
   const userinfo_parse = JSON.parse(userinfo_json);
 
-  const user_profile = userinfo_parse.p_img;
+  // console.log(response);
+
+  const user_p_img = userinfo_parse.p_img;
   const user_name = userinfo_parse.name;
   const user_teacher = userinfo_parse.teacher;
 
-  console.log(userinfo_json);
-  console.log(userinfo_parse);
-  console.log(user_profile);
-  console.log(user_name);
-  console.log(user_teacher);
+  console.log("user_teacher : "+user_teacher);
+
+  // 강사일 경우 드롭다운 메뉴에 '강사페이지'라고 표시
+  if (user_teacher == 'yes') {
+
+    document.getElementById("teacher_page").innerHTML = '강사페이지';
+  }
+  
+
+  // 프로필 이미지 가져오기
+  let p_img = document.getElementById("user_image");
+  setInfo(p_img, user_p_img, "image");
+
+  // 값이 있을 경우에만 브라우저에 출력
+  function setInfo(key, value, text) {
+
+    
+
+    if ((value != 'default') && (value != null)) {        
+      
+      // 프로필 이미지일 경우
+      if (text == 'image') {      
+          
+          key.src = "../editprofile/image/"+value;        
+      }   
+         
+    }
+    else {
+      key.innerText = "";
+    }
+  }
+
+  // console.log(userinfo_json);
+  // console.log(userinfo_parse);
+  // console.log(user_profile);
+  // console.log(user_name);
+  // console.log(user_teacher);
 }
 
 // 네비바 우측 상단 유저 프로필 아이콘 클릭 시 드롭다운 메뉴
@@ -101,6 +134,55 @@ document.addEventListener('mouseup', function(e) {
   }
 });
 
+
+// 강사되기/강사페이지 클릭 시
+async function go_teacher_page() {
+   
+
+  // 드롭다운의 값 가져오기 (강사되기 or 강사페이지)
+  let teacher_dropdown = document.getElementById('teacher_page').innerHTML;
+  
+  // 강사 신청 안한 계정이면 강사 등록 페이지로 이동
+  if (teacher_dropdown == '강사되기') {
+        
+    // 유저 프로필에 항목 다 채운 경우에만 강사 등록 화면으로 이동
+    const body = {
+    
+      token: checkCookie
+    };
+  
+    const res = await fetch('../registeacher/regischeckProcess.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(body)
+    });    
+    
+    const response = await res.json();     
+    
+
+    // 모두 채웠을 경우 강사 등록 화면으로 이동
+    
+    if (response.success == 'yes') {
+
+      location.replace("../registeacher/registeacher.php");
+
+    }
+    else {
+
+      alert("강사 등록 시 회원 정보를 모두 작성해야 합니다.");
+      location.replace("../editprofile/editprofile.php");
+    }
+    
+  }
+  // 강사일 경우 강사페이지로 이동
+  else {
+    
+    location.assign("../teacherpage/t_myclass.php");
+  }
+}
+
 // 로그아웃 클릭시
 function logout() {
   
@@ -112,10 +194,10 @@ function logout() {
 
 }
 
-// 쿠키 삭제하는 함수
-function deleteCookie(name) {
-	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
-}
+// // 쿠키 삭제하는 함수
+// function deleteCookie(name) {
+// 	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+// }
 
 
 
