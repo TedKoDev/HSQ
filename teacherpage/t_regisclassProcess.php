@@ -53,7 +53,7 @@ $level       =   json_decode(file_get_contents("php://input"))->{"level"};  //�
 
 // date_default_timezone_set('Asia/Seoul');
 // $time_now = date("Y-m-d H:i:s");
-// error_log("$token, $cname, $cintro,$timeprice,$people,$type  \n", "3", "../php.log");
+error_log("$token, $cname, $cintro,$timeprice,$people,$type ,$level  \n", "3", "../php.log");
 
 
 //토큰 해체 
@@ -71,7 +71,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 // Class_List에 수업 등록 
-$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type,CL_Level,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type','$level', now()) ";
+$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type, CL_Level,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type','$level', now()) ";
 
 $insert = mysqli_query($conn, $result);
 
