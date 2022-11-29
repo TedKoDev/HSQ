@@ -10,6 +10,7 @@
 
 //5. "people"   : "수업인원" 
 //6. "type"     : "수업유형" 
+//7. "leveltype"     : "수업수준" 
 
 
 // 보낼 줄 때 형태 
@@ -21,6 +22,7 @@
 
 //  "people"   : "수업인원" 
 //  "type"     : "수업유형" 
+//  "level"     : "수업수준" 
 
 // }
 
@@ -43,14 +45,15 @@ $cname      =   json_decode(file_get_contents("php://input"))->{"cname"}; // 수
 $cintro     =   json_decode(file_get_contents("php://input"))->{"cintro"}; //수업소개
 $timeprice  =   json_decode(file_get_contents("php://input"))->{"timeprice"};  //수업시간, 수업가격 
 $people     =   json_decode(file_get_contents("php://input"))->{"people"};  //수업인원
-$type       =   json_decode(file_get_contents("php://input"))->{"type"};  //수업유형
+$type       =   json_decode(file_get_contents("php://input"))->{"type"};  //수업유형 
+$level       =   json_decode(file_get_contents("php://input"))->{"level"};  //수업수준
 
-error_log("$token, $cname, $cintro,$timeprice,$people,$type  \n", "3", "../php.log");
+
 
 
 // date_default_timezone_set('Asia/Seoul');
 // $time_now = date("Y-m-d H:i:s");
-// error_log("$time_now, $position, $desc\n", "3", "../php.log");
+error_log("$token, $cname, $cintro,$timeprice,$people,$type ,$level  \n", "3", "../php.log");
 
 
 //토큰 해체 
@@ -68,7 +71,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 // Class_List에 수업 등록 
-$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type',now()) ";
+$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type, CL_Level,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type','$level', now()) ";
 
 $insert = mysqli_query($conn, $result);
 
@@ -108,3 +111,7 @@ if ($insert) { //정상적으로 저장되었을때
   // echo json_encode($send);
   mysqli_close($conn);
 }
+
+  // $send["success"]   =  "no";
+  // echo json_encode($send);
+  // mysqli_close($conn);

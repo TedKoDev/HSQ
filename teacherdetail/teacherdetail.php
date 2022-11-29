@@ -78,6 +78,14 @@
             </div>
         </div>
     </div>
+    <div class = "flex flex-col mt-3 mb-2 max-w-4xl mx-auto">
+        <div class = "w-3/4 border-2">수업 가능한 시간</div>
+         <!-- 일정 표시 -->
+        <div class = "flex flex-col w-3/4 border-2">
+            <div>
+            </div>
+        </div>
+    </div>
    
   </body>        
 </html>

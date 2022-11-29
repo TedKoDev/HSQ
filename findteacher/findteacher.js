@@ -149,3 +149,36 @@ function move_teacher_detail(div, user_id) {
   });
 }
 
+// 더보기 클릭
+// 처음 화면 출력할 때는 0으로 세팅
+let more_num = 0;
+async function see_more() {
+
+  // 클릭할 때마다 1씩 증가
+  more_num = more_num + 1;
+
+  const value = tokenValue;     
+
+  const body = {
+    
+    token : value,
+    plus : more_num,
+  };
+ 
+  const res = await fetch('./findteacherProcess.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;'
+    },
+    body: JSON.stringify(body)
+  });  
+
+  // 받아온 json 파싱하고 array 추출
+  const response = await res.json();  
+
+  // array에 있는 데이터 세팅
+  setData(response);
+
+}
+
+
