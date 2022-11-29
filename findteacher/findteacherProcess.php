@@ -51,13 +51,26 @@ $payload = json_decode($parted[1], true);
 $User_ID =  base64_decode($payload['User_ID']);
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
+$plus = base64_decode($payload['plus']);
+
+
+
+
+
+
+$i= 0 ;
+
+
+
+
+$start =  $i + (20* $plus);
+$till = 20;
 
 
 
 //Class_List에 수업 목록확인  
-$sql = "SELECT * FROM User_Teacher ";
+$sql = "SELECT * FROM User_Teacher order by  User_T_Id DESC LIMIT $start, $till ";
 $response1 = mysqli_query($conn, $sql);
-
 
 
 $result1['data'] = array();

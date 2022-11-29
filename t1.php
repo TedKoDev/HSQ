@@ -25,178 +25,49 @@
 include("./conn.php");
 include("./jwt.php");
 
-$i = 131;
-while ($i <=200){
-    echo $i;
 
-$name = 'hong'. $i ;
-$email = 'hong'. $i.'@naver.com';
-$password ='hong'. $i ;
+//Class_List에 수업 목록확인  
+$sql = "SELECT * FROM Class_List WHERE User_Id = '32'";
+$response1 = mysqli_query($conn, $sql);
 
 
-date_default_timezone_set('Asia/Seoul');
-$time_now = date("Y-m-d H:i:s");
+$result1['data'] = array();
+$result2['timeprice'] = array();
 
-error_log("$time_now, $name, $email,$password \n", "3", "/php.log");
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+while ($row1 = mysqli_fetch_array($response1)){
+  $clid= $row1['0'];
 
-
-
-
-$sql = " INSERT INTO User (U_Email, U_PW, U_Name, U_Google_key, U_Facebook_key, U_Character,U_Register_Date )
-VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null','null', NOW() )";
-   // echo $sql;
-   $result = mysqli_query($conn, $sql);
-
-// DB 정보 가져오기 
-$sql = "SELECT User_ID FROM User ORDER BY User_ID DESC LIMIT 1";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_array($result);
-$User_ID = $row['User_ID'];
-   
-
-
-   $result = "INSERT INTO User_Detail (User_Id) VALUES ('$User_ID') ";
-   $insert = mysqli_query($conn, $result);
-
-   
-
-	$select = "UPDATE User_Detail SET U_D_Img = '1669181503PNG' where User_Id = '$User_ID' ";
-
-	$response = mysqli_query($conn, $select);
-
-    
-
-
-
-    $select = "UPDATE User SET U_Name = '$name' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-    $select = "UPDATE User_Detail SET U_D_Bday = '2021.1.1' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-
-    $select = "UPDATE User_Detail SET U_D_Sex = '남성' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-
-    $select = "UPDATE User_Detail SET U_D_Contact = 'default' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-    $select = "UPDATE User_Detail SET U_D_Country = '대한민국' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-
-    $select = "UPDATE User_Detail SET U_D_Residence = '대한민국' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-
-
-    $select = "UPDATE User_Detail SET U_D_Language = 'default' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-
-    $select = "UPDATE User_Detail SET U_D_Korean = 'A1' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-
-
-    $select = "UPDATE User_Detail SET U_D_Intro = ''소개'+ $i' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-    $select = "UPDATE User_Detail SET U_D_Timezone = '9' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-    
-    $select = "UPDATE User_Detail SET U_D_T_add = 'yes' where User_Id = '$User_ID' ";
-
-
-    $response = mysqli_query($conn, $select);
-
-
-    $check = "SELECT * FROM User_Teacher where User_Id = '$User_ID'";
-    $checkresult = mysqli_query($conn, $check);
-    
-
-       // 없으면 insert로  data 만들고  
-       $result = "INSERT INTO User_Teacher (User_Id) VALUES ('$User_ID') ";
-       $insert = mysqli_query($conn, $result);
+  $send['class_id'] = $row1['0'];
+  $send['clname'] = $row1['2'];
+  $send['cldisc'] = $row1['3'];
+  $send['clpeople'] = $row1['4'];
+  $send['cltype'] = $row1['5'];
+  $send['cllevel'] = $row1['6'];
  
-    
-    
 
-    //강사-자기소개
-    $select = "UPDATE User_Teacher SET U_T_Intro = 't소개+$i' where User_Id = '$User_ID' ";
-    $result6 = mysqli_query($conn, $select);
+//Class_List_Time_Price 수업 시간, 가격 확인   
+$sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+$response2 = mysqli_query($conn, $sql);
 
-    
-    
-
+while ($row2 = mysqli_fetch_array($response2)){
  
-        $certi = $_POST['certi'];
-        $select = "UPDATE User_Teacher SET U_T_Certificate = '서티+$i' where User_Id = '$User_ID' ";
-        $result7 = mysqli_query($conn, $select);
-    
-     
-    
-    
-      
-    
-   
-        
-   
+   $tp['Time'] = $row2['2'];
+   $tp['Price'] = $row2['3']; 
 
+ array_push($result2['timeprice'],$tp);
 
-// Class_List에 수업 등록 
-$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type,  CL_Date) VALUES ('$User_ID','수업+$i','수업소개+$i ',1,'회화 연습,문법',now()) ";
+ }
+//  echo json_encode($result2);
 
-$insert = mysqli_query($conn, $result);
+$send['tp'] = $result2['timeprice'];
 
-
-
-// DB 정보 가져오기 
-$sql = "SELECT * FROM Class_List WHERE User_Id = '{$User_ID}'ORDER BY CLass_Id DESC LIMIT 1";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_array($result);
-$Class_Id = $row['CLass_Id'];
-
-
-
-  $result = "INSERT INTO Class_List_Time_Price (CLass_Id, Time, price, Date) VALUES ('$Class_Id','30','30',now())";
-  $insert = mysqli_query($conn, $result);
-
-  $result = "INSERT INTO Class_List_Time_Price (CLass_Id, Time, price, Date) VALUES ('$Class_Id','60','60',now())";
-  $insert = mysqli_query($conn, $result);
-
-    
-    $i= $i +1;
+array_push($result1['data'],$send);
+$result2['timeprice'] = array();
 }
+
+$result1["success"] = "1";
+echo json_encode($result1);
+
+
+mysqli_close($conn);
