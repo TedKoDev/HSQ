@@ -95,6 +95,8 @@ async function regisclass_btn() {
 
     let test = JSON.stringify(price_array);
 
+    console.log("level_total : "+level_total);
+
     let body = {
         token: checkCookie,
         cname: cname,
