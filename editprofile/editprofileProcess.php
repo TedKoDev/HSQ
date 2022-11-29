@@ -46,6 +46,15 @@ $position = json_decode(file_get_contents("php://input"))->{"position"}; //항�
 $desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
 
 
+date_default_timezone_set('Asia/Seoul');
+$time_now = date("Y-m-d H:i:s");
+
+error_log("$time_now, $position, $desc\n", "3", "/php.log");
+
+
+
+
+
 //토큰 해체 
 $data = $jwt->dehashing($token);
 
@@ -62,16 +71,23 @@ $U_Name  = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 
+error_log("$time_now, $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
+
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지 확인
 
-$check = "SELECT * FROM User_Detail where User_Id = '$User_ID'";
+$check = "SELECT * FROM User_Detail where User_Id = $User_ID";
 $checkresult = mysqli_query($conn, $check);
+
+error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
+
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지  확인
-if ($checkresult->num_rows = 0) {
+if ($checkresult->num_rows > 0) {
+       error_log("$time_now,'ss', $checkresult \n", "3", "/php.log");
+
     // 중복값이 없을때 때 실행할 내용
     // 없으면 insert로  data 만들고  
     // 아래의 update로 data 삽입 
@@ -83,6 +99,8 @@ if ($checkresult->num_rows = 0) {
     // echo json_encode($send);
     mysqli_close($conn);
 }
+
+
 
 
 // 있으면 update 시작 
