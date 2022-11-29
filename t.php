@@ -26,78 +26,76 @@ include("./conn.php");
 include("./jwt.php");
 
 
-//아이디 중복 체크 
-$check = "SELECT * FROM User where U_Email = '{$email}'";
-$checkresult = mysqli_query($conn, $check);
 
-
-//중복 값이 있는지 없는지 확인한다
-if ($checkresult->num_rows > 0) {
-    // 중복값이 있을 때 실행할 내용
-   
-      $send["message"] = "no";
-      $send["message1"] = "no";
-    
-    echo json_encode($send);
-    mysqli_close($conn);
-
-} else 
-{
-    // 값이 없을 때 실행할 내용
+//Class_List에 수업 목록확인  
+$sql = "SELECT * FROM User_Teacher ";
+$response1 = mysqli_query($conn, $sql);
 
 
 
-    $sql = " INSERT INTO User (U_Email, U_PW, U_Name, U_Google_key, U_Facebook_key, U_Register_Date)
- VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null', NOW() )";
-    // echo $sql;
-    $result = mysqli_query($conn, $sql);
-    if ($result === false) {
-        echo "저장에 문제가 생겼습니다. 관리자에게 문의해주세요.";
-        echo mysqli_error($conn);
-    } else {
+$result1['data'] = array();
+while ($row1 = mysqli_fetch_array($response1)) {
+    $usid = $row1['1'];
 
-// DB 정보 가져오기 
-$sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
-$result = mysqli_query($conn, $sql);
-
-$row = mysqli_fetch_array($result);
-$hashedPassword = $row['U_PW'];
+    $send['User_Id'] = $row1['1'];
+    $send['U_T_Intro'] = $row1['2'];
+    $send['U_T_Special'] = $row1['4'];
 
 
-//토큰화를 base64인코딩을 진행 
- $tokenemail = $row['U_Email'];
- $tokenemail = base64_encode($tokenemail);
+    //User_Detail 에서 이미지, 언어 수업 시간, 가격 확인   
+    $sql = "SELECT * FROM User_Detail WHERE User_Id = '$usid'";
+    $response2 = mysqli_query($conn, $sql);
 
- $tokenuserid = $row['User_ID'];
- $tokenuserid = base64_encode($tokenuserid);
+    $row2 = mysqli_fetch_array($response2);
 
- $tokenusername = $row['U_Name'];
- $name = $row['U_Name'];
- $tokenusername = base64_encode($tokenusername);
+    $send['U_D_Img'] = $row2['2'];
+    $send['U_D_Language'] = $row2['8'];
+    $send['U_D_Intro'] = $row2['12'];
+
+    //User 에서 유저 이름    
+    $sql = "SELECT * FROM User WHERE User_ID = '$usid'";
+    $response3 = mysqli_query($conn, $sql);
+
+    $row3 = mysqli_fetch_array($response3);
+
+    $send['U_Name'] = $row3['3'];
 
 
 
 
-// DB 정보를 가져왔으니 
-// 비밀번호 검증 로직을 실행하면 된다.
-  $jwt = new JWT();
+    //Class_List와  class_list_Time_Price 와 join 을 통해서 userid가 만든  class list의 class id 값을  class_List_Time_Price와의 fk로 해서 리스트를 얻는다. 
+    // 그중 가장 낮은 가격의 값을 얻는다. 
 
-    // 로그인 성공
-    // 토큰 생성  id, name, email 값 저장
-  
-    $token = $jwt->hashing(array(
-        'User_ID' => $tokenuserid,
-        'U_Name'  =>  $tokenusername,
-        'U_Email' => $tokenemail,      
-    ));
 
-        $send["token"] = "$token";
-        $send["name"] = "$name";
-        $send["message"] = "yes";
-        
-        echo json_encode($send);
-        mysqli_close($conn);
 
+
+    //Class_List에 수업 목록확인  
+    $sql = "SELECT * FROM Class_List WHERE User_Id = '{$usid}'";
+    $response4 = mysqli_query($conn, $sql);
+
+    $row4 = mysqli_fetch_array($response4);
+    $clid = $row4['0'];
+    $send['class_id'] = $row4['0'];
+
+
+    //Class_List_Time_Price 수업 시간, 가격 확인   
+    $sql = "SELECT Class_List_Time_Price.CLass_Id, User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
+On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id = '{$usid}' order by Class_List_Time_Price.Price asc limit 1";
+
+    // $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+    $response5 = mysqli_query($conn, $sql);
+
+    $row5 = mysqli_fetch_array($response5);
+    $send['Time'] = $row5['2'];
+    $send['Price'] = $row5['3'];
+
+    if ($send['class_id'] != null) {
+        array_push($result1['data'], $send);
     }
 }
-?>
+
+
+$result1["success"] = "1";
+echo json_encode($result1);
+
+mysqli_close($conn);
