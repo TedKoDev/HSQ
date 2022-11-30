@@ -1,8 +1,8 @@
 // 유저 id 받아온 후 로컬 스토리지에서 삭제
-// const {id} = JSON.parse(localStorage.getItem("user_id"));
-// localStorage.removeItem("user_id");
+const {id} = JSON.parse(localStorage.getItem("user_id"));
+localStorage.removeItem("user_id");
 
-// let U_id = id;
+let U_id = id;
 // console.log(U_id);
 
 
@@ -118,7 +118,7 @@ function getDate(header_date, timezone) {
 }
 
 // 클릭한 유저 ID랑 유저의 토큰 보내서 강사 상세 정보 가져오기
-getTeacherdatail(checkCookie, 32); // 일단 강사 id는 32로 하드코딩
+getTeacherdatail(checkCookie, U_id); // 일단 강사 id는 32로 하드코딩
 
 async function getTeacherdatail(tokenValue, usid) {
 
@@ -155,6 +155,11 @@ async function getTeacherdatail(tokenValue, usid) {
       const schedule = result.Schedule;
       const class_list = result.class;       
       
+      console.log("user_id : "+U_id);
+      console.log("name : "+name);
+      console.log("certi : "+certi);
+      console.log("language : "+language);
+      console.log("intro : "+intro);
 
       // 바로 대입할 수 있는 것들 우선 대입 
       // 바로 대입할 수 있는 요소들의 id값 가져오기
@@ -234,7 +239,7 @@ function setLanguage(key, value) {
     for (let key_l in json_parse) {
 
       let language_list = document.createElement('span');          
-      language_list.innerHTML = ['<span class = "mr-2">'+key_l+' - '+json_parse[key_l]+'</span>'].join("");
+      language_list.innerHTML = ['<span class = "mr-2 text-sm">'+key_l+' - '+json_parse[key_l]+'</span>'].join("");
       key.appendChild(language_list);
 
       // console.log(key_l, value[key_l]);          
@@ -312,9 +317,9 @@ function setClass(class_list) {
     class_div.setAttribute("class", "ml-4 mr-4 bg-gray-200 hover:bg-gray-300 justify-between rounded-lg my-2");
 
     const div = document.createElement('div');    
+    div.setAttribute("id", "click_"+class_id);
     // console.log("pass");
-    div.innerHTML = [
-      '<a id = '+class_id+' onclick = show_modal('+class_id+')>',
+    div.innerHTML = [      
         '<div class = "flex justify-between">',
           '<div class = "flex flex-col px-4">',
             '<div class = "text-base font-normal mb-3 mt-1">'+clname+'</div>',          
@@ -326,8 +331,7 @@ function setClass(class_list) {
             '<div>30분 : <a>'+price_30+' $</a></div>',
             '<div>60분 : <a>'+price_60+' $</a></div>',
           '</div>',
-        '</div>',
-      '</a>'
+        '</div>'      
     ].join("");
    
     class_div.appendChild(div);
@@ -359,8 +363,82 @@ function setClass(class_list) {
       // console.log(type_div.value);
       type_div.appendChild(type);
      }
-     
+    
+    // 클릭시 모달창 띄워지게
+    click_class(class_id, clname, cldesc, cltype, tp, cllevel);
+
   }
+}
+
+// 클릭 시 모달창 띄우고 값 대입
+function click_class(class_id, clname, cldesc, cltype, tp, cllevel) {
+
+  const class_click = document.getElementById("click_"+class_id);    
+    const body = document.getElementsByTagName('body')[0];
+    const overlay = document.querySelector('#overlay')
+
+    const show_modal = () => {
+      
+      overlay
+          .classList
+          .toggle('hidden')
+      overlay
+          .classList
+          .toggle('flex')
+
+      body
+          .classList
+          .add('scrollLock'); 
+          
+      // 값 대입
+      setModal(class_id, clname, cldesc, cltype, tp, cllevel)
+    }
+
+    class_click.addEventListener("click", show_modal)
+}
+
+function setModal(class_id, clname, cldesc, cltype, tp, cllevel) {
+
+  const clname_m = document.getElementById("clname_m");
+  const cllevel_m = document.getElementById("cllevel_m");
+  const cltype_m= document.getElementById("cltype_m");
+  const cldesc_m = document.getElementById("cldesc_m");
+  const clprice30_m = document.getElementById("clprice30_m");
+  const clprice60_m = document.getElementById("clprice60_m");
+
+  // 이름 설명 대입
+  clname_m.innerHTML = clname;
+  cldesc_m.innerHTML = cldesc;
+
+  // 수업 레벨 대입
+  // 수업 레벨 가져온 다음 배열로 바꾸어서 대입
+  const level_array = cllevel.split("_");
+  const level_string = level_array[0]+" - "+level_array[1];
+  const level_a = document.createElement("a");
+  level_a.setAttribute("class", "text-gray-700 mr-2")
+  level_a.innerHTML = level_string;
+  cllevel_m.appendChild(level_a);
+
+  // 가격 대입
+  clprice30_m.innerHTML = "30분 : "+tp[0].Price+" $";
+  clprice60_m.innerHTML = "60분 : "+tp[1].Price+" $";
+
+  // 수업 유형 대입
+  // 수업 유형 배열로 전환
+  const type_array = cltype.split(",");
+
+  // 배열 개수만큼 반복문 돌려서 태그 생성 후 대입
+  for (let j = 0; j < type_array.length; j++) {
+    
+   // console.log(type_array[j]);
+   const type = document.createElement("a");
+   type.setAttribute("class", "mx-2 border-2 border-gray-700 rounded px-1")
+   type.innerHTML = type_array[j];
+   
+   // console.log(type_div.value);
+   cltype_m.appendChild(type);
+  }
+
 }
 
 // 자기소개, 강의 스타일 클릭했을 때 해당하는 div 보이게 처리
@@ -386,7 +464,7 @@ function show_intro(type) {
     t_intro_menu.setAttribute("class", "px-3 font-semibold border-b-2");
     intro_div.style.display = 'none';
     t_intro_div.style.display = 'block';
-  }
+  }  
 }
 
 // 수업 클릭했을 때 모달창 띄우기
@@ -404,38 +482,16 @@ function show_modal(class_id) {
   body.classList.add('scrollLock');
 }
 
-// 수업 클릭했을 때 모달창 띄우기
+// 모달창 취소, 예약 클릭 했을 떄
 window.addEventListener('DOMContentLoaded', () => {
 
   const body = document.getElementsByTagName('body')[0];
 
-  const overlay = document.querySelector('#overlay')
-  // const edit_btn = document.getElementById('utc')
+  const overlay = document.querySelector('#overlay')  
   const closeBtn = document.querySelector('#close-modal')
- 
+  
 
-  // const show_modal = () => {
-
-  //   console.log("pass");
-  //     overlay
-  //         .classList
-  //         .toggle('hidden')
-  //     overlay
-  //         .classList
-  //         .toggle('flex')
-
-  //     body
-  //         .classList
-  //         .add('scrollLock');
-
-  //     // 날짜 뿌려주기
-  //     getDate("header_s_m", timezone);
-
-  //     // 일정 있는 곳에만 색깔 변환
-  //     setschedule("_m_l");
-     
-  // }
-
+  // 모달창 취소 클릭
   const cancel_modal = () => {                           
 
       overlay
@@ -452,10 +508,6 @@ window.addEventListener('DOMContentLoaded', () => {
       // 일정 다시 세팅
       // setschedule("_l");
 
-  }            
-
-  // edit_btn.addEventListener('click', show_modal)
-
-  closeBtn.addEventListener('click', cancel_modal)
-  // edit_cancel_btn.addEventListener('click', cancel_modal)
+  }              
+  closeBtn.addEventListener('click', cancel_modal)  
 })

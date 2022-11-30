@@ -29,10 +29,10 @@
                     </div>
                     <!-- 이름, 강사 자격, 구사 가능 언어 -->
                     <div class="flex flex-col ml-4">
-                        <div id = "name">이름</div>
-                        <div id = "certi">강사 자격</div>
-                        <div class = "flex">
-                            <div class ="mr-3">구사 언어 :
+                        <div id = "name" class = "font-semibold"></div>
+                        <div id = "certi" class = "text-sm text-gray-500"></div>
+                        <div class = "flex mt-1 items-center">
+                            <div class ="mr-3 text-sm text-gray-500">Speaks :
                             </div>
                             <div id = "language" class="flex">                           
                             </div>
@@ -49,8 +49,8 @@
                 <div class = "flex">
                     <div id = "intro_div">
                         <div class = "flex flex-col">
-                            <a id = "country"></a>
-                            <a id = "residence"></a>
+                            <a id = "country" class = "text-sm text-gray-500"></a>
+                            <a id = "residence" class = "text-sm text-gray-500"></a><br>
                             <div id = "intro"></div>
                         </div>
                     </div>
@@ -197,20 +197,20 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                     </div><br>
-                    <div class = "font-semibold">한국어 기초</div>
+                    <div class = "font-semibold" id = "clname_m">한국어 기초</div>
                     <br>
-                    <div class = "text-sm text-gray-500"> 레벨 </div>
-                    <div>A1 - C1</div><br>
+                    <div class = "text-sm text-gray-500" > 레벨 </div>
+                    <div id = "cllevel_m"></div><br>
                     <div class = "text-sm text-gray-500"> 유형 </div>
-                    <div class = "flex">
-                        <a class = "mx-2 border-2 border-gray-700 rounded px-1">문법</a> 
+                    <div class = "flex" id = "cltype_m">
+                        <!-- <a class = "mx-2 border-2 border-gray-700 rounded px-1">문법</a> 
                         <a class = "mx-2 border-2 border-gray-700 rounded px-1">철자</a> 
-                        <a class = "mx-2 border-2 border-gray-700 rounded px-1">발음</a>
+                        <a class = "mx-2 border-2 border-gray-700 rounded px-1">발음</a> -->
                     </div><br>
                     <div class = "text-sm text-gray-500">설명</div>
-                    <div>기초 한국어 수업입니다</div><br>
+                    <div id = "cldesc_m">기초 한국어 수업입니다</div><br>
                     <div class = "text-sm text-gray-500">가격</div>
-                    <a>30분 : 12 $</a><a>60분 : 24 $</a>                    
+                    <a id = "clprice30_m">30분 : 12 $</a><a id = "clprice60_m">60분 : 24 $</a>                    
                 </div>
                 <a class = "w-16 mt-2 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">예약하기</a>               
             </div>                
