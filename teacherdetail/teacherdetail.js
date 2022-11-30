@@ -8,9 +8,41 @@
 
 // 수업 가능 시간 부분에 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
 
-getDate("header_s");
+// 해당 유저의 utc 가져온후 date에 가져온 utc 적용
 
-function getDate(header_date) {
+get_utc(checkCookie);
+
+async function get_utc(tokenValue) {
+
+    const body = {
+    
+        token: tokenValue
+      };
+    
+      const res = await fetch('../util/utc.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+      });  
+
+      const response = await res.json();  
+      const success = response.success;
+      const timezone = response.timezone;
+
+      if (success == "yes") {
+
+        getDate("header_s", timezone);
+      }
+      else {
+        console.log("타임존 못불러옴")
+      }
+}
+
+// getDate("header_s", timezone);
+
+function getDate(header_date, timezone) {
 
     let header_s = document.getElementById(header_date);
 
@@ -20,8 +52,10 @@ function getDate(header_date) {
       }
 
     let now = new Date();
-
-    console.log("now : "+now);
+    
+    const string_to_int = parseInt(timezone);
+    now.setHours(now.getHours() + string_to_int);
+    
     let time = now.getTime();
     let todayDate = now.getDate();
 
