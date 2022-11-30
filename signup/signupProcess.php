@@ -58,8 +58,8 @@ if ($checkresult->num_rows > 0) {
 
 
 
-    $sql = " INSERT INTO User (U_Email, U_PW, U_Name, U_Google_key, U_Facebook_key, U_Register_Date)
- VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null', NOW() )";
+    $sql = " INSERT INTO User (U_Email, U_PW, U_Name, U_Google_key, U_Facebook_key, U_Character, U_Register_Date)
+ VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null','null', NOW() )";
     // echo $sql;
     $result = mysqli_query($conn, $sql);
     if ($result === false) {

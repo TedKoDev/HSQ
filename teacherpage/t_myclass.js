@@ -37,8 +37,7 @@ async function postToken(tokenValue) {
   let class_parse = JSON.parse(class_json);
   
   let data = class_parse.data;
-  // console.log(class_parse.data);
-
+  
   // 수업 개수 만큼 반복문 돌린 뒤 태그 생성해서 출력
   let class_list = document.getElementById("class_list");
   for (let i = 0; i < data.length; i++) {
@@ -49,7 +48,10 @@ async function postToken(tokenValue) {
     const cldesc = data[i].cldisc;
     const clpeoeple = data[i].clpeople;
     const cltype = data[i].cltype;
-    const tp = data[i].tp;    
+    const tp = data[i].tp;   
+    
+    console.log("tp0 : "+tp[0].Price);
+    console.log("tp1 : "+tp[1].Price);
 
     // 가격 파싱
     const price_30 = tp[0].Price;

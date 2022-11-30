@@ -36,7 +36,9 @@
             
         </div><br>
         <div class = "flex">
-            <div class = "my-5 py-2 w-1/6 mx-auto bg-gray-50 text-center rounded-md border-gray-400 shadow">더 보기</div>
+            <div class = "my-5 py-2 w-1/6 mx-auto bg-gray-50 text-center rounded-md 
+                border-gray-400 shadow" onclick = "see_more()">더 보기
+            </div>
         </div>
     </body>
 </html>
