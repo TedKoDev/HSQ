@@ -1,12 +1,16 @@
 <?php
 
 
+
+include("./conn.php");
+include("./jwt.php");
+
 $jwt = new JWT();
 
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-$usid      =   320; // 선택된 강사의 userid 
+$usid      =   317; // 선택된 강사의 userid 
 
 
 //토큰 해체 
@@ -50,15 +54,12 @@ User_Detail.U_D_Language,
 User_Detail.U_D_Intro,
 User_Teacher.U_T_Intro ,
 User_Detail.U_D_Country,
-User_Detail.U_D_Residence,
-Teacher_Schedule.Schedule
+User_Detail.U_D_Residence
 FROM User
 JOIN User_Detail
   ON User.User_ID = User_Detail.User_Id
 JOIN User_Teacher
   ON User_Teacher.User_Id = User_Detail.User_Id 
-JOIN Teacher_Schedule
-  ON Teacher_Schedule.User_Id = User_Detail.User_Id
  where User.User_Id = '$usid' ";
 $response1 = mysqli_query($conn, $sql);
 
@@ -76,7 +77,14 @@ $send['U_T_Intro'] = $row1['5'];
 $send['U_D_Country'] = $row1['6'];
 $send['U_D_Residence'] = $row1['7'];
 
-$plan1 = $row1['8'];
+
+$sql = "SELECT 
+Schedule
+FROM Teacher_Schedule
+ where User_Id = '$usid' ";
+$response1 = mysqli_query($conn, $sql);
+
+$plan1 = $row1['0'];
 
 
 //db에서 가져온 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
