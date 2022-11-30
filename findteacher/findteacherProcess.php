@@ -137,8 +137,4 @@ On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id
 $result1["success"] = "1";
 echo json_encode($result1);
 
-<<<<<<< HEAD
 mysqli_close($conn);
-=======
-mysqli_close($conn);
->>>>>>> 3243dcdde23b2ca67220eb0933a99cb534658236
