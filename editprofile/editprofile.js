@@ -62,7 +62,7 @@
       const user_contact = userinfo_parse.contact; 
       const user_country = userinfo_parse.country; 
       const user_residence = userinfo_parse.residence;   
-      const user_utc = userinfo_parse.utc;    
+      const user_timezone = userinfo_parse.timezone;    
       const user_language = userinfo_parse.language; 
       const user_korean = userinfo_parse.korean;       
       const user_intro = userinfo_parse.intro; 
@@ -91,7 +91,7 @@
       setInfo(sex, user_sex, "");      
       setInfo(country, user_country, "");
       setInfo(residence, user_residence, "");
-      setInfo(utc, user_utc, "");
+      
       setInfo(intro, user_intro, "");
       setInfo(korean, user_korean, "");
 
@@ -103,8 +103,8 @@
 
       console.log("first : "+language_can);
 
-
-                              
+      // utc도 별도의 함수로 출력
+      setTimezone(utc, user_timezone)                        
     }
 
     // 값이 있을 경우에만 브라우저에 출력
@@ -158,7 +158,26 @@
       }
     }
    
-    
+    function setTimezone(key, value) {
+      
+      let string;
+
+      if (value >= 0) {      
+
+        string = "UTC+"+value+":00";
+        
+      }
+      else {      
+        
+        string = "UTC"+value+":00";       
+        
+      }
+
+      key.innerText = string;
+      
+
+      // key.innerText = "UTC"+value.toString().length < 2 ? '0' + value : value;
+    }
    
 
 
@@ -490,11 +509,10 @@
     // 시간대 수정 아이콘 클릭
     function editing_utc() {
 
-       // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+       // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
        utc_click_edit_div.style.display = 'block';
        // 텍스트랑 편집 아이콘 안보이게 처리
-       utc_not_edit_div.style.display = 'none'; 
-
+       utc_not_edit_div.style.display = 'none';               
     }
 
     // 시간대 수정 취소 클릭
@@ -1059,7 +1077,7 @@
       
     }
 
-    // 성별 수정 취소
+    // 한국어 수정 취소
     function edit_cancel_korean() {
 
       // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
@@ -1068,7 +1086,7 @@
       korean_not_edit_div.style.display = 'block'; 
     }
 
-    // 성별 수정 완료
+    // 한국어 수정 완료
     function edit_done_korean() {
 
       // 입력창에서 수정한 성별을 화면에 표시
