@@ -14,9 +14,14 @@ get_utc(checkCookie);
 
 async function get_utc(tokenValue) {
 
+    // 로컬 타임존도 보내기
+    const date = new Date();    
+    const utc = -(date.getTimezoneOffset() / 60);
+
     const body = {
     
-        token: tokenValue
+        token: tokenValue,
+        utc: utc,
       };
     
       const res = await fetch('../util/utc.php', {
@@ -118,7 +123,7 @@ function getDate(header_date, timezone) {
 }
 
 // 클릭한 유저 ID랑 유저의 토큰 보내서 강사 상세 정보 가져오기
-getTeacherdatail(checkCookie, U_id); // 일단 강사 id는 32로 하드코딩
+getTeacherdatail(checkCookie, U_id); 
 
 async function getTeacherdatail(tokenValue, usid) {
 
