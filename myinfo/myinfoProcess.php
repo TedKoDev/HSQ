@@ -23,6 +23,7 @@
 //   "country": null,
 //   "residence": null,
 //   "point": null,
+//   "timezone": null,
 //   "language": null,
 //   "korean": null,
 //   "teacher": null,
