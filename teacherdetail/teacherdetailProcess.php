@@ -73,275 +73,7 @@
 //                         "Price": "24"
 //                     }
 //                 ]
-//             },
-//             {
-//                 "class_id": "39",
-//                 "clname": "한국어 수업1",
-//                 "cldisc": "수업1입니다",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습,발음,철자",
-//                 "cllevel": "A1_C1",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "12"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "25"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "40",
-//                 "clname": "한국어 중급",
-//                 "cldisc": "중급 수업입니다",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습,문법,읽기,듣기",
-//                 "cllevel": "A1_C1",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "10"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "18"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "153",
-//                 "clname": "wew",
-//                 "cldisc": "wew",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습",
-//                 "cllevel": "A1_C1",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "33"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "33"
-//                     },
-//                     {
-//                         "Time": "30",
-//                         "Price": "12"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "24"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "154",
-//                 "clname": "테스트ㅇㄴㅇㄴㅇ",
-//                 "cldisc": "테스트22",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습",
-//                 "cllevel": "A2_B2",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "10"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "20"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "155",
-//                 "clname": "44444",
-//                 "cldisc": "44444",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습",
-//                 "cllevel": "",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "444"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "444"
-//                     },
-//                     {
-//                         "Time": "30",
-//                         "Price": "12"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "13"
-//                     },
-//                     {
-//                         "Time": "30",
-//                         "Price": "12"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "13"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "156",
-//                 "clname": "555",
-//                 "cldisc": "555",
-//                 "clpeople": "1",
-//                 "cltype": "문법",
-//                 "cllevel": "",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "55"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "55"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "157",
-//                 "clname": "131313",
-//                 "cldisc": "131313",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습",
-//                 "cllevel": "A1_C2",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "12"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "13"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "158",
-//                 "clname": "55",
-//                 "cldisc": "55",
-//                 "clpeople": "1",
-//                 "cltype": "문법",
-//                 "cllevel": "",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "55"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "55"
-//                     },
-//                     {
-//                         "Time": "30",
-//                         "Price": "13"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "13"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "159",
-//                 "clname": "ㄱㄱ",
-//                 "cldisc": "ㄱㄱ",
-//                 "clpeople": "1",
-//                 "cltype": "발음",
-//                 "cllevel": "A1_C1",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "111"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "111"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "160",
-//                 "clname": "666",
-//                 "cldisc": "666",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습",
-//                 "cllevel": "A1_C1",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "666"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "666"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "161",
-//                 "clname": "17177",
-//                 "cldisc": "171717",
-//                 "clpeople": "1",
-//                 "cltype": "철자",
-//                 "cllevel": "C1_C2",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "12"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "14"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "162",
-//                 "clname": "테스트",
-//                 "cldisc": "테스트",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습",
-//                 "cllevel": "A1_C2",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "3000"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "6000"
-//                     }
-//                 ]
-//             },
-//             {
-//                 "class_id": "163",
-//                 "clname": "테스트22",
-//                 "cldisc": "테스ㅡ22",
-//                 "clpeople": "1",
-//                 "cltype": "회화 연습",
-//                 "cllevel": "A1_B1",
-//                 "tp": [
-//                     {
-//                         "Time": "30",
-//                         "Price": "30000"
-//                     },
-//                     {
-//                         "Time": "60",
-//                         "Price": "60000"
-//                     }
-//                 ]
 //             }
-//         ]
-//     }
 // ],
 // "success": "1"
 // }
@@ -371,7 +103,10 @@ $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
 
-
+//배열생성 
+$result3['result'] = array();
+$result1['data'] = array();
+$result2['timeprice'] = array();
 
 
 
@@ -381,12 +116,12 @@ $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1);
 $timezone = $row1['0'];
+$send['USERTIMEZONE'] = $row1['0'];
 
 
-//배열생성 
-$result3['result'] = array();
-$result1['data'] = array();
-$result2['timeprice'] = array();
+
+
+
 
 
 
