@@ -101,7 +101,7 @@
                                 }
                             }
                         ?>
-                    </div>
+                </div>
             </div>
         </div>   
                
@@ -129,54 +129,74 @@
                 </div>               
                 <!-- 스케줄 부분 스크롤 되게 처리 -->
                 <div id = "schedule" class="flex flex-col h-96 overflow-auto">
-                    <div id="header_s_m" class="flex mx-auto"></div>                    
-                    <?php 
-                        $num = 0;
-                            for ($i = 0; $i < 8; $i++) {               
-                        ?>
-                    <div id="body_s_m_<?php echo $i; ?>" class="flex mx-auto">
-                        <div class="flex flex-col">
+                    <div id="header_s_m" class="flex mx-auto">
 
-                            <?php if ($i == 0) {
+                    </div>                    
+                    <div id = "body_s_m" class = "flex mx-auto">
+                        <?php 
+                        $num = 0;
+                            for ($i = 0; $i < 8; $i++) {
+                            
+                                if ($i == 0) {
+                                ?>
+                                    <div id = "body_s_m_<?php echo $i; ?>" class = "flex flex-col">
+                                <?php 
                                     $add = 0;
                                     for ($j = 0; $j < 48; $j++) {
-                                        
+
                                         $add = $add + 30;
                                         $hour = sprintf('%02d', $add / 60);
                                         $minute = sprintf('%02d', $add % 60);
-                                        ?>
-                            <div class="flex items-center w-20 h-5">
-                                <div><span>~ <?php  echo $hour; ?></span> : <span><?php echo $minute; ?></span></div>
-                            </div>
-                        <?php
-                                    }                       
+                                    ?>
+                                        <div class="flex items-center w-20 h-5">
+                                            <div>
+                                                <span>~
+                                                    <?php  echo $hour; ?></span>
+                                                :
+                                                <span><?php echo $minute; ?></span>
+                                            </div>
+                                        </div>
+                                <?php
+                                    }
+                                ?>
+                                    </div>
+                                <?php
                                 }
                                 else {
+                                ?>
+                                     <div id = "body_s_m_<?php echo $i; ?>" class = "flex flex-col">
+                                <?php 
                                     
                                     for ($j = 1; $j <= 48; $j++) {
 
-                                        $num = $num + 1;                      
-                                        ?>
-                            <div class="flex items-center w-20">
-                                <input
-                                    type="checkbox"
-                                    id="<?php echo $num; ?>_m"
-                                    name=""
-                                    value="<?php echo $num; ?>"
-                                    class="hidden"
-                                    onclick='test_click(event)'/>
-                                <label
-                                    for="<?php echo $num; ?>_m"
-                                    id="<?php echo $num; ?>_m_l"
-                                    class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
-                                        rounded border"
-                                    name="test_label"></label>
-                            </div>
-                            <?php }
-                            } ?>
-                        </div>
-                        <?php } ?>
-                   </div>            
+                                        $num = $num + 1; 
+                                    ?>
+                                        <div class="flex items-center w-20">
+                                            <input
+                                                type="checkbox"
+                                                id="<?php echo $num; ?>_m"
+                                                name=""
+                                                value="<?php echo $num; ?>"
+                                                class="hidden"
+                                                onclick='test_click(event)'
+                                                />
+                                            <label
+                                                for="<?php echo $num; ?>_m"
+                                                id="<?php echo $num; ?>_m_l"
+                                                class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
+                                                    rounded border"
+                                                name="schedule_label">
+                                            </label>
+                                        </div>
+                                <?php
+                                    }
+                                ?>
+                                    </div>
+                                <?php
+                                }
+                            }
+                        ?>
+                    </div>
                                            
                 </div>                
             </div>                
