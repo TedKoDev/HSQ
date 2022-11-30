@@ -359,7 +359,7 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-$tusid      =   json_decode(file_get_contents("php://input"))->{"usid"}; // 선택된 강사의 userid 
+$usid      =   json_decode(file_get_contents("php://input"))->{"usid"}; // 선택된 강사의 userid 
 
 
 //토큰 해체 
