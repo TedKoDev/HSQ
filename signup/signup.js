@@ -80,10 +80,15 @@
     const email = document.getElementById("email").value;
     const password = document.getElementById('pw').value;
 
+    // 로컬 타임존도 보내기
+    const date = new Date();    
+    const utc = -(date.getTimezoneOffset() / 60);
+
     const body = {
       name: name,
       email: email,
       password: password,
+      utc: utc,
     };
     const res = await fetch('./signupProcess.php', {
       method: 'POST',
