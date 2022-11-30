@@ -212,7 +212,7 @@ async function edit_done() {
         'Content-Type': 'application/json;charset=utf-8'
     },
     body: JSON.stringify(body)
-    });
+    });    
 
     // 정상적으로 저장될 경우 수정된 내역 화면에 다시 반영
     const response = await res.json();
