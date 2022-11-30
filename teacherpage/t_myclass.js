@@ -114,8 +114,6 @@ async function postToken(tokenValue) {
       // console.log(type_div.value);
       type_div.appendChild(type);
      }
-
-     
   }
 }
 

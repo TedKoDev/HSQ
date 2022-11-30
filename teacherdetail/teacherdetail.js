@@ -29,11 +29,28 @@ async function get_utc(tokenValue) {
 
       const response = await res.json();  
       const success = response.success;
-      const timezone = response.timezone;
+      const timezone = response.timezone;      
 
       if (success == "yes") {
 
         getDate("header_s", timezone);
+
+        // 현재 시간대 텍스트에 timezone 세팅
+        const utc = document.getElementById("utc");
+        let utc_string;
+
+        if (utc >= 0) {      
+  
+          utc_string = "(UTC+"+timezone+":00)";
+          
+        }
+        else {      
+          
+          utc_string = "(UTC"+timezone+":00)";       
+          
+        }
+
+        utc.innerHTML = utc_string;
       }
       else {
         console.log("타임존 못불러옴")
@@ -164,6 +181,7 @@ async function getTeacherdatail(tokenValue, usid) {
       setschedule(schedule, "_l");
 
       // 수업 목록 출력
+      setClass(class_list);
 
 }
 
@@ -257,6 +275,187 @@ async function setschedule(schedule_string, type) {
                 label.style.backgroundColor = 'blue';
             }               
         }
-    }
-  
+    }  
 }
+
+// 수업 목록 출력
+
+function setClass(class_list) {
+
+  // 수업 개수 만큼 반복문 돌린 뒤 태그 생성해서 출력
+  let class_items = document.getElementById("class_list");
+  for (let i = 0; i < class_list.length; i++) {
+
+    // 대입할 데이터 파싱
+    const class_id = class_list[i].class_id;
+    const clname = class_list[i].clname;
+    const cldesc = class_list[i].cldisc;
+    const clpeoeple = class_list[i].clpeople;
+    const cltype = class_list[i].cltype;
+    const tp = class_list[i].tp;   
+    const cllevel = class_list[i].cllevel;
+    
+    // console.log("tp0 : "+tp[0].Price);
+    // console.log("tp1 : "+tp[1].Price);
+
+    console.log("cllevel : "+cllevel);
+
+    // 가격 파싱
+    const price_30 = tp[0].Price;
+    const price_60 = tp[1].Price;
+    
+
+    // 수업 뷰 출력을 위한 태그 생성
+    const class_div = document.createElement('div');
+    // 해당 div의 id로 클래스의 id 매칭하고 스타일 부여
+    class_div.setAttribute("id", "class_"+class_id);
+    class_div.setAttribute("class", "ml-4 mr-4 bg-gray-200 hover:bg-gray-300 justify-between rounded-lg my-2");
+
+    const div = document.createElement('div');    
+    // console.log("pass");
+    div.innerHTML = [
+      '<a id = '+class_id+' onclick = show_modal('+class_id+')>',
+        '<div class = "flex justify-between">',
+          '<div class = "flex flex-col px-4">',
+            '<div class = "text-base font-normal mb-3 mt-1">'+clname+'</div>',          
+            '<div id = type_'+class_id+' class = "flex mb-2 text-sm">',          
+                        
+            '</div>',
+          '</div>',   
+          '<div class = "flex flex-col my-auto px-4">',
+            '<div>30분 : <a>'+price_30+' $</a></div>',
+            '<div>60분 : <a>'+price_60+' $</a></div>',
+          '</div>',
+        '</div>',
+      '</a>'
+    ].join("");
+   
+    class_div.appendChild(div);
+    class_items.appendChild(class_div);
+
+    // 수업레벨, 수업 유형 덧붙이기 위해 div id 가져오기
+    const type_div = document.getElementById("type_"+class_id);
+
+    // 수업 레벨 가져온 다음 배열로 바꾸어서 대입
+    const level_array = cllevel.split("_");
+    const level_string = level_array[0]+" - "+level_array[1];
+    const level_a = document.createElement("a");
+    level_a.setAttribute("class", "text-gray-700 mr-2")
+    level_a.innerHTML = level_string;
+    type_div.appendChild(level_a);
+
+     // 수업 유형 배열로 전환
+     const type_array = cltype.split(",");
+
+     // 배열 개수만큼 반복문 돌려서 태그 생성 후 대입
+     for (let j = 0; j < type_array.length; j++) {
+       
+      // console.log(type_array[j]);
+      const type = document.createElement("a");
+      type.setAttribute("class", "bg-gray-500 text-gray-800 mr-2 rounded-lg px-2")
+      type.innerHTML = type_array[j];
+
+      
+      // console.log(type_div.value);
+      type_div.appendChild(type);
+     }
+     
+  }
+}
+
+// 자기소개, 강의 스타일 클릭했을 때 해당하는 div 보이게 처리
+function show_intro(type) {
+
+  const intro_menu = document.getElementById("intro_menu");
+  const t_intro_menu = document.getElementById("t_intro_menu");
+  const intro_div = document.getElementById("intro_div");
+  const t_intro_div = document.getElementById("t_intro_div");
+
+  // 자기 소개 클릭할 경우
+  if (type == 'intro_menu') {
+
+    intro_menu.setAttribute("class", "px-3 font-semibold border-b-2");
+    t_intro_menu.setAttribute("class", "px-3 font-normal border-0");
+    intro_div.style.display = 'block';
+    t_intro_div.style.display = 'none';
+
+  }
+  // 강의 스타일 클릭한 경우
+  else {
+    intro_menu.setAttribute("class", "px-3 font-normal border-0");
+    t_intro_menu.setAttribute("class", "px-3 font-semibold border-b-2");
+    intro_div.style.display = 'none';
+    t_intro_div.style.display = 'block';
+  }
+}
+
+// 수업 클릭했을 때 모달창 띄우기
+function show_modal(class_id) {
+
+  console.log("pass");
+
+  const body = document.getElementsByTagName('body')[0];
+
+  const overlay = document.querySelector('#overlay')
+  const edit_btn = document.getElementById('edit_schedule_btn')
+
+  overlay.classList.toggle('hidden');
+  overlay.classList.toggle('flex');
+  body.classList.add('scrollLock');
+}
+
+// 수업 클릭했을 때 모달창 띄우기
+window.addEventListener('DOMContentLoaded', () => {
+
+  const body = document.getElementsByTagName('body')[0];
+
+  const overlay = document.querySelector('#overlay')
+  // const edit_btn = document.getElementById('utc')
+  const closeBtn = document.querySelector('#close-modal')
+ 
+
+  // const show_modal = () => {
+
+  //   console.log("pass");
+  //     overlay
+  //         .classList
+  //         .toggle('hidden')
+  //     overlay
+  //         .classList
+  //         .toggle('flex')
+
+  //     body
+  //         .classList
+  //         .add('scrollLock');
+
+  //     // 날짜 뿌려주기
+  //     getDate("header_s_m", timezone);
+
+  //     // 일정 있는 곳에만 색깔 변환
+  //     setschedule("_m_l");
+     
+  // }
+
+  const cancel_modal = () => {                           
+
+      overlay
+          .classList
+          .toggle('hidden')
+      overlay
+          .classList
+          .toggle('flex')
+
+      body
+          .classList
+          .remove('scrollLock');    
+          
+      // 일정 다시 세팅
+      // setschedule("_l");
+
+  }            
+
+  // edit_btn.addEventListener('click', show_modal)
+
+  closeBtn.addEventListener('click', cancel_modal)
+  // edit_cancel_btn.addEventListener('click', cancel_modal)
+})
