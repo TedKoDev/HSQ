@@ -23,12 +23,15 @@
                     </div>
                     <!-- 이름, 강사 자격, 구사 가능 언어 -->
                     <div class="flex flex-col ml-4">
-                        <div>이름</div>
-                        <div>강사 자격</div>
-                        <div class="flex">
+                        <div id = "name">이름</div>
+                        <div id = "certi">강사 자격</div>
+                        <div class = "flex">
                             <div>구사 언어 :
                             </div>
+                            <div id = "language" class="flex">                           
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
                 <!-- 자기 소개, 강의 스타일 항목 선택-->
@@ -37,7 +40,18 @@
                     <div class = "px-3">강의 스타일</div>
                 </div>
                 <!-- (자기소개, 강의스타일) 텍스트 -->
-                <div>안녕하세요 저는...</div>
+                <div class = "flex">
+                    <div id = "intro_div">
+                        <div class = "flex flex-col">
+                            <a id = "country"></a>
+                            <a id = "residence"></a>
+                            <div id = "intro"></div>
+                        </div>
+                    </div>
+                    <div class = "t_intro_div">
+                        <div id = "t_intro"></div>
+                    </div>
+                </div>                
             </div>
             <div class="flex flex-col w-1/5 bg-gray-50 rounded-lg px-4 py-2 shadow justify-center text-center">
                 <div class = " bg-blue-500 hover:bg-blue-600 text-white rounded-lg border-blue-900 px-1 py-1 my-1">수업 예약</div>

@@ -4,6 +4,8 @@
 
 get_utc(checkCookie);
 
+let timezone;
+
 async function get_utc(tokenValue) {
 
     const body = {
@@ -21,7 +23,7 @@ async function get_utc(tokenValue) {
 
       const response = await res.json();  
       const success = response.success;
-      const timezone = response.timezone;
+      timezone = response.timezone;
 
       if (success == "yes") {
 
@@ -269,7 +271,7 @@ window.addEventListener('DOMContentLoaded', () => {
             .add('scrollLock');
 
         // 날짜 뿌려주기
-        getDate("header_s_m");
+        getDate("header_s_m", timezone);
 
         // 일정 있는 곳에만 색깔 변환
         setschedule("_m_l");
