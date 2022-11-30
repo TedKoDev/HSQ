@@ -116,7 +116,7 @@ $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1);
 $timezone = $row1['0'];
-$send['USERTIMEZONE'] = $row1['0'];
+$send['CONNECT_USER_TIMEZONE'] = $row1['0'];
 
 
 
