@@ -169,6 +169,8 @@ $planresult = (explode("_", $plan1));
 
 // echo $planresult;
 
+
+
 $resultarray = array();
 //
 
