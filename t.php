@@ -48,7 +48,7 @@ $result2['timeprice'] = array();
       $usid = $row1['1'];
     
       $send1['class_id'] = $row1['0'];
-      $send1['user_id'] = $row1['1'];
+      // $send1['user_id'] = $row1['1'];
       $send1['clname'] = $row1['2'];
       $send1['cldisc'] = $row1['3'];
       $send1['clpeople'] = $row1['4'];

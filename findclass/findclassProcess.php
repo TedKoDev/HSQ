@@ -15,17 +15,19 @@
 
 // 코드 전개 구조
 // 1. 토큰 수령후 User_Id 값 추출 (사용자)  
+
 // 2. 필요한 정보  (아래 참고사항 확인하기 )
-//  (강사의 User_Id, U_D_Img, U_Name, U_T_Special, U_D_Language, U_T_Intro, U_D_Intro, Price(Class_List, Class_List_Time_Price 정리)
 
 // 3. 정보 모아 프론트로 전달. 
+
+// 수업 id, usd
 
 
 // {
 //   "result": [
 //       {
 //           "class_id": "163",
-//           "user_id": "32",
+
 //           "clname": "테스트22",
 //           "cldisc": "테스ㅡ22",
 //           "clpeople": "1",
@@ -46,7 +48,7 @@
 //       },
 //       {
 //           "class_id": "162",
-//           "user_id": "32",
+
 //           "clname": "테스트",
 //           "cldisc": "테스트",
 //           "clpeople": "1",
@@ -109,7 +111,7 @@ $result2['timeprice'] = array();
       $usid = $row1['1'];
     
       $send1['class_id'] = $row1['0'];
-      $send1['user_id'] = $row1['1'];
+    
       $send1['clname'] = $row1['2'];
       $send1['cldisc'] = $row1['3'];
       $send1['clpeople'] = $row1['4'];
