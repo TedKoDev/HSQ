@@ -81,7 +81,8 @@
                                         id="<?php echo $num; ?>_l"
                                         class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
                                             rounded border"
-                                        name="schedule_label"></label>
+                                        name="schedule_label">
+                                    </label>
                                 </div>
                         <?php }
                         } ?>
@@ -162,8 +163,8 @@
                             } ?>
                         </div>
                         <?php } ?>
-                   </div>             
-                                            
+                   </div>            
+                                           
                 </div>                
             </div>                
             
