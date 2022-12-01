@@ -6,6 +6,12 @@ get_utc(checkCookie);
 
 let timezone;
 
+// 서버에서 요청받은 일정이 담긴 string값 담을 변수 선언
+let schedule_string;
+
+// 타임스탬프 담을 전역 변수 선언
+let time;
+
 async function get_utc(tokenValue) {
 
     const body = {
@@ -27,7 +33,11 @@ async function get_utc(tokenValue) {
 
       if (success == "yes") {
 
+        // 날짜 설정하고 checkbox값에 timestamp 부여
         getDate("header_s", timezone);
+
+        // checkbox값 부여된 이후에 저장된 일정 세팅
+        setschedule("_l");
       }
       else {
         console.log("타임존 못불러옴")
@@ -43,73 +53,142 @@ function getDate(header_date, timezone) {
         header_s.removeChild(header_s.firstChild);
       }
 
+    // 현재 날짜 객체 생성
     let now = new Date();
 
+    // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
+    const offset = (now.getTimezoneOffset()/60);
+    now.setHours(now.getHours() + offset);
+    
+    // 날짜 표시하기 전에 받아온 타임존 적용 
     const string_to_int = parseInt(timezone);
     now.setHours(now.getHours() + string_to_int);
     
-    let time = now.getTime();
-    let todayDate = now.getDate();
+    // 현재 타임스탬프 전역 변수에 대입
+    time = now.getTime();
+        
+    time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기
+
+    setDate_Value(header_s);
+}
+
+// 이전,다음 버튼 클릭시 그 주에 해당하는 날짜 변경되고 checkbox의 value값도 그에 따라 변경
+function change_schedule(type) {
+
+    let header_s = document.getElementById("header_s");
+
+    // 세팅하기 전에 일단 초기화
+    while(header_s.firstChild)  {
+        header_s.removeChild(header_s.firstChild);
+    }     
+
+    // 이전 버튼 클릭할 경우
+    if (type == 'before') {
+
+        console.log("before");
+       
+        // time 스탬프 값 일주일 빼놓기 
+        time = time - (7*(1000 * 60 * 60 * 24));
+        
+        console.log(dayjs(time).format('YYYY/MM/DD'));
+
+        setDate_Value(header_s);
+
+    }
+    // 다음 버튼 클릭할 경우
+    else {      
+        
+        // time 스탬프 값 일주일 더해놓기 
+        time = time + (7*(1000 * 60 * 60 * 24));
+        
+        setDate_Value(header_s);
+    }
+    
+}
+
+// 이전,다음 버튼 누를 때 날짜 세팅하고 check value 재 대입 해주는 함수
+function setDate_Value(header_s) {
 
     let week = new Array('일', '월', '화', '수', '목', '금', '토');
 
-    time = time - (1000 * 60 * 60 * 24)
-    for (let i = 0; i < 8; i++) {
-
-        if (i == 0) {
-
-            let utc_show = document.createElement("div");
-            utc_show.innerHTML = [
-                '<div class = "flex flex-col w-20">', 
-                    '<div class = "mx-auto"></div>',            
-                '</div>'
-            ].join("");
-
-            header_s.appendChild(utc_show);
-
-        } else {
-
-            time = time + (1000 * 60 * 60 * 24);
-
-            let new_Date = new Date(time);
-
-            let date = new_Date.getDate();
-
-            let day_array = new_Date.getDay();
-            let day = week[day_array];
-            // console.log(date);
-            // console.log(day);
-
-            let date_day = document.createElement("div");
-            date_day.innerHTML = [
-                '<div class = "flex flex-col w-20">', '<div class = "mx-auto">' + day +
-                        '</div>',
-                '<div class = "mx-auto">' + date + '</div>',
-                '</div>'
-            ].join("");
-
-            header_s.appendChild(date_day);     
             
+        let num = 0; // 날짜에 따라 value값 대입해주기 위한 임의의 num
+    
+        for (let i = 0; i < 8; i++) {
+    
+            if (i == 0) {
+    
+                let utc_show = document.createElement("div");
+                utc_show.innerHTML = [
+                    '<div class = "flex flex-col w-20">', 
+                        '<div class = "mx-auto"></div>',            
+                    '</div>'
+                ].join("");
+    
+                header_s.appendChild(utc_show);
+    
+            } else {
+    
+                time = time + (1000 * 60 * 60 * 24);
+    
+                let new_Date = new Date(time);
+    
+                let date = new_Date.getDate();
+    
+                let day_array = new_Date.getDay();
+                let day = week[day_array];            
+    
+                let date_day = document.createElement("div");
+                date_day.innerHTML = [
+                    '<div class = "flex flex-col w-20">', '<div class = "mx-auto">' + day,
+                            '</div>',
+                    '<div class = "mx-auto">' + date + '</div>',
+                    '</div>'
+                ].join("");
+    
+                header_s.appendChild(date_day);     
+                    
+    
+                // 336개의 체크박스 value에 년-월-일-시간을 대입
+                // 우선 해당 열의 년/월/일 추출
+                const year_s = new_Date.getFullYear();
+                const month_s = new_Date.getMonth()+1;
+                const day_s = new_Date.getDate();
+                
+                const test_day = year_s+"-"+month_s+"-"+day_s;
+              
+                // day.js 써서 타임스탬프로 변환
+                let test_dayjs = dayjs(test_day);
+                test_dayjs.format();
+                   
+                
+                // 00:00 ~ 24:00에 해당하는 48개 체크박스에 해당 타임스탬프+시간대의 조합으로 value값 부여
+                for (let j = 1; j <= 48; j++) {
+                    
+                    // 반복문 거칠때마다 우선 위에서 선언한 num 1씩 더하기
+                    num = num + 1;
+                    // 해당 체크박스의 값 가져오기 (value 세팅해주기 위해)
+                    const checkbox = document.getElementById(num);
+                    // 체크박스 위치에 따라 시간 더해주기
+                    let add_dayjs = test_dayjs.set("m", 30*j);
+                    // 체크박스의 value에 더한 값의 타임스탬프를 넣어주기
+                    checkbox.setAttribute("value", add_dayjs.valueOf());
+                                        
+                }
+            }
+    
+        }        
 
-            // 336개의 체크박스 value에 년-월-일-시간을 대입
-            // 해당 열의 년/월/일 추출
-            const year_s = new_Date.getFullYear;
-            const month_s = new_Date.getMonth+1;
-            const day_s = new_Date.getDate;
-
-            
-            
-        }
-
-    }
+        // 모든 세팅 끝나면 타임 다시 일주일 전으로 되돌리기
+        time = time - 7*(1000 * 60 * 60 * 24);
 }
 
+
+
 // 서버에 요청해서 일정 데이터 담겨있는 string 불러오기
-// 담을 string 선언
-let schedule_string;
 
 // 화면 켜지면 저장된 일정 세팅
-setschedule("_l");
+// setschedule("_l");
 
 // 일정 등록에 세팅하는 함수
 async function setschedule(type) {    

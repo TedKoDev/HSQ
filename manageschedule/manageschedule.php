@@ -8,6 +8,7 @@
     </head>
     <script src="../commenJS/cookie.js"></script>
     <script src="./manageschedule.js" defer></script>    
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
         .scrollLock {
             height: 100%;
@@ -31,8 +32,9 @@
                     class="mx-auto px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black
                     rounded border">일정 편집</a>
 
-                <div class="ml-auto">
-                    <span>이전</span><span>다음</span>
+                <div class="flex ml-auto">
+                    <button onclick = "change_schedule('before')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
+                    <button onclick = "change_schedule('after')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                 </div><br>
                 <div id="header_s" class="flex mx-auto">
 

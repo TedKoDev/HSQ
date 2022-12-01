@@ -4,13 +4,20 @@
     <link href="./dist/output.css" rel="stylesheet">    
     <title>Dialog</title>
 </head>
+<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 <script>
-console.log(new Date());
 
-const date = new Date();
-const utc = -(date.getTimezoneOffset() / 60);
+// console.log(new Date());
 
-console.log(utc);
+// const date = new Date();
+// const utc = -(date.getTimezoneOffset() / 60);
+
+// console.log(utc);
+
+let today1 = dayjs(new Date());
+
+let test = dayjs('2022-12-01').unix()
+console.log(test);
 </script>
 
 <body class="bg-gray-800 h-screen p-12">
