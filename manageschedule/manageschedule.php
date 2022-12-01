@@ -7,7 +7,7 @@
 
     </head>
     <script src="../commenJS/cookie.js"></script>
-    <script defer="defer" src="./manageschedule.js"></script>    
+    <script src="./manageschedule.js" defer></script>    
     <style>
         .scrollLock {
             height: 100%;
@@ -44,7 +44,7 @@
                             
                                 if ($i == 0) {
                                 ?>
-                                    <div id = "body_s_<?php echo $i; ?>" class = "flex flex-col">
+                                    <div id = "body_s_<?php echo $i; ?>" class = "flex flex-col" >
                                 <?php 
                                     $add = 0;
                                     for ($j = 0; $j < 48; $j++) {
@@ -101,7 +101,7 @@
                                 }
                             }
                         ?>
-                </div>
+                </div><br><br><br><br>
             </div>
         </div>   
                

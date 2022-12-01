@@ -60,7 +60,8 @@ function getDate(header_date, timezone) {
 
             let utc_show = document.createElement("div");
             utc_show.innerHTML = [
-                '<div class = "flex flex-col w-20">', '<div class = "mx-auto"></div>',            
+                '<div class = "flex flex-col w-20">', 
+                    '<div class = "mx-auto"></div>',            
                 '</div>'
             ].join("");
 
@@ -87,7 +88,17 @@ function getDate(header_date, timezone) {
                 '</div>'
             ].join("");
 
-            header_s.appendChild(date_day);        
+            header_s.appendChild(date_day);     
+            
+
+            // 336개의 체크박스 value에 년-월-일-시간을 대입
+            // 해당 열의 년/월/일 추출
+            const year_s = new_Date.getFullYear;
+            const month_s = new_Date.getMonth+1;
+            const day_s = new_Date.getDate;
+
+            
+            
         }
 
     }
