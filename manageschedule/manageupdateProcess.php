@@ -45,7 +45,7 @@ $plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일�
 // $utc       = 9;  // 일정 
 
 
-$hour = 3600;
+$hour = 3600000;
 
 
 

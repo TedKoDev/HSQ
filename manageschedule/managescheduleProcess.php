@@ -64,7 +64,7 @@ $result2['Schedule'] = array();
 
 
 // 1시간 = 3600;
-$hour = 3600;
+$hour = 3600000;
 
 $resultarray = array();
 
