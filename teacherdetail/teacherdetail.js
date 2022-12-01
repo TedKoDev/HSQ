@@ -1,6 +1,6 @@
 // 유저 id 받아온 후 로컬 스토리지에서 삭제
 const {id} = JSON.parse(localStorage.getItem("user_id"));
-localStorage.removeItem("user_id");
+// localStorage.removeItem("user_id");
 
 let U_id = id;
 // console.log(U_id);
@@ -13,15 +13,12 @@ let U_id = id;
 get_utc(checkCookie);
 
 async function get_utc(tokenValue) {
-
-    // 로컬 타임존도 보내기
-    const date = new Date();    
-    const utc = -(date.getTimezoneOffset() / 60);
+   
 
     const body = {
     
         token: tokenValue,
-        utc: utc,
+        
       };
     
       const res = await fetch('../util/utc.php', {
@@ -129,10 +126,17 @@ async function getTeacherdatail(tokenValue, usid) {
 
     console.log("checkCookie : "+tokenValue);
 
+     // 로컬 타임존도 보내기
+     const date = new Date();    
+     const utc = -(date.getTimezoneOffset() / 60);
+
+     console.log("utc : "+utc);
+
     const body = {
     
         token: tokenValue,
         usid: usid,
+        utc: utc,
       };
     
       const res = await fetch('./teacherdetailProcess.php', {
