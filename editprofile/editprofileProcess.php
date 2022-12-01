@@ -105,6 +105,9 @@ if ($checkresult->num_rows <1) {
     // mysqli_close($conn);
 }
 
+
+
+
 // 있으면 update 시작 
 
 
