@@ -37,7 +37,7 @@ file_get_contents("php://input") . "<br/>";
 // 토큰 
 $token     =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰값 
 $repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // 몇주 반복 여부  4, 8, 12 주  
-$utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // 몇주 반복 여부  4, 8, 12 주  
+// $utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // 몇주 반복 여부  4, 8, 12 주  
 $plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일정 
 // $plan      =  '1669894200_1669896000_1669897800';
 // $plan      =  '1000_2000';
@@ -62,6 +62,16 @@ $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
 
+
+
+//U_D_Timeze 값을 가져옴   
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
+$response1 = mysqli_query($conn, $sql);
+$row1 = mysqli_fetch_array($response1); 
+$timezone = $row1['0'].'</br>';
+
+
+
   
 $check = "SELECT * FROM Teacher_Schedule where User_Id = '{$User_ID}'";
 $checkresult = mysqli_query($conn, $check);
@@ -76,7 +86,7 @@ foreach($result as $val){
 
  $val;
 
- 'utc적용 '.$save = $val - $hour*$utc;
+ 'utc적용 '.$save = $val - $timezone* $hour;
 
 array_push($resultarray,$save);
 
