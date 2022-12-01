@@ -24,12 +24,13 @@ include("../jwt.php");
  $name = json_decode(file_get_contents("php://input"))->{"name"};
  $email = json_decode(file_get_contents("php://input"))->{"email"};
  $password = json_decode(file_get_contents("php://input"))->{"password"};
+ $utc = json_decode(file_get_contents("php://input"))->{"utc"};
 
 
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
-error_log("$time_now, $name, $email,$password \n", "3", "/php.log");
+// error_log("$time_now, $name, $email,$password \n", "3", "/php.log");
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
@@ -66,6 +67,20 @@ if ($checkresult->num_rows > 0) {
         echo "저장에 문제가 생겼습니다. 관리자에게 문의해주세요.";
         echo mysqli_error($conn);
     } else {
+
+
+        $sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
+        $result = mysqli_query($conn, $sql);
+
+        $row1 = mysqli_fetch_array($result);
+        $User_ID = $row1['0'];
+
+
+
+
+        $result = "INSERT INTO User_Detail (User_Id, U_D_Timezone) VALUES ('$User_ID','$utc') ";
+        $insert = mysqli_query($conn, $result);
+
 
 // DB 정보 가져오기 
 $sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
@@ -111,4 +126,3 @@ $hashedPassword = $row['U_PW'];
 
     }
 }
-?>

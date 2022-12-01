@@ -92,14 +92,18 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
 $usid      =   json_decode(file_get_contents("php://input"))->{"usid"}; // 선택된 강사의 userid 
+$utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // utc 
 
 
+error_log("'111','token:',$token , 'usid:',$usid , 'utc:',$utc  \n", "3", "../php.log");
+
+
+error_log("'111'  \n", "3", "/php.log");
 //토큰 해체 
 $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID =  base64_decode($payload['User_ID']);
-// $User_ID =  320;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
@@ -110,14 +114,25 @@ $result1['data'] = array();
 $result2['timeprice'] = array();
 
 
-
+if($token != null){
 
 //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
 $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1);
+
+
 $timezone = $row1['0'];
 $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
+
+
+}else {
+
+  $timezone = $utc;
+  $send['CONNECT_USER_TIMEZONE'] = $utc;
+
+}
+
 
 
 
@@ -200,6 +215,8 @@ foreach ($planresult as $val) {
 
 
 $string = implode("_", $resultarray);
+
+
 
 $send['Schedule'] = $string;
 
