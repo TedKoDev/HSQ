@@ -45,10 +45,10 @@ $plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일�
 // $utc       = 9;  // 일정 
 
 // 1시간 = 3600;
- $hour = 3600;
+ $hour = 3600000;
 
 // 1주 = 604800
- $week = 604800;
+ $week = 604800000;
 
 
 // error_log("$time_now, $position, $desc\n", "3", "/php.log");
