@@ -27,14 +27,13 @@
 include("../conn.php");
 include("../jwt.php");
 
-
-
 $jwt = new JWT();
 
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 // 토큰 
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; 
+
 
 
 
@@ -50,47 +49,36 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timeze FROM User_Detail WHERE User_Id = '{$User_ID}'";
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'];
+echo $timezone = $row1['0'].'</br>';
 
 
 
 $sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '{$User_ID}'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
-$plan = $row1['0'];
+$response2 = mysqli_query($conn, $sql);
 
-//db에서 가져온 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
-$result = (explode("_", $plan));
+$result2['Schedule'] = array();
 
-// echo $result;
-  
+
+
+// 1시간 = 3600;
+$hour = 3600;
+
 $resultarray = array();
-//
 
-foreach($result as $val){
+while ($row1 = mysqli_fetch_array($response2)) {
 
-  $val."</br>";
-
-  $save = $val - $timezone * 2;
-
-  // echo $save;
-  if($save > 336) {
-
-    $save = $save - 336; 
-  }
+ $schedule = $row1['0'];
 
 
-  array_push($resultarray,$save);
+  $schedule2 = $schedule - $hour*$timezone;
 
+
+
+  array_push($resultarray, $schedule2);
 }
-
-// echo json_encode($resultarray);
-// echo '</br>';
-// echo $plan;
-// echo '</br>';
 
  $string = implode("_",$resultarray);
   
