@@ -1,12 +1,12 @@
 <?php
 
  echo $tt = 1669822200000 .'</br>';
-$date = date('Y-m-d H:i:s', $tt);
+$date = date('Y-m-d H:i:s',  microtime(1669822200000 ));
 echo $tt.'</br>'; 
 echo "The date is $date.".'</br>'.'</br>'.'</br>';  
 
 
-echo $tt = 1669824000000 .'</br>';
+echo $tt = 1669822196400 .'</br>';
 $date = date('Y-m-d H:i:s',  $tt);
 echo $tt.'</br>'; 
 echo "The date is $date.".'</br>'.'</br>'.'</br>';  
