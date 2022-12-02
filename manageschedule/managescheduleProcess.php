@@ -73,7 +73,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
  $schedule = $row1['0'];
 
 
-  $schedule2 = $schedule - $hour*$timezone;
+  $schedule2 = $schedule + $hour*$timezone;
 
 
 
