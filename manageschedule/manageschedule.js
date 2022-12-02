@@ -12,6 +12,9 @@ let schedule_string;
 // 모달창에서 수정할 때 일정 담긴 string을 배열로 변환하는 변수 선언
 let array_for_edit = new Array();
 
+// 모달창에서 정규 일정 등록할 때 체크한 값들 담을 배열 선언
+let array_for_upload = new Array();
+
 // 타임스탬프 담을 전역 변수 선언
 let time;
 
@@ -314,31 +317,56 @@ function test_click(event) {
 
     let label = document.getElementById(label_id + "_l");
     
-
-    // let result = "";
     let result = event.target.value;
-    if (event.target.checked) {
-        // result = event.target.value;
+
+    // 일정 편집일 경우
+    if (event.target.name == "edit") {
+
+        
+        if (event.target.checked) {
+            // result = event.target.value;
+                
+            label.style.backgroundColor = '#2563EB';
+    
+            // 일정 저장을 위한 array에 해당 value 추가
+            array_for_edit.push(result);    
+                
+        } else {        
+    
+            label.style.backgroundColor = '#9CA3AF';
             
-        label.style.backgroundColor = '#2563EB';
-
-        // 일정 저장을 위한 array에 해당 value 추가
-        array_for_edit.push(result);
-
-        console.log(array_for_edit);
-
-    } else {        
-
-        label.style.backgroundColor = '#9CA3AF';
-        
-        const delete_index = array_for_edit.indexOf(result)
-
-        console.log(array_for_edit);
-        console.log("delete_index : "+delete_index);
-        array_for_edit.splice(delete_index, 1);
-
-        
+            const delete_index = array_for_edit.indexOf(result)
+                
+            array_for_edit.splice(delete_index, 1);
+            
+        }
     }
+    // 정규 일정 등록일 경우
+    else if (event.target.name == "upload"){
+
+        if (event.target.checked) {
+            // result = event.target.value;
+                
+            label.style.backgroundColor = '#2563EB';
+    
+            // 일정 저장을 위한 array에 해당 value 추가
+            array_for_upload.push(result);    
+
+            console.log(array_for_upload);
+                
+        } else {        
+    
+            label.style.backgroundColor = '#9CA3AF';
+            
+            const delete_index = array_for_upload.indexOf(result)
+                
+            array_for_upload.splice(delete_index, 1);
+
+            console.log(array_for_upload);            
+        }
+    }
+    
+    
 }
 
 // 모달 관련 코드     
@@ -395,6 +423,153 @@ async function edit_done() {
         .classList
         .remove('scrollLock');
 
+}
+
+// 정규일정 등록 완료 (서버에 저장)
+async function upload_done() {
+
+     // 일정등록 배열 send_array에 대입
+     let send_array = new Array();
+     send_array = array_for_upload;
+ 
+     // 문자열로 변환
+     let send_string = send_array.join("_");
+ 
+     const body = {
+ 
+         token: checkCookie,
+         repeat: check_value,
+         plan: send_string,  
+ 
+         };
+     const res = await fetch('./manageuploadProcess.php', {
+     method: 'POST',
+     headers: {
+         'Content-Type': 'application/json;charset=utf-8'
+     },
+     body: JSON.stringify(body)
+     });    
+      
+     // 정상적으로 저장될 경우 수정된 내역 화면에 다시 반영
+    const response = await res.json();
+    const check = response.success;
+    const test_string = response.plan;
+
+    console.log("check : "+check);
+    
+    if (check == "yes") {
+        
+        setschedule("_l", "");
+    }
+
+    const body2 = document.getElementsByTagName('body')[0];
+    const overlay2 = document.querySelector('#overlay_upload')
+
+    // 모달창 내리기
+    overlay2
+        .classList
+        .toggle('hidden')
+    overlay2
+        .classList
+        .toggle('flex')
+
+    body2
+        .classList
+        .remove('scrollLock');
+     
+}
+
+// 4주, 8주, 12주 클릭 이벤트
+let check_value = 4; // 체크 값 보내기 위해 재할당하는 변수 선언
+function radio_click(event) {
+
+    const week4 = document.getElementById("4week");
+    const week8 = document.getElementById("8week");
+    const week12 = document.getElementById("12week");
+
+    if (event.target.id == "4week") {
+        week4.checked = true;
+        week8.checked = false;
+        week12.checked = false;
+        check_value = 4;
+    }
+    else if(event.target.id == "8week") {
+        week4.checked = false;
+        week8.checked = true;
+        week12.checked = false;
+        check_value = 8;
+    }
+    else if(event.target.id == "12week") {
+        week4.checked = false;
+        week8.checked = false;
+        week12.checked = true;
+        check_value = 12;
+    }
+}
+
+// 정규 일정 등록할 때 checkbox값에 value 세팅
+function setValue_forUpload(for_modal) {
+
+                       
+    // 현재 날짜 객체 생성
+    let now = new Date();
+
+    // 현재 날짜의 시/분/초 초기화
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
+    // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
+    const offset = (now.getTimezoneOffset()/60);
+    now.setHours(now.getHours() + offset);
+    
+    // 날짜 표시하기 전에 받아온 타임존 적용 
+    const string_to_int = parseInt(timezone);
+    now.setHours(now.getHours() + string_to_int);
+
+    // 타임존 적용한 날짜의 첫째주 월요일로 변환
+    const get_day = now.getDay();
+    const diff = now.getDate() - get_day + (get_day == 0 ? -6 : 1);
+    now.setDate(diff);    
+
+    let time_u = now.getTime();
+   
+    
+    let num = 0; // 날짜에 따라 value값 대입해주기 위한 임의의 num
+
+    for (let i = 1; i < 8; i++) {              
+
+        let new_Date = new Date(time_u);                              
+
+        // 336개의 체크박스 value에 년-월-일-시간을 대입
+        // 우선 해당 열의 년/월/일 추출
+        const year_s = new_Date.getFullYear();
+        const month_s = new_Date.getMonth()+1;
+        const day_s = new_Date.getDate();
+        
+        const test_day = year_s+"-"+month_s+"-"+day_s;
+        
+        // day.js 써서 타임스탬프로 변환
+        let test_dayjs = dayjs(test_day);
+        test_dayjs.format();            
+        
+        // 00:00 ~ 24:00에 해당하는 48개 체크박스에 해당 타임스탬프+시간대의 조합으로 value값 부여
+        for (let j = 1; j <= 48; j++) {
+            
+            // 반복문 거칠때마다 우선 위에서 선언한 num 1씩 더하기
+            num = num + 1;
+            // 해당 체크박스의 id 가져오기 (value 세팅해주기 위해)
+            const checkbox = document.getElementById(num+for_modal);
+            // 체크박스 위치에 따라 시간 더해주기
+            let add_dayjs = test_dayjs.set("m", 30*j);
+            // 체크박스의 value에 더한 값의 타임스탬프를 넣어주기
+            checkbox.setAttribute("value", add_dayjs.valueOf());                                                    
+            
+        }     
+        
+        time_u = time_u + (1000 * 60 * 60 * 24);
+    }       
+    
 }
 
 // 모달창 보여주기, 모달창 다시 내리기
@@ -458,7 +633,12 @@ window.addEventListener('DOMContentLoaded', () => {
         body
             .classList
             .add('scrollLock');
-               
+
+        // 배열 값 초기화
+        array_for_upload = [];
+
+        // 체크박스에 value값 세팅
+        setValue_forUpload("_u")
     }
 
     const cancel_modal = () => {                           

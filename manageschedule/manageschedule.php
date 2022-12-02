@@ -201,7 +201,7 @@
                                 <input
                                     type="checkbox"
                                     id="<?php echo $num; ?>_m"
-                                    name=""
+                                    name="edit"
                                     value="<?php echo $num; ?>"
                                     class="hidden"
                                     onclick='test_click(event)'/>
@@ -224,6 +224,7 @@
 
                 </div>
             </div>
+        </div>
             <!-- 모달창(정규 일정 등록) -->
             <div
                 class="bg-gray-700 bg-opacity-50 fixed inset-0 hidden justify-center items-center border-2"
@@ -249,9 +250,27 @@
                             </div>                            
                         </div>
                     </div>
+                    <div class = "flex flex-col">
+                        <div>기간 선택</div>
+                        <div class = "flex">
+                        <input type='radio' id = "4week" value='4' onclick='radio_click(event)' checked/>4주
+                        <input type='radio' id = "8week" value='8' onclick='radio_click(event)'/>8주
+                        <input type='radio' id = "12week" value='12' onclick='radio_click(event)'/>12주
+                        </div>
+                        <div>정규 일정 등록 시 오늘 날짜가 포함된 주 부터 일정이 등록됩니다</div>
+                    <div>
                     <!-- 스케줄 부분 스크롤 되게 처리 -->
                     <div id="schedule" class="flex flex-col h-96 overflow-auto">
-                        <div id="header_s_u" class="flex mx-auto"></div>
+                        <div id="header_s_u" class="flex mx-auto mb-2">
+                            <a class = "w-20 h-5 text-center"></a>
+                            <a class = "w-20 h-5 text-center">월</a>
+                            <a class = "w-20 h-5 text-center">화</a>
+                            <a class = "w-20 h-5 text-center">수</a>
+                            <a class = "w-20 h-5 text-center">목</a>
+                            <a class = "w-20 h-5 text-center">금</a>
+                            <a class = "w-20 h-5 text-center">토</a>
+                            <a class = "w-20 h-5 text-center">일</a>
+                        </div>
                         <div id="body_s_u" class="flex mx-auto">
                             <?php 
                             $num = 0;
@@ -295,7 +314,7 @@
                                     <input
                                         type="checkbox"
                                         id="<?php echo $num; ?>_u"
-                                        name=""
+                                        name="upload"
                                         value="<?php echo $num; ?>"
                                         class="hidden"
                                         onclick='test_click(event)'/>
