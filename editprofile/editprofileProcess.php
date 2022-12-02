@@ -48,18 +48,11 @@ $position = json_decode(file_get_contents("php://input"))->{"position"}; //항�
 $desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
 
 
-<<<<<<< HEAD
+
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
 error_log("$time_now, $position, $desc\n", "3", "/php.log");
-=======
-
-date_default_timezone_set('Asia/Seoul');
-$time_now = date("Y-m-d H:i:s");
-
-error_log(" $token\n", "3", "../php.log");
->>>>>>> b74f909914c3840a58e4e41a2569f761191de7cd
 
 
 
@@ -81,13 +74,6 @@ $U_Name  = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 
-<<<<<<< HEAD
-error_log("$time_now, $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
-=======
-error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
-
->>>>>>> b74f909914c3840a58e4e41a2569f761191de7cd
-
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지 확인
@@ -95,27 +81,16 @@ error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
 $check = "SELECT * FROM User_Detail where User_Id = $User_ID";
 $checkresult = mysqli_query($conn, $check);
 
-<<<<<<< HEAD
-error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
-=======
-// error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
->>>>>>> b74f909914c3840a58e4e41a2569f761191de7cd
-
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지  확인
-<<<<<<< HEAD
-if ($checkresult->num_rows > 0) {
-       error_log("$time_now,'ss', $checkresult \n", "3", "/php.log");
 
-=======
 if ($checkresult->num_rows <1) {
     date_default_timezone_set('Asia/Seoul');
     $time_now = date("Y-m-d H:i:s");
     error_log("$time_now,'???', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
     // error_log("$time_now, 's'\n", "3", "../php.log");
     
->>>>>>> b74f909914c3840a58e4e41a2569f761191de7cd
     // 중복값이 없을때 때 실행할 내용
     // 없으면 insert로  data 만들고  
     // 아래의 update로 data 삽입 
@@ -128,12 +103,7 @@ if ($checkresult->num_rows <1) {
     // mysqli_close($conn);
 }
 
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> b74f909914c3840a58e4e41a2569f761191de7cd
 // 있으면 update 시작 
 
 

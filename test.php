@@ -4,6 +4,9 @@
     <link href="./dist/output.css" rel="stylesheet">    
     <title>Dialog</title>
 </head>
+<script>
+    console.log(new Date());
+</script>
 <body class="bg-gray-800 h-screen p-12">
     
     <button class="px-6 py-3 bg-red-600 text-gray-100 rounded shadow" id="delete-btn">
