@@ -1,9 +1,9 @@
 <?php
 // 1. Autoload the SDK Package. This will include all the files and classes to your autoloader
 // Used for composer based installation
-//require __DIR__  . '/vendor/autoload.php';
+require __DIR__  . '/vendor/autoload.php';
 // Use below for direct download installation
- require __DIR__  . '/PayPal-PHP-SDK/autoload.php';
+// require __DIR__  . '/PayPal-PHP-SDK/autoload.php';
 
 // // After Step 1 플랫폼 
 // $apiContext = new \PayPal\Rest\ApiContext(
@@ -21,7 +21,9 @@ $apiContext = new \PayPal\Rest\ApiContext(
   )
 );
 
-// After Step 2
+
+// 3. Lets try to create a Payment
+// https://developer.paypal.com/docs/api/payments/#payment_create
 $payer = new \PayPal\Api\Payer();
 $payer->setPaymentMethod('paypal');
 
@@ -42,16 +44,15 @@ $payment->setIntent('sale')
     ->setTransactions(array($transaction))
     ->setRedirectUrls($redirectUrls);
 
-
-    // After Step 3
+// 4. Make a Create Call and print the values
 try {
-  $payment->create($apiContext);
-  echo $payment;
+    $payment->create($apiContext);
+    echo $payment;
 
-  echo "\n\nRedirect user to approval_url: " . $payment->getApprovalLink() . "\n";
+    echo "\n\nRedirect user to approval_url: " . $payment->getApprovalLink() . "\n";
 }
 catch (\PayPal\Exception\PayPalConnectionException $ex) {
-  // This will print the detailed information on the exception.
-  //REALLY HELPFUL FOR DEBUGGING
-  echo $ex->getData();
+    // This will print the detailed information on the exception.
+    //REALLY HELPFUL FOR DEBUGGING
+    echo $ex->getData();
 }
