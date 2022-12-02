@@ -1,26 +1,25 @@
 <?php
+
 // 1. Autoload the SDK Package. This will include all the files and classes to your autoloader
-// Used for composer based installation
 require __DIR__  . '/vendor/autoload.php';
-// Use below for direct download installation
-// require __DIR__  . '/PayPal-PHP-SDK/autoload.php';
 
-// // After Step 1 플랫폼 
-// $apiContext = new \PayPal\Rest\ApiContext(
-//   new \PayPal\Auth\OAuthTokenCredential(
-//       'AUnmLatjym_DdaZnWYLC2mn0daHBwRlpBV__0OihKwScrnH3qIiGong9LAWnW_yfNRlbyF7mwWeXwV6X',     // ClientID
-//       'EMVOpM2wrXhUueAN1VVUjBuj4Cb0lwzBV0tzlT423_lViDWQG5enyIL4jH6SduW4xjlta9fxvUW5ng4E'      // ClientSecret
-//   )
-// );
-
-// After Step 1 개인 셀러  clientID, ClientSecret 
+// 2. Provide your Secret Key. Replace the given one with your app clientId, and Secret
+// https://developer.paypal.com/webapps/developer/applications/myapps
 $apiContext = new \PayPal\Rest\ApiContext(
-  new \PayPal\Auth\OAuthTokenCredential(
+    new \PayPal\Auth\OAuthTokenCredential(
       'AYn6jGB2gnqW4GfGEop2fypxsga8CeOYYR_S1AFaljE3pMde51CyMRsS5ywUKW0jbBZniVpSQGhGdw4m',     // ClientID
       'EHtEIMBdkGpFKTu-V_46N67_tZceaTIgB9ZeO0vIX3BFosMjG4TYxRKPQCXI8LMIpo6V182s7uDw6XER'      // ClientSecret
-  )
+    )
 );
 
+// Step 2.1 : Between Step 2 and Step 3
+$apiContext->setConfig(
+  array(
+    'log.LogEnabled' => true,
+    'log.FileName' => 'PayPal.log',
+    'log.LogLevel' => 'DEBUG'
+  )
+);
 
 // 3. Lets try to create a Payment
 // https://developer.paypal.com/docs/api/payments/#payment_create

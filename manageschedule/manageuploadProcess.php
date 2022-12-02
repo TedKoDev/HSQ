@@ -71,8 +71,8 @@ $row1 = mysqli_fetch_array($response1);
 $timezone = $row1['0'].'</br>';
 
 
-$result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
-$response = mysqli_query($conn, $result);
+// $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
+// $response = mysqli_query($conn, $result);
   
 // $check = "SELECT * FROM Teacher_Schedule where User_Id = '{$User_ID}'";
 // $checkresult = mysqli_query($conn, $check);
