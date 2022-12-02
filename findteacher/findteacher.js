@@ -101,7 +101,7 @@ function setData(response) {
                         '<div>Speaks : </div>',
                     '</div>',                                      
                     '<div class = "mt-2">'+U_T_Intro+'</div>',
-                    '<div class = "ml-auto border-2">$ '+Price+'</div>',
+                    '<div class = "ml-auto">$ '+Price+'</div>',
                 '</div>',
             '</div>',
       '</a>',

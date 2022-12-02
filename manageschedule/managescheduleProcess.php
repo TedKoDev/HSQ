@@ -52,7 +52,7 @@ $U_Email = base64_decode($payload['U_Email']);
 $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1); 
-echo $timezone = $row1['0'].'</br>';
+$timezone = $row1['0'].'</br>';
 
 
 
@@ -67,6 +67,7 @@ $result2['Schedule'] = array();
 $hour = 3600000;
 
 $resultarray = array();
+//
 
 while ($row1 = mysqli_fetch_array($response2)) {
 
