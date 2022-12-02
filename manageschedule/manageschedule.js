@@ -63,6 +63,11 @@ function getDate(header_date, timezone, for_modal) {
     // 현재 날짜 객체 생성
     let now = new Date();
 
+    // 현재 날짜의 시/분/초 초기화
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
     // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
     const offset = (now.getTimezoneOffset()/60);
     now.setHours(now.getHours() + offset);
@@ -146,6 +151,7 @@ function setDate_Value(header_s, for_modal) {
                 let new_Date = new Date(time);
     
                 let date = new_Date.getDate();
+                let month = new_Date.getMonth()+1;
     
                 let day_array = new_Date.getDay();
                 let day = week[day_array];            
@@ -154,7 +160,7 @@ function setDate_Value(header_s, for_modal) {
                 date_day.innerHTML = [
                     '<div class = "flex flex-col w-20">', '<div class = "mx-auto">' + day,
                             '</div>',
-                    '<div class = "mx-auto">' + date + '</div>',
+                    '<div class = "mx-auto">' + month+"/"+date + '</div>',
                     '</div>'
                 ].join("");
     
@@ -230,7 +236,7 @@ async function setschedule(type, for_modal) {
     // 값이 있을 경우에만 추출해서 대입
     if (check == "yes") {
 
-        console.log("yes");
+       
         // let test_string = "54_62_88";
 
         // 서버에서 받아온 string 배열로 변환
@@ -271,7 +277,7 @@ async function setschedule(type, for_modal) {
     
                         // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
                         input.checked = true;
-                        label.style.backgroundColor = 'blue';
+                        label.style.backgroundColor = '#2563EB';
                     }               
                 }
             }
@@ -290,7 +296,7 @@ async function setschedule(type, for_modal) {
                         let input = document.getElementById(i+"_m");
 
                         input.checked = true;
-                        label.style.backgroundColor = 'blue';
+                        label.style.backgroundColor = '#2563EB';
                     }
                                 
                 }
@@ -314,7 +320,7 @@ function test_click(event) {
     if (event.target.checked) {
         // result = event.target.value;
             
-        label.style.backgroundColor = 'blue';
+        label.style.backgroundColor = '#2563EB';
 
         // 일정 저장을 위한 array에 해당 value 추가
         array_for_edit.push(result);
@@ -397,13 +403,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const body = document.getElementsByTagName('body')[0];
 
     const overlay = document.querySelector('#overlay')
+    const overlay_upload = document.querySelector('#overlay_upload')
     const edit_btn = document.getElementById('edit_schedule_btn')
+    const upload_btn = document.getElementById('upload_schedule_btn');
     // const closeBtn = document.querySelector('#close-modal')
 
-    const edit_done_btn = document.getElementById('edit_done_btn')
-    const edit_cancel_btn = document.getElementById('edit_cancel_btn')
+    // const edit_done_btn = document.getElementById('edit_done_btn')
+    const edit_cancel_btn = document.getElementById('edit_cancel_btn');
+    const upload_cancel_btn = document.getElementById('upload_cancel_btn');
 
-    const schedule_div = document.getElementById('schedule');
+    // const schedule_div = document.getElementById('schedule');
 
 
     const show_modal = () => {
@@ -435,9 +444,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
             array_for_edit = schedule_string.split('_');
         }        
+    }
 
-        console.log(array_for_edit);
-       
+    const show_modal_upload = () => {
+        
+        overlay_upload
+            .classList
+            .toggle('hidden')
+        overlay_upload
+            .classList
+            .toggle('flex')
+
+        body
+            .classList
+            .add('scrollLock');
+               
     }
 
     const cancel_modal = () => {                           
@@ -456,12 +477,32 @@ window.addEventListener('DOMContentLoaded', () => {
         // 일정 다시 세팅
         setschedule("_l", "");
 
-    }            
+    }          
+    
+    const cancel_modal_upload = () => {                           
+
+        overlay_upload
+            .classList
+            .toggle('hidden')
+            overlay_upload
+            .classList
+            .toggle('flex')
+
+        body
+            .classList
+            .remove('scrollLock');    
+            
+        // 일정 다시 세팅
+        setschedule("_l", "");
+
+    }     
+    
 
     edit_btn.addEventListener('click', show_modal)
-
+    upload_btn.addEventListener('click', show_modal_upload)
     // closeBtn.addEventListener('click', cancel_modal)
     edit_cancel_btn.addEventListener('click', cancel_modal)
+    upload_cancel_btn.addEventListener('click', cancel_modal_upload)
 })
 
 

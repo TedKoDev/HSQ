@@ -103,10 +103,19 @@
             <div class="w-3/4 mb-1">수업 가능한 시간</div>           
             <!-- 일정 표시 -->
             <div class="flex flex-col w-3/4 bg-gray-50 rounded-lg px-4 py-2 shadow">
-                <div class="flex ml-auto mb-2">
-                    <button onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
-                    <button onclick = "change_schedule('after', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
-                </div>
+                
+                <div class = "flex max-w-3xl justify-around px-2 mb-2">
+                    <div class = "flex">
+                        <div class = "flex items-center">
+                            <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
+                            <span class = "ml-1">예약 가능</span>
+                        </div>                    
+                    </div>
+                    <div class="flex ml-auto">
+                        <button onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
+                        <button onclick = "change_schedule('after', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
+                    </div>
+                </div>       
                 <div id="schedule" class="flex flex-col h-96 overflow-auto">
                     <div id="header_s" class="flex mx-auto">
 

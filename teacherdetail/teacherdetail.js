@@ -1,3 +1,5 @@
+// const dayjs = require("dayjs");
+
 // 유저 id 받아온 후 로컬 스토리지에서 삭제
 const {id} = JSON.parse(localStorage.getItem("user_id"));
 // localStorage.removeItem("user_id");
@@ -45,7 +47,7 @@ async function get_utc(tokenValue) {
       const timezone_s = response.timezone;      
 
       timezone = timezone_s;
-
+      
       console.log("timezone : "+timezone);
 
       if (success == "yes") {
@@ -68,8 +70,7 @@ async function get_utc(tokenValue) {
         }
 
         utc.innerHTML = utc_string;
-        
-        console.log("pass1");
+                
         // checkbox값 부여된 이후에 저장된 일정 세팅
         setschedule("_l", "");
       }
@@ -92,19 +93,27 @@ function getDate(header_date, timezone, for_modal) {
 
   // 현재 날짜 객체 생성
   let now = new Date();
-
-  // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
-  const offset = (now.getTimezoneOffset()/60);
-  now.setHours(now.getHours() + offset);
   
+  // 현재 날짜의 시/분/초 초기화
+  now.setHours(0);
+  now.setMinutes(0);
+  now.setSeconds(0);
+  
+  // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
+  const offset = (now.getTimezoneOffset()/60);  
+  now.setHours(now.getHours() + offset); 
+      
   // 날짜 표시하기 전에 받아온 타임존 적용 
   const string_to_int = parseInt(timezone);
   now.setHours(now.getHours() + string_to_int);
-  
+    
   // 현재 타임스탬프 전역 변수에 대입
-  time = now.getTime();
-      
+  time = now.getTime();  
+  
   time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기
+
+  
+  
 
   setDate_Value(header_s, for_modal);
 }
@@ -140,6 +149,8 @@ async function setschedule(type, for_modal) {
       // 서버에서 받아온 string 배열로 변환
       let test_array = schedule_string.split('_');
 
+      
+
       // 현재 모달창에서 체크하고 있는 배열 가져오기
       let check_array = new Array();
       check_array = array_for_edit;
@@ -157,6 +168,7 @@ async function setschedule(type, for_modal) {
           // 체크박스의 value값 가져오기
           let input_i = document.getElementById(i+for_modal).value;
 
+          // console.log(dayjs(input_i).format('YYYY/MM/DD hh:mm:ss'))
           // console.log(input_i);
           // 변환한 array의 개수만큼 반복문 돌리기
 
@@ -175,7 +187,9 @@ async function setschedule(type, for_modal) {
   
                       // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
                       // input.checked = true;
-                      label.style.backgroundColor = 'blue';
+                      label.style.backgroundColor = '#2563EB';
+
+                      // console.log("result : "+dayjs(test_array[j]).format("YYYY/MM/DD HH:MM:ss"))
                   }               
               }
           }
@@ -194,7 +208,7 @@ async function setschedule(type, for_modal) {
                       let input = document.getElementById(i+"_m");
 
                       input.checked = true;
-                      label.style.backgroundColor = 'blue';
+                      label.style.backgroundColor = '#2563EB';
                   }
                               
               }
@@ -233,7 +247,8 @@ function setDate_Value(header_s, for_modal) {
               let new_Date = new Date(time);
   
               let date = new_Date.getDate();
-  
+              let month = new_Date.getMonth()+1;
+
               let day_array = new_Date.getDay();
               let day = week[day_array];            
   
@@ -241,7 +256,7 @@ function setDate_Value(header_s, for_modal) {
               date_day.innerHTML = [
                   '<div class = "flex flex-col w-20">', '<div class = "mx-auto">' + day,
                           '</div>',
-                  '<div class = "mx-auto">' + date + '</div>',
+                  '<div class = "mx-auto">' + month+"/"+date + '</div>',
                   '</div>'
               ].join("");
   
