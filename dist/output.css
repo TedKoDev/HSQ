@@ -615,6 +615,11 @@ video {
   margin-bottom: 1.25rem;
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mb-5 {
   margin-bottom: 1.25rem;
 }
@@ -859,10 +864,6 @@ video {
   width: 83.333333%;
 }
 
-.w-1\/4 {
-  width: 25%;
-}
-
 .min-w-0 {
   min-width: 0px;
 }
@@ -1014,6 +1015,11 @@ video {
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
+}
+
+.border-blue-900 {
+  --tw-border-opacity: 1;
+  border-color: rgb(30 58 138 / var(--tw-border-opacity));
 }
 
 .border-gray-700 {

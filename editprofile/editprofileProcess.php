@@ -48,7 +48,10 @@ $position = json_decode(file_get_contents("php://input"))->{"position"}; //항�
 $desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f11aa1fc6ee16255be53fe37d291086ffe94b126
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
@@ -74,6 +77,11 @@ $U_Name  = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 
+<<<<<<< HEAD
+=======
+error_log("$time_now, $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
+
+>>>>>>> f11aa1fc6ee16255be53fe37d291086ffe94b126
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지 확인
@@ -81,10 +89,18 @@ $U_Email = base64_decode($payload['U_Email']);
 $check = "SELECT * FROM User_Detail where User_Id = $User_ID";
 $checkresult = mysqli_query($conn, $check);
 
+<<<<<<< HEAD
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지  확인
 
+=======
+// error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
+
+
+
+// U_D에 해당 user _ID로 등록된것이 있는지  확인
+>>>>>>> f11aa1fc6ee16255be53fe37d291086ffe94b126
 if ($checkresult->num_rows <1) {
     date_default_timezone_set('Asia/Seoul');
     $time_now = date("Y-m-d H:i:s");
@@ -103,6 +119,11 @@ if ($checkresult->num_rows <1) {
     // mysqli_close($conn);
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> f11aa1fc6ee16255be53fe37d291086ffe94b126
 
 // 있으면 update 시작 
 
@@ -348,6 +369,28 @@ else if ($position === "intro") {
         mysqli_close($conn);
     } else {
         $send["position"]   =  "intro";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+} // 타임존
+//$desc 가 'utc '인경우 
+else if ($position === "utc") {
+    $select = "UPDATE User_Detail SET U_D_Timezone = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "utc";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "utc";
         $send["success"]   =  "no";
         echo json_encode($send);
         mysqli_close($conn);

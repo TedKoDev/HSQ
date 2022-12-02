@@ -2,7 +2,7 @@
 let tokenValue = getCookie(cookieName);   
 // 토큰 서버에 전송
 
-console.log("token : "+tokenValue);
+// console.log("token : "+tokenValue);
 sendToken();
 
 // 화면 모두 로드되면 토큰 보내서 유저 정보 받아오기
@@ -49,9 +49,12 @@ async function postToken(tokenValue) {
     const clpeoeple = data[i].clpeople;
     const cltype = data[i].cltype;
     const tp = data[i].tp;   
+    const cllevel = data[i].cllevel;
     
-    console.log("tp0 : "+tp[0].Price);
-    console.log("tp1 : "+tp[1].Price);
+    // console.log("tp0 : "+tp[0].Price);
+    // console.log("tp1 : "+tp[1].Price);
+
+    console.log("cllevel : "+cllevel);
 
     // 가격 파싱
     const price_30 = tp[0].Price;
@@ -65,7 +68,7 @@ async function postToken(tokenValue) {
     class_div.setAttribute("class", "ml-4 mr-4 bg-gray-200 justify-between rounded-lg my-2");
 
     const div = document.createElement('div');
-    console.log("pass");
+    // console.log("pass");
     div.innerHTML = [
       '<div class = "flex justify-between">',
         '<div class = "flex flex-col px-4">',
@@ -85,6 +88,17 @@ async function postToken(tokenValue) {
     class_div.appendChild(div);
     class_list.appendChild(class_div);
 
+    // 수업레벨, 수업 유형 덧붙이기 위해 div id 가져오기
+    const type_div = document.getElementById("type_"+class_id);
+
+    // 수업 레벨 가져온 다음 배열로 바꾸어서 대입
+    const level_array = cllevel.split("_");
+    const level_string = level_array[0]+" - "+level_array[1];
+    const level_a = document.createElement("a");
+    level_a.setAttribute("class", "text-gray-700 mr-2")
+    level_a.innerHTML = level_string;
+    type_div.appendChild(level_a);
+
      // 수업 유형 배열로 전환
      const type_array = cltype.split(",");
 
@@ -96,8 +110,8 @@ async function postToken(tokenValue) {
       type.setAttribute("class", "bg-gray-500 text-gray-800 mr-2 rounded-lg px-2")
       type.innerHTML = type_array[j];
 
-      const type_div = document.getElementById("type_"+class_id);
-      console.log(type_div.value);
+      
+      // console.log(type_div.value);
       type_div.appendChild(type);
      }
   }

@@ -1,73 +1,162 @@
 <?php
 
-// == 내수업 목록 출력 프로세스==
-//   #요구되는 파라미터 (fetch형태 json 구조로 전달) 
-
-//1. "token"    : "토큰값".
-//2. "schedule" : "스케쥴"  
-
-
-// 보낼 줄 때 형태 
-// {
-//  "token"    : "토큰값".
-// }
-
-// 코드 전개 
-// 1.토큰 수령후 User_Id 값 추출 
-// 2.User_Id 기준으로 Class_List 상의 수업 목록 값을 가져온다 
-// 3.동시에 Class_List_Time_Price  CLass_Id 기준으로 에서 시간, 가격 값도 가져온다.
-
-//4.Json 형태로 담아 프론트로 전송한다. 
-
-
-
 
 include("./conn.php");
 include("./jwt.php");
 
+$jwt = new JWT();
 
-//Class_List에 수업 목록확인  
-$sql = "SELECT * FROM Class_List WHERE User_Id = '32'";
+// 토큰값, 항목,내용   전달 받음 
+file_get_contents("php://input") . "<br/>";
+// 토큰 
+$token      =   json_decode(file_get_contents("php://input"))->{"token"}; 
+// $plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일정 
+$plan      =  '2000_4000';
+
+
+//토큰 해체 
+$data = $jwt->dehashing($token);
+$parted = explode('.', base64_decode($token));
+$payload = json_decode($parted[1], true);
+// $User_ID =  base64_decode($payload['User_ID']);
+$User_ID =  32;
+$U_Name  = base64_decode($payload['U_Name']);
+$U_Email = base64_decode($payload['U_Email']);
+
+
+
+
+
+
+$hour = 3600;
+
+
+
+
+
+
+
+
+
+
+//U_D_Timeze 값을 가져옴   
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
+$row1 = mysqli_fetch_array($response1); 
+$timezone = $row1['0'].'</br>';
 
 
-$result1['data'] = array();
-$result2['timeprice'] = array();
 
 
-while ($row1 = mysqli_fetch_array($response1)){
-  $clid= $row1['0'];
+  
+$check = "SELECT * FROM Teacher_Schedule where User_Id = '{$User_ID}'";
+$checkresult = mysqli_query($conn, $check);
 
-  $send['class_id'] = $row1['0'];
-  $send['clname'] = $row1['2'];
-  $send['cldisc'] = $row1['3'];
-  $send['clpeople'] = $row1['4'];
-  $send['cltype'] = $row1['5'];
-  $send['cllevel'] = $row1['6'];
- 
 
-//Class_List_Time_Price 수업 시간, 가격 확인   
-$sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
-$response2 = mysqli_query($conn, $sql);
+// 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
+$result = (explode("_", $plan));
 
-while ($row2 = mysqli_fetch_array($response2)){
- 
-   $tp['Time'] = $row2['2'];
-   $tp['Price'] = $row2['3']; 
 
- array_push($result2['timeprice'],$tp);
+$resultarray= array();
+foreach($result as $val){
 
- }
-//  echo json_encode($result2);
+ $val;
 
-$send['tp'] = $result2['timeprice'];
+ $save = $val - $timezone* $hour;
 
-array_push($result1['data'],$send);
-$result2['timeprice'] = array();
+array_push($resultarray,$save);
+
+
 }
 
-$result1["success"] = "1";
-echo json_encode($result1);
+json_encode($resultarray);
 
 
-mysqli_close($conn);
+
+    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '32' ";
+     $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
+     $response = mysqli_query($conn, $result);
+
+ foreach($resultarray as $val){
+
+  $val;
+
+  $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('{$User_ID}', '$val') ";
+  $response = mysqli_query($conn, $result);
+
+
+}
+
+     
+ if ($response) { //정상일떄  
+  $data = array(
+    'plan'            =>   $resultarray,
+    'success'        	=>	'yes'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
+} else {//비정상일떄 
+  $data = array(
+ 
+    'success'        	=>	'no'
+  );
+  echo json_encode($data);
+  mysqli_close($conn);
+}
+
+
+// //U_D_Timeze 값을 가져옴   
+// $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
+// $response1 = mysqli_query($conn, $sql);
+// $row1 = mysqli_fetch_array($response1); 
+// echo $timezone = $row1['0'].'</br>';
+
+
+
+// $sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '{$User_ID}'";
+// $response2 = mysqli_query($conn, $sql);
+
+// $result2['Schedule'] = array();
+
+
+
+// // 1시간 = 3600;
+// $hour = 3600;
+
+// $resultarray = array();
+
+// while ($row1 = mysqli_fetch_array($response2)) {
+
+//  $schedule = $row1['0'];
+
+
+//   $schedule2 = $schedule - $hour*$timezone;
+
+
+
+//   array_push($resultarray, $schedule2);
+//   // array_push($resultarray,$save);
+// }
+// // $string = implode("_",$resultarray);
+  
+
+//  $string = implode("_",$resultarray);
+  
+     
+//  if ($response1) { //정상일떄  
+//   $data = array(
+//     'schedule'	=>	$string,
+//     'success'        	=>	'yes'
+//   );
+//   echo json_encode($data);
+//   mysqli_close($conn);
+// } else {//비정상일떄 
+//   $data = array(
+//     'schedule'	=>	'no',
+//     'success'        	=>	'no'
+//   );
+//   echo json_encode($data);
+//   mysqli_close($conn);
+// }
+  
+ 

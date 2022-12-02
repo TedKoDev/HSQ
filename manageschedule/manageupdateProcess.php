@@ -29,22 +29,27 @@ include("../conn.php");
 include("../jwt.php");
 
 
-
 $jwt = new JWT();
 
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
+
 // 토큰 
-$token      =   json_decode(file_get_contents("php://input"))->{"token"}; 
-$plan      =   json_decode(file_get_contents("php://input"))->{"plan"}; 
+$token     =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰값 
+// $repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // 몇주 반복 여부  4, 8, 12 주  
+// $utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // 
+$plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일정 
+// $plan      =  '1669894200_1669896000_1669897800';
+// $plan      =  '1000_2000';
+// $repeat    = 8; // 몇주 반복 여부  4, 8, 12 주  
+// $utc       = 9;  // 일정 
+
+
+$hour = 3600000;
 
 
 
-
-// date_default_timezone_set('Asia/Seoul');
-// $time_now = date("Y-m-d H:i:s");
-// error_log("$token, $cname, $cintro,$timeprice,$people,$type  \n", "3", "../php.log");
-
+// error_log("$time_now, $position, $desc\n", "3", "/php.log");
 
 //토큰 해체 
 $data = $jwt->dehashing($token);
@@ -56,63 +61,58 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
-
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timeze FROM User_Detail WHERE User_Id = '{$User_ID}'";
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'];
+$timezone = $row1['0'].'</br>';
 
+
+
+
+  
+$check = "SELECT * FROM Teacher_Schedule where User_Id = '{$User_ID}'";
+$checkresult = mysqli_query($conn, $check);
 
 
 // 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
 $result = (explode("_", $plan));
 
-// echo $result;
-  
-$resultarray = array();
-//
 
+$resultarray= array();
 foreach($result as $val){
 
-  $val."</br>";
+ $val;
 
-  $save = $val + $timezone * 2;
+ $save = $val - $timezone* $hour;
 
-  // echo $save;
-  if($save > 336) {
+array_push($resultarray,$save);
 
-    $save = $save - 336; 
-  }
-
-
-  array_push($resultarray,$save);
 
 }
 
-// echo json_encode($resultarray);
-// echo '</br>';
-// echo $plan;
-// echo '</br>';
+json_encode($resultarray);
 
- $string = implode("_",$resultarray);
-  
- $check = "SELECT * FROM Teacher_Schedule where User_Id = '{$User_ID}'";
- $checkresult = mysqli_query($conn, $check);
- 
- 
- // U_D에 해당 user _ID로 등록된것이 있는지  확인
- if ($checkresult->num_rows <1) {
 
-     // 중복값이 없을때 때 실행할 내용
-     // 없으면 insert로  data 만들고  
-     // 아래의 update로 data 삽입 
-     $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('{$User_ID}', ' $string') ";
+
+    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '32' ";
+     $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
      $response = mysqli_query($conn, $result);
+
+ foreach($resultarray as $val){
+
+  $val;
+
+  $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('{$User_ID}', '$val') ";
+  $response = mysqli_query($conn, $result);
+
+
+}
+
      
  if ($response) { //정상일떄  
   $data = array(
-    'plan'            =>  $plan,
+    'plan'            =>   $resultarray,
     'success'        	=>	'yes'
   );
   echo json_encode($data);
@@ -125,35 +125,3 @@ foreach($result as $val){
   echo json_encode($data);
   mysqli_close($conn);
 }
-  
- }else {
-   
-
- 
- $select = "UPDATE Teacher_Schedule SET Schedule = '$string' where User_Id = '{$User_ID}' ";
- 
- $response = mysqli_query($conn, $select);
- 
-
- if ($response) {//정상일떄 
-  $data = array(
-    'plan'            =>  $plan,
-    'success'        	=>	'yes'
-  );
-  echo json_encode($data);
-  mysqli_close($conn);
-} else {//비정상일떄 
-  $data = array(
-
-    'success'        	=>	'no'
-  );
-  echo json_encode($data);
-  mysqli_close($conn);
-}
-
- }
-
-
-
-
-  

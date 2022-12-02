@@ -23,6 +23,7 @@
 //   "country": null,
 //   "residence": null,
 //   "point": null,
+//   "timezone": null,
 //   "language": null,
 //   "korean": null,
 //   "teacher": null,
@@ -64,7 +65,7 @@ $U_Email = base64_decode($payload['U_Email']);
 // 
 
 // DB 정보 가져오기 
-$sql = "SELECT User.User_ID, User.U_Name, User.U_Email,  U_D_Img, U_D_Bday, U_D_Sex, U_D_Contact, U_D_Country, U_D_Residence ,U_D_Point, U_D_Language ,U_D_Korean, U_D_T_add , U_D_Intro FROM HANGLE.User left join User_Detail on User.User_ID = User_Detail.User_Id where User.User_ID = '{$User_ID}'";
+$sql = "SELECT User.User_ID, User.U_Name, User.U_Email,  U_D_Img, U_D_Bday, U_D_Sex, U_D_Contact, U_D_Country, U_D_Residence ,U_D_Point, U_D_Timezone, U_D_Language ,U_D_Korean, U_D_T_add , U_D_Intro FROM HANGLE.User left join User_Detail on User.User_ID = User_Detail.User_Id where User.User_ID = '{$User_ID}'";
 // {$User_ID}
 
 $result = mysqli_query($conn, $sql);
@@ -85,6 +86,7 @@ $row = mysqli_fetch_array($result);
  $country     = $row['U_D_Country'];
  $residence   = $row['U_D_Residence'];
  $point       = $row['U_D_Point'];
+ $timezone    = $row['U_D_Timezone'];
  $language    = $row['U_D_Language'];
  $korean      = $row['U_D_Korean'];
  $teacher     = $row['U_D_T_add'];
@@ -103,6 +105,7 @@ $row = mysqli_fetch_array($result);
  $send["country"]   =  $country  ;
  $send["residence"]   =  $residence  ;
  $send["point"]   =  $point    ;
+ $send["timezone"]   =  $timezone    ;
  $send["language"]   =  $language ;
  $send["korean"]   =  $korean ;
  $send["teacher"]   =  $teacher  ;
