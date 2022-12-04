@@ -33,6 +33,8 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 // 토큰 
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; 
+$tusid      =   json_decode(file_get_contents("php://input"))->{"tusid"};  // 강사의 userid 
+$tusid      =   32;  // 강사의 userid 
 
 
 
@@ -41,22 +43,41 @@ $token      =   json_decode(file_get_contents("php://input"))->{"token"};
 $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
-$User_ID =  base64_decode($payload['User_ID']);
+// $User_ID =  base64_decode($payload['User_ID']);
+$User_ID =  32;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
 
 
 
-//U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '$User_ID'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'];
+
+if($token != null){
+
+  //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
+  $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
+  $response1 = mysqli_query($conn, $sql);
+  $row1 = mysqli_fetch_array($response1);
+  
+  
+  $timezone = $row1['0'];
+  $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
+  
+  
+  }else {
+  
+    $timezone = $utc;
+    $send['CONNECT_USER_TIMEZONE'] = $utc;
+  
+  }
 
 
 
-$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$User_ID'";
+
+
+
+
+$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$tusid '";
 $response2 = mysqli_query($conn, $sql);
 
 $result2['Schedule'] = array();
