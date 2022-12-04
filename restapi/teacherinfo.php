@@ -12,9 +12,9 @@ classinfo.php
 출력정보  
 
 
-1. 수업상세  (수업명, 수업내용, 수업유형, 수업 레벨, 수업 가격)
+1. 강사상세  (수업명, 수업내용, 수업유형, 수업 레벨, 수업 가격)
 
-2. 수업목록  (수업명, 및 기타 정보 + 수업오픈한 강사의 정보(이름,이미지 )   + plus 가 있는경우 페이징 동작함)
+2. 강사목록  (수업명, 및 기타 정보 + 수업오픈한 강사의 정보(이름,이미지 )   + plus 가 있는경우 페이징 동작함)
 {"clname"};   // 수업이름 
 {"cldisc"};   // 수업설명 
 {"clpeople"}; // 수업인원 
@@ -40,12 +40,15 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 
+$token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
+$usid      =   json_decode(file_get_contents("php://input"))->{"usid"}; // 선택된 강사의 userid 
+$utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // utc 
 
-$classid       =   json_decode(file_get_contents("php://input"))->{"classid"}; // 수업번호 
-// $tuserid       =   json_decode(file_get_contents("php://input"))->{"tuserid"}; // 강사의 User_id 
+
+$tuserid       =   json_decode(file_get_contents("php://input"))->{"tuserid"}; // 강사의 User_id 
 
 
-$clname        =   json_decode(file_get_contents("php://input"))->{"clname"};   // 수업이름 
+$clname        =   json_decode(file_get_contents("php://input"))->{"tname"};   // 강사이름 
 $cldisc        =   json_decode(file_get_contents("php://input"))->{"cldisc"};   // 수업설명 
 $clpeople      =   json_decode(file_get_contents("php://input"))->{"clpeople"}; // 수업인원 
 $cltype        =   json_decode(file_get_contents("php://input"))->{"cltype"};   // 수업유형 
@@ -63,7 +66,7 @@ $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     
 
 
 
-// 수업상세 출력인지 목록 출력인지 
+// 강사상세 출력인지 목록 출력인지 
 if ($classid != null) {
   //해당 classid에 해당하는 상세정보를 가져옴 
   //classid 가 있으면 작동
@@ -137,88 +140,89 @@ if ($classid != null) {
 
 
 } else {
-  //classid 가 없으면 작동 전체 목록 
+  //tusid 가 없으면 작동 전체 목록 
+
+
+  $i= 0 ;
 
 
 
-  $i = 0;
 
-  $start =  $i + (20 * $plus);
+  $start =  $i + (20* $plus);
   $till = 20;
-
-  $result1['result'] = array();
-  $result2['timeprice'] = array();
-
-  //Class_List와  class_list_Time_Price 와 join 을 통해서 userid가 만든  class list의 class id 값을  class_List_Time_Price와의 fk로 해서 리스트를 얻는다. 
-  // 그중 가장 낮은 가격의 값을 얻는다. 
-
+  
+  
+  
   //Class_List에 수업 목록확인  
-  $sql = "SELECT * FROM Class_List order by  Class_Id DESC LIMIT $start, $till";
+  $sql = "SELECT * FROM User_Teacher order by  User_T_Id DESC LIMIT $start, $till ";
   $response1 = mysqli_query($conn, $sql);
-
+  
+  
+  $result1['data'] = array();
   while ($row1 = mysqli_fetch_array($response1)) {
-    $clid = $row1['0'];
-    $usid = $row1['1'];
-
-    $send1['class_id'] = $row1['0'];
-
-    $send1['clname'] = $row1['2'];
-    $send1['cldisc'] = $row1['3'];
-    $send1['clpeople'] = $row1['4'];
-    $send1['cltype'] = $row1['5'];
-    $send1['cllevel'] = $row1['6'];
-
-
-
-      //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
-      $sql = "SELECT 
-      User.U_Name, 
-      User_Teacher.U_T_Special,  
-      User_Detail.U_D_Img,
-
-      FROM User
-      JOIN User_Detail
-        ON User.User_ID = User_Detail.User_Id
-      JOIN User_Teacher
-        ON User_Teacher.User_Id = User_Detail.User_Id 
-      where User.User_Id = '$usid' ";
+      $usid = $row1['1'];
+  
+      $send['User_Id'] = $row1['1'];
+      $send['U_T_Intro'] = $row1['2'];
+      $send['U_T_Special'] = $row1['4'];
+  
+  
+      //User_Detail 에서 이미지, 언어 수업 시간, 가격 확인   
+      $sql = "SELECT * FROM User_Detail WHERE User_Id = '$usid'";
       $response2 = mysqli_query($conn, $sql);
+  
       $row2 = mysqli_fetch_array($response2);
-      $send1['U_Name'] = $row2['0'];
-      $send1['U_T_Special'] = $row2['1'];
-      $send1['U_D_Img'] = $row2['2'];
-
-    
-
-
-    //Class_List_Time_Price 수업 시간, 가격 확인   
-    $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
-    $response3 = mysqli_query($conn, $sql);
-
-    while ($row2 = mysqli_fetch_array($response3)) {
-
-      $tp['Time'] = $row2['2'];
-      $tp['Price'] = $row2['3'];
-
-      array_push($result2['timeprice'], $tp);
-    }
-    //  echo json_encode($result2);
-
-    $send1['tp'] = $result2['timeprice'];
-
-    array_push($result1['result'], $send1);
-    $result2['timeprice'] = array();
+  
+      $send['U_D_Img'] = $row2['2'];
+      $send['U_D_Language'] = $row2['8'];
+      $send['U_D_Intro'] = $row2['12'];
+  
+      //User 에서 유저 이름    
+      $sql = "SELECT * FROM User WHERE User_ID = '$usid'";
+      $response3 = mysqli_query($conn, $sql);
+  
+      $row3 = mysqli_fetch_array($response3);
+  
+      $send['U_Name'] = $row3['3'];
+  
+  
+  
+  
+      //Class_List와  class_list_Time_Price 와 join 을 통해서 userid가 만든  class list의 class id 값을  class_List_Time_Price와의 fk로 해서 리스트를 얻는다. 
+      // 그중 가장 낮은 가격의 값을 얻는다. 
+  
+  
+  
+  
+      //Class_List에 수업 목록확인  
+      $sql = "SELECT * FROM Class_List WHERE User_Id = '{$usid}'";
+      $response4 = mysqli_query($conn, $sql);
+  
+      $row4 = mysqli_fetch_array($response4);
+      $clid = $row4['0'];
+      $send['class_id'] = $row4['0'];
+  
+  
+      //Class_List_Time_Price 수업 시간, 가격 확인   
+      $sql = "SELECT Class_List_Time_Price.CLass_Id, User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
+  On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id = '{$usid}' order by Class_List_Time_Price.Price asc limit 1";
+  
+      // $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+      $response5 = mysqli_query($conn, $sql);
+  
+      $row5 = mysqli_fetch_array($response5);
+      $send['Time'] = $row5['2'];
+      $send['Price'] = $row5['3'];
+  
+      if ($send['class_id'] != null) {
+          array_push($result1['data'], $send);
+      }
   }
-
-  if ($response2) { //정상적으로 저장되었을때 
-
-    $result1["success"] = "yes";
-    echo json_encode($result1);
-    mysqli_close($conn);
-  } else {
-
-    $result1["success"]   =  "no";
-    // echo json_encode($result1);
-    mysqli_close($conn);
-  }
+  
+  
+  $result1["success"] = "1";
+  echo json_encode($result1);
+  
+  mysqli_close($conn);
+  
 }
