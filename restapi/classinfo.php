@@ -174,7 +174,7 @@ if ($classid != null) {
       $sql = "SELECT 
       User.U_Name, 
       User_Teacher.U_T_Special,  
-      User_Detail.U_D_Img,
+      User_Detail.U_D_Img
 
       FROM User
       JOIN User_Detail
