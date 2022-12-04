@@ -137,7 +137,7 @@ if ($classid != null) {
     $response2 = mysqli_query($conn, $sql);
   while ($row2 = mysqli_fetch_array($response2)) {
 
-    $send1['Price'] = $row2['3'];
+    $send1= $row2['3'];
     array_push($result2['timeprice'], $send1);
   }
   $send['tp'] = $result2['timeprice'];
