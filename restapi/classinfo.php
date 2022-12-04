@@ -41,31 +41,31 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 
 
-// $classid       =   json_decode(file_get_contents("php://input"))->{"classid"}; // 수업번호 
-$classid       =   165; // 수업번호 
+$classid       =   json_decode(file_get_contents("php://input"))->{"classid"}; // 수업번호 
+// $classid       =   165; // 수업번호 
 // $tuserid       =   json_decode(file_get_contents("php://input"))->{"tuserid"}; // 강사의 User_id 
 
 
-// $clname        =   json_decode(file_get_contents("php://input"))->{"clname"};   // 수업이름 
-// $cldisc        =   json_decode(file_get_contents("php://input"))->{"cldisc"};   // 수업설명 
-// $clpeople      =   json_decode(file_get_contents("php://input"))->{"clpeople"}; // 수업인원 
-// $cltype        =   json_decode(file_get_contents("php://input"))->{"cltype"};   // 수업유형 
-// $cllevel       =   json_decode(file_get_contents("php://input"))->{"cllevel"};  // 수업레벨 
-// $cltime        =   json_decode(file_get_contents("php://input"))->{"cltime"};   // 수업시간
-// $clprice       =   json_decode(file_get_contents("php://input"))->{"clprice"};  // 수업가격
-// $timg          =   json_decode(file_get_contents("php://input"))->{"timg"};     // 강사이미지
-// $tname         =   json_decode(file_get_contents("php://input"))->{"tname"};    // 강사이름
+$clname        =   json_decode(file_get_contents("php://input"))->{"clname"};   // 수업이름 
+$cldisc        =   json_decode(file_get_contents("php://input"))->{"cldisc"};   // 수업설명 
+$clpeople      =   json_decode(file_get_contents("php://input"))->{"clpeople"}; // 수업인원 
+$cltype        =   json_decode(file_get_contents("php://input"))->{"cltype"};   // 수업유형 
+$cllevel       =   json_decode(file_get_contents("php://input"))->{"cllevel"};  // 수업레벨 
+$cltime        =   json_decode(file_get_contents("php://input"))->{"cltime"};   // 수업시간
+$clprice       =   json_decode(file_get_contents("php://input"))->{"clprice"};  // 수업가격
+$timg          =   json_decode(file_get_contents("php://input"))->{"timg"};     // 강사이미지
+$tname         =   json_decode(file_get_contents("php://input"))->{"tname"};    // 강사이름
 
-$clname        =   1;   // 수업이름 
-$cldisc        =   1;   // 수업설명 
-$clpeople      =   1; // 수업인원 
-$cltype        =   1;   // 수업유형 
-$cllevel       =   1 ;  // 수업레벨 
+// $clname        =   1;   // 수업이름 
+// $cldisc        =   1;   // 수업설명 
+// $clpeople      =   1; // 수업인원 
+// $cltype        =   1;   // 수업유형 
+// $cllevel       =   1 ;  // 수업레벨 
 
-$cltime       =   1 ;  // 수업가격
-$clprice       =   1 ;  // 수업가격
-$timg          =   1 ;     // 강사이미지
-$tname         =   1 ;    // 강사이름
+// $cltime       =   1 ;  // 수업가격
+// $clprice       =   1 ;  // 수업가격
+// $timg          =   1 ;     // 강사이미지
+// $tname         =   1 ;    // 강사이름
  
  
 $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
