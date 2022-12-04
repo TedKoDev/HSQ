@@ -10,8 +10,24 @@ classinfo.php
 2. 항목 별 값이 있다/없다. 
 
 출력정보  
-1. 수업목록  (수업명, 및 기타 정보 + 수업오픈한 강사의 정보(이름,이미지 ))
-2. 수업상세  (수업명, 수업내용, 수업유형, 수업 레벨, 수업 가격)
+
+
+1. 수업상세  (수업명, 수업내용, 수업유형, 수업 레벨, 수업 가격)
+
+2. 수업목록  (수업명, 및 기타 정보 + 수업오픈한 강사의 정보(이름,이미지 )   + plus 가 있는경우 페이징 동작함)
+{"clname"};   // 수업이름 
+{"cldisc"};   // 수업설명 
+{"clpeople"}; // 수업인원 
+{"cltype"};   // 수업유형 
+{"cllevel"};  // 수업레벨 
+{"cltime"};   // 수업시간
+{"clprice"};  // 수업가격
+{"timg"};     // 강사이미지
+{"tname"};    // 강사이름
+{"plus"};     // 더보기 
+
+
+ 
  */
 
 //// 2. (선생)tuser_id가 있다/없다.
@@ -23,41 +39,32 @@ $jwt = new JWT();
 
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
-// $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-//토큰 해체 
-// $data = $jwt->dehashing($token);
-// $parted = explode('.', base64_decode($token));
-// $payload = json_decode($parted[1], true);
-// $User_ID =  base64_decode($payload['User_ID']);
-// $U_Name  = base64_decode($payload['U_Name']);
-// $U_Email = base64_decode($payload['U_Email']);
 
 
 $classid       =   json_decode(file_get_contents("php://input"))->{"classid"}; // 수업번호 
 // $tuserid       =   json_decode(file_get_contents("php://input"))->{"tuserid"}; // 강사의 User_id 
 
 
-$clname       =   json_decode(file_get_contents("php://input"))->{"clname"};   // 수업이름 
-$cldisc       =   json_decode(file_get_contents("php://input"))->{"cldisc"};   // 수업설명 
-$clpeople     =   json_decode(file_get_contents("php://input"))->{"clpeople"}; // 수업인원 
-$cltype       =   json_decode(file_get_contents("php://input"))->{"cltype"};   // 수업유형 
-$cllevel      =   json_decode(file_get_contents("php://input"))->{"cllevel"};  // 수업레벨 
-$cltimeprice  =   json_decode(file_get_contents("php://input"))->{"cltime"};   // 수업시간
-$clprice      =   json_decode(file_get_contents("php://input"))->{"clprice"};  // 수업가격
-$timg         =   json_decode(file_get_contents("php://input"))->{"timg"};     // 강사이미지
-$tname        =   json_decode(file_get_contents("php://input"))->{"tname"};    // 강사이름
-
-
-$plus         =   json_decode(file_get_contents("php://input"))->{"plus"}; // 더보기 
-
-
-
+$clname        =   json_decode(file_get_contents("php://input"))->{"clname"};   // 수업이름 
+$cldisc        =   json_decode(file_get_contents("php://input"))->{"cldisc"};   // 수업설명 
+$clpeople      =   json_decode(file_get_contents("php://input"))->{"clpeople"}; // 수업인원 
+$cltype        =   json_decode(file_get_contents("php://input"))->{"cltype"};   // 수업유형 
+$cllevel       =   json_decode(file_get_contents("php://input"))->{"cllevel"};  // 수업레벨 
+$cltimeprice   =   json_decode(file_get_contents("php://input"))->{"cltime"};   // 수업시간
+$clprice       =   json_decode(file_get_contents("php://input"))->{"clprice"};  // 수업가격
+$timg          =   json_decode(file_get_contents("php://input"))->{"timg"};     // 강사이미지
+$tname         =   json_decode(file_get_contents("php://input"))->{"tname"};    // 강사이름
+ 
+ 
+$plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
 
 
 
-// 목록 출력인지 개별 출력인지 
+
+
+
+// 수업상세 출력인지 목록 출력인지 
 if ($classid != null) {
-
   //해당 classid에 해당하는 상세정보를 가져옴 
   //classid 가 있으면 작동
 
@@ -94,8 +101,6 @@ if ($classid != null) {
     $send['CL_Level'] = $row1['6'];
   }
 
-
-
     if ($tname != null ) {
     //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
     $sql = "SELECT 
@@ -103,11 +108,8 @@ if ($classid != null) {
             FROM User           
              where User.User_Id = '$tusid'";
     $response2 = mysqli_query($conn, $sql);
-
     $row2 = mysqli_fetch_array($response2);
-
     $send['U_Name'] = $row2['0'];
-
   }
 
     if ($timg != null) {
