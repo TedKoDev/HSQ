@@ -12,6 +12,10 @@
 // }
 
 
+//수업정보 api  class id 
+//강사정보 api   +  user 정보 
+//강사일정 api 
+
 
 // #필요한 값 
 // - 해당수업 제목        Class_List.CL_Name

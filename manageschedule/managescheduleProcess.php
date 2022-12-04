@@ -49,14 +49,14 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '$User_ID'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1); 
 $timezone = $row1['0'].'</br>';
 
 
 
-$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '{$User_ID}'";
+$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$User_ID'";
 $response2 = mysqli_query($conn, $sql);
 
 $result2['Schedule'] = array();
