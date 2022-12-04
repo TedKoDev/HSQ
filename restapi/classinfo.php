@@ -101,31 +101,6 @@ if ($classid != null) {
     $send['CL_Level'] = $row1['6'];
   }
 
-    if ($tname != null ) {
-    //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
-    $sql = "SELECT 
-            User.U_Name
-            FROM User           
-             where User.User_Id = '$tusid'";
-    $response2 = mysqli_query($conn, $sql);
-    $row2 = mysqli_fetch_array($response2);
-    $send['U_Name'] = $row2['0'];
-  }
-
-    if ($timg != null) {
-    //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
-    $sql = "SELECT 
-            User_Detail.U_D_Img
-            FROM User_Detail
-            where User_Detail.User_Id = '$tusid'";
-    $response2 = mysqli_query($conn, $sql);
-
-    $row2 = mysqli_fetch_array($response2);
-
-    $send['U_D_Img'] = $row2['0'];
-
-  }
-  
 
 
 
@@ -203,6 +178,31 @@ if ($classid != null) {
     $send1['special'] = $row1['0'];
 
 
+    if ($tname != null ) {
+      //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
+      $sql = "SELECT 
+              User.U_Name
+              FROM User           
+               where User.User_Id = '$tusid'";
+      $response2 = mysqli_query($conn, $sql);
+      $row2 = mysqli_fetch_array($response2);
+      $send['U_Name'] = $row2['0'];
+    }
+  
+      if ($timg != null) {
+      //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
+      $sql = "SELECT 
+              User_Detail.U_D_Img
+              FROM User_Detail
+              where User_Detail.User_Id = '$tusid'";
+      $response2 = mysqli_query($conn, $sql);
+  
+      $row2 = mysqli_fetch_array($response2);
+  
+      $send['U_D_Img'] = $row2['0'];
+  
+    }
+    
 
 
     //Class_List_Time_Price 수업 시간, 가격 확인   

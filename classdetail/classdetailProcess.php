@@ -118,7 +118,7 @@ $result1['result'] = array();
 $result2['timeprice'] = array();
 
 
-//현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
+//수업 상세 정보 
 $sql = "SELECT * FROM Class_List WHERE Class_Id = '{$classid}'";
 $response1 = mysqli_query($conn, $sql);
 
@@ -152,7 +152,7 @@ $send['tp'] = $result2['timeprice'];
 
 
 
-//Class_List에 수업 목록확인  
+//유저 정보   
 $sql = "SELECT 
 User.U_Name, 
 User_Teacher.U_T_Special,  
