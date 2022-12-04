@@ -2,29 +2,31 @@
 
 /***
 
-수강정보  RestAPI
-classinfo.php
+강사정보  RestAPI
+teacherinfo.php
 
 분기 조건 
-1. class id가 있다/없다.
+1. teacher userid가 있다/없다.
 2. 항목 별 값이 있다/없다. 
 
 출력정보  
 
 
-1. 강사상세  (수업명, 수업내용, 수업유형, 수업 레벨, 수업 가격)
+1. 강사상세  (강사명, 강사이미지, 강사 자기소개, 자기소개, 강사국가, 강사 거주지, 강사 전문성, 강사언어)
 
-2. 강사목록  (수업명, 및 기타 정보 + 수업오픈한 강사의 정보(이름,이미지 )   + plus 가 있는경우 페이징 동작함)
-{"clname"};   // 수업이름 
-{"cldisc"};   // 수업설명 
-{"clpeople"}; // 수업인원 
-{"cltype"};   // 수업유형 
-{"cllevel"};  // 수업레벨 
-{"cltime"};   // 수업시간
-{"clprice"};  // 수업가격
 {"timg"};     // 강사이미지
 {"tname"};    // 강사이름
-{"plus"};     // 더보기 
+{"tintro"};    // 강사자기소개
+{"intro"};    // 자기소개
+{"tcountry"};    // 강사국가
+{"tresidence"};    // 강사거주지
+{"tspecial"};    // 강사전문성
+{"tlanguage"};    // 강사언어 
+
+
+2. 강사목록  (강사명, 및 기타 정보  + plus 가 있는경우 페이징 동작함)
+수업이 있는 강사만 출력함 .
+
 
 
  
@@ -47,16 +49,14 @@ $tusid      =   json_decode(file_get_contents("php://input"))->{"tusid"}; // 선
 $utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // utc 
 
 
-
-$timg          =   json_decode(file_get_contents("php://input"))->{"timg"};     // 강사이미지
-$tname         =   json_decode(file_get_contents("php://input"))->{"tname"};    // 강사이름
+$timg           =   json_decode(file_get_contents("php://input"))->{"timg"};     // 강사이미지
+$tname          =   json_decode(file_get_contents("php://input"))->{"tname"};    // 강사이름
 $tintro         =   json_decode(file_get_contents("php://input"))->{"tintro"};    // 강사자기소개
-$intro         =   json_decode(file_get_contents("php://input"))->{"intro"};    // 자기소개
-$tcountry         =   json_decode(file_get_contents("php://input"))->{"tcountry"};    // 강사국가
-$tresidence         =   json_decode(file_get_contents("php://input"))->{"tresidence"};    // 강사거주지
-$tspecial         =   json_decode(file_get_contents("php://input"))->{"tspecial"};    // 강사거주지
-$tplan         =   json_decode(file_get_contents("php://input"))->{"tplan"};    // 강사일정
-$tlanguage         =   json_decode(file_get_contents("php://input"))->{"tlanguage"};    // 강사일정
+$intro          =   json_decode(file_get_contents("php://input"))->{"intro"};    // 자기소개
+$tcountry       =   json_decode(file_get_contents("php://input"))->{"tcountry"};    // 강사국가
+$tresidence     =   json_decode(file_get_contents("php://input"))->{"tresidence"};    // 강사거주지
+$tspecial       =   json_decode(file_get_contents("php://input"))->{"tspecial"};    // 강사전문성
+$tlanguage      =   json_decode(file_get_contents("php://input"))->{"tlanguage"};    // 강사언어 
 
 
 $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
@@ -212,14 +212,9 @@ mysqli_close($conn);
   
   
   
+
   
-      //Class_List와  class_list_Time_Price 와 join 을 통해서 userid가 만든  class list의 class id 값을  class_List_Time_Price와의 fk로 해서 리스트를 얻는다. 
-      // 그중 가장 낮은 가격의 값을 얻는다. 
-  
-  
-  
-  
-      //Class_List에 수업 목록확인  
+      // Class_List에 수업 목록확인   강사의 수업이 있는지 확인하는 절차 없으면 넣지않으려함 .
       $sql = "SELECT * FROM Class_List WHERE User_Id = '{$tusid}'";
       $response4 = mysqli_query($conn, $sql);
   
@@ -231,15 +226,14 @@ mysqli_close($conn);
       //Class_List_Time_Price 수업 시간, 가격 확인   
       $sql = "SELECT Class_List_Time_Price.CLass_Id, User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
   On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id = '{$tusid}' order by Class_List_Time_Price.Price asc limit 1";
-  
-      // $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+
       $response5 = mysqli_query($conn, $sql);
   
       $row5 = mysqli_fetch_array($response5);
       $send['Time'] = $row5['2'];
       $send['Price'] = $row5['3'];
   
-      if ($send['class_id'] != null) {
+      if ($send['class_id'] != null) { // 수업이 없는 것은 넣지 않는다. 
           array_push($result1['data'], $send);
       }
   }
