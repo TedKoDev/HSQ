@@ -159,7 +159,9 @@ if ($classid != null) {
   while ($row1 = mysqli_fetch_array($response1)) {
     $clid = $row1['0'];
     $usid = $row1['1'];
+    $send1['tusid'] = $row1['1'];
 
+    $send1['class_id'] = $row1['0'];
     $send1['class_id'] = $row1['0'];
 
     $send1['clname'] = $row1['2'];
