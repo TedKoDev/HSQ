@@ -10,7 +10,7 @@
 // 보낼 줄 때 형태 
 // {
 //  "token"    : "토큰값".
-//  "plan"    : "일정  (예시 13,14,55,56,57 ...)".
+//  "plan"    : "일정  (예시 13_14_55_56_57 ...)".
 // }
 
 // 코드 전개 
@@ -23,6 +23,11 @@
 // #특이사항
 // TIMEZONE *2를 하는 이유는  30분단위로 구분하여 스케쥴표를 작성했기 떄문에 timezone +1인 경우  *2를 해주어야한다. 
 
+
+
+//변수네이밍에 대한 설명이 필요하다. 
+//코드에 대한 설명이 부족해서 이해가 어렵다. 
+// 통일성이 부족하다. 
 
 
 include("../conn.php");
@@ -41,7 +46,7 @@ $repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // �
 $plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일정 
 // $plan      =  '1669894200_1669896000_1669897800';
 // $plan      =  '1000_2000';
-// $repeat    = 8; // 몇주 반복 여부  4, 8, 12 주  
+// $repeat    = 4; // 몇주 반복 여부  4, 8, 12 주  
 // $utc       = 9;  // 일정 
 
 // 1시간 = 3600;
@@ -50,8 +55,6 @@ $plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일�
 // 1주 = 604800
  $week = 604800000;
 
-
-// error_log("$time_now, $position, $desc\n", "3", "/php.log");
 
 //토큰 해체 
 $data = $jwt->dehashing($token);
@@ -71,12 +74,6 @@ $row1 = mysqli_fetch_array($response1);
 $timezone = $row1['0'].'</br>';
 
 
-// $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
-// $response = mysqli_query($conn, $result);
-  
-// $check = "SELECT * FROM Teacher_Schedule where User_Id = '{$User_ID}'";
-// $checkresult = mysqli_query($conn, $check);
-
 
 // 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
 $result = (explode("_", $plan));
@@ -85,9 +82,7 @@ $result = (explode("_", $plan));
 $resultarray= array();
 foreach($result as $val){
 
- $val;
-
- 'utc적용 '.$save = $val - $timezone* $hour;
+ 'utc00: 변환  '.$save = $val - $timezone* $hour;
 
 array_push($resultarray,$save);
 
@@ -95,11 +90,9 @@ $i = 1;
 while ($i <$repeat){
 
   // $save;
-  //   array_push($resultarray,$save);
  $i.'주후'.$save = $save + $week;
   $i = $i +1;
-  // $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('{$User_ID}', '$save') ";
-  // $response = mysqli_query($conn, $result);
+
   array_push($resultarray,$save);
 }
 
