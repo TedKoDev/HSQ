@@ -5,22 +5,26 @@
 
 //1. "token"    : "토큰값".
 //2. "plan" : "스케쥴"  
+//2. "tusid" : "강사의 userid "  
+
+/***
+
+강사일정  RestAPI
+schedule.php
+
+분기 조건 
+1. token 있다/없다.
 
 
-// 보낼 줄 때 형태 
-// {
-//  "token"    : "토큰값"
-// }
+출력정보  
 
-// 코드 전개 
-// 1.토큰 수령후 User_Id 값 추출. 
-// 2.User_Id 기준으로 User_Detail 에서 사용자의 TIMEZONE 값을 가져온다. 
-// 3.User_Id 기준으로 Teacher_Schedule 에서 사용자의 Schedule 값을 가져온다. 
-// 4.Schedule 내의 스트링값을 분리한뒤 TIMEZONE값 *2를 적용한 결과 값을 얻는다. 이때 결과같은 336을 넘지 않도록 하며 넘는 경우 -336을 진행한 값을 이용한다. 
-// 5. 결과값을 배열에 담은후 다시 '_' 을 적용한 STRING 값으로 변환시켜 프론트엔드로 전달한다. 
+1. 토큰 있는경우 사용자의 timzone 적용   
 
-// #특이사항
-// TIMEZONE *2를 하는 이유는  30분단위로 구분하여 스케쥴표를 작성했기 떄문에 timezone +1인 경우  *2를 해주어야한다. 
+2. 토큰 없는경우 전달받은 (비로그인)  사용자의 로컬 타임 utc를 timezone으로 적용  
+
+
+ 
+ */
 
 
 
@@ -32,14 +36,22 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 // 토큰 
+
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; 
+$utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; 
 $tusid      =   json_decode(file_get_contents("php://input"))->{"tusid"};  // 강사의 userid 
-$tusid      =   32;  // 강사의 userid 
 
 
 
 
-//토큰 해체 
+
+
+
+
+
+if($token != null){
+
+  //토큰 해체 
 $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
@@ -48,11 +60,6 @@ $User_ID =  32;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
-
-
-
-
-if($token != null){
 
   //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
   $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
@@ -65,7 +72,7 @@ if($token != null){
   
   
   }else {
-  
+
     $timezone = $utc;
     $send['CONNECT_USER_TIMEZONE'] = $utc;
   
@@ -77,7 +84,7 @@ if($token != null){
 
 
 
-$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$tusid '";
+$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$tusid'";
 $response2 = mysqli_query($conn, $sql);
 
 $result2['Schedule'] = array();
@@ -95,7 +102,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
  $schedule = $row1['0'];
 
 
-  $schedule2 = $schedule + $hour*$timezone;
+ $schedule2 = $schedule + $hour*$timezone;
 
 
 
@@ -105,7 +112,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
  $string = implode("_",$resultarray);
   
      
- if ($response1) { //정상일떄  
+ if ($response2) { //정상일떄  
   $data = array(
     'schedule'	=>	$string,
     'success'        	=>	'yes'
