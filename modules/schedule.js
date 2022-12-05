@@ -1,38 +1,23 @@
+// 일정 표시 관련 변수 및 함수
 
+// schedule.js에 선언된 변수,함수들 export
 
-// 수업 id, 강사 id 받아오기
-const {class_id, teacher_id} = JSON.parse(localStorage.getItem("c_and_t_id"));
-
-// 수업 id, 강사 id 선언
-let C_id = class_id;
-let T_id = teacher_id;
-
-// 수업 정보, 강사 정보 가져와서 화면에 표시
-getClassinfo(C_id);
-getTeacherinfo(T_id);
-
-// 일정 정보 가져와서 화면에 표시 (강사id, 쿠키값(있을 경우) 전송)
-
-// getDate : utc 기준 날짜 세팅
-// setDate_Value : 날짜 기준으로 checkbox에 value 세팅
-// setscheudle : 일정표에 색깔 표시
-// change_schedule : 이전/다음 버튼 누를 때 날짜 바뀌고 그에 해당하는 일정 표시
-
-
-// 일정 세팅에 필요한 전역 변수들 
 // timezone 전역 변수 선언
-let timezone;
+export let timezone;
 // 서버에서 요청받은 일정이 담긴 string값 담을 변수 선언
-let schedule_string;
+export let schedule_string;
 // 모달창에서 수업 신청할 때 일정 담긴 string을 배열로 변환하는 변수 선언
-let array_for_edit = new Array();
+export let array_for_edit = new Array();
 // 타임스탬프 담을 전역 변수 선언
-let time;
+export let time;
 
-// 일정 표시
-getSchedule(T_id, checkCookie);
+export function test() {
 
-async function getSchedule(teacher_id, tokenvalue) {
+    console.log("testtest");
+}
+
+
+export async function getSchedule(teacher_id, tokenvalue) {
 
   // 로컬 타임존도 보내기
   const date = new Date();    
@@ -55,9 +40,7 @@ async function getSchedule(teacher_id, tokenvalue) {
     body: JSON.stringify(body)
   });  
 
-  const response = await res.json(); 
-  
-  console.log(response);
+  const response = await res.json();    
 
   if (response.success == "yes") {
 
@@ -106,7 +89,7 @@ async function getSchedule(teacher_id, tokenvalue) {
   }  
 }
 
-function getDate(header_date, timezone, for_modal) {
+export function getDate(header_date, timezone) {
 
   // 우선 전역 time 초기화
   time = 0;
@@ -137,16 +120,17 @@ function getDate(header_date, timezone, for_modal) {
   // 현재 타임스탬프 전역 변수에 대입
   time = now.getTime();  
   
-  time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기
-
+  time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기    
+  
 }
 
 // 이전,다음 버튼 누를 때 날짜 세팅하고 check value 재 대입 해주는 함수
-function setDate_Value(header_s, for_modal) {
+export function setDate_Value(header_s, for_modal) {
 
   let header = document.getElementById(header_s);
 
   let week = new Array('일', '월', '화', '수', '목', '금', '토');
+
           
       let num = 0; // 날짜에 따라 value값 대입해주기 위한 임의의 num
   
@@ -217,44 +201,60 @@ function setDate_Value(header_s, for_modal) {
                   }
               }
           }
-  
-      }        
+        }        
 
       // 모든 세팅 끝나면 타임 다시 일주일 전으로 되돌리기
       time = time - 7*(1000 * 60 * 60 * 24);
 }
 
-// 일정 등록에 세팅하는 함수
-async function setschedule(type, for_modal) {    
+// 이전,다음 버튼 클릭시 그 주에 해당하는 날짜 변경되고 checkbox의 value값도 그에 따라 변경
+// type : before/after - 이전 버튼인지 다음 버튼인지
+// id : header_s/header_s_m - 웹페이지 날짜인지, 모달창 날짜인지
+// l_m : "_l"/"_m_l" - 웹페이지의 checkbox label id인지, 모달창의 label id인지
+// for_modal : ""/"_m" - 웹페이지의 checkbox input id인지, 모달창의 id인지
+export function change_schedule(type, id, l_m, for_modal) {
 
-  const body = {
+    console.log("id : "+id);
+  let header_s = document.getElementById(id);
 
-      token: checkCookie,       
-  
-      };
-  const res = await fetch('../manageschedule/managescheduleProcess.php', {
-  method: 'POST',
-  headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-  },
-  body: JSON.stringify(body)
-  });
-  
-  const response = await res.json();   
-  const check = response.success; 
-  schedule_string = response.schedule;  
-    
+  // 세팅하기 전에 일단 초기화
+  while(header_s.firstChild)  {
+      header_s.removeChild(header_s.firstChild);
+  }     
 
-  // 값이 있을 경우에만 추출해서 대입
-  if (check == "yes") {
+  // 이전 버튼 클릭할 경우
+  if (type == 'before') {
 
-      console.log("yes");
-      // let test_string = "54_62_88";
-
-      // 서버에서 받아온 string 배열로 변환
-      let test_array = schedule_string.split('_');
-
+      console.log("before");
+      console.log("time : "+time);
+     
+      // time 스탬프 값 일주일 빼놓기 
+      time = time - (7*(1000 * 60 * 60 * 24));
       
+      console.log(dayjs(time).format('YYYY/MM/DD'));
+
+      // getDate(header_s, timezone, for_modal);
+      setDate_Value(header_s, for_modal);
+
+  }
+  // 다음 버튼 클릭할 경우
+  else {      
+      
+      // time 스탬프 값 일주일 더해놓기 
+      time = time + (7*(1000 * 60 * 60 * 24));
+      
+      // getDate(header_s, timezone, for_modal);
+      setDate_Value(header_s, for_modal);
+  }
+
+  // checkbox값 부여된 이후에 저장된 일정 세팅
+  setschedule(l_m, for_modal);
+  
+}
+
+export async function setschedule(type, for_modal, s_string) {    
+            
+      let test_array = s_string.split('_');      
 
       // 현재 모달창에서 체크하고 있는 배열 가져오기
       let check_array = new Array();
@@ -262,39 +262,31 @@ async function setschedule(type, for_modal) {
 
       // 디폴트로 일단 회색으로 칠해놓기
       let default_label = document.getElementsByName("schedule_label");
-      for (label of default_label) {
-          label.style.backgroundColor = '#9CA3AF';
-      }
       
+      for (const label of default_label) {
+        
+          label.style.backgroundColor = '#9CA3AF';
+      }           
 
       // 일정 체크박스 개수만큼 반복문 돌리기
       for (let i = 1; i <= 336; i++ ) {
-
+          
           // 체크박스의 value값 가져오기
           let input_i = document.getElementById(i+for_modal).value;
-
-          // console.log(dayjs(input_i).format('YYYY/MM/DD hh:mm:ss'))
-          // console.log(input_i);
-          // 변환한 array의 개수만큼 반복문 돌리기
-
+          
           // 모달창 아닐 때만 서버에서 받아온 값 뿌려주기
           if (for_modal == "") {
-
+                          
               for (let j = 0; j < test_array.length; j++) {
                               
-                  if (input_i == test_array[j]) {
-                      
-                      // console.log("input_i : "+input_i);
-                      // console.log("test_array[j] : "+test_array[j]);
+                  if (input_i == test_array[j]) {                                           
                       
                       let label = document.getElementById(i + type);                    
                       // let input = document.getElementById(i+"_m");
   
                       // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
                       // input.checked = true;
-                      label.style.backgroundColor = '#2563EB';
-
-                      // console.log("result : "+dayjs(test_array[j]).format("YYYY/MM/DD HH:MM:ss"))
+                      label.style.backgroundColor = '#2563EB';                      
                   }               
               }
           }
@@ -317,194 +309,6 @@ async function setschedule(type, for_modal) {
                   }
                               
               }
-          }            
-
-          
+          }           
       }
-  }
 }
-
-// 이전,다음 버튼 클릭시 그 주에 해당하는 날짜 변경되고 checkbox의 value값도 그에 따라 변경
-function change_schedule(type, id, l_m, for_modal) {
-
-  let header_s = document.getElementById(id);
-
-  // 세팅하기 전에 일단 초기화
-  while(header_s.firstChild)  {
-      header_s.removeChild(header_s.firstChild);
-  }     
-
-  // 이전 버튼 클릭할 경우
-  if (type == 'before') {
-
-      console.log("before");
-     
-      // time 스탬프 값 일주일 빼놓기 
-      time = time - (7*(1000 * 60 * 60 * 24));
-      
-      console.log(dayjs(time).format('YYYY/MM/DD'));
-
-      // getDate(header_s, timezone, for_modal);
-      setDate_Value(id, for_modal);
-
-  }
-  // 다음 버튼 클릭할 경우
-  else {      
-      
-      // time 스탬프 값 일주일 더해놓기 
-      time = time + (7*(1000 * 60 * 60 * 24));
-      
-      // getDate(header_s, timezone, for_modal);
-      setDate_Value(id, for_modal);
-  }
-
-  // checkbox값 부여된 이후에 저장된 일정 세팅
-  setschedule(l_m, for_modal);
-  
-}
-
-async function getClassinfo(C_id) {
-
-    console.log("class_id : "+C_id);
-
-    const body = {
-    
-        classid : C_id,
-        clname : 1,
-        cldisc : 1,
-        cltype : 1,
-        cllevel : 1,
-        cltime : 1,
-        clprice : 1,
-      };
-     
-      const res = await fetch('../restapi/classinfo.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;'
-        },
-        body: JSON.stringify(body)
-      });  
-
-    const response = await res.json();  
-
-    // console.log(response.result);
-
-    const result = response.result[0];
-
-    // console.log(result);
-
-    const clname = result.CL_Name;
-    const cldisc = result.CL_Disc;
-    const cltype = result.CL_Type;
-    const cllevel = result.CL_Level;
-    const price = result.tp;
-
-    // 수업 정보와 관련된 id들 가져오기
-    const c_name = document.getElementById("c_name");
-    const c_disc = document.getElementById("c_disc");
-    const c_type = document.getElementById("c_type");
-    const c_level = document.getElementById("c_level");
-    const c_price30 = document.getElementById("c_price30");
-    const c_price60 = document.getElementById("c_price60");
-
-    // 파싱한 json 대입
-    c_name.innerText = clname;
-    c_disc.innerText = cldisc;
-    c_level.innerText = cllevel.replace('_', ' - ');
-    c_price30.innerText = price[0];
-    c_price60.innerText = price[1];
-
-    // 수업 유형 파싱해서 넣기
-    if ((cltype != 'default') && (cltype != null)) {              
-     
-      let type_string = cltype;            
-  
-      let type_array = type_string.split(',');
-     
-      for (let j = 0; j < type_array.length; j++) {
-
-          let type_list = document.createElement('span');          
-          type_list.innerHTML = ['<span class = "text-xs mr-1 ml-1 bg-gray-300 text-gray-800 mr-2 rounded-lg px-2">'+type_array[j]+'</span>'].join("");
-          c_type.appendChild(type_list);  
-      }                               
-                  
-  }     
-}        
-        
-async function getTeacherinfo(T_id) {
-
-    console.log("teacher_id : "+T_id);
-
-    const body = {
-    
-        tusid : T_id,
-        timg : 1,
-        tname : 1,
-        tintro : 1,
-        tcountry : 1,
-        tresidence : 1,
-        tspecial : 1,
-        tlanguage : 1,
-      };
-     
-      const res = await fetch('../restapi/teacherinfo.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;'
-        },
-        body: JSON.stringify(body)
-      });  
-
-    const response = await res.json();    
-        
-    // console.log(response);
-
-    const result = response.result[0];
-
-    const t_name = result.U_Name;
-    const t_img = result.U_D_Img;
-    const t_special = result.U_T_Special;
-    const t_intro = result.U_T_Intro;
-    const t_country = result.U_D_Country;
-    const t_residence = result.U_D_Residence;
-    const t_language = result.U_D_Language;
-
-    // 강사 정보와 관련된 id들 가져오기
-    const name_t = document.getElementById("t_name");
-    const img_t = document.getElementById("t_img");
-    const certi_t = document.getElementById("t_certi");
-    const intro_t = document.getElementById("t_intro");
-    const country_t = document.getElementById("t_country");
-    const residence_t = document.getElementById("t_residence");
-    const language_t = document.getElementById("t_speaks");
-
-    // 파싱한 json 대입
-    name_t.innerText = t_name;
-    country_t.innerText = t_country+"출신";
-    residence_t.innerText = t_residence+"거주";
-    intro_t.innerText = t_intro;
-
-    if (t_special == "default") {
-      certi_t.innerText = '커뮤니티 튜터';
-    }
-    else {
-      certi_t.innerText = '전문 강사';
-    }
-    img_t.setAttribute("src", "../editprofile/image/"+t_img);
-
-    // 구사 가능 언어 대입
-    const json_parse = JSON.parse(t_language);                  
-           
-    for (let key_l in json_parse) {
-
-      let language_list = document.createElement('span');          
-      language_list.innerHTML = ['<span class = "mr-2">'+key_l+' : '+json_parse[key_l]+'</span>'].join("");
-      language_t.appendChild(language_list);
-               
-    }  
-
-}
-
-
-
