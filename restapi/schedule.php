@@ -58,8 +58,8 @@ if($token != null){
 $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
-// $User_ID =  base64_decode($payload['User_ID']);
-$User_ID =  32;
+$User_ID =  base64_decode($payload['User_ID']);
+// $User_ID =  32;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
@@ -76,7 +76,7 @@ $U_Email = base64_decode($payload['U_Email']);
   
   }else {
 // echo 111;
-    echo $timezone = $utc;
+    $timezone = $utc;
     // $send['CONNECT_USER_TIMEZONE'] = $utc;
 
   }
