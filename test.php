@@ -1,32 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <link href="./dist/output.css" rel="stylesheet">    
-    <title>Dialog</title>
-</head>
-<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="./dist/output.css" rel="stylesheet">
+        <title>Dialog</title>
+    </head>
+    <body><br><br><br><br><br><br><br><br><br><br>
+        <button class = "bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-white m-5 show-modal">show modal</button>
+        <div class = "modal h-full w-full fixed bottom-0 justify-center items-center bg-black bg-opacity-50 hidden">
+            <div class = "flex flex-col-reverse w-full h-full">
+                <!-- modal -->
+                <div class = "bg-white rounded shadow-lg w-full h-5/6 items-center border-2 pt-20">
+                    <!-- modal_header -->
+                    <div class = "border-b px-4 py-2">
+                        <h3>Modal Title</h3>
+                    </div>
+                    <!-- modal_body -->
+                    <div class = "p-3">
+                        모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내내용
+                    </div>
+                    <div class = "flex justify-end items-center w-100 border-t p-3">
+                        <button class = "bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white mr-1 close-modal">Cancel</button>
+                        <button class = "bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-white">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <script>
+            const modal = document.querySelector('.modal');
 
-    <button id = "before_btn" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
-    <button id = "after_btn" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
-    <button id = "btn">sdsdf</button>
-    <a id = "test_btn" >sdsd</a>    
-    <script>
-        let before_btn = document.getElementById("before_btn");
-        let after_btn = document.getElementById("after_btn");
-        let test_btn = document.getElementById("test_btn");
-        
-        // before_btn.addEventListener("click", alert("click"));
-        after_btn.addEventListener("click", showText);
-        test_btn.addEventListener("click", showText);
+            const showModal = document.querySelector('.show-modal');
+            const closeModal = document.querySelector('.close-modal');
 
-        var showBtn = document.getElementById("btn");
-        showBtn.addEventListener("click", showText);
-        function showText(){
-            
-            console.log("dddd");
-            
-        }
+            showModal.addEventListener('click', function() {
+                modal.classList.remove('hidden');
+            });
 
-    </script>
-</body>
+            closeModal.addEventListener('click', function() {
+                modal.classList.add('hidden');
+            });
+        </script>        
+    </body>
 </html>

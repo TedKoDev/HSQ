@@ -5,10 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="./dist/output.css" rel="stylesheet">
         <title>Dialog</title>
+        <style>
+        
+        .modal {
+            position : absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        </style>
     </head>
     <body>
         <button class = "bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-white m-5 show-modal">show modal</button>
-        <div class = "modal absolute top-0 left-0 w-full h-full">
+        <div class = "modal">
             <!-- modal -->
             <div class = "bg-white rounded shadow-lg w-full h-2/3 border-2 ">
                 <!-- modal_header -->

@@ -7,7 +7,6 @@ const {id} = JSON.parse(localStorage.getItem("user_id"));
 let U_id = id;
 // console.log(U_id);
 
-
 // 수업 가능 시간 부분에 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
 
 // 해당 유저의 utc 가져온후 date에 가져온 utc 적용
@@ -110,11 +109,8 @@ function getDate(header_date, timezone, for_modal) {
   // 현재 타임스탬프 전역 변수에 대입
   time = now.getTime();  
   
-  time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기
-
+  time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기  
   
-  
-
   setDate_Value(header_s, for_modal);
 }
 // getDate("header_s", timezone);
@@ -596,6 +592,14 @@ function setModal(class_id, clname, cldesc, cltype, tp, cllevel) {
   const clprice30_m = document.getElementById("clprice30_m");
   const clprice60_m = document.getElementById("clprice60_m");
 
+  // 수업레벨, 수업 유형 일단 자식 요소 삭제해서 초기화
+  while(cllevel_m.firstChild)  {
+    cllevel_m.removeChild(cllevel_m.firstChild);
+  }
+  while(cltype_m.firstChild)  {
+    cltype_m.removeChild(cltype_m.firstChild);
+  }
+
   // 이름 설명 대입
   clname_m.innerHTML = clname;
   cldesc_m.innerHTML = cldesc;
@@ -657,6 +661,7 @@ function show_intro(type) {
   }  
 }
 
+// 모달창 관련 코드
 // 수업 클릭했을 때 모달창 띄우기
 function show_modal(class_id) {
 
@@ -677,30 +682,61 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const body = document.getElementsByTagName('body')[0];
 
-  const overlay = document.querySelector('#overlay')  
+  const overlay = document.querySelector('#overlay')      
   const closeBtn = document.querySelector('#close-modal')
   
-
+  
   // 모달창 취소 클릭
   const cancel_modal = () => {                           
 
-      overlay
-          .classList
-          .toggle('hidden')
-      overlay
-          .classList
-          .toggle('flex')
-
-      body
-          .classList
-          .remove('scrollLock');    
-          
-      // 일정 다시 세팅
-      // setschedule("_l");
-
-  }              
-  closeBtn.addEventListener('click', cancel_modal)  
+      overlay.classList.toggle('hidden')
+      overlay.classList.toggle('flex')
+    
+      body.classList.remove('scrollLock');            
+      
+  }           
+    
+  closeBtn.addEventListener('click', cancel_modal);  
+  
 })
+
+// 예약하기 버튼 관련 코드
+const modal = document.querySelector('.reserve-modal');
+const body = document.getElementsByTagName('body')[0];
+const showReserve = document.querySelector('.show-reserve');
+const closeModal = document.querySelector('.close-modal');
+
+showReserve.addEventListener('click', function() {
+    modal.classList.remove('hidden');
+    body.classList.add('scrollLock');
+});
+
+closeModal.addEventListener('click', function() {
+    modal.classList.add('hidden');
+    body.classList.remove('scrollLock');
+});
+
+// 예약 버튼 클릭
+// let reserve_btn = document.getElementById("reserve_btn");
+// reserve_btn.addEventListener("click", login_check);
+
+
+// function login_check() {
+
+//   console.log("click");
+
+//   // 토큰 값 있을 때만 예약창 뜨도록
+//   if (checkCookie == "") {
+
+//     alert("로그인이 필요합니다.");
+//     location.assign("../login/login.php"); 
+//   }
+//   else {    
+//     console.log("click2");             
+//     // const overlay_reserve = document.querySelector('.overlay_reserve') 
+    
+//   }
+// }
 
 
 // (옛날 코드인데 혹시 몰라서 남겨 놓은 것들)
