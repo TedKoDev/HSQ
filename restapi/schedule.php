@@ -38,8 +38,11 @@ file_get_contents("php://input") . "<br/>";
 // 토큰 
 
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; 
+// $token      =   11; 
 $utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; 
+// $utc      =   9; 
 $tusid      =   json_decode(file_get_contents("php://input"))->{"tusid"};  // 강사의 userid 
+// $tusid      =   32;  // 강사의 userid 
 
 
 
@@ -68,14 +71,14 @@ $U_Email = base64_decode($payload['U_Email']);
   
   
   $timezone = $row1['0'];
-  $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
-  
+  // $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
+
   
   }else {
+// echo 111;
+    echo $timezone = $utc;
+    // $send['CONNECT_USER_TIMEZONE'] = $utc;
 
-    $timezone = $utc;
-    $send['CONNECT_USER_TIMEZONE'] = $utc;
-  
   }
 
 
@@ -87,9 +90,9 @@ $U_Email = base64_decode($payload['U_Email']);
 $sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$tusid'";
 $response2 = mysqli_query($conn, $sql);
 
+
+
 $result2['Schedule'] = array();
-
-
 
 // 1시간 = 3600;
 $hour = 3600000;
@@ -114,6 +117,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
      
  if ($response2) { //정상일떄  
   $data = array(
+    'timezone'  => $timezone,
     'schedule'	=>	$string,
     'success'        	=>	'yes'
   );
@@ -121,6 +125,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
   mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
+    'timezone'  => 'no',
     'schedule'	=>	'no',
     'success'        	=>	'no'
   );
