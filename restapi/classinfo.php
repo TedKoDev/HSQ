@@ -265,6 +265,16 @@ if ($kind == 'cdetail') {
     // echo json_encode($result1);
     mysqli_close($conn);
   }
+
+
+
+
+
+
+
+
+
+  
 } else if ($kind == 'tclist') {
   // 필요한 값이 특정 강사의 수업 목록 이면 
 
