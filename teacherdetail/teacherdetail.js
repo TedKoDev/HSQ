@@ -700,21 +700,37 @@ window.addEventListener('DOMContentLoaded', () => {
   
 })
 
-// 예약하기 버튼 관련 코드
-const modal = document.querySelector('.reserve-modal');
+// 예약하기 버튼 누를 때 모달창 생성
+// 모달 띄우는 코드
+const classlistModal = document.querySelector('.reserve-modal-class');
 const body = document.getElementsByTagName('body')[0];
 const showReserve = document.querySelector('.show-reserve');
 const closeModal = document.querySelector('.close-modal');
 
+// 예약하기 누르면 수업 목록 모달창부터 
 showReserve.addEventListener('click', function() {
-    modal.classList.remove('hidden');
-    body.classList.add('scrollLock');
+
+    // 로그인 상태일때만 모달창 띄우게
+    if (checkCookie == "") {
+
+    alert("로그인이 필요합니다.");
+    location.assign("../login/login.php"); 
+    }
+    else {
+        classlistModal.classList.remove('hidden');
+        body.classList.add('scrollLock');
+
+        // 수업 목록 모달창에 해당 강사의 수업 목록 표시
+        getclassList_cm(U_id);
+    }    
 });
 
+// x버튼 누르면 모달 없어지게
 closeModal.addEventListener('click', function() {
-    modal.classList.add('hidden');
+    classlistModal.classList.add('hidden');
     body.classList.remove('scrollLock');
 });
+
 
 // 예약 버튼 클릭
 // let reserve_btn = document.getElementById("reserve_btn");

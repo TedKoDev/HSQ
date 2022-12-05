@@ -35,7 +35,7 @@
                     수업 설명
                 </div>
             </div>
-            <div class="flex flex-col float-right w-2/5 px-4 py-2 rounded-lg bg-gray-50 shadow ">
+            <div class="flex flex-col w-1/5 py-2 rounded-lg bg-gray-50 shadow ">
                 <div class = "px-4">
                     <div>30분 : <span id = "c_price30"></span>$</div> 
                     <div>60분 : <span id = "c_price60"></span>$</div> 

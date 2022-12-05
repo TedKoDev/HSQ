@@ -7,11 +7,16 @@ getClassinfo_all();
 async function getClassinfo_all() {
 
     const body = {
-           
+        kind: 'clist'
+
       };
      
       const res = await fetch('../restapi/classinfo.php', {
-        method: 'GET',        
+        method: 'POST',   
+        headers: {
+            'Content-Type': 'application/json;'
+          },
+        body: JSON.stringify(body)          
       });  
 
       console.log("ss");
@@ -144,7 +149,7 @@ function setClassinfo(response) {
             for (let j = 0; j < type_array.length; j++) {
 
                 let type_list = document.createElement('span');          
-                type_list.innerHTML = ['<span class = "text-xs mr-1 ml-1 bg-gray-300 text-gray-800 mr-2 rounded-lg px-2">'+type_array[j]+'</span>'].join("");
+                type_list.innerHTML = ['<span class = "text-xs ml-1 bg-gray-300 text-gray-800 mr-2 rounded-lg px-2">'+type_array[j]+'</span>'].join("");
                 type_div.appendChild(type_list);  
             }                                
                          

@@ -369,6 +369,7 @@ async function getClassinfo(C_id) {
 
     const body = {
     
+        kind : 'cdetail',
         classid : C_id,
         clname : 1,
         cldisc : 1,
@@ -425,7 +426,7 @@ async function getClassinfo(C_id) {
       for (let j = 0; j < type_array.length; j++) {
 
           let type_list = document.createElement('span');          
-          type_list.innerHTML = ['<span class = "text-xs mr-1 ml-1 bg-gray-300 text-gray-800 mr-2 rounded-lg px-2">'+type_array[j]+'</span>'].join("");
+          type_list.innerHTML = ['<span class = "text-xs ml-1 bg-gray-300 text-gray-800 mr-2 rounded-lg px-2">'+type_array[j]+'</span>'].join("");
           c_type.appendChild(type_list);  
       }                               
                   
