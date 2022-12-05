@@ -74,6 +74,9 @@ $row1 = mysqli_fetch_array($response1);
 $timezone = $row1['0'].'</br>';
 
 
+// $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
+// $response = mysqli_query($conn, $result);
+  
 
 // 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
 $result = (explode("_", $plan));

@@ -45,6 +45,9 @@ async function postToken(tokenValue) {
   // array에 있는 데이터 세팅
   setData(response);
   
+  // 더보기 버튼 보이게 처리
+  const see_more = document.getElementById("see_more");
+  see_more.style.display = 'block';
 }
 
 function setData(response) {
@@ -143,8 +146,7 @@ function move_teacher_detail(div, user_id) {
   }
   
   div.addEventListener('click', () => {
-
-    console.log("test");
+   
    localStorage.setItem("user_id", JSON.stringify(user_info));
   });
 }

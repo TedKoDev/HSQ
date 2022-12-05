@@ -31,7 +31,7 @@
                     <a
                         id="upload_schedule_btn"
                         class="mx-2 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black
-                        rounded border">정규 일정 등록</a>
+                        rounded border">수업 가능 시간 추가</a>
                     <a
                         id="edit_schedule_btn"
                         class="mx-2 px-3 py-1 my-auto font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black
@@ -135,7 +135,8 @@
                     111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293
                     4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                     clip-rule="evenodd"></path> </svg> -->
-                    <div class="flex flex-col">
+                    <div class = "text-center text-sm">등록한 일정에 대해 개별적인 편집이 가능합니다.</div>
+                    <div class="flex flex-col">                    
                         <div class="mt-3 flex justify-end space-x-3 mb-3">
                             <button
                                 id="edit_cancel_btn"
@@ -154,7 +155,7 @@
                                 class="border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                         </div>
                     </div>
-                </div>
+                </div>                
                 <!-- 스케줄 부분 스크롤 되게 처리 -->
                 <div id="schedule" class="flex flex-col h-96 overflow-auto">
                     <div id="header_s_m" class="flex mx-auto"></div>
@@ -231,7 +232,7 @@
                 id="overlay_upload">
                 <div class="bg-gray-200 max-w-2xl py-2 px-3 rounded shadow-xl text-gray-800">
                     <div class="flex justify-between items-center">
-                        <h4 class="text-lg font-bold">정규 일정 등록</h4>
+                        <h4 class="text-lg font-bold">수업 가능 시간 추가</h4>
                         <!-- <svg class="h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                         id="close-modal" fill="currentColor" viewbox="0 0 20 20"> <path
                         fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0
@@ -249,16 +250,17 @@
                                     class="px-3 py-1 bg-blue-800 text-gray-200 hover:bg-blue-600 rounded">등록</button>
                             </div>                            
                         </div>
-                    </div>
+                    </div>                    
                     <div class = "flex flex-col">
-                        <div>기간 선택</div>
-                        <div class = "flex">
-                        <input type='radio' id = "4week" value='4' onclick='radio_click(event)' checked/>4주
-                        <input type='radio' id = "8week" value='8' onclick='radio_click(event)'/>8주
-                        <input type='radio' id = "12week" value='12' onclick='radio_click(event)'/>12주
-                        </div>
-                        <div>정규 일정 등록 시 오늘 날짜가 포함된 주 부터 일정이 등록됩니다</div>
-                    <div>
+                        <div class = "text-center text-sm mb-1">기간 선택</div>
+                        <span class = "flex px-3 py-2 mx-auto shadow bg-gray-50 rounded-lg mb-2 ">
+                            <input type='radio' id = "4week" value='4' class = "mx-2" onclick='radio_click(event)' checked/>4주
+                            <input type='radio' id = "8week" value='8' class = "mx-2" onclick='radio_click(event)'/>8주
+                            <input type='radio' id = "12week" value='12' class = "mx-2" onclick='radio_click(event)'/>12주
+                        </span>
+                        <div class = "text-center text-sm">등록 시 오늘 날짜가 포함된 주 부터 설정한 기간만큼 일정이 등록됩니다</div>
+                    <div><br>
+                    
                     <!-- 스케줄 부분 스크롤 되게 처리 -->
                     <div id="schedule" class="flex flex-col h-96 overflow-auto">
                         <div id="header_s_u" class="flex mx-auto mb-2">

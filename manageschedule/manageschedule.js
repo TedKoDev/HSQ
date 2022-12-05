@@ -4,6 +4,7 @@
 
 get_utc(checkCookie);
 
+// 서버에서 받아온 타임존 대입할 선언
 let timezone;
 
 // 서버에서 요청받은 일정이 담긴 string값 담을 변수 선언
@@ -210,12 +211,7 @@ function setDate_Value(header_s, for_modal) {
 
 
 
-// 서버에 요청해서 일정 데이터 담겨있는 string 불러오기
-
-// 화면 켜지면 저장된 일정 세팅
-// setschedule("_l");
-
-// 일정 등록에 세팅하는 함수
+// DB에 있는 일정 정보 화면에 세팅하는 함수
 async function setschedule(type, for_modal) {    
 
     const body = {
@@ -238,10 +234,7 @@ async function setschedule(type, for_modal) {
 
     // 값이 있을 경우에만 추출해서 대입
     if (check == "yes") {
-
-       
-        // let test_string = "54_62_88";
-
+               
         // 서버에서 받아온 string 배열로 변환
         let test_array = schedule_string.split('_');
 
@@ -261,10 +254,7 @@ async function setschedule(type, for_modal) {
 
             // 체크박스의 value값 가져오기
             let input_i = document.getElementById(i+for_modal).value;
-
-            // console.log(input_i);
-            // 변환한 array의 개수만큼 반복문 돌리기
-
+            
             // 모달창 아닐 때만 서버에서 받아온 값 뿌려주기
             if (for_modal == "") {
 
@@ -304,8 +294,6 @@ async function setschedule(type, for_modal) {
                                 
                 }
             }            
-
-            
         }
     }
 }
@@ -322,7 +310,7 @@ function test_click(event) {
     // 일정 편집일 경우
     if (event.target.name == "edit") {
 
-        
+        // 체크할 경우 배열에 추가
         if (event.target.checked) {
             // result = event.target.value;
                 
@@ -331,7 +319,9 @@ function test_click(event) {
             // 일정 저장을 위한 array에 해당 value 추가
             array_for_edit.push(result);    
                 
-        } else {        
+        } 
+        // 체크 풀를 경우 해당 인덱스 배열에서 제외
+        else {        
     
             label.style.backgroundColor = '#9CA3AF';
             
@@ -397,8 +387,7 @@ async function edit_done() {
 
     // 정상적으로 저장될 경우 수정된 내역 화면에 다시 반영
     const response = await res.json();
-    const check = response.success;
-    const test_string = response.schedule;
+    const check = response.success;    
 
     console.log("check : "+check);
     
@@ -581,15 +570,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const overlay_upload = document.querySelector('#overlay_upload')
     const edit_btn = document.getElementById('edit_schedule_btn')
     const upload_btn = document.getElementById('upload_schedule_btn');
-    // const closeBtn = document.querySelector('#close-modal')
-
-    // const edit_done_btn = document.getElementById('edit_done_btn')
+    
     const edit_cancel_btn = document.getElementById('edit_cancel_btn');
     const upload_cancel_btn = document.getElementById('upload_cancel_btn');
-
-    // const schedule_div = document.getElementById('schedule');
-
-
+  
     const show_modal = () => {
         overlay
             .classList
@@ -603,9 +587,7 @@ window.addEventListener('DOMContentLoaded', () => {
             .add('scrollLock');
 
         // 날짜 뿌려주기
-        getDate("header_s_m", timezone, "_m");
-
-        // setDate_Value("header_s_m", "_m");
+        getDate("header_s_m", timezone, "_m");        
 
         // 일정 있는 곳에만 색깔 변환
         setschedule("_m_l", "_m");
