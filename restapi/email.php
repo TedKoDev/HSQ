@@ -25,12 +25,14 @@ email.php
 
 3. key값 : 'regicl' 용도: 수업 예약신청 하기 
   필요한값 :  강사 userid        tusid 
+              토큰               token
              학생이름            sname
              선택일정            splan
              선택수업            sclass
              학생이메일          semail
                
-  전달되는 링크 :    강사의 수업 예약확인 링크   
+  전달되는 링크 :    강사의 수업 예약수락 링크   
+                    강사의 수업 예약거절 링크   
  
  */
 
@@ -44,14 +46,14 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
  
-// $kind            =   'regist'; // 종류
-// $kind            =   'findpw'; // 종류
-// $kind            =   'regicl'; // 종류
+// $kind            =   'regist'; // 회원가입시 
+// $kind            =   'findpw'; // 비번찾기
+// $kind            =   'regicl'; // 수업예약 
 // $email           =   'ghdxodml@naver.com'; // 이메일
 // $password        =   '12345678'; // 패스워드
 
 //회원인증시 필요 
-$token           =   json_decode(file_get_contents("php://input"))->{"token"};    // 토큰 
+
 $kind            =   json_decode(file_get_contents("php://input"))->{"kind"};     // 종류
 $email           =   json_decode(file_get_contents("php://input"))->{"email"};    // 이메일
 $password        =   json_decode(file_get_contents("php://input"))->{"password"}; // 패스워드
@@ -63,6 +65,7 @@ $utc             =   json_decode(file_get_contents("php://input"))->{"utc"}; // 
 
 
 // 학생의 수업 예약 
+$token        =   json_decode(file_get_contents("php://input"))->{"token"};    // 토큰 
 $tusid        =   json_decode(file_get_contents("php://input"))->{"tusid"};     // 강사 userid
 $sname        =   json_decode(file_get_contents("php://input"))->{"sname"};     // 학생 이름
 $splan        =   json_decode(file_get_contents("php://input"))->{"splan"};     // 학생 선택일정 
