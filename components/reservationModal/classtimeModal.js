@@ -200,5 +200,8 @@ nextBtn_ct.addEventListener('click', function() {
     classtimeModal.classList.add('hidden');
     // 수업 일정 모달 표시되게 처리
     classscheduleModal.classList.remove('hidden');
+
+    // 수업 일정 출력하는 함수
+    getclassSchedule_sm();
     
 })

@@ -8,6 +8,7 @@
     <script defer="defer" src="../commenJS/cookie.js"></script>
     <script defer="defer" src="../components/reservationModal/classlistModal.js"></script>
     <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>
     <script defer="defer" src="./teacherdetail.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>

@@ -21,35 +21,92 @@
                 </div>
             </div>
             <!-- modal_body -->
-            <div class="class-time flex flex-col max-w-3xl mx-auto h-4/5">                
-                <div class = "flex mx-auto w-2/3 justify-between h-1/3 my-auto">
-                    <div class = "flex flex-col justify-center w-1/3">
-                        <span class = "text-center">30분</span>                   
-                        <div id = "item_30_1" class = "time-item my-2 flex justify-between text-center bg-gray-50 rounded-2xl px-2 py-2 shadow hover:shadow-lg shadow-gray-200"
-                        value = "0" name = "30_1">
-                            <span class = "text-center">1회 수업</span>
-                            <span class = "price30_1"></span>
+            <div class="class-schedule flex flex-col max-w-3xl mx-auto h-4/5">                
+                <div class="flex flex-col w-7/12 bg-gray-50 rounded-lg px-4 py-2 shadow">                    
+                    <div class = "flex max-w-3xl justify-around px-2 mb-2">
+                        <div class = "flex">
+                            <div class = "flex items-center">
+                                <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
+                                <span class = "ml-1">예약 가능</span>
+                            </div>                    
                         </div>
-                        <div id = "item_30_5" class = "time-item my-2 flex justify-between text-center bg-gray-50 rounded-2xl px-2 py-2 shadow hover:shadow-lg shadow-gray-200"
-                        value = "0" name = "30_5">
-                            <span class = "text-center">5회 수업</span>
-                            <span class = "price30_5"></span>
+                        <div class="flex ml-auto">
+                            <button onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
+                            <button onclick = "change_schedule('after', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                         </div>
-                    </div>
-                    <div class = "flex flex-col justify-center w-1/3 text-base">
-                        <span class = "text-center">60분</span>                   
-                        <div id = "item_60_1" class = "time-item my-2 flex justify-between text-center bg-gray-50 rounded-2xl px-2 py-2 shadow hover:shadow-lg  shadow-gray-200"
-                        value = "0" name = "60_1">
-                            <span>1회 수업</span>
-                            <span class = "price60_1"></span>
+                    </div>       
+                    <div id="schedule" class="flex flex-col h-96 overflow-auto">
+                        <div id="header_s_sm" class="flex mx-auto">
+
                         </div>
-                        <div id = "item_60_5" class = "time-item my-2 flex justify-between text-center bg-gray-50 rounded-2xl px-2 py-2 shadow hover:shadow-lg shadow-gray-200"
-                        value = "0" name = "60_5">
-                            <span>5회 수업</span>
-                            <span class = "price60_5"></span>
+                        <div id = "body_s" class = "flex mx-auto">
+                            <?php 
+                            $num = 0;
+                                for ($i = 0; $i < 8; $i++) {
+                                
+                                    if ($i == 0) {
+                                    ?>
+                                        <div id = "body_s_<?php echo $i; ?>" class = "flex flex-col">
+                                    <?php 
+                                        $add = 0;
+                                        for ($j = 0; $j < 48; $j++) {
+
+                                            $add = $add + 30;
+                                            $hour = sprintf('%02d', $add / 60);
+                                            $minute = sprintf('%02d', $add % 60);
+                                        ?>
+                                            <div class="flex items-center w-20 h-5">
+                                                <div>
+                                                    <span>~
+                                                        <?php  echo $hour; ?></span>
+                                                    :
+                                                    <span><?php echo $minute; ?></span>
+                                                </div>
+                                            </div>
+                                    <?php
+                                        }
+                                    ?>
+                                        </div>
+                                    <?php
+                                    }
+                                    else {
+                                    ?>
+                                        <div id = "body_s_<?php echo $i; ?>" class = "flex flex-col">
+                                    <?php 
+                                        
+                                        for ($j = 1; $j <= 48; $j++) {
+
+                                            $num = $num + 1; 
+                                        ?>
+                                            <div class="flex items-center w-20">
+                                                <input
+                                                    type="checkbox"
+                                                    id="<?php echo $num; ?>_sm"
+                                                    name=""
+                                                    value="<?php echo $num; ?>"
+                                                    class="hidden"
+                                                    onclick='test_click(event)'
+                                                    disabled/>
+                                                <label
+                                                    for="<?php echo $num; ?>_sm"
+                                                    id="<?php echo $num; ?>_sm_l"
+                                                    class="label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
+                                                        rounded border"
+                                                    name="">
+                                                </label>
+                                            </div>
+                                    <?php
+                                        }
+                                    ?>
+                                        </div>
+                                    <?php
+                                    }
+                                }
+                            ?>
                         </div>
-                    </div>
-                </div>
+                    </div>                 
+                    <div class = "text-center">시간대 <a id = "utc_scheduleModal"></a></div>                                  
+                </div>   
             </div>
                 
             <div class = "border-t flex items-center justify-between px-4">
