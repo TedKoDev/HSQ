@@ -22,12 +22,14 @@
             </div>
             <!-- modal_body -->
             <div class="class-schedule flex flex-col max-w-3xl mx-auto h-4/5">                
-                <div class="flex flex-col w-7/12 bg-gray-50 rounded-lg px-4 py-2 shadow">                    
+                <div class="flex flex-col w-full bg-gray-50 rounded-lg px-4 py-2 shadow">                    
                     <div class = "flex max-w-3xl justify-around px-2 mb-2">
                         <div class = "flex">
                             <div class = "flex items-center">
                                 <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
-                                <span class = "ml-1">예약 가능</span>
+                                <span class = "ml-1 mr-2">예약 가능</span>
+                                <a class = "bg-gray-800 rounded-full px-1 py-1"></a>
+                                <span class = "ml-1 mr-2">예약 불가</span>
                             </div>                    
                         </div>
                         <div class="flex ml-auto">
@@ -84,8 +86,7 @@
                                                     id="<?php echo $num; ?>_sm"
                                                     name=""
                                                     value="<?php echo $num; ?>"
-                                                    class="hidden"
-                                                    onclick='test_click(event)'
+                                                    class="hidden"                                                    
                                                     disabled/>
                                                 <label
                                                     for="<?php echo $num; ?>_sm"

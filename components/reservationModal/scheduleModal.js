@@ -1,8 +1,8 @@
 // 수업일정의 checkbox에 value값 부여할 전역 time값 선언
 let time_sm;
 
-// 선택한 수업 일정 담을 배열 선언
-let array_for_edit_sm = new Array();
+// 클릭한 수업 횟수 카운트 체크하는 변수 선언 
+let classCount_sm = 0;
 
 // 해당 강사의 수업 일정 화면에 출력하는 함수
 async function getclassSchedule_sm() {
@@ -161,18 +161,11 @@ function setDate_Value_sm(header_s, for_modal) {
 }
 
 // 일정 등록에 세팅하는 함수
-async function setschedule_sm(type, for_modal, schedule) {    
-                     
-    console.log("yes");
-    // let test_string = "54_62_88";
-
+async function setschedule_sm(type, for_modal, schedule) {                        
+    
     // 서버에서 받아온 string 배열로 변환
     let test_array = schedule.split('_');   
-
-    // 현재 모달창에서 체크하고 있는 배열 가져오기
-    let check_array = new Array();
-    check_array = array_for_edit_sm;
-
+    
     // 디폴트로 일단 회색으로 칠해놓기
     let default_label = document.querySelectorAll(".label_sm");
     for (label of default_label) {
@@ -183,56 +176,66 @@ async function setschedule_sm(type, for_modal, schedule) {
     // 일정 체크박스 개수만큼 반복문 돌리기
     for (let i = 1; i <= 336; i++ ) {
 
-        // 체크박스의 value값 가져오기
-        let input_i = document.getElementById(i+for_modal).getAttribute("value");
-        
-        // console.log(dayjs(input_i).format('YYYY/MM/DD hh:mm:ss'))
-        // console.log(input_i);
-        // 변환한 array의 개수만큼 반복문 돌리기
-
-        // 모달창 아닐 때만 서버에서 받아온 값 뿌려주기
-        // if (for_modal == "") {       
-
+        // 체크박스랑 그 value값 가져오기
+        let input = document.getElementById(i+for_modal);
+        let input_i = input.getAttribute("value");
+                   
         for (let j = 0; j < test_array.length; j++) {
-
-            // console.log("input_i : "+input_i+"  test_array[j] : "+test_array[j]);
-                        
+            
+            // 수업 가능한 시간일 경우 파란색으로 표시하고 checkbox 활성화            
             if (input_i == test_array[j]) {                             
-                
-                console.log("pss");
-                let label = document.getElementById(i + type);                    
-                // let input = document.getElementById(i+"_m");
-
-                // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-                // input.checked = true;
+                                
+                let label = document.getElementById(i + type);                   
                 label.style.backgroundColor = '#2563EB';
+                                    
+                input.disabled = false;     
+                
+                // 체크박스 클릭 리스너 설정
+                // 1. 해당 체크박스 클릭 시 체크값 true로 
+                // 2. true일 경우 색깔 변하게
+                // 3. false일 경우 색깔 원래대로
+                input.addEventListener('click', function() {
 
-                // console.log("result : "+dayjs(test_array[j]).format("YYYY/MM/DD HH:MM:ss"))
-            }               
-        }
-        // }
-        // 모달창이면 서버에서 받아온거 바로 뿌려주지 말고 모달창 켰을 때 담은 배열에 있는값들 뿌려주기
-        // else {
-        //     // 현재 체크하고 있는 array 개수만큼 반복문 돌려서 체크 (현재 편집중인 사항 표시하기 위해)
-        //     for (let z = 0; z < check_array.length; z++) {
+                    // 수업 횟수 로컬 스토리지에서 가져오기
+                    const classTimes = localStorage.getItem("class_times");
+                                        
+                    // 이전 모달창에서 신청한 수업 횟수가 현재 수업 신청한 갯수보다 많을 경우에만 적용되도록                  
                                             
-        //         if (input_i == check_array[z]) {
-                    
-        //             // console.log("input_i : "+input_i);
-        //             // console.log("test_array[j] : "+test_array[j]);
-                    
-        //             let label = document.getElementById(i + type);
-        //             // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-        //             let input = document.getElementById(i+"_m");
+                    if (input.checked == true) {
+                        
+                        if (classTimes > classCount_sm) {
+                            // 수업 신청 갯수 1 증가
+                            classCount_sm = classCount_sm + 1;
+                                                        
+                            label.style.backgroundColor = '#1E40AF';
 
-        //             input.checked = true;
-        //             label.style.backgroundColor = '#2563EB';
-        //         }
-                            
-        //     }
-        // }         
-    }
-    
+                            // 해당 체크박스의 name에 check로 표시
+                            input.setAttribute("name", "check");
+
+                            console.log(classCount_sm);           
+                        }                                             
+                        else {
+                            // 가능 횟수 넘어갈 경우 다시 false로 되돌리기
+                            input.checked = false;
+                        }                
+                    }
+                    else {
+
+                        // 수업 신청 갯수 1 감소
+                        classCount_sm = classCount_sm - 1;                        
+
+                        label.style.backgroundColor = '#2563EB';
+
+                        // 해당 체크박스의 name에 uncheck로 표시
+                        input.setAttribute("name", "uncheck");
+
+                        console.log(classCount_sm);
+                    }                                      
+                })
+            }      
+                     
+        }  
+    }    
   }
 
 // 시간대 세팅
