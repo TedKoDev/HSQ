@@ -106,9 +106,12 @@ if (isset($_FILES['sample_image'])) {
 	$response = mysqli_query($conn, $select);
 
 
-	move_uploaded_file($_FILES['sample_image']['tmp_name'], 'image/' . $new_name);
+	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 'image/' . $new_name);
+	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 'https://hangle-square.s3.ap-northeast-2.amazonaws.com/Image/' . $new_name);
+	move_uploaded_file($_FILES['sample_image']['tmp_name'], 's3://hangle-square/Image/' . $new_name);
 
-
+	// 1670316352PNG
+	// 1670316402PNG
 
 
 
