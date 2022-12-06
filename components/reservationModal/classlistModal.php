@@ -21,10 +21,19 @@
                 </div>
             </div>
             <!-- modal_body -->
-            <div class="class-list flex flex-col max-w-2xl mx-auto h-3/4"></div>
-            <div class="flex justify-end items-center w-100 border-t p-3 bottom-0">
-                <button class="nextBtn_cl bg-gray-200 px-3 py-1 rounded text-white" disabled type="button">다음</button>
+            <div class="class-list flex flex-col max-w-2xl mx-auto h-4/5"></div>
+            <div class = "border-t flex items-center justify-between px-4">
+                <div class = "flex">
+                    <div class = "cl-name mx-1 px-1 py-1 text-gray-500"></div>
+                    <div class = "cl-time mx-1 px-1 py-1 text-gray-500"></div>
+                    <div class = "cl-schedule mx-1 px-1 py-1 text-gray-500"></div>
+                    <div class = "cl-communication mx-1 px-1 py-1 text-gray-500"></div>
+                </div>
+                <div class="flex justify-end items-center w-100 p-3 bottom-0">
+                    <button class="nextBtn_cl bg-gray-200 px-3 py-1 rounded text-white" disabled type="button">다음</button>
+                </div>
             </div>
+          
         </div>
     </div>
 </div>

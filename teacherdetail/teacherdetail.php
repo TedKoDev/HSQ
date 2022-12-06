@@ -7,6 +7,7 @@
     </head>
     <script defer="defer" src="../commenJS/cookie.js"></script>
     <script defer="defer" src="../components/reservationModal/classlistModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
     <script defer="defer" src="./teacherdetail.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
@@ -232,5 +233,9 @@
         </div> 
         <!-- 수업 목록 모달창(예약) -->       
         <?php include '../components/reservationModal/classlistModal.php' ?>
+        <!-- 수업 시간 모달창(예약) -->   
+        <?php include '../components/reservationModal/classtimeModal.php' ?>
+        <!-- 수업 일정 모달창(예약) -->   
+        <?php include '../components/reservationModal/scheduleModal.php' ?>
     </body>    
 </html>

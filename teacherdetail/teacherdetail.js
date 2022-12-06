@@ -678,34 +678,34 @@ function show_modal(class_id) {
 }
 
 // 모달창 취소, 예약 클릭 했을 떄
-window.addEventListener('DOMContentLoaded', () => {
+// window.addEventListener('DOMContentLoaded', () => {
 
-  const body = document.getElementsByTagName('body')[0];
+//   const body = document.getElementsByTagName('body')[0];
 
-  const overlay = document.querySelector('#overlay')      
-  const closeBtn = document.querySelector('#close-modal')
+//   const overlay = document.querySelector('#overlay')      
+//   const closeBtn = document.querySelector('#close-modal')
   
   
-  // 모달창 취소 클릭
-  const cancel_modal = () => {                           
+//   // 모달창 취소 클릭
+//   const cancel_modal = () => {                           
 
-      overlay.classList.toggle('hidden')
-      overlay.classList.toggle('flex')
+//       overlay.classList.toggle('hidden')
+//       overlay.classList.toggle('flex')
     
-      body.classList.remove('scrollLock');            
-      
-  }           
+//       body.classList.remove('scrollLock');            
+           
+//   }           
     
-  closeBtn.addEventListener('click', cancel_modal);  
+//   closeBtn.addEventListener('click', cancel_modal);  
   
-})
+// })
 
 // 예약하기 버튼 누를 때 모달창 생성
 // 모달 띄우는 코드
 const classlistModal = document.querySelector('.reserve-modal-class');
 const body = document.getElementsByTagName('body')[0];
 const showReserve = document.querySelector('.show-reserve');
-const closeModal = document.querySelector('.close-modal');
+const closeModal = document.querySelectorAll('.close-modal');
 
 // 예약하기 누르면 수업 목록 모달창부터 
 showReserve.addEventListener('click', function() {
@@ -725,16 +725,33 @@ showReserve.addEventListener('click', function() {
     }    
 });
 
-// x버튼 누르면 모달 없어지게
-closeModal.addEventListener('click', function() {
-    classlistModal.classList.add('hidden');
+// X버튼 누를 시 모달창 사라지고 모달창에서 설정한 값들 초기화
+// 어떤 모달창의 X값을 누르더라도 반영이 되야하므로 반복문으로 처리
+for (const close of closeModal) {
+
+  close.addEventListener('click', function() {
+
+    // 수업 목록 모달, 수업 시간 모달 값 가져오기
+    const classlistModal = document.querySelector('.reserve-modal-class');
+    const classtimeModal = document.querySelector('.reserve-modal-time');
+    const scheduleModal = document.querySelector('.reserve-modal-schedule');
+
+    // 모달 없어지게 처리
+    classlistModal.classList.add('hidden');    
+    classtimeModal.classList.add('hidden');
+    scheduleModal.classList.add('hidden');
+
+    // scrollloack 해지
     body.classList.remove('scrollLock');
-});
+
+      // 수업 목록 모달창에서 설정한 값들 다시 초기화
+      initClassModal();
+      // 수업 시간 모달창에서 설정한 값들 다시 초기화
+      initTimeModal();
+  })
+}
 
 
-// 예약 버튼 클릭
-// let reserve_btn = document.getElementById("reserve_btn");
-// reserve_btn.addEventListener("click", login_check);
 
 
 // function login_check() {
