@@ -33,8 +33,8 @@
                             </div>                    
                         </div>
                         <div class="flex ml-auto">
-                            <button onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
-                            <button onclick = "change_schedule('after', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
+                            <button onclick = "change_schedule_sm('before', 'header_s_sm', '_sm_l', '_sm')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
+                            <button onclick = "change_schedule_sm('after', 'header_s_sm', '_sm_l', '_sm')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                         </div>
                     </div>       
                     <div id="schedule" class="flex flex-col h-96 overflow-auto">

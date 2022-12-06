@@ -4,6 +4,10 @@ let time_sm;
 // 클릭한 수업 횟수 카운트 체크하는 변수 선언 
 let classCount_sm = 0;
 
+// 신청한 스케줄 전역으로 선언
+let scheduleReserve_array_sm = new Array();
+let schedule_string_sm;
+
 // 해당 강사의 수업 일정 화면에 출력하는 함수
 async function getclassSchedule_sm() {
 
@@ -30,7 +34,7 @@ async function getclassSchedule_sm() {
 
     if (response.success == 'yes') {
 
-        const schedule = response.schedule;
+        schedule_string_sm = response.schedule;
         const timezone = response.timezone;
 
         // 현재 시간대 텍스트에 timezone 세팅
@@ -45,7 +49,7 @@ async function getclassSchedule_sm() {
         // checkbox에 일정 표시
         // "_l"/"_m_l" : 웹페이지의 label id인지 모달창의 label id인지
         // ""/"_m" : 웹페이지의 checkbox input id인지, 모달창의 id인지    
-        setschedule_sm("_sm_l", "_sm", schedule);
+        setschedule_sm("_sm_l", "_sm", schedule_string_sm);
     }
 
     // 다음버튼 활성화 여부 체크
@@ -101,9 +105,10 @@ function setDate_Value_sm(header_s, for_modal) {
         if (i == 0) {
 
             let utc_show = document.createElement("div");
-            utc_show.innerHTML = ['<div class = "flex flex-col w-20">', '<div class = "mx-auto"></div>', '</div>'].join(
-                ""
-            );
+            utc_show.innerHTML = [
+                '<div class = "flex flex-col w-20">', 
+                    '<div class = "mx-auto"></div>', 
+                '</div>'].join("");
 
             header.appendChild(utc_show);
 
@@ -183,9 +188,9 @@ async function setschedule_sm(type, for_modal, schedule) {
         for (let j = 0; j < test_array.length; j++) {
             
             // 수업 가능한 시간일 경우 파란색으로 표시하고 checkbox 활성화            
-            if (input_i == test_array[j]) {                             
-                                
-                let label = document.getElementById(i + type);                   
+            if (input_i == test_array[j]) {     
+                                                                
+                const label = document.getElementById(i + type);                   
                 label.style.backgroundColor = '#2563EB';
                                     
                 input.disabled = false;     
@@ -194,49 +199,212 @@ async function setschedule_sm(type, for_modal, schedule) {
                 // 1. 해당 체크박스 클릭 시 체크값 true로 
                 // 2. true일 경우 색깔 변하게
                 // 3. false일 경우 색깔 원래대로
+                // input.addEventListener('click', function(){onCheckboxClick.bind(input, label)}, false);
                 input.addEventListener('click', function() {
 
-                    // 수업 횟수 로컬 스토리지에서 가져오기
-                    const classTimes = localStorage.getItem("class_times");
+                    // // 수업 횟수 로컬 스토리지에서 가져오기
+                    // const classTimes = localStorage.getItem("class_times");
+                                                                                                
+                    // // 이전 모달창에서 신청한 수업 횟수가 현재 수업 신청한 갯수보다 많을 경우에만 적용되도록                  
+                    // if (classTimes > scheduleReserve_array_sm.length) {
+
+                    //     if (input.checked == true) {
+
+                    //         console.log("true : "+input.checked);                           
+                                                            
+                    //         // 해당 input의 value값을 전역 array에 넣기
+                    //         scheduleReserve_array_sm.push(input.getAttribute("value"));
+
+                    //         console.log(scheduleReserve_array_sm);
+                            
+                    //         // 색깔 변화
+                    //         label.style.backgroundColor = '#1E40AF';
+
+                    //         // 해당 체크박스의 name에 check로 표시
+                    //         input.setAttribute("name", "check");
+
+                    //         console.log(scheduleReserve_array_sm.length);           
                                         
-                    // 이전 모달창에서 신청한 수업 횟수가 현재 수업 신청한 갯수보다 많을 경우에만 적용되도록                  
-                                            
-                    if (input.checked == true) {
+                    //     }
+                    //     else {                                 
                         
-                        if (classTimes > classCount_sm) {
-                            // 수업 신청 갯수 1 증가
-                            classCount_sm = classCount_sm + 1;
-                                                        
-                            label.style.backgroundColor = '#1E40AF';
+                    //         console.log("false : "+input.checked);
+                            
+                    //         // 전역 array에서 해당 input 값이 포함된 인덱스를 제거
+                    //         const delete_index = scheduleReserve_array_sm.indexOf(input.getAttribute("value"));                
+                    //         scheduleReserve_array_sm.splice(delete_index, 1);
+                            
+                    //         label.style.backgroundColor = '#2563EB';
 
-                            // 해당 체크박스의 name에 check로 표시
-                            input.setAttribute("name", "check");
+                    //         // 해당 체크박스의 name에 uncheck로 표시
+                    //         input.setAttribute("name", "uncheck");
 
-                            console.log(classCount_sm);           
-                        }                                             
-                        else {
-                            // 가능 횟수 넘어갈 경우 다시 false로 되돌리기
-                            input.checked = false;
-                        }                
-                    }
-                    else {
+                    //         console.log(scheduleReserve_array_sm.length);    
+                            
+                    //     }    
+                    // }
+                    // // 만약 신청한 횟수까지 도달했을 경우
+                    // else if (classTimes == scheduleReserve_array_sm.length){
 
-                        // 수업 신청 갯수 1 감소
-                        classCount_sm = classCount_sm - 1;                        
+                    //     // 클릭한 체크박스가 이미 선택한 경우일 때 (진한 파랑색일 떄)
+                    //     // 1. 해당 값 array에서 없애기
+                    //     // 2. 해당 값의 색깔 원래 색깔로 바꾸기 (연한 파랑)
+                    //     // 3. 해당 값의 check를 false로 다시 바꾸기
+                    //     if (input.getAttribute("name") == "check") {
 
-                        label.style.backgroundColor = '#2563EB';
+                    //         console.log("check_pass");
+                            
+                    //         // 1. 전역 array에서 해당 input 값이 포함된 인덱스를 제거
+                    //         const delete_index = scheduleReserve_array_sm.indexOf(input.getAttribute("value"));                
+                    //         scheduleReserve_array_sm.splice(delete_index, 1);
 
-                        // 해당 체크박스의 name에 uncheck로 표시
-                        input.setAttribute("name", "uncheck");
+                    //         // 2. 해당 값의 색깔 원래대로 바꾸기
+                    //         label.style.backgroundColor = '#2563EB';
 
-                        console.log(classCount_sm);
-                    }                                      
+                    //         // 3. 해당 값의 check를 false로 바꾸기
+                    //         // input.checked = false;
+
+                    //         console.log(scheduleReserve_array_sm.length);  
+                    //     }
+                    //     // 클릭한 체크박스가 선택하지 않은 경우일 때 : 아무 이벤트 필요 없음
+                    //     else  {
+
+                    //         console.log("uncheck_pass");
+                    //     }        
+                    // }
                 })
+                // console.log(input.getEventListener(window));
+
             }      
                      
         }  
+        // 일정 선택했던 기록 가져와서 일치하는 체크박스를 선택한 색깔로 바꾸고 check 상태로 놓기
+        for (let z = 0; z < scheduleReserve_array_sm.length; z++) {
+            
+            if (input_i == scheduleReserve_array_sm[z]) {
+
+                const label = document.getElementById(i + type);                   
+                label.style.backgroundColor = '#1E40AF';
+
+                input.checked = true;
+
+                // 해당 체크박스의 name에 check로 표시
+                input.setAttribute("name", "check");
+            }
+        }        
     }    
   }
+
+function onCheckboxClick(input, label) {
+
+    console.log("input : "+input);
+    console.log("label : "+label);
+
+     // 수업 횟수 로컬 스토리지에서 가져오기
+     const classTimes = localStorage.getItem("class_times");
+                                                                                
+     // 이전 모달창에서 신청한 수업 횟수가 현재 수업 신청한 갯수보다 많을 경우에만 적용되도록                  
+     if (classTimes > scheduleReserve_array_sm.length) {
+
+         if (input.checked == true) {
+
+             console.log("true : "+input.checked);                           
+                                             
+             // 해당 input의 value값을 전역 array에 넣기
+             scheduleReserve_array_sm.push(input.getAttribute("value"));
+
+             console.log(scheduleReserve_array_sm);
+             
+             // 색깔 변화
+             label.style.backgroundColor = '#1E40AF';
+
+             // 해당 체크박스의 name에 check로 표시
+             input.setAttribute("name", "check");
+
+             console.log(scheduleReserve_array_sm.length);           
+                         
+         }
+         else {                                 
+         
+             console.log("false : "+input.checked);
+             
+             // 전역 array에서 해당 input 값이 포함된 인덱스를 제거
+             const delete_index = scheduleReserve_array_sm.indexOf(input.getAttribute("value"));                
+             scheduleReserve_array_sm.splice(delete_index, 1);
+             
+             label.style.backgroundColor = '#2563EB';
+
+             // 해당 체크박스의 name에 uncheck로 표시
+             input.setAttribute("name", "uncheck");
+
+             console.log(scheduleReserve_array_sm.length);    
+             
+         }    
+     }
+     // 만약 신청한 횟수까지 도달했을 경우
+     else if (classTimes == scheduleReserve_array_sm.length){
+
+         // 클릭한 체크박스가 이미 선택한 경우일 때 (진한 파랑색일 떄)
+         // 1. 해당 값 array에서 없애기
+         // 2. 해당 값의 색깔 원래 색깔로 바꾸기 (연한 파랑)
+         // 3. 해당 값의 check를 false로 다시 바꾸기
+         if (input.getAttribute("name") == "check") {
+
+             console.log("check_pass");
+             
+             // 1. 전역 array에서 해당 input 값이 포함된 인덱스를 제거
+             const delete_index = scheduleReserve_array_sm.indexOf(input.getAttribute("value"));                
+             scheduleReserve_array_sm.splice(delete_index, 1);
+
+             // 2. 해당 값의 색깔 원래대로 바꾸기
+             label.style.backgroundColor = '#2563EB';
+
+             // 3. 해당 값의 check를 false로 바꾸기
+             // input.checked = false;
+
+             console.log(scheduleReserve_array_sm.length);  
+         }
+         // 클릭한 체크박스가 선택하지 않은 경우일 때 : 아무 이벤트 필요 없음
+         else  {
+
+             console.log("uncheck_pass");
+         }        
+     }
+}
+ 
+// 이전, 다음 버튼 눌렀을 떄 날짜 다시 세팅하고 checkbox value값 다시 세팅
+function change_schedule_sm(type, id, l_m, for_modal) {
+
+    let header_s = document.getElementById(id);
+
+    // 세팅하기 전에 일단 초기화
+    while(header_s.firstChild)  {
+        header_s.removeChild(header_s.firstChild);
+    }     
+
+    // 이전 버튼 클릭할 경우
+    if (type == 'before') {        
+        
+        // time_sm 스탬프 값 일주일 빼놓기 
+        time_sm = time_sm - (7*(1000 * 60 * 60 * 24));
+                        
+        // getDate(header_s, timezone, for_modal);
+        setDate_Value_sm("header_s_sm", "_sm");
+
+    }
+    // 다음 버튼 클릭할 경우
+    else {      
+        
+        // time 스탬프 값 일주일 더해놓기 
+        time_sm = time_sm + (7*(1000 * 60 * 60 * 24));
+        
+        // getDate(header_s, timezone, for_modal);
+        setDate_Value_sm("header_s_sm", "_sm");
+    }
+
+    // checkbox값 부여된 이후에 저장된 일정 세팅
+  setschedule_sm(l_m, for_modal, schedule_string_sm);
+}
 
 // 시간대 세팅
 function setUtc(timezone) {
