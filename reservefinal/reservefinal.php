@@ -48,13 +48,13 @@
                     </div>
                 </div><br>
                 <div class = "w-4/5 mx-auto text-sm mb-1">강사에게 하고 싶은 말</div>
-                <textarea rows = "5" id = "input_intro" class = "w-4/5 mx-auto text-sm px-1 py-1 rounded border border-gray-200"
+                <textarea rows = "5" id = "memo" class = "w-4/5 mx-auto text-sm px-1 py-1 rounded border border-gray-200"
                 placeholder = "ex : 수업에서 원하는 것, 본인의 한국어 구사 수준"></textarea>
                 <div class = "flex mx-auto my-3">
                     <div>합계</div>
                     <div><span class = "ml-2 mr-1">$</span><span id = "clprice">30</span><span class = "ml-1">USD</span></div>   
                 </div>
-                <div class = "px-3 py-1 mx-auto w-1/2 font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black 
+                <div id = "reserveBtn" onclick = "reserveDone()" class = "px-3 py-1 mx-auto w-1/2 font-semibold bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-black 
                     rounded border text-center">
                     예약하기
                 </div>
