@@ -1,10 +1,8 @@
 // 로컬 스토리지에서 예약 관련 정보 가져오기
-const {clName, clTime, clSchedule, clTool, clPrice, tusid} = JSON.parse(localStorage.getItem("reserveInfoAll"));
+const {clId, clName, clTime, clSchedule, clTool, clPrice, tusid} = JSON.parse(localStorage.getItem("reserveInfoAll"));
 
 // 강사 이름, 강사 이미지 받아오기
 getReserveinfo();
-
-console.log("test :"+dayjs(1669829400000).format('YYYY-MM-DD'));
 
 // 화면에 넣어주어야 할 요소들 초기화 (수업 날짜는 동적으로 추가해야 하므로 나중에 반복문에서 초기화)
 const t_img = document.getElementById("timg");
@@ -14,6 +12,16 @@ const cl_tool = document.getElementById("cltool");
 const cl_time = document.getElementById("cltime");
 const cl_number = document.getElementById("clnumber");
 const cl_price = document.getElementById("clprice");
+
+// 강사에게 하고 싶은 말 가져오기
+const request_forTeacher = document.getElementById("memo");
+
+// 예약 요청 위해 보내야 할 값들 전역으로 선언
+let classid = clId;
+let tp;
+let plan = clSchedule;
+let cmethod;
+let memo;
 
 async function getReserveinfo() {
 
@@ -52,7 +60,26 @@ async function getReserveinfo() {
     cl_time.innerHTML = cl_time_array[0];
     cl_number.innerHTML = cl_time_array[1];
 
+    // 전역 tp, cmethod 대입
+    tp = cl_time_array[0].replace("분", "");
+
+    // 스카이프일경우 1
+    if(cl_tool == 'Skype') {
+        cmethod = 1;
+    }
+    // 한글스퀘어 메타버스일 경우 0
+    else {
+        cmethod = 0;
+    }
+
     // 수업 날짜 표시
+    setSchedule(clSchedule);
+    
+    
+}
+
+// 수업 일정 화면에 표시
+function setSchedule(clSchedule) {
 
     // 받아온 일정 배열로 변환
     const schedule_array = clSchedule.split("_");
@@ -95,7 +122,42 @@ async function getReserveinfo() {
         schedule.appendChild(div);
 
     }
-    
 }
 
 
+// 예약 버튼 클릭 이벤트
+async function reserveDone() {
+
+    const tokenvalue = getCookie("user_info");
+
+    const memo = request_forTeacher.value;  
+
+    console.log("token : "+tokenvalue);
+    console.log("classid : "+classid);
+    console.log("tp : "+tp);
+    console.log("plan : "+plan);
+    console.log("cmethod : "+cmethod);
+    console.log("memo : "+memo);
+
+    // 수업 예약 등록하기
+    const body = {
+
+        token: tokenvalue,
+        classid: classid,
+        tp: tp,
+        plan: plan,
+        cmethod: cmethod,
+        memo: memo,
+    };
+    const res = await fetch('./reservefinalProcess.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    });
+
+    const response = await res.json();
+
+    // console.log("schedule : "+response.schedule);
+}

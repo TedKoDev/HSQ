@@ -112,6 +112,7 @@ nextBtn_cct.addEventListener('click', function() {
     const schedule_list = clSchedule_final.join("_");
     const reserveInfoAll = {
 
+        clId : clId_final,
         clName : clName_final,
         clTime : clTime_final,
         clSchedule : schedule_list,
