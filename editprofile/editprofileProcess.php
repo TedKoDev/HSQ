@@ -1,5 +1,5 @@
 <?php
-// == Myinfo 이미지 업로드 프로세스==
+// == editprofileProcess 프로세스==
 //   #요구되는 파라미터 (fetch형태도 요청 ) 
 //1. 토큰값  - token 
 //2. 항목    - position 
@@ -41,7 +41,7 @@ include("../jwt.php");
 
 $jwt = new JWT();
 
-// 토큰값, 이미지  전달 받음 
+// 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token = json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
 $position = json_decode(file_get_contents("php://input"))->{"position"}; //항목
@@ -51,7 +51,7 @@ $desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
-// error_log("$time_now, $position, $desc\n", "3", "../php.log");
+error_log("$time_now, $position, $desc\n", "3", "/php.log");
 
 
 
@@ -73,14 +73,13 @@ $U_Name  = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 
-// error_log("$time_now,'dd', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
-
+error_log("$time_now, $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
 
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지 확인
 
-$check = "SELECT * FROM User_Detail where User_Id = '$User_ID'";
+$check = "SELECT * FROM User_Detail where User_Id = $User_ID";
 $checkresult = mysqli_query($conn, $check);
 
 // error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
@@ -91,7 +90,7 @@ $checkresult = mysqli_query($conn, $check);
 if ($checkresult->num_rows <1) {
     date_default_timezone_set('Asia/Seoul');
     $time_now = date("Y-m-d H:i:s");
-    
+    error_log("$time_now,'???', $User_ID, $U_Name, $U_Email \n", "3", "../php.log");
     // error_log("$time_now, 's'\n", "3", "../php.log");
     
     // 중복값이 없을때 때 실행할 내용
@@ -105,6 +104,7 @@ if ($checkresult->num_rows <1) {
     // echo json_encode($send);
     // mysqli_close($conn);
 }
+
 
 // 있으면 update 시작 
 
@@ -355,6 +355,28 @@ else if ($position === "intro") {
         mysqli_close($conn);
     }
 } // 타임존
+//$desc 가 'utc '인경우 
+else if ($position === "utc") {
+    $select = "UPDATE User_Detail SET U_D_Timezone = '$desc' where User_Id = '$User_ID' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "utc";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "utc";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
+}//타임존
 //$desc 가 'utc '인경우 
 else if ($position === "utc") {
     $select = "UPDATE User_Detail SET U_D_Timezone = '$desc' where User_Id = '$User_ID' ";

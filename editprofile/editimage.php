@@ -1,33 +1,26 @@
 <?php
 
-// == editimage 프로세스==
-//   #요구되는 파라미터 (fetch형태 formdat 형태로 요청 ) 
-//1. 토큰값  - token 
-//2. 이미지파일 - position 
-
-  // form_data.append('sample_image', file); // 파일값 
-	// form_data.append('token', 'token fjaoidfjl..');   // 토큰값 
-
-
-
-	// fetch("fetchupload2.php", {
-
-	// 	method:"POST",
-
-  //   	body:form_data
-		
-
-	// }) ... 이하생략 fetch2.html 참고 
-
-
-
-
-// 요청사항 
-
 
 
 include("../conn.php");
 include("../jwt.php");
+require '../aws/aws-autoloader.php';
+
+
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+use Aws\S3\MultipartUploader;
+use Aws\Exception\MultipartUploadException;
+
+
+$s3Client = new S3Client([
+	'version' => 'latest',
+	'region'  => 'ap-northeast-2',
+	'credentials' => [
+		'key'    => 'AKIAWBRH4IMAJ3QJ45UC', 
+		'secret' => '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',
+	]
+]);
 
 
 $jwt = new JWT();
@@ -37,7 +30,7 @@ $jwt = new JWT();
 if (isset($_POST['token'])) {
 	$token = $_POST['token'];
 
-	// error_log("'1!!!!!   ',$time_now, 	$token\n", "3", "../php.log");
+	error_log("'1!!!!!   ',$time_now, 	$token\n", "3", "../php.log");
 }
 
 
@@ -68,7 +61,7 @@ $U_Email = base64_decode($payload['U_Email']);
 $check = "SELECT * FROM User_Detail where User_Id = '$User_ID'";
 $checkresult = mysqli_query($conn, $check);
 
-// error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
+error_log("'ddd', $User_ID, $U_Name, $U_Email \n", "3", "./php.log");
 
 // U_D에 해당 user _ID로 등록된것이 있는지  확인
 if ($checkresult->num_rows < 1) {
@@ -94,9 +87,9 @@ if (isset($_FILES['sample_image'])) {
 
 	$extension = pathinfo($_FILES['sample_image']['name'], PATHINFO_EXTENSION);
 
-	$new_name = time()  . $extension;
+	$new_name = 'P_IMG_'.$User_ID.'.' . $extension;
 
-	// error_log("'image  ', 	$User_ID\n", "3", "../php.log");
+	error_log("'image  ', 	$new_name\n", "3", "./php.log");
 
 
 
@@ -106,15 +99,32 @@ if (isset($_FILES['sample_image'])) {
 	$response = mysqli_query($conn, $select);
 
 
-	move_uploaded_file($_FILES['sample_image']['tmp_name'], 'image/' . $new_name);
+	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 'image/' . $new_name);
+	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 'https://hangle-square.s3.ap-northeast-2.amazonaws.com/Image/' . $new_name);
+	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 's3://hangle-square/Image/' . $new_name);
 
+	// 1670316352PNG
+	// 1670316402PNG
+
+// Form 전송을 통해 업로드 할 경우에는 아래와 같이 사용됩니다.
+$s3_path = 'Profile_Image/'.$new_name ; // 업로드할 위치와 파일명 입니다.
+
+
+
+$file_path = $_FILES['sample_image']['tmp_name']; // Form 전송을 통해 받은 데이터 입니다.
+$result = $s3Client->putObject(array(
+  'Bucket' => 'hangle-square',
+  'Key'    => $s3_path,
+  'SourceFile' => $file_path,
+
+));
 
 
 
 
 	if ($response) { //정상적으로 이미지가 저장되었을때 
 		$data = array(
-			'image_source'		=>	'image/' . $new_name,
+			'image_source'		=>	'https://hangle-square.s3.ap-northeast-2.amazonaws.com/'.$s3_path ,
 			'success'        	=>	'yes'
 		);
 		echo json_encode($data);

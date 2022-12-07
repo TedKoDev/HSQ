@@ -17,6 +17,8 @@ classinfo.php
 
 
 출력정보  
+
+
 1. 수업상세  (수업명, 수업내용, 수업유형, 수업 레벨, 수업 가격)
 
 2. 수업목록  (수업명, 및 기타 정보 + 수업오픈한 강사의 정보(이름,이미지 )   + plus 가 있는경우 페이징 동작함)
@@ -62,8 +64,8 @@ $classid       =   json_decode(file_get_contents("php://input"))->{"classid"}; /
 // $classid       =   56; // 수업번호 
 // 강사의 수업목록 : kind = tclist
 // 강사의 userid 값이 필요함 
-$tuserid       =   json_decode(file_get_contents("php://input"))->{"tusid"}; // 강사의 User_id 
-// $tuserid       =  32; // 강사의 User_id 
+$tusid       =   json_decode(file_get_contents("php://input"))->{"tusid"}; // 강사의 User_id 
+// $tusid       =  32; // 강사의 User_id 
 
 
 //====================================================================================================
@@ -284,7 +286,7 @@ $result3['result'] = array();
 $result1['data'] = array();
 $result2['timeprice'] = array();
   //Class_List에 수업 목록확인  
-  $sql = "SELECT * FROM Class_List WHERE User_Id = '{$tuserid}'";
+  $sql = "SELECT * FROM Class_List WHERE User_Id = '{$tusid}'";
   $response1 = mysqli_query($conn, $sql);
 
 
@@ -336,5 +338,6 @@ $result2['timeprice'] = array();
 
   mysqli_close($conn);
 }
+
 
 

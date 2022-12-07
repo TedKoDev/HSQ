@@ -91,9 +91,9 @@
       setInfo(intro, user_intro, "");
       setInfo(korean, user_korean, "")
       // intro.innerText = user_intro;      
-      setLanguage(language, user_language);
+      setLanguage(language, JSON.parse(user_language));
     }
-
+   
     // 값이 있을 경우에만 브라우저에 출력
     function setInfo(key, value, text) {
 
@@ -102,7 +102,8 @@
         // 프로필 이미지일 경우
         if (text == 'image') {
           
-          key.src = "../editprofile/image/"+value;
+          // key.src = "../editprofile/image/"+value;
+          key.src = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/Profile_Image/"+value;
         }
 
         else {
@@ -122,17 +123,16 @@
       // 값이 있을 경우에만 등록한 구사 가능 언어 수만큼 화면에 출력
       if ((value != 'default') && (value != null)) {  
         
-        let json_parse = JSON.parse(value);
         // // 처음에는 key 값 초기화 (리턴 클릭했을 경우 기존 값들 없애줘야 함)
         // while (key.hasChildNodes())
         // {
         //   key.removeChild(key.firstChild);       
         // }
         
-        for (let key_l in json_parse) {
+        for (let key_l in value) {
 
           let language_list = document.createElement('span');          
-          language_list.innerHTML = ['<span class = "mr-2">'+key_l+' : '+json_parse[key_l]+'</span>'].join("");
+          language_list.innerHTML = ['<span class = "mr-2">'+key_l+' : '+value[key_l]+'</span>'].join("");
           key.appendChild(language_list);
 
           // console.log(key_l, value[key_l]);          

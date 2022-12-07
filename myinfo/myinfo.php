@@ -33,8 +33,8 @@
         <div class = "bg-gray-50 px-6 py-4 shadow rounded-lg">
           <div class = "flex justify-between">
             <span class = " text-xl">프로필</span>
-            <a href = "../editprofile/editprofile.php" class = "py-1 px-3 bg-gray-300 text-gray-900 hover:bg-gray-400 hover:text-black 
-            rounded border">프로필 편집</a>          
+            <a href = "../editprofile/editprofile.php" class = "py-1 px-3 bg-gray-300 text-gray-900 hover:bg-gray-400
+             hover:text-black rounded border border-">프로필 편집</a>          
           </div><br>    
           <div id = "intro" class = "text-sm">
           </div><br><br>

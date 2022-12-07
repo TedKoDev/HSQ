@@ -3,7 +3,8 @@
 
 // 쿠키 값 가져오기 
 let checkCookie = getCookie("user_info");    
-
+let haein = 11;
+console.log(haein);
 // 쿠키 가져오는 함수
 function getCookie(cName) {
   cName = cName + '=';
@@ -95,7 +96,8 @@ async function postToken_nav(tokenValue) {
       // 프로필 이미지일 경우
       if (text == 'image') {      
           
-          key.src = "../editprofile/image/"+value;        
+          // key.src = "../editprofile/image/"+value;        
+          key.src = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/Profile_Image/"+value;     
       }   
          
     }

@@ -48,6 +48,10 @@ $tusid      =   json_decode(file_get_contents("php://input"))->{"tusid"};  // �
 
 
 
+
+
+
+
 if($token != null){
 
   //토큰 해체 
@@ -71,7 +75,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
   
   }else {
-
+// echo 111;
     $timezone = $utc;
     // $send['CONNECT_USER_TIMEZONE'] = $utc;
 
@@ -85,36 +89,42 @@ $U_Email = base64_decode($payload['U_Email']);
 
 $sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$tusid'";
 $response2 = mysqli_query($conn, $sql);
-
-
-
 $result2['Schedule'] = array();
-
 // 1시간 = 3600;
 $hour = 3600000;
-
 $resultarray = array();
-//
-
 while ($row1 = mysqli_fetch_array($response2)) {
-
  $schedule = $row1['0'];
-
-
  $schedule2 = $schedule + $hour*$timezone;
-
-
-
   array_push($resultarray, $schedule2);
 }
-
  $string = implode("_",$resultarray);
   
+ 
+
+//예약된 수업 리스트만 
+ $sql = "SELECT * FROM Teacher_Schedule WHERE User_Id = '$User_ID' and  Status = '1'";
+ $response2 = mysqli_query($conn, $sql);
+  
+ // 1시간 = 3600;
+ $hour = 3600000;
+ $예약된스케쥴 = array();
+  while ($row1 = mysqli_fetch_array($response2)) {
+   $schedule = $row1['2'];
+  $status = $row1['3'];
+    $schedule2 = $schedule + $hour*$timezone;
+    array_push($예약된스케쥴, $schedule2);
+ }
+ 
+  $string2 = implode("_",$예약된스케쥴);
+
+  
      
- if ($response2) { //정상일떄  
+ if ($response1) { //정상일떄  
   $data = array(
     'timezone'  => $timezone,
     'schedule'	=>	$string,
+    'reserved_schedule'	=>	$string2,
     'success'        	=>	'yes'
   );
   echo json_encode($data);

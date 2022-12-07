@@ -3,11 +3,7 @@
 
 include("./conn.php");
 
-?><script src = "./commenJS/cookie.js"></script><?php
-    
-    // 쿠키에서 토큰값 가져오기
-    $tokenvalue = '<script> var test2 = getCookie("user_info"); document.write(test2);</script>';
-    
+
 
 if (isset( $_FILES['img'])) {
     
@@ -17,14 +13,6 @@ if (isset( $_FILES['img'])) {
         $zip_time = time();
         $zip_name1 = getcwd() . "/uploads/USER_" . $zip_time . ".zip";
         $zip_name2 = "USER_" . $zip_time . ".zip";
-
-        ?>
-        <script>
-
-
-
-        </script>       
-        <?php
         
         // Create a zip target
         if ($zip->open($zip_name1, ZipArchive::CREATE) !== TRUE) {
