@@ -6,6 +6,10 @@
         <link href="../dist/output.css" rel="stylesheet">
     </head>
     <script defer="defer" src="../commenJS/cookie.js"></script>
+    <script defer="defer" src="../components/reservationModal/classlistModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/streamingtoolModal.js"></script>
     <script defer="defer" src="./teacherdetail.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
@@ -60,9 +64,9 @@
                     </div>
                 </div>                
             </div>
-            <div class="flex flex-col float-right w-2/5 px-4 py-2 text-center">
+            <div class="flex flex-col float-right w-1/4 px-4 py-2 text-center">
                 <div class = "rounded-lg bg-gray-50 shadow px-4 py-2">
-                    <div class = " bg-blue-500 hover:bg-blue-600 text-white rounded-lg border-blue-900 px-1 py-1 my-1">수업 예약</div>
+                    <div class = "show-reserve bg-blue-500 hover:bg-blue-600 text-white rounded-lg border-blue-900 px-1 py-1 my-1">수업 예약</div>
                     <div class = " bg-gray-500 hover:bg-gray-600 text-white rounded-lg border-gray-900 px-1 py-1 my-1">강사에게 연락하기</div>
                 </div>
             </div>
@@ -191,7 +195,7 @@
             </div>
             <br><br><br><br>
         </div>
-        <!-- 모달창 -->
+        <!-- 수업 상세 정보 모달창 -->
         <div
             class="bg-gray-700 bg-opacity-50 w-full fixed inset-0 hidden justify-center items-center border-2"
             id="overlay">
@@ -227,8 +231,15 @@
                     <a id = "clprice30_m">30분 : 12 $</a><a id = "clprice60_m">60분 : 24 $</a>                    
                 </div>
                 <a class = "w-16 mt-2 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">예약하기</a>               
-            </div>                
-            
+            </div>               
         </div> 
+        <!-- 수업 목록 모달창(예약) -->       
+        <?php include '../components/reservationModal/classlistModal.php'?>
+        <!-- 수업 시간 모달창(예약) -->   
+        <?php include '../components/reservationModal/classtimeModal.php'?>
+        <!-- 수업 일정 모달창(예약) -->   
+        <?php include '../components/reservationModal/scheduleModal.php'?>
+        <!-- 커뮤니케이션 도구 모달창(예약) -->   
+        <?php include '../components/reservationModal/streamingtoolModal.php'?>
     </body>    
 </html>

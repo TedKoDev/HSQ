@@ -122,6 +122,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
      
  if ($response1) { //정상일떄  
   $data = array(
+    'timezone'  => $timezone,
     'schedule'	=>	$string,
     'reserved_schedule'	=>	$string2,
     'success'        	=>	'yes'

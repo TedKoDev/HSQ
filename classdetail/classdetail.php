@@ -35,7 +35,7 @@
                     수업 설명
                 </div>
             </div>
-            <div class="flex flex-col float-right w-2/5 px-4 py-2 rounded-lg bg-gray-50 shadow ">
+            <div class="flex flex-col w-1/5 py-2 rounded-lg bg-gray-50 shadow ">
                 <div class = "px-4">
                     <div>30분 : <span id = "c_price30"></span>$</div> 
                     <div>60분 : <span id = "c_price60"></span>$</div> 
@@ -83,7 +83,7 @@
                             <span class = "ml-1">예약 가능</span>
                         </div>                    
                     </div>
-                    <div class="flex ml-auto">
+                    <div class="flex ml-auto">                       
                         <button onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
                         <button onclick = "change_schedule('after', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                     </div>
@@ -160,7 +160,7 @@
                 </div>                 
                 <div class = "text-center">시간대 <a id = "utc"></a></div>     
                 <div class = "text-sm text-gray-500 text-center">(내정보 -> 프로필 편집에서 원하는 UTC 시간대를 설정할 수 있습니다.)</div>          
-            </div>
+            </div>            
             <br><br><br><br>
         </div>
         <!-- 모달창 -->
@@ -196,8 +196,7 @@
                     <a id = "clprice30_m">30분 : 12 $</a><a id = "clprice60_m">60분 : 24 $</a>                    
                 </div>
                 <a class = "w-16 mt-2 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">예약하기</a>               
-            </div>                
-            
-        </div> 
+            </div>                            
+        </div>         
     </body>    
 </html>
