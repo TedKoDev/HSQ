@@ -154,7 +154,7 @@ function setDate_Value_sm(header_s, for_modal) {
 
             // day.js 써서 타임스탬프로 변환
             let test_dayjs = dayjs(test_day);
-            test_dayjs.format();
+            // test_dayjs.format();
 
 
             // 00:00 ~ 24:00에 해당하는 48개 체크박스에 해당 타임스탬프+시간대의 조합으로 value값 부여
@@ -168,8 +168,14 @@ function setDate_Value_sm(header_s, for_modal) {
                 // let add_dayjs = test_dayjs.set("m", 30 * j);
                 let add_dayjs = test_dayjs.add(30*j, "m");
 
-                // console.log("add_dayjs : "+add_dayjs.format('YYYY/MM/DD HH:MM:ss'));
+                console.log("add_dayjs : "+add_dayjs.format('YYYY/MM/DD HH:mm:ss'));
+                const test = add_dayjs.valueOf();
+                console.log("add_dayjs_timestamp1 : "+test);
+                console.log("add_dayjs_timestamp1 : "+dayjs(test).format('YYYY/MM/DD HH:mm:ss'));
 
+                const test2 = 1670340600000;
+                console.log("add_dayjs_timestamp2 : "+test2);
+                console.log("add_dayjs_timestamp2 : "+dayjs(test2).format('YYYY/MM/DD HH:mm:ss'));
                 
                 // 체크박스의 value에 더한 값의 타임스탬프를 넣어주기
                 checkbox.setAttribute("value", add_dayjs.valueOf());

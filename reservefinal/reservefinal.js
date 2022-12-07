@@ -57,17 +57,45 @@ async function getReserveinfo() {
     // 받아온 일정 배열로 변환
     const schedule_array = clSchedule.split("_");
 
+    // 요일 표시용 배열 선언
+    let week = new Array('일', '월', '화', '수', '목', '금', '토');
+
+    // 요일 붙일 div 선언
+    const schedule = document.getElementById("clschedule");
+
     // 배열 갯수만큼 세팅
     for(let i = 0; i < schedule_array.length; i++) {
 
         const timestamp = schedule_array[i];
 
-        const theDay = dayjs(timestamp).format('YYYY-MM-DD');
+        // string int형으로 변환
+        const theDay = parseInt(timestamp);
 
-        console.log(timestamp);
+        const day_forParse = dayjs(theDay);
+
+        // 요일,월,일, 시작시간, 끝시간 추출
+        const day = week[day_forParse.get("day")];
+        const month = day_forParse.get("month")+1;
+        const date = day_forParse.get("date");
+        const startTime = day_forParse.subtract(30, "minute").format("HH:mm");
+        const endTime = day_forParse.format("HH:mm");
+
+        // 요일 표시할 div 생성
+        const div = document.createElement("div");
+
+        // 요일 대입
+        div.innerHTML = [
+            '<span id = "day" class = "text-xs">'+day+'</span>,', 
+            '<span id = "month" class = "ml-1 text-xs">'+month+'월</span>', 
+            '<span id = "date" class = "ml-1 text-xs">'+date+'일,</span>', 
+            '<span id = "start_time" class = "ml-1 text-xs">'+startTime+' - </span>',
+            '<span id = "end_time" class = "text-xs">'+endTime+'</span>'
+        ].join("");
+
+        schedule.appendChild(div);
 
     }
-
+    
 }
 
 

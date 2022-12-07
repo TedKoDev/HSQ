@@ -29,30 +29,28 @@
         </nav>
         <!-- 결제 정보 -->
         <br>
+        <div></div>
         <div class = "bg-gray-50 w-1/4 py-4 mx-auto rounded-lg shadow">
             <div class = "flex flex-col ">
-                <div class = "flex justify-center">
+                <div class = "flex justify-between w-4/5 mx-auto">
                     <img id = "timg" class = "mx-1 w-14 h-14 border-2 border-gray-900 rounded-full" src = "../images_forHS/userImage_default.png"></img>
                     <div class = "flex flex-col mx-1 ">
-                        <div id = "tname">강사 이름</div>
+                        <div id = "tname" class = "font-semibold">강사 이름</div>
                         <div>-</div>
-                        <div id = "clname">수업 이름</div>
-                        <div id = "cltool">수업 도구</div>
-                        <div class = "flex">
+                        <div id = "clname" class = "my-1">수업 이름</div>
+                        <div id = "cltool" class = "my-1">수업 도구</div>
+                        <div class = "flex my-1">
                             <span id = "cltime"></span>,<span id = "clnumber" class = "ml-1"></span>
                         </div>
-                        <div id = "clschedule">
-                            <div id = "schedule_list">
-                                <span id = "day">목</span>, 
-                                <span id = "month">12</span>월 
-                                <span id = "date">08</span>, 
-                                <span id = "start_time">18:00</span> - 
-                                <span id = "end_time">19:00</span>
-                            </div>
+                        <div id = "clschedule" class = "my-1">
+                            
                         </div>
                     </div>
-                </div>
-                <div class = "flex mx-auto">
+                </div><br>
+                <div class = "w-4/5 mx-auto text-sm mb-1">강사에게 하고 싶은 말</div>
+                <textarea rows = "5" id = "input_intro" class = "w-4/5 mx-auto text-sm px-1 py-1 rounded border border-gray-200"
+                placeholder = "ex : 수업에서 원하는 것, 본인의 한국어 구사 수준"></textarea>
+                <div class = "flex mx-auto my-3">
                     <div>합계</div>
                     <div><span class = "ml-2 mr-1">$</span><span id = "clprice">30</span><span class = "ml-1">USD</span></div>   
                 </div>
