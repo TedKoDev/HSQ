@@ -115,7 +115,9 @@
         // 프로필 이미지일 경우
         if (text == 'image') {
           
-          key.src = "../editprofile/image/"+value;
+          // key.src = "../editprofile/image/"+value;
+          key.src = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/Profile_Image/"+value;
+
         }
 
         else {
