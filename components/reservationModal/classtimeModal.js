@@ -16,6 +16,15 @@ let nextBtn_ct = document.querySelector(".nextBtn_ct");
 // 모달창 하단에 수업시간 표시하는 뷰 초기화
 let cl_time_b = document.querySelectorAll(".cl-time");
 
+// 모달창 하단에 가격 표시하는 뷰 초기화
+let cl_price_b = document.querySelectorAll(".cl-price");
+
+// 최종적으로 선택할 수업 시간 변수 
+let clTime_final;
+
+// 최종적으로 선택할 수업의 가격 변수
+let clPrice_final;
+
 // 해당 수업의 가격 화면에 출력하는 함수
 async function getclassPrice_tm() {
 
@@ -52,10 +61,10 @@ async function getclassPrice_tm() {
 }
 
 // 수업 시간 선택 버튼 클릭 리스터 함수
-classtimeClick(class_30_1);
-classtimeClick(class_30_5);
-classtimeClick(class_60_1);
-classtimeClick(class_60_5);
+classtimeClick(class_30_1, price30_1);
+classtimeClick(class_30_5, price30_5);
+classtimeClick(class_60_1, price60_1);
+classtimeClick(class_60_5, price60_5);
 
 
 // 원하는 시간 및 횟수 입력했을 때 이벤트
@@ -64,7 +73,7 @@ classtimeClick(class_60_5);
 // 3. 클릭한 뷰의 색깔을 다르게 표시
 // 4. 클릭한 뷰의 value값을 1로 세팅
 // 5. 모달창 하단에 수업시간 및 횟수 출력
-function classtimeClick(price_and_number) {
+function classtimeClick(price_and_number, price) {
 
     price_and_number.addEventListener('click', function() {
 
@@ -91,11 +100,11 @@ function classtimeClick(price_and_number) {
         // 4. 클릭한 뷰의 value값 1로 세팅
         price_and_number.setAttribute("value", 1);
 
-        // 5. 모달창 하단에 해당 수업 시간 및 횟수 출력 (모든 모달창에 세팅해 주어야 함)                
-         for (const name of cl_time_b) {
-            
-            let string;
+        // 5. 모달창 하단에 해당 수업 시간 및 횟수 출력 (모든 모달창에 세팅해 주어야 함)    
+        let string;
 
+        for (const name of cl_time_b) {            
+            
             if (price_and_number.getAttribute("name") == "30_1") {
                 string = "30분 - 1회";      
                 localStorage.setItem("class_times", 1);          
@@ -118,6 +127,15 @@ function classtimeClick(price_and_number) {
 
         // 다음버튼 활성화 여부 체크
         checkNextbtn_ct();
+
+        // 모달창 하단에 해당 가격 표시
+        showPrice(price);
+
+        // 전역 변수에 수업 시간 대입 
+        clTime_final = string;
+
+        // 전역 변수에 수업 가격 대입
+        clPrice_final = price.innerText.replace(' $', '');
     })  
 }
 
@@ -134,6 +152,9 @@ function checkNextbtn_ct() {
             nextBtn_ct.disabled = false;
             break;
         }
+        else {
+            nextBtn_ct.disabled = true;
+        }
     }
 
     if (nextBtn_ct.disabled == true) {
@@ -146,6 +167,17 @@ function checkNextbtn_ct() {
             "class",
             "nextBtn_ct bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-white"
         );
+    }
+}
+
+// 수업 클릭할 때 모달창 하단에 해당 가격 표시
+function showPrice(price) {
+    
+    const string = price.innerText;
+    
+    for (const text of cl_price_b) {
+        
+        text.innerHTML = string;
     }
 }
 
@@ -181,7 +213,7 @@ function initTimeModal() {
     // 3. 다음 버튼 비활성화
     nextBtn_ct.setAttribute(
         "class",
-        "nextBtn_cl bg-gray-200 px-3 py-1 rounded text-white disabled"
+        "nextBtn_ct bg-gray-200 px-3 py-1 rounded text-white disabled"
     );
    
     // 4. 모달창 하단에 클릭했던 수업시간 표시되는거 초기화

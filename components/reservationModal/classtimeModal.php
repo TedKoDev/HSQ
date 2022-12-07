@@ -60,6 +60,7 @@
                     <span class = "cl-communication mx-1 px-1 py-1 text-gray-500"></span>
                 </div>
                 <div class="flex justify-end items-center w-100 p-3 bottom-0">
+                    <span class = "cl-price mx-1 px-1 py-1 text-gray-800"></span>
                     <button class="nextBtn_ct bg-gray-200 px-3 py-1 rounded text-white" disabled type="button">다음</button>
                 </div>
             </div>

@@ -46,9 +46,7 @@ async function get_utc(tokenValue) {
       const timezone_s = response.timezone;      
 
       timezone = timezone_s;
-      
-      console.log("timezone : "+timezone);
-
+     
       if (success == "yes") {
 
         getDate("header_s", timezone, "");
@@ -137,10 +135,7 @@ async function setschedule(type, for_modal) {
     
 
   // 값이 있을 경우에만 추출해서 대입
-  if (check == "yes") {
-
-      console.log("yes");
-      // let test_string = "54_62_88";
+  if (check == "yes") {     
 
       // 서버에서 받아온 string 배열로 변환
       let test_array = schedule_string.split('_');
@@ -722,6 +717,9 @@ showReserve.addEventListener('click', function() {
 
         // 수업 목록 모달창에 해당 강사의 수업 목록 표시
         getclassList_cm(U_id);
+        
+        // 전역으로 선언한 스케줄 array 초기화
+        scheduleReserve_array_sm = [];
     }    
 });
 
@@ -731,15 +729,17 @@ for (const close of closeModal) {
 
   close.addEventListener('click', function() {
 
-    // 수업 목록 모달, 수업 시간 모달 값 가져오기
+    // 모든 모달값 가져오기
     const classlistModal = document.querySelector('.reserve-modal-class');
     const classtimeModal = document.querySelector('.reserve-modal-time');
     const scheduleModal = document.querySelector('.reserve-modal-schedule');
+    const cmtoolModal = document.querySelector('.reserve-modal-cmtool');
 
     // 모달 없어지게 처리
     classlistModal.classList.add('hidden');    
     classtimeModal.classList.add('hidden');
     scheduleModal.classList.add('hidden');
+    cmtoolModal.classList.add('hidden');
 
     // scrollloack 해지
     body.classList.remove('scrollLock');
@@ -748,6 +748,10 @@ for (const close of closeModal) {
       initClassModal();
       // 수업 시간 모달창에서 설정한 값들 다시 초기화
       initTimeModal();
+      // 수업 일정 모달창에서 설정한 값들 다시 초기화
+      initScheduleModal();
+      // 커뮤니케이션 도구 모달창에서 설정한 값들 다시 초기화
+      initCmtoolModal();
   })
 }
 

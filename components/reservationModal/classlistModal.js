@@ -6,6 +6,9 @@ let nextBtn_cl = document.querySelector(".nextBtn_cl");
 // 모달창 하단에 수업 이름 표시하는 뷰 초기화
 let cl_name_b = document.querySelectorAll(".cl-name");
 
+// 최종적으로 선택할 수업 이름 변수 
+let clName_final;
+
 // 수업 목록 화면에 출력하는 함수
 async function getclassList_cm(tusid) {
 
@@ -30,9 +33,7 @@ async function getclassList_cm(tusid) {
 
     const result = response.result[0];
     const classList = result.class;
-
-    console.log(classList);
-
+   
     // 세팅하기 전에 일단 초기화
     while (class_list.firstChild) {
         class_list.removeChild(class_list.firstChild);
@@ -158,6 +159,9 @@ function setClasslist_cm(clid, clname, cllevel, cltype, price30, price60) {
 
         // 해당 classid를 로컬 스토리지에 저장
         localStorage.setItem("classid", clid);
+
+        // 전역변수에 이름 대입
+        clName_final = clname;
     })
 }
 
@@ -238,4 +242,5 @@ nextBtn_cl.addEventListener('click', function() {
 
     // 해당 수업의 가격 출력
     getclassPrice_tm();
+  
 })

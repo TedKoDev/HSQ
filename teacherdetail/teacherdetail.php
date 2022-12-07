@@ -9,6 +9,7 @@
     <script defer="defer" src="../components/reservationModal/classlistModal.js"></script>
     <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
     <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/streamingtoolModal.js"></script>
     <script defer="defer" src="./teacherdetail.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
@@ -233,10 +234,12 @@
             </div>               
         </div> 
         <!-- 수업 목록 모달창(예약) -->       
-        <?php include '../components/reservationModal/classlistModal.php' ?>
+        <?php include '../components/reservationModal/classlistModal.php'?>
         <!-- 수업 시간 모달창(예약) -->   
-        <?php include '../components/reservationModal/classtimeModal.php' ?>
+        <?php include '../components/reservationModal/classtimeModal.php'?>
         <!-- 수업 일정 모달창(예약) -->   
-        <?php include '../components/reservationModal/scheduleModal.php' ?>
+        <?php include '../components/reservationModal/scheduleModal.php'?>
+        <!-- 커뮤니케이션 도구 모달창(예약) -->   
+        <?php include '../components/reservationModal/streamingtoolModal.php'?>
     </body>    
 </html>
