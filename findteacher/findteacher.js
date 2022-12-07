@@ -79,7 +79,7 @@ function setData(response) {
         U_D_Img = "../images_forHS/userImage_default.png"
     }
     else {
-        U_D_Img = "../editprofile/image/"+U_D_Img;
+        U_D_Img = s3_url+"Profile_Image/"+U_D_Img;
     }
 
     // 태그 생성하고 id에 해당 유저의 id 대입
