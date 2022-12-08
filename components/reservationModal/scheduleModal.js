@@ -213,19 +213,27 @@ async function setschedule_sm(type, for_modal, schedule) {
         // 체크박스랑 그 value값 가져오기
         let input = document.getElementById(i+for_modal);
         let input_i = input.getAttribute("value");
+        let label = document.getElementById(i + type);  
                    
         for (let j = 0; j < test_array.length; j++) {
             
             // 수업 가능한 시간일 경우 파란색으로 표시하고 checkbox 활성화            
-            if (input_i == test_array[j]) {     
-                                                                
-                const label = document.getElementById(i + type);                   
+            if (input_i == test_array[j]) {    
+                                                               
+                                
                 label.style.backgroundColor = '#2563EB';
                                     
                 input.disabled = false;                    
             }      
                      
         }  
+        // 현재 시간 이전 날짜일 경우에는 디폴트 색인 회색으로 두고 체크박스 비활성화
+        if(checkNow_forSchedule_cs(input_i)) {
+        
+        label.style.backgroundColor = '#9CA3AF';
+        input.disabled = true;
+        }        
+
         // 일정 선택했던 기록 가져와서 일치하는 체크박스를 선택한 색깔로 바꾸고 check 상태로 놓기
         for (let z = 0; z < scheduleReserve_array_sm.length; z++) {
             
@@ -359,6 +367,33 @@ function change_schedule_sm(type, id, l_m, for_modal) {
 
     // 이번주일 경우 이전 버튼 비활성화 되게 처리
     checkBeforebtn_cs(beforeDate_btn_cs, timezone_cs);
+}
+
+// 현재 시각 이전 날짜는 수업 예약 못하게 처리
+function checkNow_forSchedule_cs(value) {
+
+    // 현재 날짜 객체 생성
+    const now = new Date();
+    
+    // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
+    const offset = (now.getTimezoneOffset() / 60);
+    now.setHours(now.getHours() + offset);    
+  
+    // 날짜 표시하기 전에 받아온 타임존 적용
+    const string_to_int = parseInt(timezone_cs);
+    
+    now.setHours(now.getHours() + string_to_int);
+    
+    const s_to_i_value = parseInt(value);
+   
+    // 현재시간이 체크박스 시간보다 클 경우 true로 설정
+    if (dayjs(now.getTime()).format('YYYY/MM/DD : HH:mm') >= dayjs(s_to_i_value).format('YYYY/MM/DD : HH:mm')) {
+
+      return true;
+    }
+    else {
+      return false;
+    }
 }
 
 // 다음 버튼 활성화 여부 체크

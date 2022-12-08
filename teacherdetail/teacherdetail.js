@@ -67,6 +67,7 @@ async function get_utc(tokenValue) {
         }
 
         utc.innerHTML = utc_string;
+        
                 
         // checkbox값 부여된 이후에 저장된 일정 세팅
         setschedule("_l", "");
@@ -112,6 +113,7 @@ function getDate(header_date, timezone, for_modal) {
   
   time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기  
   
+  // 시간대에 맞게 날짜 세팅
   setDate_Value(header_s, for_modal);
 }
 // getDate("header_s", timezone);
@@ -119,30 +121,34 @@ function getDate(header_date, timezone, for_modal) {
 // 일정 등록에 세팅하는 함수
 async function setschedule(type, for_modal) {    
 
+  // 로컬 시간대 추출
+  const date = new Date();
+  const utc = -(date.getTimezoneOffset() / 60);
+
+  // 토큰, 로컬 시간대, 강사id 전송해서 해당 강사의 스케줄 받아오기
   const body = {
 
-      token: checkCookie,       
-  
-      };
-  const res = await fetch('../manageschedule/managescheduleProcess.php', {
-  method: 'POST',
-  headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-  },
-  body: JSON.stringify(body)
+      token: checkCookie,
+      utc: utc,
+      tusid: U_id
+  };
+  const res = await fetch('../restapi/schedule.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(body)
   });
-  
-  const response = await res.json();   
+
+  const response = await res.json(); 
   const check = response.success; 
-  schedule_string = response.schedule;  
-    
+  schedule_string = response.schedule;
 
   // 값이 있을 경우에만 추출해서 대입
   if (check == "yes") {     
 
       // 서버에서 받아온 string 배열로 변환
       let test_array = schedule_string.split('_');
-
       
 
       // 현재 모달창에서 체크하고 있는 배열 가져오기
@@ -160,55 +166,48 @@ async function setschedule(type, for_modal) {
       for (let i = 1; i <= 336; i++ ) {
 
           // 체크박스의 value값 가져오기
-          let input_i = document.getElementById(i+for_modal).value;
-
-          // console.log(dayjs(input_i).format('YYYY/MM/DD hh:mm:ss'))
-          // console.log(input_i);
-          // 변환한 array의 개수만큼 반복문 돌리기
+          let input_i = document.getElementById(i+for_modal).value;   
+          let label = document.getElementById(i + type);                 
 
           // 모달창 아닐 때만 서버에서 받아온 값 뿌려주기
-          if (for_modal == "") {
-
+          // if (for_modal == "") {
+              // 서버에서 받아온 값 뿌려주기
               for (let j = 0; j < test_array.length; j++) {
-                              
-                  if (input_i == test_array[j]) {
+                                  
+                  // 체크박스의 값과 서버에서 받아온 array값 중 일치하는 것이 있을 경우 색깔 칠하기
+                  if (input_i == test_array[j]) {       
+                                                      
                       
-                      // console.log("input_i : "+input_i);
-                      // console.log("test_array[j] : "+test_array[j]);
-                      
-                      let label = document.getElementById(i + type);                    
-                      // let input = document.getElementById(i+"_m");
-  
-                      // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-                      // input.checked = true;
                       label.style.backgroundColor = '#2563EB';
-
-                      // console.log("result : "+dayjs(test_array[j]).format("YYYY/MM/DD HH:MM:ss"))
                   }               
               }
-          }
+              // 현재 시간 이전 날짜일 경우에는 디폴트 색인 회색으로 두기
+              if(checkNow_forSchedule(input_i)) {
+                
+                label.style.backgroundColor = '#9CA3AF';
+              }              
+              
+          // }
           // 모달창이면 서버에서 받아온거 바로 뿌려주지 말고 모달창 켰을 때 담은 배열에 있는값들 뿌려주기
-          else {
-              // 현재 체크하고 있는 array 개수만큼 반복문 돌려서 체크 (현재 편집중인 사항 표시하기 위해)
-              for (let z = 0; z < check_array.length; z++) {
-                                              
-                  if (input_i == check_array[z]) {
-                      
-                      // console.log("input_i : "+input_i);
-                      // console.log("test_array[j] : "+test_array[j]);
-                      
-                      let label = document.getElementById(i + type);
-                      // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-                      let input = document.getElementById(i+"_m");
+          // else {
+          //   // 현재 체크하고 있는 array 개수만큼 반복문 돌려서 체크 (현재 편집중인 사항 표시하기 위해)
+          //   for (let z = 0; z < check_array.length; z++) {
+                                            
+          //       if (input_i == check_array[z]) {
+                    
+          //           // console.log("input_i : "+input_i);
+          //           // console.log("test_array[j] : "+test_array[j]);
+                    
+          //           let label = document.getElementById(i + type);
+          //           // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
+          //           let input = document.getElementById(i+"_m");
 
-                      input.checked = true;
-                      label.style.backgroundColor = '#2563EB';
-                  }
-                              
-              }
-          }            
-
-          
+          //           input.checked = true;
+          //           label.style.backgroundColor = '#2563EB';
+          //       }
+                            
+          //   }
+          // }            
       }
   }
 }
@@ -330,6 +329,34 @@ function change_schedule(type, id, l_m, for_modal) {
   checkBeforebtn(beforeDate_btn, timezone);
 }
 
+
+// 현재 시각 이전 날짜는 수업 예약 못하게 처리
+function checkNow_forSchedule(value) {
+
+    // 현재 날짜 객체 생성
+    const now = new Date();
+    
+    // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
+    const offset = (now.getTimezoneOffset() / 60);
+    now.setHours(now.getHours() + offset);    
+  
+    // 날짜 표시하기 전에 받아온 타임존 적용
+    const string_to_int = parseInt(timezone);
+    
+    now.setHours(now.getHours() + string_to_int);
+    
+    const s_to_i_value = parseInt(value);
+   
+    // 현재시간이 체크박스 시간보다 클 경우 true로 설정
+    if (dayjs(now.getTime()).format('YYYY/MM/DD : HH:mm') >= dayjs(s_to_i_value).format('YYYY/MM/DD : HH:mm')) {
+
+      return true;
+    }
+    else {
+      return false;
+    }
+}
+
 // 클릭한 유저 ID랑 유저의 토큰 보내서 강사 상세 정보 가져오기
 getTeacherdatail(checkCookie, U_id); 
 
@@ -442,12 +469,7 @@ function setLanguage(key, value) {
   // 값이 있을 경우에만 등록한 구사 가능 언어 수만큼 화면에 출력
   if ((value != 'default') && (value != null)) {  
     
-    let json_parse = JSON.parse(value);
-    // // 처음에는 key 값 초기화 (리턴 클릭했을 경우 기존 값들 없애줘야 함)
-    // while (key.hasChildNodes())
-    // {
-    //   key.removeChild(key.firstChild);       
-    // }
+    let json_parse = JSON.parse(value);    
     
     for (let key_l in json_parse) {
 
@@ -479,12 +501,7 @@ function setClass(class_list) {
     const clpeoeple = class_list[i].clpeople;
     const cltype = class_list[i].cltype;
     const tp = class_list[i].tp;   
-    const cllevel = class_list[i].cllevel;
-    
-    // console.log("tp0 : "+tp[0].Price);
-    // console.log("tp1 : "+tp[1].Price);
-
-    // console.log("cllevel : "+cllevel);
+    const cllevel = class_list[i].cllevel;  
 
     // 가격 파싱
     const price_30 = tp[0].Price;
@@ -666,8 +683,6 @@ function show_intro(type) {
   now.setHours(0);
   now.setMinutes(0); 
   now.setSeconds(0);
-
-  console.log(now.getTime());
  
   // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
   const offset = (now.getTimezoneOffset() / 60);
