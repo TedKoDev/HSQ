@@ -130,6 +130,8 @@ function setClasslist_cm(clid, clname, cllevel, cltype, price30, price60) {
         // 모달창 하단에 해당 수업 이름 표기 (모든 모달창의 수업 이름에 세팅해 주어야 함)        
         for (const name of cl_name_b) {
             name.innerHTML = clname;
+            // name.classList.setAttribute("class", "cl-name bg-gray-300 rounded-lg mx-1 px-1 py-1 text-gray-800");
+            name.setAttribute("class", "cl-name text-xs cl-name mx-1 px-3 py-2 bg-gray-200 rounded-2xl text-gray-800 border border-gray-500 border-2")
         }
 
         // 모든 수업목록 div 가져오기
@@ -231,6 +233,7 @@ function initClassModal() {
     // 4. 모달창 하단에 클릭했던 수업 표시되는거 초기화
     for (const label of cl_name_b) {
         label.innerHTML = "";
+        label.setAttribute("class", "");
     }  
 }
 

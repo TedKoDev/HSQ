@@ -50,6 +50,7 @@ function toolClick(toolType) {
     // 모달창 하단에 해당 도구명 표기        
     for (const name of cl_tool_b) {
         name.innerHTML = ctTool_final;
+        name.setAttribute("class", "cl-communication text-xs cl-name mx-1 px-3 py-2 bg-gray-200 rounded-2xl text-gray-800 border border-gray-500 border-2")
     }
 }
 
@@ -101,6 +102,7 @@ function initCmtoolModal() {
     // 모달창 하단에 해당 도구명 표기        
     for (const name of cl_tool_b) {
         name.innerHTML = "";
+        name.setAttribute("class", "");
     }
 }
 

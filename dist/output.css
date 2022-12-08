@@ -1231,6 +1231,11 @@ video {
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
 }
 
+.bg-gray-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -1241,14 +1246,6 @@ video {
 
 .fill-current {
   fill: currentColor;
-}
-
-.stroke-red-600 {
-  stroke: #dc2626;
-}
-
-.stroke-2 {
-  stroke-width: 2;
 }
 
 .p-3 {

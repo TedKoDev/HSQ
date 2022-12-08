@@ -126,6 +126,7 @@ function classtimeClick(price_and_number, price) {
             }
 
             name.innerHTML = string;
+            name.setAttribute("class", "cl-time text-xs cl-name mx-1 px-3 py-2 bg-gray-200 rounded-2xl text-gray-800 border border-gray-500 border-2")
         }
 
         // 다음버튼 활성화 여부 체크
@@ -181,6 +182,7 @@ function showPrice(price) {
     for (const text of cl_price_b) {
         
         text.innerHTML = string;
+        
     }
 }
 
@@ -222,6 +224,7 @@ function initTimeModal() {
     // 4. 모달창 하단에 클릭했던 수업시간 표시되는거 초기화
     for (const label of cl_time_b) {
         label.innerHTML = "";
+        label.setAttribute("class", "");
     }    
 }
 

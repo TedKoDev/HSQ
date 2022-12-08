@@ -384,6 +384,7 @@ function checkNextbtn_cs() {
     for (const name of cl_schedule_b) {
 
         name.innerHTML = scheduleReserve_array_sm.length+" / "+classTimes+" 회 예약";
+        name.setAttribute("class", "cl-schedule text-xs cl-name mx-1 px-3 py-2 bg-gray-200 rounded-2xl text-gray-800 border border-gray-500 border-2")
     }
  }
 
@@ -397,6 +398,7 @@ function checkNextbtn_cs() {
     for (const name of cl_schedule_b) {
 
         name.innerHTML = "";
+        name.setAttribute("class", "");
     }
 
 
