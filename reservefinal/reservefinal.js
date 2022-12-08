@@ -158,6 +158,6 @@ async function reserveDone() {
     });
 
     const response = await res.json();
-
-    // console.log("schedule : "+response.schedule);
+    console.log(response);
+    // console.log("schedule : "+response);
 }
