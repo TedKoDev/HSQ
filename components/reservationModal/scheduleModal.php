@@ -4,21 +4,29 @@
         <!-- modal -->
         <div class="bg-white rounded shadow-lg w-full h-5/6">
             <!-- modal_header -->
-            <div class="px-3 items-center">
+            <div class="flex justify-between px-3 items-center">
+                <svg
+                    class="beforeArrow_clschedule float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/>
+                </svg>
                 <div class="text-base text-center border-b-1 py-3">수업 일정을 선택하세요
-                    <svg
-                        class="close-modal float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
-                        id="close-modal"
-                        fill="currentColor"
-                        viewbox="0 0 20 20">
-                        <path
-                            fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0
-                                111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293
-                                4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
+
                 </div>
+                <svg
+                    class="close-modal float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
+                    id="close-modal"
+                    fill="currentColor"
+                    viewbox="0 0 20 20">
+                    <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0
+                            111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293
+                            4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
             </div>
             <!-- modal_body -->
             <div class="class-schedule flex flex-col max-w-3xl mx-auto h-4/5">                

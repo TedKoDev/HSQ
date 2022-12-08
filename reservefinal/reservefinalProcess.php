@@ -110,7 +110,7 @@ $tTimezone = $row1['2'];
 // 신청한 수업 일정(plan) 값을 강사에게 보내주기 위한 코드 이며 강사의 TIMEZONE 기준으로 변환 되어 $sendtimeresult 에 저장됨 . 
 $sendtime = array();
 foreach($explan as $val){
-  $i =1;
+  $i =0;
 $save = $val + $tTimezone* $hour/1000;
 $date = date('Y-m-d H:i:s',  $save);
 
@@ -133,7 +133,8 @@ Class-Name: '.$clname.''. "<br/>".'
 Class-Type: '.$cltype.''. "<br/>".'
 Class-Level: '.$cllevel.''. "<br/>".'
 Class-TIME: '.$tp.' min'. "<br/>".'
-schedule:'.$i.'time(s)'. "<br/>".''.$sendtimeresult.''. "<br/>".'
+Schedule:'.$i.'time(s)'. "<br/>".''.$sendtimeresult.''. "<br/>".'
+Message: '.$memo."<br/>".'
 ------------------------'. "<br/>".'
  
 AGREE(예약승인) : Please click this link to accept reservation for class :'.$clname.''. "<br/>".'
@@ -146,7 +147,7 @@ http://localhost/approvalreserv.php?email='.$U_Email.'&CAID='.$last_uid.'&agree=
 
 
 '; // Our message above including the link;
-
+try{
 $mail = new PHPMailer(true);
 $mail->CharSet = "utf-8";   //한글이 안깨지게 CharSet 설정
 $mail->Encoding = "base64";
@@ -166,3 +167,23 @@ $mail->Body = $message;
 
 $mail->send();
 
+
+$data = array(
+ 
+  'success'        	=> "yes"
+);
+echo json_encode($data);
+  mysqli_close($conn);
+
+} catch (Exception $e) {
+//비정상일떄 
+$data = array(
+ 
+  'success'        	=> "Message could not be sent . Mailer Error: {
+    $mail->ErrorInfo}"
+);
+echo json_encode($data);
+mysqli_close($conn);
+
+ ;
+}

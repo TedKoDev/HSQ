@@ -14,6 +14,9 @@ let ctTool_final;
 // 하단에 커뮤니케이션 도구 이름 표시
 let cl_tool_b = document.querySelectorAll(".cl-communication");
 
+// 수업 도구에서 이전 버튼 초기화
+let beforeArrow_cltool = document.querySelector(".beforeArrow_cltool");
+
 // 다음 버튼 활성화 여부
 checkNextbtn_cct();
 
@@ -134,6 +137,18 @@ nextBtn_cct.addEventListener('click', function() {
 })
 
 
+const beforeClick_cltool = () => {    
 
+    // 수업 일정 모달, 수업 도구 모달 값 가져오기    
+    const cmtoolModal = document.querySelector('.reserve-modal-cmtool');
+    const scheduleModal = document.querySelector('.reserve-modal-schedule');
+
+     // 수업 일정 보이고 수업 도구 없어지게 처리
+     scheduleModal.classList.remove('hidden');
+     cmtoolModal.classList.add('hidden');
+};
+
+// 이전 버튼 클릭하면 수업 일정 모달창 지우고 수업 시간 모달창 띄우기
+beforeArrow_cltool.addEventListener('click', beforeClick_cltool);
 
 

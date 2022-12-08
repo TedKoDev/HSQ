@@ -49,7 +49,7 @@ async function getReserveinfo() {
     const tImg = result.U_D_Img;
 
     // 강사 이미지,이름, 수업 이름, 수업 도구, 수업가격 세팅
-    t_img.src = "../editprofile/image/"+tImg;
+    t_img.src = s3_url+"Profile_Image/"+tImg;
     t_name.innerHTML = tName;
     cl_name.innerHTML = clName;
     cl_tool.innerHTML = clTool;
@@ -131,14 +131,7 @@ async function reserveDone() {
     const tokenvalue = getCookie("user_info");
 
     const memo = request_forTeacher.value;  
-
-    console.log("token : "+tokenvalue);
-    console.log("classid : "+classid);
-    console.log("tp : "+tp);
-    console.log("plan : "+plan);
-    console.log("cmethod : "+cmethod);
-    console.log("memo : "+memo);
-
+  
     // 수업 예약 등록하기
     const body = {
 
@@ -157,7 +150,12 @@ async function reserveDone() {
         body: JSON.stringify(body)
     });
 
-    const response = await res.json();
+    const response = await res.json();    
 
-    // console.log("schedule : "+response.schedule);
+    if (response.success == 'yes') {
+
+        alert("예약 완료되었습니다.");
+
+        location.replace("../myinfo/myinfo.php");
+    }        
 }

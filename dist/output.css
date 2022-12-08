@@ -1243,6 +1243,14 @@ video {
   fill: currentColor;
 }
 
+.stroke-red-600 {
+  stroke: #dc2626;
+}
+
+.stroke-2 {
+  stroke-width: 2;
+}
+
 .p-3 {
   padding: 0.75rem;
 }

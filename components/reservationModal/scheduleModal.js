@@ -17,6 +17,9 @@ let cl_schedule_b = document.querySelectorAll(".cl-schedule");
 // 최종적으로 선택할 수업 배열
 let clSchedule_final = new Array();
 
+// 수업 일정에서 이전 버튼 초기화
+let beforeArrow_clschedule = document.querySelector(".beforeArrow_clschedule");
+
 // 해당 강사의 수업 일정 화면에 출력하는 함수
 async function getclassSchedule_sm() {
 
@@ -164,19 +167,9 @@ function setDate_Value_sm(header_s, for_modal) {
                 num = num + 1;
                 // 해당 체크박스의 id 가져오기 (value 세팅해주기 위해)
                 const checkbox = document.getElementById(num + for_modal);                
-                // 체크박스 위치에 따라 시간 더해주기
-                // let add_dayjs = test_dayjs.set("m", 30 * j);
+                // 체크박스 위치에 따라 시간 더해주기                
                 let add_dayjs = test_dayjs.add(30*j, "m");
-
-                console.log("add_dayjs : "+add_dayjs.format('YYYY/MM/DD HH:mm:ss'));
-                const test = add_dayjs.valueOf();
-                console.log("add_dayjs_timestamp1 : "+test);
-                console.log("add_dayjs_timestamp1 : "+dayjs(test).format('YYYY/MM/DD HH:mm:ss'));
-
-                const test2 = 1670340600000;
-                console.log("add_dayjs_timestamp2 : "+test2);
-                console.log("add_dayjs_timestamp2 : "+dayjs(test2).format('YYYY/MM/DD HH:mm:ss'));
-                
+                                          
                 // 체크박스의 value에 더한 값의 타임스탬프를 넣어주기
                 checkbox.setAttribute("value", add_dayjs.valueOf());
 
@@ -447,4 +440,18 @@ function setUtc(timezone) {
     }
     utc.innerHTML = utc_string;
 }
+
+const beforeClick_clschedule = () => {    
+
+    // 수업 시간 모달, 수업 일정 모달 값 가져오기    
+    const classtimeModal = document.querySelector('.reserve-modal-time');
+    const scheduleModal = document.querySelector('.reserve-modal-schedule');
+
+     // 수업 시간 보이고 수업 일정 없어지게 처리
+     scheduleModal.classList.add('hidden');
+     classtimeModal.classList.remove('hidden');
+};
+
+// 이전 버튼 클릭하면 수업 일정 모달창 지우고 수업 시간 모달창 띄우기
+beforeArrow_clschedule.addEventListener('click', beforeClick_clschedule);
 
