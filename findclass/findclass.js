@@ -94,7 +94,7 @@ function setClassinfo(response) {
             user_img = "../images_forHS/userImage_default.png"
         }
         else {
-            user_img = "../editprofile/image/"+user_img;
+            user_img = s3_url+"Profile_Image/"+user_img;
         }
         
         // 태그 생성하고 id에 해당 유저의 id 대입

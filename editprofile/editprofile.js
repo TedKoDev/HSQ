@@ -226,8 +226,10 @@
           
           console.log(responseData.image_source);
           document.getElementById('profile_image').src = responseData.image_source;                      
-          document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
+          // document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
+          document.getElementById('user_image').src = responseData.image_source; 
 
+          console.log(responseData.image_source);
         });
     }
     

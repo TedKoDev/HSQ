@@ -492,7 +492,7 @@ async function getTeacherinfo(T_id) {
     else {
       certi_t.innerText = '전문 강사';
     }
-    img_t.setAttribute("src", "../editprofile/image/"+t_img);
+    img_t.setAttribute("src", s3_url+"Profile_Image/"+t_img);
 
     // 구사 가능 언어 대입
     const json_parse = JSON.parse(t_language);                  

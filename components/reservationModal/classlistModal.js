@@ -8,7 +8,7 @@ let cl_name_b = document.querySelectorAll(".cl-name");
 
 // 최종적으로 선택할 수업 이름 변수 
 let clName_final;
-// 최종적으로 선택할 수업 id 변수
+// 최종적으로 선택할 수업 ID 변수 
 let clId_final;
 
 // 수업 목록 화면에 출력하는 함수
@@ -164,7 +164,7 @@ function setClasslist_cm(clid, clname, cllevel, cltype, price30, price60) {
 
         // 전역변수에 이름 대입
         clName_final = clname;
-        // 전역변수에 수업 id 대입
+        // 전역변수에 id 대입
         clId_final = clid;
     })
 }
