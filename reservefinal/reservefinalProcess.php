@@ -170,7 +170,7 @@ $mail->send();
 
 $data = array(
  
-  'success'        	=> "Message sent successfully"
+  'success'        	=> "yes"
 );
 echo json_encode($data);
   mysqli_close($conn);
