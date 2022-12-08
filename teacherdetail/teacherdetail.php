@@ -110,9 +110,11 @@
                 
                 <div class = "flex max-w-3xl justify-around px-2 mb-2">
                     <div class = "flex">
-                        <div class = "flex items-center">
+                        <div class = "flex items-center">                            
                             <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
-                            <span class = "ml-1">예약 가능</span>
+                            <span class = "mx-1">예약 가능</span>                           
+                            <a class = "bg-gray-400 rounded-full px-1 py-1 ml-2"></a>
+                            <span class = "mx-1">예약 불가</span>                            
                         </div>                    
                     </div>
                     <div class="flex ml-auto">

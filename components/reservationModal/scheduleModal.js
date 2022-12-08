@@ -313,15 +313,8 @@ function scheduleClick(test) {
             label.style.backgroundColor = '#2563EB';
 
             // 3. 해당 값의 check를 false로 바꾸기
-            // input.checked = false;
-
-            // console.log(scheduleReserve_array_sm.length);  
-        }
-        // 클릭한 체크박스가 선택하지 않은 경우일 때 : 아무 이벤트 필요 없음
-        else  {
-
-           //  console.log("uncheck_pass");
-        }        
+            // input.checked = false;            
+        }             
     }
 
     // 다음 버튼 활성화 여부 체크
