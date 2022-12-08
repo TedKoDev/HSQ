@@ -7,7 +7,6 @@ const {id} = JSON.parse(localStorage.getItem("user_id"));
 let U_id = id;
 // console.log(U_id);
 
-
 // 수업 가능 시간 부분에 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
 
 // 해당 유저의 utc 가져온후 date에 가져온 utc 적용
@@ -47,9 +46,7 @@ async function get_utc(tokenValue) {
       const timezone_s = response.timezone;      
 
       timezone = timezone_s;
-      
-      console.log("timezone : "+timezone);
-
+     
       if (success == "yes") {
 
         getDate("header_s", timezone, "");
@@ -110,11 +107,8 @@ function getDate(header_date, timezone, for_modal) {
   // 현재 타임스탬프 전역 변수에 대입
   time = now.getTime();  
   
-  time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기
-
+  time = time - (1000 * 60 * 60 * 24) // 반복문 시작부터 time 더해지므로 디폴트 값으로 미리 한 번 빼놓기  
   
-  
-
   setDate_Value(header_s, for_modal);
 }
 // getDate("header_s", timezone);
@@ -141,10 +135,7 @@ async function setschedule(type, for_modal) {
     
 
   // 값이 있을 경우에만 추출해서 대입
-  if (check == "yes") {
-
-      console.log("yes");
-      // let test_string = "54_62_88";
+  if (check == "yes") {     
 
       // 서버에서 받아온 string 배열로 변환
       let test_array = schedule_string.split('_');
@@ -596,6 +587,14 @@ function setModal(class_id, clname, cldesc, cltype, tp, cllevel) {
   const clprice30_m = document.getElementById("clprice30_m");
   const clprice60_m = document.getElementById("clprice60_m");
 
+  // 수업레벨, 수업 유형 일단 자식 요소 삭제해서 초기화
+  while(cllevel_m.firstChild)  {
+    cllevel_m.removeChild(cllevel_m.firstChild);
+  }
+  while(cltype_m.firstChild)  {
+    cltype_m.removeChild(cltype_m.firstChild);
+  }
+
   // 이름 설명 대입
   clname_m.innerHTML = clname;
   cldesc_m.innerHTML = cldesc;
@@ -657,6 +656,7 @@ function show_intro(type) {
   }  
 }
 
+// 모달창 관련 코드
 // 수업 클릭했을 때 모달창 띄우기
 function show_modal(class_id) {
 
@@ -673,34 +673,107 @@ function show_modal(class_id) {
 }
 
 // 모달창 취소, 예약 클릭 했을 떄
-window.addEventListener('DOMContentLoaded', () => {
+// window.addEventListener('DOMContentLoaded', () => {
 
-  const body = document.getElementsByTagName('body')[0];
+//   const body = document.getElementsByTagName('body')[0];
 
-  const overlay = document.querySelector('#overlay')  
-  const closeBtn = document.querySelector('#close-modal')
+//   const overlay = document.querySelector('#overlay')      
+//   const closeBtn = document.querySelector('#close-modal')
   
+  
+//   // 모달창 취소 클릭
+//   const cancel_modal = () => {                           
 
-  // 모달창 취소 클릭
-  const cancel_modal = () => {                           
+//       overlay.classList.toggle('hidden')
+//       overlay.classList.toggle('flex')
+    
+//       body.classList.remove('scrollLock');            
+           
+//   }           
+    
+//   closeBtn.addEventListener('click', cancel_modal);  
+  
+// })
 
-      overlay
-          .classList
-          .toggle('hidden')
-      overlay
-          .classList
-          .toggle('flex')
+// 예약하기 버튼 누를 때 모달창 생성
+// 모달 띄우는 코드
+const classlistModal = document.querySelector('.reserve-modal-class');
+const body = document.getElementsByTagName('body')[0];
+const showReserve = document.querySelector('.show-reserve');
+const closeModal = document.querySelectorAll('.close-modal');
 
-      body
-          .classList
-          .remove('scrollLock');    
-          
-      // 일정 다시 세팅
-      // setschedule("_l");
+// 예약하기 누르면 수업 목록 모달창부터 
+showReserve.addEventListener('click', function() {
 
-  }              
-  closeBtn.addEventListener('click', cancel_modal)  
-})
+    // 로그인 상태일때만 모달창 띄우게
+    if (checkCookie == "") {
+
+    alert("로그인이 필요합니다.");
+    location.assign("../login/login.php"); 
+    }
+    else {
+        classlistModal.classList.remove('hidden');
+        body.classList.add('scrollLock');
+
+        // 수업 목록 모달창에 해당 강사의 수업 목록 표시
+        getclassList_cm(U_id);
+        
+        // 전역으로 선언한 스케줄 array 초기화
+        scheduleReserve_array_sm = [];
+    }    
+});
+
+// X버튼 누를 시 모달창 사라지고 모달창에서 설정한 값들 초기화
+// 어떤 모달창의 X값을 누르더라도 반영이 되야하므로 반복문으로 처리
+for (const close of closeModal) {
+
+  close.addEventListener('click', function() {
+
+    // 모든 모달값 가져오기
+    const classlistModal = document.querySelector('.reserve-modal-class');
+    const classtimeModal = document.querySelector('.reserve-modal-time');
+    const scheduleModal = document.querySelector('.reserve-modal-schedule');
+    const cmtoolModal = document.querySelector('.reserve-modal-cmtool');
+
+    // 모달 없어지게 처리
+    classlistModal.classList.add('hidden');    
+    classtimeModal.classList.add('hidden');
+    scheduleModal.classList.add('hidden');
+    cmtoolModal.classList.add('hidden');
+
+    // scrollloack 해지
+    body.classList.remove('scrollLock');
+
+      // 수업 목록 모달창에서 설정한 값들 다시 초기화
+      initClassModal();
+      // 수업 시간 모달창에서 설정한 값들 다시 초기화
+      initTimeModal();
+      // 수업 일정 모달창에서 설정한 값들 다시 초기화
+      initScheduleModal();
+      // 커뮤니케이션 도구 모달창에서 설정한 값들 다시 초기화
+      initCmtoolModal();
+  })
+}
+
+
+
+
+// function login_check() {
+
+//   console.log("click");
+
+//   // 토큰 값 있을 때만 예약창 뜨도록
+//   if (checkCookie == "") {
+
+//     alert("로그인이 필요합니다.");
+//     location.assign("../login/login.php"); 
+//   }
+//   else {    
+//     console.log("click2");             
+//     // const overlay_reserve = document.querySelector('.overlay_reserve') 
+    
+//   }
+// }
 
 
 // (옛날 코드인데 혹시 몰라서 남겨 놓은 것들)

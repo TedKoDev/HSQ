@@ -17,6 +17,8 @@ classinfo.php
 
 
 출력정보  
+
+
 1. 수업상세  (수업명, 수업내용, 수업유형, 수업 레벨, 수업 가격)
 
 2. 수업목록  (수업명, 및 기타 정보 + 수업오픈한 강사의 정보(이름,이미지 )   + plus 가 있는경우 페이징 동작함)
@@ -265,6 +267,16 @@ if ($kind == 'cdetail') {
     // echo json_encode($result1);
     mysqli_close($conn);
   }
+
+
+
+
+
+
+
+
+
+  
 } else if ($kind == 'tclist') {
   // 필요한 값이 특정 강사의 수업 목록 이면 
 
@@ -326,3 +338,6 @@ $result2['timeprice'] = array();
 
   mysqli_close($conn);
 }
+
+
+
