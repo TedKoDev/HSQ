@@ -401,7 +401,6 @@ function checkNextbtn_cs() {
         name.setAttribute("class", "");
     }
 
-
  }
 
  // 다음 버튼 클릭했을 때 이벤트

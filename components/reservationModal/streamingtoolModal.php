@@ -2,9 +2,9 @@
     class="reserve-modal-cmtool h-full w-full fixed bottom-0 justify-center items-center bg-black bg-opacity-50 hidden">
     <div class="flex flex-col-reverse w-full h-full">
         <!-- modal -->
-        <div class="bg-white rounded shadow-lg w-full h-5/6">
+        <div class="flex flex-col justify-between bg-white rounded shadow-lg w-full h-5/6">
             <!-- modal_header -->
-            <div class="flex justify-between px-3 items-center">
+            <div class="flex justify-between px-3 items-center h-1/8 border-b">
                 <svg
                     class="beforeArrow_cltool float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                     xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
                 </svg>
             </div>
             <!-- modal_body -->
-            <div class="class-time flex flex-col max-w-3xl mx-auto h-4/5">       
+            <div class="class-time flex flex-col max-w-3xl mx-auto h-3/4">       
                 <div class = "text-xs text-gray-600 text-center w-1/3 mx-auto mt-10">
                     강사님은 다음 커뮤니케이션 도구 중 하나를 사용할 수 있어요. 회원님은 어떤 커뮤니케이션 도구를 사용해서 강의를 진행하고 싶나요?
                 </div><br><br>       
@@ -49,7 +49,7 @@
                 </div>
             </div>
                 
-            <div class = "border-t flex items-center justify-between px-4">
+            <div class = "border-t flex items-center justify-between px-4 h-1/8">
                 <div class = "flex">
                     <span class = "cl-name mx-1 px-1 py-1 text-gray-500"></span>
                     <span class = "cl-time mx-1 px-1 py-1 text-gray-500"></span>

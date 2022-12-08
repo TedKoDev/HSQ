@@ -2,9 +2,9 @@
     class="reserve-modal-class h-full w-full fixed bottom-0 justify-center items-center bg-black bg-opacity-50 hidden">
     <div class="flex flex-col-reverse w-full h-full">
         <!-- modal -->
-        <div class="bg-white rounded shadow-lg w-full h-5/6">
+        <div class="flex flex-col justify-between bg-white rounded-t-lg shadow-lg w-full h-5/6">
             <!-- modal_header -->
-            <div class="flex justify-between px-3 items-center">
+            <div class="flex justify-between px-3 items-center h-1/8 border-b">
                 <svg
                     class="float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full invisible"
                     width="24"
@@ -31,8 +31,8 @@
                 </svg>
             </div>
             <!-- modal_body -->
-            <div class="class-list flex flex-col max-w-2xl mx-auto h-4/5"></div>
-            <div class="border-t flex items-center justify-between px-4">
+            <div class="class-list flex flex-col w-2/3 mx-auto h-3/4"></div>
+            <div class="border-t-2 flex items-center justify-between px-4 h-1/8 bottom-0">
                 <div class="flex">
                     <div class="cl-name mx-1 px-1 py-1 text-gray-500"></div>
                     <div class="cl-time mx-1 px-1 py-1 text-gray-500"></div>

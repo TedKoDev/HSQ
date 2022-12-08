@@ -2,9 +2,9 @@
     class="reserve-modal-schedule h-full w-full fixed bottom-0 justify-center items-center bg-black bg-opacity-50 hidden">
     <div class="flex flex-col-reverse w-full h-full">
         <!-- modal -->
-        <div class="bg-white rounded shadow-lg w-full h-5/6">
+        <div class="flex flex-col justify-between bg-white rounded shadow-lg w-full h-5/6">
             <!-- modal_header -->
-            <div class="flex justify-between px-3 items-center">
+            <div class="flex justify-between px-3 items-center h-1/8 border-b">
                 <svg
                     class="beforeArrow_clschedule float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                     xmlns="http://www.w3.org/2000/svg"
@@ -29,8 +29,8 @@
                 </svg>
             </div>
             <!-- modal_body -->
-            <div class="class-schedule flex flex-col max-w-3xl mx-auto h-4/5">                
-                <div class="flex flex-col w-full bg-gray-50 rounded-lg px-4 py-2 shadow">                    
+            <div class="class-schedule flex flex-col max-w-3xl mx-auto h-3/4">                
+                <div class="flex flex-col w-full bg-gray-50 rounded-lg px-4 py-2 shadow h-full">                    
                     <div class = "flex max-w-3xl justify-around px-2 mb-2">
                         <div class = "flex">
                             <div class = "flex items-center">
@@ -45,7 +45,7 @@
                             <button onclick = "change_schedule_sm('after', 'header_s_sm', '_sm_l', '_sm')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                         </div>
                     </div>       
-                    <div id="schedule" class="flex flex-col h-96 overflow-auto">
+                    <div id="schedule" class="flex flex-col overflow-auto">
                         <div id="header_s_sm" class="flex mx-auto">
 
                         </div>
@@ -119,7 +119,7 @@
                 </div>   
             </div>
                 
-            <div class = "border-t flex items-center justify-between px-4">
+            <div class = "border-t flex items-center justify-between px-4 h-1/8">
                 <div class = "flex">
                     <span class = "cl-name mx-1 px-1 py-1 text-gray-500"></span>
                     <span class = "cl-time mx-1 px-1 py-1 text-gray-500"></span>
