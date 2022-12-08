@@ -2,17 +2,14 @@
 
 // 유저 id 받아온 후 로컬 스토리지에서 삭제
 const {id} = JSON.parse(localStorage.getItem("user_id"));
-// localStorage.removeItem("user_id");
-
 let U_id = id;
-// console.log(U_id);
-
-// 수업 가능 시간 부분에 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
+// localStorage.removeItem("user_id");
 
 // 해당 유저의 utc 가져온후 date에 가져온 utc 적용
 
 get_utc(checkCookie);
 
+// 전역으로 사용할 timezone 선언
 let timezone;
 
 // 서버에서 요청받은 일정이 담긴 string값 담을 변수 선언
@@ -23,6 +20,9 @@ let array_for_edit = new Array();
 
 // 타임스탬프 담을 전역 변수 선언
 let time;
+
+// 이전 날짜로 이동하는 버튼 초기화(이번주에서는 이전 버튼 비활성화 되는 것 처리하기 위해)
+let beforeDate_btn = document.getElementById("beforeDate_btn");
 
 async function get_utc(tokenValue) {
    
@@ -70,6 +70,9 @@ async function get_utc(tokenValue) {
                 
         // checkbox값 부여된 이후에 저장된 일정 세팅
         setschedule("_l", "");
+
+        // 이번주일 경우 이전 버튼 비활성화 되게 처리
+        checkBeforebtn(beforeDate_btn, timezone);
       }
       else {
         console.log("타임존 못불러옴")
@@ -303,16 +306,11 @@ function change_schedule(type, id, l_m, for_modal) {
   }     
 
   // 이전 버튼 클릭할 경우
-  if (type == 'before') {
-
-      console.log("before");
+  if (type == 'before') {     
      
       // time 스탬프 값 일주일 빼놓기 
-      time = time - (7*(1000 * 60 * 60 * 24));
-      
-      console.log(dayjs(time).format('YYYY/MM/DD'));
+      time = time - (7*(1000 * 60 * 60 * 24));      
 
-      // getDate(header_s, timezone, for_modal);
       setDate_Value(header_s, for_modal);
 
   }
@@ -321,14 +319,15 @@ function change_schedule(type, id, l_m, for_modal) {
       
       // time 스탬프 값 일주일 더해놓기 
       time = time + (7*(1000 * 60 * 60 * 24));
-      
-      // getDate(header_s, timezone, for_modal);
+            
       setDate_Value(header_s, for_modal);
   }
 
   // checkbox값 부여된 이후에 저장된 일정 세팅
   setschedule(l_m, for_modal);
   
+  // 이번주일 경우 이전 버튼 비활성화 되게 처리
+  checkBeforebtn(beforeDate_btn, timezone);
 }
 
 // 클릭한 유저 ID랑 유저의 토큰 보내서 강사 상세 정보 가져오기
@@ -657,6 +656,43 @@ function show_intro(type) {
   }  
 }
 
+ // 이번주에서 이전 날짜 버튼 클릭할 수 없게 처리
+ function checkBeforebtn(beforeDate_btn, timezone) {
+
+  // 현재 날짜 객체 생성
+  const now = new Date();
+
+  // 현재 날짜의 시/분/초 초기화
+  now.setHours(0);
+  now.setMinutes(0); 
+  now.setSeconds(0);
+
+  console.log(now.getTime());
+ 
+  // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
+  const offset = (now.getTimezoneOffset() / 60);
+  now.setHours(now.getHours() + offset);
+
+  // 날짜 표시하기 전에 받아온 타임존 적용
+  const string_to_int = parseInt(timezone);
+  now.setHours(now.getHours() + string_to_int);
+
+  const checkTime = now.getTime();
+  const time_sm_check = time + (1000 * 60 * 60 * 24); 
+  
+  // 가공한 날짜가 전역 time_sm과 같을 경우 이전 버튼 비활성화 
+  if (dayjs(checkTime).format('YYYY/MM/DD') == dayjs(time_sm_check).format('YYYY/MM/DD')) {
+      
+      beforeDate_btn.setAttribute("class", "disabled: border-2 border-gray-200 bg-gray-200 text-gray-50 px-1 py-1 rounded ml-1 mr-1");
+  }
+  // 다를 경우 이전 버튼 활성화
+  else {
+
+      beforeDate_btn.setAttribute("class", "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1");
+  }
+
+}
+
 // 모달창 관련 코드
 // 수업 클릭했을 때 모달창 띄우기
 function show_modal(class_id) {
@@ -672,29 +708,6 @@ function show_modal(class_id) {
   overlay.classList.toggle('flex');
   body.classList.add('scrollLock');
 }
-
-// 모달창 취소, 예약 클릭 했을 떄
-// window.addEventListener('DOMContentLoaded', () => {
-
-//   const body = document.getElementsByTagName('body')[0];
-
-//   const overlay = document.querySelector('#overlay')      
-//   const closeBtn = document.querySelector('#close-modal')
-  
-  
-//   // 모달창 취소 클릭
-//   const cancel_modal = () => {                           
-
-//       overlay.classList.toggle('hidden')
-//       overlay.classList.toggle('flex')
-    
-//       body.classList.remove('scrollLock');            
-           
-//   }           
-    
-//   closeBtn.addEventListener('click', cancel_modal);  
-  
-// })
 
 // 예약하기 버튼 누를 때 모달창 생성
 // 모달 띄우는 코드

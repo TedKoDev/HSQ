@@ -8,6 +8,9 @@ let classCount_sm = 0;
 let scheduleReserve_array_sm = new Array();
 let schedule_string_sm;
 
+// 서버에서 받아온 유저의 timezone 전역으로 쓰기 위해 선언
+let timezone_cs;
+
  // 수업 일정에서 다음 버튼 초기화
  let nextBtn_cs = document.querySelector(".nextBtn_cs");
 
@@ -19,6 +22,10 @@ let clSchedule_final = new Array();
 
 // 수업 일정에서 이전 버튼 초기화
 let beforeArrow_clschedule = document.querySelector(".beforeArrow_clschedule");
+
+// 이전 날짜로 이동하는 버튼 초기화(이번주에서는 이전 버튼 비활성화 되는 것 처리하기 위해)
+let beforeDate_btn_cs = document.getElementById("beforeDate_btn_cs");
+
 
 // 해당 강사의 수업 일정 화면에 출력하는 함수
 async function getclassSchedule_sm() {
@@ -42,14 +49,15 @@ async function getclassSchedule_sm() {
         body: JSON.stringify(body)
     });
 
-    const response = await res.json();
-
-    console.log("schedule : "+response.schedule);
+    const response = await res.json();   
 
     if (response.success == 'yes') {
 
         schedule_string_sm = response.schedule;
         const timezone = response.timezone;
+
+        // 전역으로 사용할 타임존 대입
+        timezone_cs = response.timezone;
 
         // 현재 시간대 텍스트에 timezone 세팅
         setUtc(timezone);
@@ -64,6 +72,9 @@ async function getclassSchedule_sm() {
         // "_l"/"_m_l" : 웹페이지의 label id인지 모달창의 label id인지
         // ""/"_m" : 웹페이지의 checkbox input id인지, 모달창의 id인지    
         setschedule_sm("_sm_l", "_sm", schedule_string_sm);
+
+        // 이번주일 경우 이전 버튼 비활성화 되게 처리
+        checkBeforebtn_cs(beforeDate_btn_cs, timezone_cs);
     }
 
     // 다음버튼 활성화 여부 체크
@@ -83,7 +94,7 @@ function getDate_sm(header_date, timezone) {
     }
 
     // 현재 날짜 객체 생성
-    let now = new Date();
+    const now = new Date();
 
     // 현재 날짜의 시/분/초 초기화
     now.setHours(0);
@@ -344,7 +355,10 @@ function change_schedule_sm(type, id, l_m, for_modal) {
     }
 
     // checkbox값 부여된 이후에 저장된 일정 세팅
-  setschedule_sm(l_m, for_modal, schedule_string_sm);
+    setschedule_sm(l_m, for_modal, schedule_string_sm);
+
+    // 이번주일 경우 이전 버튼 비활성화 되게 처리
+    checkBeforebtn_cs(beforeDate_btn_cs, timezone_cs);
 }
 
 // 다음 버튼 활성화 여부 체크
@@ -403,6 +417,46 @@ function checkNextbtn_cs() {
 
  }
 
+ // 이번주에서 이전 날짜 버튼 클릭할 수 없게 처리
+ function checkBeforebtn_cs(beforeDate_btn_cs, timezone_cs) {
+
+    // 현재 날짜 객체 생성
+    const now = new Date();
+
+    // 현재 날짜의 시/분/초 초기화
+    now.setHours(0);
+    now.setMinutes(0); 
+    now.setSeconds(0);
+
+    console.log(now.getTime());
+   
+    // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
+    const offset = (now.getTimezoneOffset() / 60);
+    now.setHours(now.getHours() + offset);
+
+    // 날짜 표시하기 전에 받아온 타임존 적용
+    const string_to_int = parseInt(timezone_cs);
+    now.setHours(now.getHours() + string_to_int);
+
+    const checkTime = now.getTime();
+    const time_sm_check = time_sm + (1000 * 60 * 60 * 24); 
+
+    console.log("checkTime : "+dayjs(checkTime).format('YYYY/MM/DD'));
+    console.log("time_sm : "+dayjs(time_sm_check).format('YYYY/MM/DD'));
+
+    // 가공한 날짜가 전역 time_sm과 같을 경우 이전 버튼 비활성화
+    if (dayjs(checkTime).format('YYYY/MM/DD') == dayjs(time_sm_check).format('YYYY/MM/DD')) {
+       
+        beforeDate_btn_cs.setAttribute("class", "disabled: border-2 border-gray-200 bg-gray-200 text-gray-50 px-1 py-1 rounded ml-1 mr-1");
+    }
+    // 다를 경우 이전 버튼 활성화
+    else {
+        
+        beforeDate_btn_cs.setAttribute("class", "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1");
+    }
+
+ }
+
  // 다음 버튼 클릭했을 때 이벤트
  nextBtn_cs.addEventListener('click', function() {
 
@@ -442,7 +496,7 @@ function setUtc(timezone) {
     utc.innerHTML = utc_string;
 }
 
-const beforeClick_clschedule = () => {    
+const beforeClick_clschedule_cs = () => {    
 
     // 수업 시간 모달, 수업 일정 모달 값 가져오기    
     const classtimeModal = document.querySelector('.reserve-modal-time');
@@ -454,5 +508,5 @@ const beforeClick_clschedule = () => {
 };
 
 // 이전 버튼 클릭하면 수업 일정 모달창 지우고 수업 시간 모달창 띄우기
-beforeArrow_clschedule.addEventListener('click', beforeClick_clschedule);
+beforeArrow_clschedule.addEventListener('click', beforeClick_clschedule_cs);
 
