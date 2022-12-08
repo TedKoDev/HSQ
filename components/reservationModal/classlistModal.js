@@ -130,8 +130,7 @@ function setClasslist_cm(clid, clname, cllevel, cltype, price30, price60) {
         // 모달창 하단에 해당 수업 이름 표기 (모든 모달창의 수업 이름에 세팅해 주어야 함)
         for (const name of cl_name_b) {
             name.innerHTML = clname;
-            // name.classList.setAttribute("class", "cl-name bg-gray-300 rounded-lg mx-1
-            // px-1 py-1 text-gray-800");
+            
             name.setAttribute(
                 "class",
                 "cl-name text-xs cl-name mx-1 px-3 py-2 bg-gray-200 rounded-2xl text-gray-800 b" +

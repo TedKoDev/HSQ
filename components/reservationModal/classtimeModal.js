@@ -232,13 +232,11 @@ function initTimeModal() {
 // 활성화된 다음버튼 클릭하면 수업 일정 선택하는 모달창 띄우고 이전 모달창들 없애기
 nextBtn_ct.addEventListener('click', function() {
 
-    // 수업 목록 모달, 수업 시간 모달, 수업일정 모달 값 가져오기
-    const classlistModal = document.querySelector('.reserve-modal-class');
+    // 수업 시간 모달, 수업일정 모달 값 가져오기    
     const classtimeModal = document.querySelector('.reserve-modal-time');
     const classscheduleModal = document.querySelector('.reserve-modal-schedule');
 
-    // 수업 목록, 수업시간 모달 없어지게 처리
-    classlistModal.classList.add('hidden');
+    // 수업시간 모달 없어지게 처리    
     classtimeModal.classList.add('hidden');
     // 수업 일정 모달 표시되게 처리
     classscheduleModal.classList.remove('hidden');

@@ -1,5 +1,3 @@
-
-
 // 수업 id, 강사 id 받아오기
 const {class_id, teacher_id} = JSON.parse(localStorage.getItem("c_and_t_id"));
 
@@ -29,8 +27,14 @@ let array_for_edit = new Array();
 // 타임스탬프 담을 전역 변수 선언
 let time;
 
+// 수업 이름 전역으로 선언
+let clname_g;
+
 // 이전 날짜로 이동하는 버튼 초기화(이번주에서는 이전 버튼 비활성화 되는 것 처리하기 위해)
 let beforeDate_btn = document.getElementById("beforeDate_btn");
+
+// 모달창 하단에 수업 이름 표시하는 뷰 초기화
+let cl_name_b = document.querySelectorAll(".cl-name");
 
 // 일정 표시
 getSchedule(T_id, checkCookie);
@@ -441,6 +445,9 @@ async function getClassinfo(C_id) {
     const cllevel = result.CL_Level;
     const price = result.tp;
 
+    // 전역변수에 대입
+    clname_g = clname;
+
     // 수업 정보와 관련된 id들 가져오기
     const c_name = document.getElementById("c_name");
     const c_disc = document.getElementById("c_disc");
@@ -545,6 +552,73 @@ async function getTeacherinfo(T_id) {
                
     }  
 
+}
+
+// 예약하기 버튼 누를 때 모달창 생성
+// 모달 띄우는 코드 (처음 모달창 띄우기, 모달창 닫기, 이전버튼)
+const classtimeModal = document.querySelector('.reserve-modal-time');
+const body = document.getElementsByTagName('body')[0];
+const showReserve = document.querySelector('.show-reserve');
+const closeModal = document.querySelectorAll('.close-modal');
+
+// 예약하기 누르면 수업 목록 모달창부터 
+showReserve.addEventListener('click', function() {
+
+  // 로그인 상태일때만 모달창 띄우게
+  if (checkCookie == "") {
+
+  alert("로그인이 필요합니다.");
+  location.assign("../login/login.php"); 
+  }
+  else {
+      classtimeModal.classList.remove('hidden');
+      body.classList.add('scrollLock');
+      
+      // 해당 수업의 가격 출력
+       getclassPrice_tm();
+      
+      // 전역으로 선언한 스케줄 array 초기화
+      scheduleReserve_array_sm = [];
+
+      // 모달창 하단에 해당 수업 이름 표기 (모든 모달창의 수업 이름에 세팅해 주어야 함)
+      for (const name of cl_name_b) {
+        name.innerHTML = clname_g;
+        
+        name.setAttribute(
+            "class",
+            "cl-name text-xs cl-name mx-1 px-3 py-2 bg-gray-200 rounded-2xl text-gray-800 b" +
+                    "order border-gray-500 border-2"
+        )
+    }
+  }    
+});
+
+// X버튼 누를 시 모달창 사라지고 모달창에서 설정한 값들 초기화
+// 어떤 모달창의 X값을 누르더라도 반영이 되야하므로 반복문으로 처리
+for (const close of closeModal) {
+
+  close.addEventListener('click', function() {
+
+    // 모든 모달값 가져오기    
+    const classtimeModal = document.querySelector('.reserve-modal-time');
+    const scheduleModal = document.querySelector('.reserve-modal-schedule');
+    const cmtoolModal = document.querySelector('.reserve-modal-cmtool');
+
+    // 모달 없어지게 처리    
+    classtimeModal.classList.add('hidden');
+    scheduleModal.classList.add('hidden');
+    cmtoolModal.classList.add('hidden');
+
+    // scrollloack 해지
+    body.classList.remove('scrollLock');
+     
+      // 수업 시간 모달창에서 설정한 값들 다시 초기화
+      initTimeModal();
+      // 수업 일정 모달창에서 설정한 값들 다시 초기화
+      initScheduleModal();
+      // 커뮤니케이션 도구 모달창에서 설정한 값들 다시 초기화
+      initCmtoolModal();
+  })
 }
 
 
