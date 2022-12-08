@@ -125,6 +125,8 @@ async function setschedule(type, for_modal) {
   const date = new Date();
   const utc = -(date.getTimezoneOffset() / 60);
 
+  console.log("t_id : "+U_id);
+
   // 토큰, 로컬 시간대, 강사id 전송해서 해당 강사의 스케줄 받아오기
   const body = {
 
@@ -143,6 +145,8 @@ async function setschedule(type, for_modal) {
   const response = await res.json(); 
   const check = response.success; 
   schedule_string = response.schedule;
+
+  console.log("STRING : "+schedule_string);
 
   // 값이 있을 경우에만 추출해서 대입
   if (check == "yes") {     
