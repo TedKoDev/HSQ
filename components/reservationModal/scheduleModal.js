@@ -491,14 +491,14 @@ function checkNextbtn_cs() {
     // 전역 변수에 선택한 수업 배열 대입
     clSchedule_final = scheduleReserve_array_sm;
 
-    // 수업 목록 모달, 수업 시간 모달, 수업일정, 커뮤니케이션도구 모달 값 가져오기
-    const classlistModal = document.querySelector('.reserve-modal-class');
+    // 수업 시간 모달, 수업일정, 커뮤니케이션도구 모달 값 가져오기
+    
     const classtimeModal = document.querySelector('.reserve-modal-time');
     const scheduleModal = document.querySelector('.reserve-modal-schedule');
     const cmtoolModal = document.querySelector('.reserve-modal-cmtool');
 
-    // 수업 목록, 수업시간, 수업일정 모달 없어지게 처리
-    classlistModal.classList.add('hidden');
+    // 수업시간, 수업일정 모달 없어지게 처리
+    
     classtimeModal.classList.add('hidden');
     scheduleModal.classList.add('hidden');
 

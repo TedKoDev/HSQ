@@ -5,8 +5,10 @@ const {id} = JSON.parse(localStorage.getItem("user_id"));
 let U_id = id;
 // localStorage.removeItem("user_id");
 
-// 해당 유저의 utc 가져온후 date에 가져온 utc 적용
+// 수업 예약할 때 강사 상세인지, 수업 상세인지 표시 (나중에 수업 시간 모달 띄울 때 분기처리 하기 위해)
+let checkStartpoint = "teacher";
 
+// 해당 유저의 utc 가져온후 date에 가져온 utc 적용
 get_utc(checkCookie);
 
 // 전역으로 사용할 timezone 선언

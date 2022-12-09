@@ -28,6 +28,15 @@ let clTime_final;
 // 최종적으로 선택할 수업의 가격 변수
 let clPrice_final;
 
+// 만약 수업 상세에서 예약 클릭한 경우이면 이전 버튼 안보이게 처리
+console.log("chackStartpoint : "+checkStartpoint);
+if (checkStartpoint == "class") {
+    beforeArrow_cltime.style.visibility = 'hidden';
+}
+else {
+    beforeArrow_cltime.style.visibility = 'visible';
+}
+
 // 해당 수업의 가격 화면에 출력하는 함수
 async function getclassPrice_tm() {
 
@@ -240,7 +249,7 @@ nextBtn_ct.addEventListener('click', function() {
     classtimeModal.classList.add('hidden');
     // 수업 일정 모달 표시되게 처리
     classscheduleModal.classList.remove('hidden');
-
+    
     // 수업 일정 출력하는 함수
     getclassSchedule_sm();
     

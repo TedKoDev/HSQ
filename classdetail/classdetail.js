@@ -3,11 +3,18 @@ const {class_id, teacher_id} = JSON.parse(localStorage.getItem("c_and_t_id"));
 
 // 수업 id, 강사 id 선언
 let C_id = class_id;
-let T_id = teacher_id;
+let U_id = teacher_id;
+
+// 최종 예약 때 보낼 용도의 수업 id, 수업이름 선언
+let clId_final = class_id;
+let clName_final;
+
+// 수업 예약할 때 강사 상세인지, 수업 상세인지 표시 (나중에 수업 시간 모달 띄울 때 분기처리 하기 위해)
+let checkStartpoint = "class";
 
 // 수업 정보, 강사 정보 가져와서 화면에 표시
 getClassinfo(C_id);
-getTeacherinfo(T_id);
+getTeacherinfo(U_id);
 
 // 일정 정보 가져와서 화면에 표시 (강사id, 쿠키값(있을 경우) 전송)
 
@@ -27,7 +34,7 @@ let array_for_edit = new Array();
 // 타임스탬프 담을 전역 변수 선언
 let time;
 
-// 수업 이름 전역으로 선언
+// 수업 이름 전역으로 선언 (모달창 하단에 표기할 용도)
 let clname_g;
 
 // 이전 날짜로 이동하는 버튼 초기화(이번주에서는 이전 버튼 비활성화 되는 것 처리하기 위해)
@@ -37,17 +44,13 @@ let beforeDate_btn = document.getElementById("beforeDate_btn");
 let cl_name_b = document.querySelectorAll(".cl-name");
 
 // 일정 표시
-getSchedule(T_id, checkCookie);
+getSchedule(U_id, checkCookie);
 
 async function getSchedule(teacher_id, tokenvalue) {
 
   // 로컬 타임존도 보내기
   const date = new Date();    
-  const utc = -(date.getTimezoneOffset() / 60);
-  
-  // console.log("utc : "+utc);
-
-  console.log("t_id : "+teacher_id);
+  const utc = -(date.getTimezoneOffset() / 60);  
 
   const body = {
     
@@ -445,8 +448,10 @@ async function getClassinfo(C_id) {
     const cllevel = result.CL_Level;
     const price = result.tp;
 
-    // 전역변수에 대입
+    // 전역변수에 대입 (모달창 하단에 표기할 용도)
     clname_g = clname;
+    // 최종 예약 때 보낼 용도의 전역 변수에 대입
+    clName_final = clname;
 
     // 수업 정보와 관련된 id들 가져오기
     const c_name = document.getElementById("c_name");
@@ -480,13 +485,11 @@ async function getClassinfo(C_id) {
   }     
 }        
         
-async function getTeacherinfo(T_id) {
-
-    console.log("teacher_id : "+T_id);
+async function getTeacherinfo(U_id) {    
 
     const body = {
     
-        tusid : T_id,
+        tusid : U_id,
         timg : 1,
         tname : 1,
         tintro : 1,

@@ -30,7 +30,7 @@
         <!-- 결제 정보 -->
         <br>
         <div></div>
-        <div class = "bg-gray-50 w-1/4 py-4 mx-auto rounded-lg shadow">
+        <div class = "bg-gray-50 w-1/3 py-4 mx-auto rounded-lg shadow">
             <div class = "flex flex-col ">
                 <div class = "flex justify-between w-4/5 mx-auto">
                     <img id = "timg" class = "mx-1 w-14 h-14 border-2 border-gray-900 rounded-full" src = "../images_forHS/userImage_default.png"></img>

@@ -9,7 +9,7 @@
                     class="beforeArrow_cltime float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
-                    height="24"
+                    height="24"                    
                     viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/>
                 </svg>
                 <div class="text-base text-center border-b-1 py-3">수업 시간을 선택하세요
