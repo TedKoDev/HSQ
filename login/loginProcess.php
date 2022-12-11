@@ -94,8 +94,11 @@ if ($passwordResult === true) {
     // 로그인 성공
     // 토큰 생성  id, name, email 값 저장
 
+    $time = time();
     $token = $jwt->hashing(
         array(
+            'exp' => $time + (60*360), // 만료기간
+            'iat' => $time, // 생성일
               'User_ID' => $tokenuserid,
         'U_Name'  =>  $tokenusername,
         'U_Email' => $tokenemail,   

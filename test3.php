@@ -1,53 +1,31 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="./dist/output.css" rel="stylesheet">
-        <title>Dialog</title>
-        <style>
-        
-        .modal {
-            position : absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        </style>
-    </head>
-    <body>
-        <button class = "bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-white m-5 show-modal">show modal</button>
-        <div class = "modal">
-            <!-- modal -->
-            <div class = "bg-white rounded shadow-lg w-full h-2/3 border-2 ">
-                <!-- modal_header -->
-                <div class = "border-b px-4 py-2">
-                    <h3>Modal Title</h3>
-                </div>
-                <!-- modal_body -->
-                <div class = "p-3">
-                    모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용모달내용
-                </div>
-                <div class = "flex justify-end items-center w-100 border-t p-3">
-                    <button class = "bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white mr-1 close-modal">Cancel</button>
-                    <button class = "bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-white">Ok</button>
-                </div>
-            </div>
-        </div>  
-        <script>
-            const modal = document.querySelector('.modal');
+<?php
 
-            const showModal = document.querySelector('.show-modal');
-            const closeModal = document.querySelector('.close-modal');
+  $tt = microtime().'</br>';
+  $tt = time().'</br>';
+$date = date('Y-m-d H:i:s',  1670657020);
+// echo $tt.'</br>'; 
+echo "The date is $date.".'</br>'.'</br>'.'</br>';  
 
-            showModal.addEventListener('click', function() {
-                modal.classList.remove('hidden');
-            });
 
-            closeModal.addEventListener('click', function() {
-                modal.classList.add('hidden');
-            });
-        </script>        
-    </body>
-</html>
+$date = date('Y-m-d H:i:s',  1670657050);
+// echo $tt.'</br>'; 
+echo "The date is $date.".'</br>'.'</br>'.'</br>';  
+
+// $timestamp = strtotime("2022-12-01 11:30").'</br>';
+// echo $timestamp.'</br>';
+// $date = date('Y-m-d H:i:s',  $timestamp);
+// echo $timestamp.'</br>'; 
+// echo "The date is $date".'</br>'.'</br>'; 
+
+
+
+// echo $nomal = strtotime("2022-12-01 11:30")."<br/>";
+// echo "2022-12-01 11:30 : ".strtotime("2022-12-01 11:30")."<br/>";
+// echo  $plusone = strtotime("2022-12-01 11:30 +1 hours")."<br/>";
+// echo "2022-12-01 11:30  기준으로 1시간 뒤 : ".strtotime("2022-12-01 11:30 +1 hours")."<br/>";
+
+
+//  $qq=$plusone-$nomal;
+// echo "값 차이 1시간 : ". $qq;
+
+?>

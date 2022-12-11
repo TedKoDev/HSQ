@@ -1,30 +1,105 @@
 <?php
-// 다운로드한 SDK 파일의 autoloader를 불러옵니다. 저는 그누보드에 사용해서 G5_PATH를 이용했습니다.
-include_once('./aws/aws-autoloader.php');
-
-// AWS S3에 파일 업로드할 때 필요한 클래스들을 불러옵니다.
-use Aws\S3\S3Client;
-use Aws\Exception\AwsException;
-use Aws\Credentials\CredentialProvider;
-
-// 파일 업로드 하기 전 설정
-$s3Client = S3Client::factory(array(
-  'region' => 'ap-northeast-2', // S3 리전을 입력합니다.(저는 서울 리전)
-  'version' => 'latest',
-  'signature' => 'v4',
-  'credentials' => [
-    'key'    => 'AKIAWBRH4IMAJ3QJ45UC', 
-      'secret' => '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',
-  ],
-));
 
 
-// Form 전송을 통해 업로드 할 경우에는 아래와 같이 사용됩니다.
-$s3_path = 'https://hangle-square.s3.ap-northeast-2.amazonaws.com/Image/test.png'; // 업로드할 위치와 파일명 입니다.
-$file_path = $_FILES['file']['tmp_name']; // Form 전송을 통해 받은 데이터 입니다.
-$result = $s3Client->putObject(array(
-  'Bucket' => '업로드 하려는 버킷명',
-  'Key'    => $s3_path,
-  'SourceFile' => $file_path,
-  'ACL'    => 'public-read'
-));
+include("./conn.php");
+
+
+$classid       =   32; // 수업번호 
+
+$tusid       =  32; // 강사의 User_id 
+
+
+
+$clname        =   1;   // 수업이름 
+$cldisc        =   1;   // 수업설명 
+$clpeople      =   1; // 수업인원 
+$cltype        =   1;   // 수업유형 
+$cllevel       =   1;  // 수업레벨 
+
+$cltime        =   1;  // 수업가격
+$clprice       =   1;  // 수업가격
+$timg          =   1;     // 강사이미지
+echo $tname    =   1;    // 강사이름
+
+
+
+// 더보기 (페이징)처리 용 
+$plus  =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
+
+ 
+
+
+$result1['data'] = array();
+$result3['result'] = array();
+
+$result2['timeprice'] = array();
+
+
+
+$list = array();
+array_push($list, 'CLass_Id');
+if ($clname != null) {
+  array_push($list, 'CL_Name');
+}
+if ($cldisc != null) {
+  array_push($list, 'CL_Disc');
+}
+if ($clpeople != null) {
+  array_push($list, 'CL_People');
+}
+if ($cltype != null) {
+  array_push($list, 'CL_Type');
+}
+if ($cllevel != null) {
+  array_push($list, 'CL_Level');
+}
+
+ $string = implode(",", $list);
+
+
+  //Class_List에 수업 목록확인  
+  $sql = "SELECT  $string FROM Class_List WHERE User_Id = '{$tusid}'";
+  $response1 = mysqli_query($conn, $sql);
+
+  foreach ($response1 as $key) {
+    
+
+    // echo key($key); // 키
+    // echo current($key); // 값
+    $clid = current($key); // 값
+   
+      array_push($result1['data'], $key);
+
+
+ 
+
+
+    if ($clprice != null) {
+    //Class_List_Time_Price 수업 시간, 가격 확인   
+    $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+    $response2 = mysqli_query($conn, $sql);
+
+    while ($row2 = mysqli_fetch_array($response2)) {
+   
+      $tp= $row2['3'];
+
+      array_push($result2['timeprice'], $tp);
+    }
+    
+
+    $send1['tp'] = $result2['timeprice'];
+  }
+
+
+
+    array_push($result1['data'], $send1);
+    $result2['timeprice'] = array();
+  }
+  $send['class'] = $result1['data'];
+  array_push($result3['result'], $send);
+  $result3["success"] = "1";
+  echo json_encode($result3);
+
+
+  mysqli_close($conn);
+

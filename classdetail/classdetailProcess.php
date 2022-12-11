@@ -90,7 +90,7 @@ $jwt = new JWT();
 // 토큰값, 이미지  전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token = json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-// $classid = json_decode(file_get_contents("php://input"))->{"classid"}; // 수업id 
+$classid = json_decode(file_get_contents("php://input"))->{"classid"}; // 수업id 
 
 
 
@@ -98,12 +98,12 @@ $token = json_decode(file_get_contents("php://input"))->{"token"}; // 토큰
 $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
-// $User_ID =  base64_decode($payload['User_ID']);
-$User_ID = 32;
+$User_ID =  base64_decode($payload['User_ID']);
+// $User_ID = 32;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
-$classid =  34;
+// $classid =  34;
 
 //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
 $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
@@ -206,6 +206,8 @@ $send['Schedule'] = $string;
 
 $result1["success"] = "1";
 
+
+//접속자의 수업 목록이 불ㄹ
 //Class_List에 수업 목록확인  
 $sql = "SELECT * FROM Class_List WHERE User_Id = '{$usid}'";
 $response1 = mysqli_query($conn, $sql);

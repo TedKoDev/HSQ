@@ -3,8 +3,6 @@
 // 접속한 사용자의 Token을 수령한뒤 User_Id를 추출하여 
 // 해당 사용자의 Timezone을 전달 해주는 역할을 함. 
 
-
-
 include("../conn.php");
 include("../jwt.php");
 
