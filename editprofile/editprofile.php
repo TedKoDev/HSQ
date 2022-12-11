@@ -12,7 +12,7 @@
   
   <body class = "bg-gray-100">      
     <!-- 네비바 -->    
-    <?php include '../components/navbar.php' ?>
+    <?php include '../components/navbar/navbar.php' ?>
     <!-- 프로필 편집 블록 -->
     <br>
     <div class = "flex flex-col max-w-3xl justify-between mx-auto bg-gray-50 px-6 py-4 shadow rounded-lg">

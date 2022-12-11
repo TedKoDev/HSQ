@@ -5,7 +5,7 @@
                 
                 <div class="hidden md:flex items-center space-x-1 ml-3">
                     <a
-                        href="../teacherpage/t_myclass.php"
+                        href="/teacherpage/myclass/myclass.php"
                         class="py-1 px-2 text-white  hover:bg-gray-600 rounded">내 수업</a>
                     <a
                         href="#"

@@ -5,8 +5,8 @@
 
 // error_log("$error", "3", "/data/logs/php.log");
 
-include("../conn.php");
-include("../jwt.php");
+include("../../conn.php");
+include("../../jwt.php");
 
 
 $jwt = new JWT();

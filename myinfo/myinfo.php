@@ -14,7 +14,7 @@
   </head>       
   <body class = "bg-gray-100">      
     <!-- 네비바 -->    
-    <?php include '../components/navbar.php' ?>
+    <?php include '../components/navbar/navbar.php' ?>
     <!-- 로그인 블록 -->
     <br>
     <div class = "flex max-w-5xl justify-between mx-auto">

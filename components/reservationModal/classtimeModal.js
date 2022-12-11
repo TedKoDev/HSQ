@@ -29,7 +29,6 @@ let clTime_final;
 let clPrice_final;
 
 // 만약 수업 상세에서 예약 클릭한 경우이면 이전 버튼 안보이게 처리
-console.log("chackStartpoint : "+checkStartpoint);
 if (checkStartpoint == "class") {
     beforeArrow_cltime.style.visibility = 'hidden';
 }

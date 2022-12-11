@@ -54,7 +54,7 @@ async function postToken_nav(tokenValue) {
     token: tokenValue
   };
 
-  const res = await fetch('../components/navbarProcess.php', {
+  const res = await fetch('/components/navbar/navbarProcess.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -174,10 +174,10 @@ async function go_teacher_page() {
     }
     
   }
-  // 강사일 경우 강사페이지로 이동
+  // 강사일 경우 강사페이지의 내 수업으로 이동
   else {
     
-    location.assign("../teacherpage/t_myclass.php");
+    location.assign("../teacherpage/myclass/myclass.php");
   }
 }
 

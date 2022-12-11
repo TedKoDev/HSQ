@@ -112,7 +112,7 @@ async function regisclass_btn() {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
-    }).then(alert("수업이 등록되었습니다."), location.replace('./t_myclass.php'))
+    }).then(alert("수업이 등록되었습니다."), location.replace('../myclass/myclass.php'))
 
     let response = await res.json();
 

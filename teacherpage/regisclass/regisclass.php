@@ -3,17 +3,17 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="../dist/output.css" rel="stylesheet">
+        <link href="/dist/output.css" rel="stylesheet">
     </head>
-    <script defer="defer" src="../commenJS/cookie.js"></script>
-    <script src="./t_regisclass.js"></script>
+    <script defer="defer" src="/commenJS/cookie.js"></script>
+    <script src="./regisclass.js"></script>
 
     <body class="bg-gray-100">
         <!-- 네비바 -->
-        <?php include '../components/navbar.php' ?>
+        <?php include '../../components/navbar.php' ?>
         <!-- 강사용 네비바 -->
-        <?php include '../components/navbar_t.php' ?>  
-        <?php include './t_regisclassProcess.php' ?>  
+        <?php include '../../components/navbar_t.php' ?>  
+        <?php include './regisclassProcess.php' ?>  
         <br><br>
         <div class = "flex flex-col max-w-3xl mx-auto bg-gray-50 shadow rounded-lg  "><br>
             <div class = "mx-auto font-bold text-2xl mb-3">수업 등록</div>

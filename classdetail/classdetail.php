@@ -19,7 +19,7 @@
     </style>
     <body class="bg-gray-100">
         <!-- 네비바 -->
-        <?php include '../components/navbar.php' ?>
+        <?php include '../components/navbar/navbar.php' ?>
         <br>
         <div class="flex max-w-4xl mx-auto justify-between">
             <div class="flex flex-col w-3/4 bg-gray-50 rounded-lg px-4 py-2 mb-3 shadow">

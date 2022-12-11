@@ -6,7 +6,7 @@
 <!-- 기능들 :
 1. 쿠키 변경에 따라 우측 상단 메뉴 결정
 2. (로그인 되어 있을 경우) 유저 아이콘 클릭시 하단에 작은 창 (프로필 설정, 수강신청, 로그아웃등) -->
-<script src = "../components/navbar.js"></script> 
+<script src = "/components/navbar/navbar.js"></script> 
 
 <!-- 네비바 -->
 <nav class = "bg-white border border-b-0 shadow">
@@ -22,8 +22,8 @@
         </div>
         <!-- 강사,수업, 커뮤니티 -->
         <div class = "hidden md:flex items-center space-x-1 ml-3">
-          <a href="../findteacher/findteacher.php" class = "py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded" >강사</a>
-          <a href="../findclass/findclass.php" class = "py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded">수업</a>
+          <a href="/findteacher/findteacher.php" class = "py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded" >강사</a>
+          <a href="/findclass/findclass.php" class = "py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded">수업</a>
           <a href="#" class = "py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded">커뮤니티</a>
         </div>
       </div>

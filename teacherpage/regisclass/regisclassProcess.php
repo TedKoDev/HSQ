@@ -31,8 +31,8 @@
 
 
 
-include("../conn.php");
-include("../jwt.php");
+include("../../conn.php");
+include("../../jwt.php");
 
 
 
