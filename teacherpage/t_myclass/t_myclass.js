@@ -23,7 +23,7 @@ async function postToken(tokenValue) {
     token : value,
   };
   
-  const res = await fetch('./myclassProcess.php', {
+  const res = await fetch('./t_myclassProcess.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;'

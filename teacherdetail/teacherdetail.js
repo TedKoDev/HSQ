@@ -9,6 +9,8 @@ let U_id = id;
 let checkStartpoint = "teacher";
 
 // 해당 유저의 utc 가져온후 date에 가져온 utc 적용
+// 쿠키 값 가져오기   
+let checkCookie = getCookie("user_info");
 get_utc(checkCookie);
 
 // 전역으로 사용할 timezone 선언
@@ -653,13 +655,14 @@ function setModal(class_id, clname, cldesc, cltype, tp, cllevel) {
 
 }
 
-// 자기소개, 강의 스타일 클릭했을 때 해당하는 div 보이게 처리
-function show_intro(type) {
 
-  const intro_menu = document.getElementById("intro_menu");
-  const t_intro_menu = document.getElementById("t_intro_menu");
-  const intro_div = document.getElementById("intro_div");
-  const t_intro_div = document.getElementById("t_intro_div");
+// 자기소개, 강의 스타일 클릭했을 때 해당하는 div 보이게 처리
+const intro_menu = document.getElementById("intro_menu");
+const t_intro_menu = document.getElementById("t_intro_menu");
+const intro_div = document.getElementById("intro_div");
+const t_intro_div = document.getElementById("t_intro_div");
+
+function show_intro(type) {  
 
   // 자기 소개 클릭할 경우
   if (type == 'intro_menu') {

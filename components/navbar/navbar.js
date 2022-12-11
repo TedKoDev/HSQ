@@ -1,23 +1,25 @@
+import {getCookie} from '/commenJS/cookie_modules.js';
+
 // 1. 쿠키 여부에 따라 네비바 우측 상단 변경 (로그인/회원가입 or 유저 아이콘)
 // 2. 유저 정보 클릭 시 아이콘 하단에 창 (수강신청, 프로필 설정, 로그아웃 등)
 
-// 쿠키 값 가져오기 
-let checkCookie = getCookie("user_info");    
+// 쿠키 값 가져오기   
+let checkCookie = getCookie("user_info");
 
 // 쿠키 가져오는 함수
-function getCookie(cName) {
-  cName = cName + '=';
-  let cookieData = document.cookie;
-  let start = cookieData.indexOf(cName);
-  let cValue = '';
-  if(start != -1){
-  start += cName.length;
-  let end = cookieData.indexOf(';', start);
-  if(end == -1)end = cookieData.length;
-  cValue = cookieData.substring(start, end);
-  }
-  return unescape(cValue);
-}      
+// function getCookie(cName) {
+//   cName = cName + '=';
+//   let cookieData = document.cookie;
+//   let start = cookieData.indexOf(cName);
+//   let cValue = '';
+//   if(start != -1){
+//   start += cName.length;
+//   let end = cookieData.indexOf(';', start);
+//   if(end == -1)end = cookieData.length;
+//   cValue = cookieData.substring(start, end);
+//   }
+//   return unescape(cValue);
+// }      
 
 // 화면 모두 로드되면 쿠키 여부에 따라 메뉴바 우측 상단의 뷰 결정
 window.onload = function () {
@@ -26,12 +28,14 @@ window.onload = function () {
   let userinfo = document.getElementById("id_user_info"); 
   let login = document.getElementById("id_login");
   let signup = document.getElementById("id_signup");
+  let myStudy = document.getElementById("myStudy");
 
   if (checkCookie) { // 쿠키가 있을 경우 (로그인이 되어 있는 상태일 경우)       
 
     userinfo.style.display = 'block';
     login.style.display = 'none';
     signup.style.display = 'none';    
+    myStudy.style.display = 'block';
 
     // 서버에 토큰값 전달
     postToken_nav(checkCookie);
@@ -41,6 +45,7 @@ window.onload = function () {
     userinfo.style.display = 'none';
     login.style.display = 'block';
     signup.style.display = 'block';
+    myStudy.style.display = 'none';
   }
 }
 
@@ -104,12 +109,6 @@ async function postToken_nav(tokenValue) {
       key.innerText = "";
     }
   }
-
-  // console.log(userinfo_json);
-  // console.log(userinfo_parse);
-  // console.log(user_profile);
-  // console.log(user_name);
-  // console.log(user_teacher);
 }
 
 // 네비바 우측 상단 유저 프로필 아이콘 클릭 시 드롭다운 메뉴
@@ -122,26 +121,27 @@ async function userIcon_click() {
 }
 
 // 다른곳 클릭시 드롭다운 없어지게 (일단은 좀 비효율적으로 구현함. 나중에 수정 필요)
-document.addEventListener('mouseup', function(e) { 
+// document.addEventListener('mouseup', function(e) { 
   
-  let usericon = document.getElementById('id_user_info');
-  let dropdown_ct = document.getElementById("user_dropdown"); 
+//   let usericon = document.getElementById('id_user_info');
+//   let dropdown_ct = document.getElementById("user_dropdown"); 
 
-  if (!usericon.contains(e.target) && !dropdown_ct.contains(e.target)) {
-    dropdown_ct.style.display = 'none';
-  }
-});
+//   if (!usericon.contains(e.target) && !dropdown_ct.contains(e.target)) {
+//     dropdown_ct.style.display = 'none';
+//   }
+// });
 
 
 // 강사되기/강사페이지 클릭 시
-async function go_teacher_page() {
-   
+const teacher_page = document.getElementById("teacher_page");
+
+const go_teacher_page = async () => {
 
   // 드롭다운의 값 가져오기 (강사되기 or 강사페이지)
-  let teacher_dropdown = document.getElementById('teacher_page').innerHTML;
+  let dropdownText = teacher_page.innerHTML;
   
   // 강사 신청 안한 계정이면 강사 등록 페이지로 이동
-  if (teacher_dropdown == '강사되기') {
+  if (dropdownText == '강사되기') {
         
     // 유저 프로필에 항목 다 채운 경우에만 강사 등록 화면으로 이동
     const body = {
@@ -149,7 +149,7 @@ async function go_teacher_page() {
       token: checkCookie
     };
   
-    const res = await fetch('../registeacher/regischeckProcess.php', {
+    const res = await fetch('/registeacher/regischeckProcess.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -164,33 +164,56 @@ async function go_teacher_page() {
     
     if (response.success == 'yes') {
 
-      location.replace("../registeacher/registeacher.php");
+      location.replace("/registeacher/registeacher.php");
 
     }
     else {
 
       alert("강사 등록 시 회원 정보를 모두 작성해야 합니다.");
-      location.replace("../editprofile/editprofile.php");
+      location.replace("/editprofile/editprofile.php");
     }
     
   }
   // 강사일 경우 강사페이지의 내 수업으로 이동
   else {
     
-    location.assign("../teacherpage/myclass/myclass.php");
+    location.assign("/teacherpage/t_myclass/t_myclass.php");
   }
 }
+teacher_page.addEventListener('click', go_teacher_page)
+
 
 // 로그아웃 클릭시
-function logout() {
-  
+const logout = document.getElementById("logout");
+
+const clickLogout = async () => {
+
   // 쿠기 삭제
-	deleteCookie("user_info");
+  deleteCookie("user_info");
 
   // 메인화면으로 이동
-  location.replace("../index.php");
-
+  location.replace("/index.php");
 }
+
+logout.addEventListener('click', clickLogout)
+
+// 내 정보 클릭시
+const goMyinfo = () =>  {
+  
+  location.assign("/myinfo/myinfo.php");
+}
+const myinfo = document.getElementById("myinfo");
+myinfo.addEventListener('click', goMyinfo)
+
+
+// 내 수업 클릭시
+const goMyclasses = () =>  {
+  
+  location.assign("/myclasses/myclasses.php");
+}
+const myclass = document.getElementById("myclasses");
+myclass.addEventListener('click', goMyclasses);
+
 
 // // 쿠키 삭제하는 함수
 // function deleteCookie(name) {

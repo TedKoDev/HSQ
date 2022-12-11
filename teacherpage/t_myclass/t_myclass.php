@@ -6,7 +6,7 @@
         <link href="/dist/output.css" rel="stylesheet">
     </head>
     <script src="/commenJS/cookie.js"></script>
-    <script src="./myclass.js"></script>
+    <script src="./t_myclass.js"></script>
 
     <script></script>
     <body class="bg-gray-100">

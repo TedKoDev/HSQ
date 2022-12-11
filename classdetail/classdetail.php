@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="../dist/output.css" rel="stylesheet">
     </head>
-    <script defer="defer" src="../commenJS/cookie.js"></script>
+    <script defer="defer" src="/commenJS/cookie.js"></script>
     <script defer="defer" src="./classdetail.js"></script>
     <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
     <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>

@@ -3,11 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../dist/output.css" rel="stylesheet">
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-     <!-- 쿠기 생성, 가져오기, 삭제 -->        
-    <script defer src = "../commenJS/cookie.js"></script>  
-    <script defer src = "./editprofile.js"></script>           
+    <link href="../dist/output.css" rel="stylesheet">      
+    <script defer = "defer" src = "/commenJS/cookie.js"></script>
+    <script defer = "defer" src = "./editprofile.js"></script>           
   </head>       
   
   <body class = "bg-gray-100">      

@@ -1,9 +1,13 @@
+
 // 수업 id, 강사 id 받아오기
 const {class_id, teacher_id} = JSON.parse(localStorage.getItem("c_and_t_id"));
 
 // 수업 id, 강사 id 선언
 let C_id = class_id;
 let U_id = teacher_id;
+
+// 쿠키 값 가져오기   
+let checkCookie = getCookie("user_info");
 
 // 최종 예약 때 보낼 용도의 수업 id, 수업이름 선언
 let clId_final = class_id;
@@ -43,8 +47,11 @@ let beforeDate_btn = document.getElementById("beforeDate_btn");
 // 모달창 하단에 수업 이름 표시하는 뷰 초기화
 let cl_name_b = document.querySelectorAll(".cl-name");
 
+// 쿠키에서 토큰값 가져오기 
+let tokenvalue = getCookie("user_info");  
+
 // 일정 표시
-getSchedule(U_id, checkCookie);
+getSchedule(U_id, tokenvalue);
 
 async function getSchedule(teacher_id, tokenvalue) {
 
