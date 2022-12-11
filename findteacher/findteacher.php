@@ -28,7 +28,7 @@
                 </div>
             </div>        
         </div>    
-        <div id = "teacher_list" class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-50 shadow rounded-lg ">
+        <div id = "teacher_list" class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-100 rounded-lg ">
 
             
             

@@ -30,3 +30,8 @@ function changeSelectBtnStyle (change, reset1, reset2, reset3) {
   reset2.setAttribute("class", "mx-2 py-5 font-normal text-sm border-0");
   reset3.setAttribute("class", "mx-2 py-5 font-normal text-sm border-0");
 }
+
+// innerHTML 테스트
+const classList = document.querySelector('.classList');
+// classList.innerHTML
+
