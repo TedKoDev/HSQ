@@ -12,7 +12,17 @@ classinfo.php
 // 수업상세        : kind = 'cdetail'    
 // 강사의 수업목록  : kind = 'tclist'
 
-2. 항목 별 값이 있다/없다. 
+
+2. 예약된 수업의 리스트 또는 상세 페이지  
+$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 예약된 수업 리스트 / 상세 
+
+-리스트의 경우 value = all, approved, cancel  ,done ,reply
+-상세의 경우  value = cdetail  와   
+    $classaddid       =   json_decode(file_get_contents("php://input"))->{"classaddid"}; // 예약한 수업 번호 
+    "classaddid"(key) = 137(value) 값 이 필요함 ; // 예약한 수업 번호  
+
+
+
 
 
 
@@ -65,7 +75,7 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 # 필요값 
 // 어떤 내용이 필요한지를 표시 ( clist-수업목록, cdetail-수업상세, tclist-강사의 수업목록)
 $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; // 강사의 User_id 
-$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 강사의 User_id 
+$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 예약된 수업 리스트 / 상세 
 
 // $kind            =   'clist';         //  
 // $kind            =   'cdetail';       //  
@@ -98,6 +108,8 @@ $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReser
 // 필요한 class의 id 값이 필요함 
 $classid       =   json_decode(file_get_contents("php://input"))->{"classid"}; // 수업번호 
 $classaddid       =   json_decode(file_get_contents("php://input"))->{"classaddid"}; // 예약한 수업 번호 
+
+
 // $classaddid       =  26; // 예약한 수업 번호 
 // $classid       =   34; // 수업번호 
 // 강사의 수업목록 : kind = tclist
