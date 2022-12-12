@@ -17,6 +17,7 @@
             <button id = "notApprovedCl" onclick = "selectClasstype('notApproved')" class = "mx-2 py-5 text-sm text-gray-600">예약되지 않은 수업</button>
             <button id = "waitingCl" onclick = "selectClasstype('waiting')" class = "mx-2 py-5 text-sm text-gray-600">대기중인 수업</button>
             <button id = "doneCl" onclick = "selectClasstype('done')" class = "mx-2 py-5 text-sm text-gray-600">완료된 수업</button>
+            <button id = "cancelCl" onclick = "selectClasstype('cancel')" class = "mx-2 py-5 text-sm text-gray-600">취소된 수업</button>
         </div>
         <br>
         <div class = "classList flex flex-col w-1/2 mx-auto">
