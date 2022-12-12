@@ -67,7 +67,7 @@ $tzplanresult = implode("_",$tzplan); // 다시 합체
 
 
 // Class_Add DB TABLE에 저장 
-$sqlClassAdd = "INSERT INTO Class_Add (User_Id, CLass_Id, CTP_idx, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
+$sqlClassAdd = "INSERT INTO Class_Add (User_Id, CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
            VALUES ('$User_ID', '$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
 $insert = mysqli_query($conn, $sqlClassAdd);
 
