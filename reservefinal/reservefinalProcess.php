@@ -51,18 +51,14 @@ $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-//1시간 = 3600000;
-$hour   = 3600000;
 
-// 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
-$explan = (explode("_", $plan));
-$tzplan = array(); //Timezone 적용을 위한 배열 생성
-foreach($explan as $val){ 
-$save = $val - $timezone* $hour;
-$date = date('Y-m-d H:i:s',  $save);
-array_push($tzplan,$save);
-}
-$tzplanresult = implode("_",$tzplan); // 다시 합체 
+
+
+
+
+
+
+
 
 
 
@@ -79,6 +75,22 @@ $cllevel = $row['5'];
 
 
 
+
+
+
+
+//1시간 = 3600000;
+$hour   = 3600000;
+
+// 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
+$explan = (explode("_", $plan));
+$tzplan = array(); //Timezone 적용을 위한 배열 생성
+foreach($explan as $val){ 
+$save = $val - $timezone* $hour;
+$date = date('Y-m-d H:i:s',  $save);
+
+
+
 // Class_Add DB TABLE에 저장 
 $sqlClassAdd = "INSERT INTO Class_Add (User_Id_s, User_Id_t, CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
            VALUES ('$User_ID', '$tusid','$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
@@ -91,9 +103,18 @@ $last_CAID = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx �
 
 
 
+array_push($tzplan,$save);
+}
+$tzplanresult = implode("_",$tzplan); // 다시 합체 
+
+
+
+
+
+
+
 // 위의 수업을 개설한 강사의 '이름','email', 'timezone' 정보 
-$sql = "SELECT 
-User.U_Name, User.U_Email, User_Detail.U_D_Timezone
+$sql = "SELECT User.U_Name, User.U_Email, User_Detail.U_D_Timezone
 FROM User
 JOIN User_Detail ON User.User_ID = User_Detail.User_Id
  where User.User_Id = '$tusid' ";
@@ -156,7 +177,7 @@ $mail->SMTPAuth = true;
 
 $mail->Host = "smtp.gmail.com";
 $mail->Username = "apswtrare@gmail.com";
-$mail->Password = "uxyexqvdxkumbexb";
+$mail->Password = "caofvauzywfzrbxv";
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 $mail->setFrom('apswtrare@gmail.com');
