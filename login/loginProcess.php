@@ -38,7 +38,7 @@ include("../jwt.php");
 
 file_get_contents("php://input") . "<br/>";
 
-$email = json_decode(file_get_contents("php://input"))->{"email"};
+$email = json_decode(file_get_contents("php://input"))->{"user_email"};
 $password = json_decode(file_get_contents("php://input"))->{"password"};
 
 
@@ -72,7 +72,7 @@ $tokenusername = base64_encode($name);
 
 // DB 정보 가져오기 
 
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$userid}'";
+$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$userid}'";
 $result = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($result);
 $timezone = $row1['0'];
@@ -108,8 +108,8 @@ if ($passwordResult === true) {
 
 
     $send["token"] = "$token";
-    $send["name"] = "$name";
-    $send["message"] = "yes";
+    $send["user_name"] = "$name";
+    $send["success"] = "yes";
 
     echo json_encode($send);
     mysqli_close($conn);
@@ -117,8 +117,8 @@ if ($passwordResult === true) {
 } else {
     // 로그인 실패 
     $send["token"] = "no";
-    $send["name"] = "no";
-    $send["message"] = "no";
+    $send["user_name"] = "no";
+    $send["success"] = "no";
 
     echo json_encode($send);
     mysqli_close($conn);

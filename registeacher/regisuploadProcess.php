@@ -48,6 +48,7 @@ $payload = json_decode($parted[1], true);
 
 // User_ID값 얻음 
 $User_ID =  base64_decode($payload['User_ID']);
+$User_ID =  32;
 
 $U_Name  = base64_decode($payload['U_Name']);
 
@@ -57,7 +58,7 @@ error_log("'1!!!!! User_ID  ',$U_Name,    $User_ID\n", "3", "../php.log");
 
 // U_D에 해당 user _ID로 등록된것이 있는지 확인
 
-$check = "SELECT * FROM User_Teacher where User_Id = '$User_ID'";
+$check = "SELECT * FROM User_Teacher where user_id = '$User_ID'";
 $checkresult = mysqli_query($conn, $check);
 
 // error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
@@ -68,7 +69,7 @@ if ($checkresult->num_rows < 1) {
 
    // 중복값이 없을때 때 실행할 내용
    // 없으면 insert로  data 만들고  
-   $result = "INSERT INTO User_Teacher (User_Id) VALUES ('$User_ID') ";
+   $result = "INSERT INTO User_Teacher (user_id) VALUES ('$User_ID') ";
    $insert = mysqli_query($conn, $result);
    //   $send["message"] = "no";
    //   $send["message"] = "no";
@@ -83,11 +84,11 @@ $check2 = 0; // 파일설명 저장 yes =1 no = 0
 
 
 //formdata로 받은 이미지 받는곳 
-if (isset($_POST['tintro'])) {
-    $tintro = $_POST['tintro'];
+if (isset($_POST['teacher_intro'])) {
+    $tintro = $_POST['teacher_intro'];
     error_log("'1!!!!! intro  ',$tintro\n", "3", "../php.log");
 //강사-자기소개
-$select = "UPDATE User_Teacher SET U_T_Intro = '$tintro' where User_Id = '$User_ID' ";
+$select = "UPDATE User_Teacher SET teacher_intro = '$tintro' where user_id = '$User_ID' ";
 $result6 = mysqli_query($conn, $select);
 
 if ($result6) { //정상적으로 자기소개 저장되었을때 
@@ -108,10 +109,10 @@ if ($result6) { //정상적으로 자기소개 저장되었을때
 
 //파일설명 (자격증설명)
 
-if (isset($_POST['certi'])) {
+if (isset($_POST['teacher_certification'])) {
 
-    $certi = $_POST['certi'];
-    $select = "UPDATE User_Teacher SET U_T_Certificate = '$certi' where User_Id = '$User_ID' ";
+    $certi = $_POST['teacher_certification'];
+    $select = "UPDATE User_Teacher SET teacher_certification = '$certi' where user_id = '$User_ID' ";
     $result7 = mysqli_query($conn, $select);
 
     if ($result7) { //정상적으로 자격증 저장되었을때 

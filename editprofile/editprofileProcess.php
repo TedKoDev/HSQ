@@ -45,7 +45,7 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 $token = json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
 $position = json_decode(file_get_contents("php://input"))->{"position"}; //항목
-$desc = json_decode(file_get_contents("php://input"))->{"desc"};  //내용
+$desc = json_decode(file_get_contents("php://input"))->{"class_description"};  //내용
 
 
 date_default_timezone_set('Asia/Seoul');

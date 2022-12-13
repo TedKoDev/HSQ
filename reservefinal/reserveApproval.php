@@ -32,7 +32,7 @@ error_log("$email, $CAID, $agree\n", "3", "../php.log");
 
 
 
-$select = "UPDATE Class_Add SET C_A_Status = '$agree', C_A_AnswerDate = $answerTime where Class_Add_Id = '$CAID' ";
+$select = "UPDATE Class_Add SET class_register_status = '$agree', class_register_answer_date = $answerTime where class_register_id = '$CAID' ";
  $response = mysqli_query($conn, $select);
  mysqli_close($conn);
 

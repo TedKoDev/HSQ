@@ -23,7 +23,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
 $result = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($result);
 $timezone = $row1['0'];
@@ -32,12 +32,12 @@ $timezone = $row1['0'];
 
  
 if ($result) { //정상적으로 값이 나왔을 때  
-  $send["timezone"]   =  "$timezone";
+  $send["user_timezone"]   =  "$timezone";
   $send["success"]   =  "yes";
   echo json_encode($send);
 
 } else {
-  $send["timezone"]   =  "no";
+  $send["user_timezone"]   =  "no";
   $send["success"]   =  "no";
   echo json_encode($send);
  

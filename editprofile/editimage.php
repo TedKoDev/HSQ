@@ -58,7 +58,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 // U_D에 해당 user _ID로 등록된것이 있는지 확인
 
-$check = "SELECT * FROM User_Detail where User_Id = '$User_ID'";
+$check = "SELECT * FROM User_Detail where user_id = '$User_ID'";
 $checkresult = mysqli_query($conn, $check);
 
 error_log("'ddd', $User_ID, $U_Name, $U_Email \n", "3", "./php.log");
@@ -69,7 +69,7 @@ if ($checkresult->num_rows < 1) {
 
 	// 중복값이 없을때 때 실행할 내용
 	// 없으면 insert로  data 만들고  
-	$result = "INSERT INTO User_Detail (User_Id) VALUES ('$User_ID') ";
+	$result = "INSERT INTO User_Detail (user_id) VALUES ('$User_ID') ";
 	$insert = mysqli_query($conn, $result);
 	//   $send["message"] = "no";
 	//   $send["message"] = "no";
@@ -94,17 +94,13 @@ if (isset($_FILES['sample_image'])) {
 
 
 
-	$select = "UPDATE User_Detail SET U_D_Img = '$new_name' where User_Id = '$User_ID' ";
+	// $select = "UPDATE User_Detail SET U_D_Img = '$new_name' where User_Id = '$User_ID' ";
+	$select = "UPDATE User_Detail SET user_img = '$new_name' where user_id = '$User_ID' ";
 
 	$response = mysqli_query($conn, $select);
 
 
-	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 'image/' . $new_name);
-	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 'https://hangle-square.s3.ap-northeast-2.amazonaws.com/Image/' . $new_name);
-	// move_uploaded_file($_FILES['sample_image']['tmp_name'], 's3://hangle-square/Image/' . $new_name);
-
-	// 1670316352PNG
-	// 1670316402PNG
+	
 
 // Form 전송을 통해 업로드 할 경우에는 아래와 같이 사용됩니다.
 $s3_path = 'Profile_Image/'.$new_name ; // 업로드할 위치와 파일명 입니다.
@@ -124,17 +120,19 @@ $result = $s3Client->putObject(array(
 
 	if ($response) { //정상적으로 이미지가 저장되었을때 
 		$data = array(
-			'image_source'		=>	'https://hangle-square.s3.ap-northeast-2.amazonaws.com/'.$s3_path ,
+			'image_path'		=>	'https://hangle-square.s3.ap-northeast-2.amazonaws.com/'.$s3_path ,
 			'success'        	=>	'yes'
 		);
 		echo json_encode($data);
 		mysqli_close($conn);
 	} else {
 		$data = array(
-			'image_source'		=>	'no',
+			'image_path'		=>	'no',
 			'success'        	=>	'yes'
 		);
 		echo json_encode($data);
 		mysqli_close($conn);
 	}
+//2022.12.14 대공사 수정완료 db 테이블 칼럼 및  입출 변수 수정완료 .
+
 }

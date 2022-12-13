@@ -55,7 +55,7 @@ $till = 20;
 
 
 //Class_List에 수업 목록확인  
-$sql = "SELECT * FROM User_Teacher order by  User_T_Id DESC LIMIT $start, $till ";
+$sql = "SELECT * FROM User_Teacher order by  user_teacher_id DESC LIMIT $start, $till ";
 $response1 = mysqli_query($conn, $sql);
 
 
@@ -63,28 +63,28 @@ $result1['data'] = array();
 while ($row1 = mysqli_fetch_array($response1)) {
     $usid = $row1['1'];
 
-    $send['User_Id'] = $row1['1'];
-    $send['U_T_Intro'] = $row1['2'];
-    $send['U_T_Special'] = $row1['4'];
+    $send['user_id'] = $row1['1'];
+    $send['teacher_intro'] = $row1['2'];
+    $send['teacher_special'] = $row1['4'];
 
 
     //User_Detail 에서 이미지, 언어 수업 시간, 가격 확인   
-    $sql = "SELECT * FROM User_Detail WHERE User_Id = '$usid'";
+    $sql = "SELECT * FROM User_Detail WHERE user_id = '$usid'";
     $response2 = mysqli_query($conn, $sql);
 
     $row2 = mysqli_fetch_array($response2);
 
-    $send['U_D_Img'] = $row2['2'];
-    $send['U_D_Language'] = $row2['8'];
-    $send['U_D_Intro'] = $row2['12'];
+    $send['user_img'] = $row2['2'];
+    $send['user_language'] = $row2['8'];
+    $send['user_intro'] = $row2['12'];
 
     //User 에서 유저 이름    
-    $sql = "SELECT * FROM User WHERE User_ID = '$usid'";
+    $sql = "SELECT * FROM User WHERE user_id = '$usid'";
     $response3 = mysqli_query($conn, $sql);
 
     $row3 = mysqli_fetch_array($response3);
 
-    $send['U_Name'] = $row3['3'];
+    $send['user_name'] = $row3['3'];
 
 
 
@@ -96,7 +96,7 @@ while ($row1 = mysqli_fetch_array($response1)) {
 
 
     //Class_List에 수업 목록확인  
-    $sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$usid}'";
+    $sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$usid}'";
     $response4 = mysqli_query($conn, $sql);
 
     $row4 = mysqli_fetch_array($response4);
@@ -105,15 +105,16 @@ while ($row1 = mysqli_fetch_array($response1)) {
 
 
     //Class_List_Time_Price 수업 시간, 가격 확인   
-    $sql = "SELECT Class_List_Time_Price.CLass_Id, Class_List_Time_Price.User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
-On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id_t = '{$usid}' order by Class_List_Time_Price.Price asc limit 1";
+
+    $sql = "SELECT Class_List_Time_Price.class_id, Class_List_Time_Price.class_time, Class_List_Time_Price.class_price FROM HANGLE.Class_List Join Class_List_Time_Price 
+On Class_List.class_id = Class_List_Time_Price.class_id where Class_List.user_id_teacher = '{$usid}' order by Class_List_Time_Price.class_price asc limit 1";
 
     // $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
     $response5 = mysqli_query($conn, $sql);
 
     $row5 = mysqli_fetch_array($response5);
-    $send['Time'] = $row5['1'];
-    $send['Price'] = $row5['2'];
+    $send['class_time'] = $row5['1'];
+    $send['class_price'] = $row5['2'];
 
     if ($send['class_id'] != null) {
         array_push($result1['data'], $send);

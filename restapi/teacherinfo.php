@@ -34,18 +34,18 @@ file_get_contents("php://input") . "<br/>";
 
 //강사 상세출력시 필요 
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-$tusid      =   json_decode(file_get_contents("php://input"))->{"tusid"}; // 선택된 강사의 userid 
-$utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // utc 
+$tusid      =   json_decode(file_get_contents("php://input"))->{"user_id_teacher"}; // 선택된 강사의 userid 
+$utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; // utc 
 
 
-$timg           =   json_decode(file_get_contents("php://input"))->{"timg"};     // 강사이미지
-$tname          =   json_decode(file_get_contents("php://input"))->{"tname"};    // 강사이름
-$tintro         =   json_decode(file_get_contents("php://input"))->{"tintro"};    // 강사자기소개
-$intro          =   json_decode(file_get_contents("php://input"))->{"intro"};    // 자기소개
-$tcountry       =   json_decode(file_get_contents("php://input"))->{"tcountry"};    // 강사국가
-$tresidence     =   json_decode(file_get_contents("php://input"))->{"tresidence"};    // 강사거주지
-$tspecial       =   json_decode(file_get_contents("php://input"))->{"tspecial"};    // 강사전문성
-$tlanguage      =   json_decode(file_get_contents("php://input"))->{"tlanguage"};    // 강사언어 
+$timg           =   json_decode(file_get_contents("php://input"))->{"teacher_img"};     // 강사이미지
+$tname          =   json_decode(file_get_contents("php://input"))->{"teacher_name"};    // 강사이름
+$tintro         =   json_decode(file_get_contents("php://input"))->{"teacher_intro"};    // 강사자기소개
+$intro          =   json_decode(file_get_contents("php://input"))->{"user_intro"};    // 자기소개
+$tcountry       =   json_decode(file_get_contents("php://input"))->{"teacher_country"};    // 강사국가
+$tresidence     =   json_decode(file_get_contents("php://input"))->{"teacher_residence"};    // 강사거주지
+$tspecial       =   json_decode(file_get_contents("php://input"))->{"teacher_special"};    // 강사전문성
+$tlanguage      =   json_decode(file_get_contents("php://input"))->{"teacher_language"};    // 강사언어 
 
 
 $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
@@ -77,7 +77,7 @@ $result2['timeprice'] = array();
 if($token != null){
 
 //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
+$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1);
 
@@ -96,48 +96,48 @@ $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
 
 //Class_List에 수업 목록확인  
 $sql = "SELECT 
-User.U_Name, 
-User_Teacher.U_T_Special,  
-User_Detail.U_D_Img,
-User_Detail.U_D_Language,
-User_Detail.U_D_Intro,
-User_Teacher.U_T_Intro ,
-User_Detail.U_D_Country,
-User_Detail.U_D_Residence
+User.user_name, 
+User_Teacher.teacher_special,  
+User_Detail.user_img,
+User_Detail.user_language,
+User_Detail.user_intro,
+User_Teacher.teacher_intro ,
+User_Detail.user_country,
+User_Detail.user_residence
 FROM User
 JOIN User_Detail
-  ON User.User_ID = User_Detail.User_Id
+  ON User.user_id = User_Detail.user_id
 JOIN User_Teacher
-  ON User_Teacher.User_Id = User_Detail.User_Id 
- where User.User_Id = '$tusid' ";
+  ON User_Teacher.user_id = User_Detail.user_id 
+ where User.user_id = '$tusid' ";
 $response1 = mysqli_query($conn, $sql);
 
 
 
 $row1 = mysqli_fetch_array($response1);
 
-$send['U_Name'] = $row1['0'];
+$send['user_name'] = $row1['0'];
 
 if ($tspecial != null) {
-$send['U_T_Special'] = $row1['1'];}
+$send['teacher_special'] = $row1['1'];}
 
 if ($timg != null) {
-$send['U_D_Img'] = $row1['2'];}
+$send['user_img'] = $row1['2'];}
 
 if ($tlanguage != null) {
-$send['U_D_Language'] = $row1['3'];}
+$send['user_language'] = $row1['3'];}
 
 if ($intro != null) {
-$send['U_D_Intro'] = $row1['4'];}
+$send['user_intro'] = $row1['4'];}
 
 if ($tintro != null) {
-$send['U_T_Intro'] = $row1['5'];}
+$send['teacher_intro'] = $row1['5'];}
 
 if ($tcountry != null) {
-$send['U_D_Country'] = $row1['6'];}
+$send['user_country'] = $row1['6'];}
 
 if ($tresidence != null) {
-$send['U_D_Residence'] = $row1['7'];
+$send['user_residence'] = $row1['7'];
 }
 
 
@@ -168,7 +168,7 @@ mysqli_close($conn);
   
   
   //Class_List에 수업 목록확인  
-  $sql = "SELECT * FROM User_Teacher order by  User_T_Id DESC LIMIT $start, $till ";
+  $sql = "SELECT * FROM User_Teacher order by  user_teacher_id DESC LIMIT $start, $till ";
   $response1 = mysqli_query($conn, $sql);
   
   
@@ -176,35 +176,35 @@ mysqli_close($conn);
   while ($row1 = mysqli_fetch_array($response1)) {
       $tusid = $row1['1'];
   
-      $send['User_Id'] = $row1['1'];
-      $send['U_T_Intro'] = $row1['2'];
-      $send['U_T_Special'] = $row1['4'];
+      $send['user_id'] = $row1['1'];
+      $send['teacher_intro'] = $row1['2'];
+      $send['teacher_special'] = $row1['4'];
   
   
       //User_Detail 에서 이미지, 언어 수업 시간, 가격 확인   
-      $sql = "SELECT * FROM User_Detail WHERE User_Id = '$tusid'";
+      $sql = "SELECT * FROM User_Detail WHERE user_id = '$tusid'";
       $response2 = mysqli_query($conn, $sql);
   
       $row2 = mysqli_fetch_array($response2);
   
-      $send['U_D_Img'] = $row2['2'];
-      $send['U_D_Language'] = $row2['8'];
-      $send['U_D_Intro'] = $row2['12'];
+      $send['user_img'] = $row2['2'];
+      $send['user_language'] = $row2['8'];
+      $send['user_intro'] = $row2['12'];
   
       //User 에서 유저 이름    
-      $sql = "SELECT * FROM User WHERE User_ID = '$tusid'";
+      $sql = "SELECT * FROM User WHERE user_id = '$tusid'";
       $response3 = mysqli_query($conn, $sql);
   
       $row3 = mysqli_fetch_array($response3);
   
-      $send['U_Name'] = $row3['3'];
+      $send['user_name'] = $row3['3'];
   
   
   
 
   
       // Class_List에 수업 목록확인   강사의 수업이 있는지 확인하는 절차 없으면 넣지않으려함 .
-      $sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$tusid}'";
+      $sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$tusid}'";
       $response4 = mysqli_query($conn, $sql);
   
       $row4 = mysqli_fetch_array($response4);
@@ -213,14 +213,14 @@ mysqli_close($conn);
   
   
       //Class_List_Time_Price 수업 시간, 가격 확인   
-      $sql = "SELECT Class_List_Time_Price.CLass_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
-  On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id_t = '{$tusid}' order by Class_List_Time_Price.Price asc limit 1";
+      $sql = "SELECT Class_List_Time_Price.class_id, Class_List_Time_Price.class_time, Class_List_Time_Price.class_price FROM HANGLE.Class_List Join Class_List_Time_Price 
+  On Class_List.class_id = Class_List_Time_Price.class_id where Class_List.user_id_teacher = '{$tusid}' order by Class_List_Time_Price.class_price asc limit 1";
 
       $response5 = mysqli_query($conn, $sql);
   
       $row5 = mysqli_fetch_array($response5);
-      $send['Time'] = $row5['1'];
-      $send['Price'] = $row5['2'];
+      $send['class_time'] = $row5['1'];
+      $send['class_price'] = $row5['2'];
   
       if ($send['class_id'] != null) { // 수업이 없는 것은 넣지 않는다. 
           array_push($result1['data'], $send);
