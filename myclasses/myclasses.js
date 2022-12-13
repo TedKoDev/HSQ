@@ -9,23 +9,19 @@ export let responseNotapproved;
 export let responseDone;
 export let responseCanceled;
 
-// 처음 로드되면 유형에 맞는 내 수업 렌더링 
-window.addEventListener("DOMContentLoaded", (e) => {
-  
-  showClassList();
-});
 
-async function showClassList() {
-
-  new classList($("#classList"));
-}
-
+// 모든 종류의 수업 유형 불러오기 
+// (예제 코드랑 연동하다보니 중간에 비동기 통신 함수를 쓰는게 불가능하여 우선은 이런식으로 진행)
+// (다른 부분(수업 히스토리, 강사/수업 필터등등)에서는 미리 비동기로 불러오는거 고려해서 설계하기)
 getClassList("all", responseAll);
 getClassList("approved", responseApproved);
 getClassList("wait", responseNotapproved);
 getClassList("done", responseDone);
 getClassList("cancel", responseCanceled);
 
+// 1. 수업리스트 가져오기
+// 2. 수업 유형별로 json에 대입
+// 3. all일 때만 classList 객체 생성
 async function getClassList(type, response) {
 
   const body = {
@@ -43,12 +39,14 @@ async function getClassList(type, response) {
     });
   
     response = await res.json();         
-    
+       
+    // 디폴트가 all 이므로 all일 경우 classList 인스턴스 선언
     if (type == "all") {
       responseAll = response;      
+      new classList($("#classList"));       
     }
     else if (type == "approved") {
-      responseApproved = response;
+      responseApproved = response;      
     }
     else if (type == "wait") {
       responseNotapproved = response;
@@ -60,8 +58,9 @@ async function getClassList(type, response) {
     }
     else if (type == "cancel") {
       responseCanceled = response;      
-    }        
+    }  
 }
+
 
 
 

@@ -5,17 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/dist/output.css" rel="stylesheet">
     </head>    
-    <script type="module" defer = "defer" src="../myclasses.js"></script>
-
-    <script>
-    
-    let responseAll;
-    let responseApproved;
-    let responseNotapproved;
-    let responseDone;
-    let responseCanceled;
-
+    <script>       
+    let type = "all"
     </script>
+    <script type="module" defer = "defer" src="../myclasses.js"></script>    
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
         <?php include '../../components/navbar/navbar.php' ?>          
