@@ -12,7 +12,17 @@ classinfo.php
 // 수업상세        : kind = 'cdetail'    
 // 강사의 수업목록  : kind = 'tclist'
 
-2. 항목 별 값이 있다/없다. 
+
+2. 예약된 수업의 리스트 또는 상세 페이지  
+$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 예약된 수업 리스트 / 상세 
+
+-리스트의 경우 value = all, approved, cancel  ,done ,reply
+-상세의 경우  value = cdetail  와   
+    $classaddid       =   json_decode(file_get_contents("php://input"))->{"classaddid"}; // 예약한 수업 번호 
+    "classaddid"(key) = 137(value) 값 이 필요함 ; // 예약한 수업 번호  
+
+
+
 
 
 
@@ -65,7 +75,7 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 # 필요값 
 // 어떤 내용이 필요한지를 표시 ( clist-수업목록, cdetail-수업상세, tclist-강사의 수업목록)
 $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; // 강사의 User_id 
-$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 강사의 User_id 
+$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 예약된 수업 리스트 / 상세 
 
 // $kind            =   'clist';         //  
 // $kind            =   'cdetail';       //  
@@ -98,6 +108,8 @@ $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReser
 // 필요한 class의 id 값이 필요함 
 $classid       =   json_decode(file_get_contents("php://input"))->{"classid"}; // 수업번호 
 $classaddid       =   json_decode(file_get_contents("php://input"))->{"classaddid"}; // 예약한 수업 번호 
+
+
 // $classaddid       =  26; // 예약한 수업 번호 
 // $classid       =   34; // 수업번호 
 // 강사의 수업목록 : kind = tclist
@@ -194,7 +206,7 @@ if ($kind == 'cdetail') {
       $result1['result'] = array();
       //수업 상세 정보 
       $Clist_Sql = "SELECT Class_Add.*,Class_List.* FROM Class_Add LEFT OUTER JOIN Class_List ON Class_Add.CLass_Id = Class_List.Class_Id 
-      where Class_Add.User_Id = '$User_ID' and Class_Add_Id = '$classaddid'";
+      where Class_Add.User_Id_s = '$User_ID' and Class_Add_Id = '$classaddid'";
       $response1 = mysqli_query($conn, $Clist_Sql);
     
       $row1 = mysqli_fetch_array($response1);
@@ -334,7 +346,7 @@ if ($kind == 'cdetail') {
     // 학생(사용자)가 자신이 예약 신청한 수업 목록을 얻어옴 all , wait, approved, cancel, done, reply
 
     if ($clReserveCheck == 'all') {
-      $sqlWhere = 'where Class_Add.User_Id ='. $User_ID;    
+      $sqlWhere = 'where Class_Add.User_Id_s ='. $User_ID;    
     } else if ($clReserveCheck != 'all') {
       if ($clReserveCheck == 'wait' ) {
         $clRCValue = '0';
@@ -347,7 +359,7 @@ if ($kind == 'cdetail') {
       } else if ($clReserveCheck == 'reply') {
         $clRCValue = '4';
       }        
-      $sqlWhere = 'where Class_Add.User_Id = '. $User_ID.' and Class_Add.C_A_Status = '. $clRCValue;
+      $sqlWhere = 'where Class_Add.User_Id_s = '. $User_ID.' and Class_Add.C_A_Status = '. $clRCValue;
     } 
     
     //해당 Class_List 와 Class_Add 에서 값을 가져옴     
@@ -461,7 +473,7 @@ if ($kind == 'cdetail') {
 
 
   //Class_List에 수업 목록확인  
-  $sql = "SELECT  $string FROM Class_List WHERE User_Id = '{$tusid}'";
+  $sql = "SELECT  $string FROM Class_List WHERE User_Id_t = '{$tusid}'";
   $response1 = mysqli_query($conn, $sql);
 
   foreach ($response1 as $key) {
@@ -502,7 +514,10 @@ if ($kind == 'cdetail') {
   array_push($result3['result'], $send);
   $result3["success"] = "1";
   echo json_encode($result3);
-
-
   mysqli_close($conn);
+
+
+
+} else if ($kind == 'tcdetail'){
+
 }

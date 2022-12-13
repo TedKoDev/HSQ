@@ -66,18 +66,6 @@ $tzplanresult = implode("_",$tzplan); // 다시 합체
 
 
 
-// Class_Add DB TABLE에 저장 
-$sqlClassAdd = "INSERT INTO Class_Add (User_Id, CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
-           VALUES ('$User_ID', '$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
-$insert = mysqli_query($conn, $sqlClassAdd);
-
-if ($sqlClassAdd) 
-$last_CAID = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
-
-
-
-
-
 //수업id 기준으로 해당 수업의 정보 
 $sql = "SELECT * FROM Class_List WHERE CLass_Id = '{$classid}'";
 $result = mysqli_query($conn, $sql);
@@ -88,6 +76,19 @@ $clname = $row['2'];
 $cldisc = $row['3'];
 $cltype = $row['4'];
 $cllevel = $row['5'];
+
+
+
+
+// Class_Add DB TABLE에 저장 
+$sqlClassAdd = "INSERT INTO Class_Add (User_Id_s, User_Id_t CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
+           VALUES ('$User_ID', '$tusid''$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
+$insert = mysqli_query($conn, $sqlClassAdd);
+
+if ($sqlClassAdd) 
+$last_CAID = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
+
+
 
 
 

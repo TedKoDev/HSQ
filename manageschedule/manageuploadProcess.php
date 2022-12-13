@@ -112,7 +112,7 @@ json_encode($resultarray);
   $val;
 
 
-  $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('{$User_ID}', '$val') ";
+  $result = "INSERT INTO Teacher_Schedule (User_Id_t, Schedule) VALUES ('{$User_ID}', '$val') ";
   $response = mysqli_query($conn, $result);
 
 
