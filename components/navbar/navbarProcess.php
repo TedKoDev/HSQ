@@ -30,6 +30,7 @@ $payload = json_decode($parted[1], true);
  $User_ID =  base64_decode($payload['User_ID']);
 
 
+
  $U_Name  = base64_decode($payload['U_Name']);
 
  $U_Email = base64_decode($payload['U_Email']);
@@ -40,7 +41,8 @@ $payload = json_decode($parted[1], true);
 
 
 // DB 정보 가져오기 
-$sql = "SELECT User.User_ID, U_Name, U_D_Img, U_D_T_add FROM HANGLE.User left join User_Detail on User.User_ID = User_Detail.User_Id where User.User_ID = '{$User_ID}'";
+// $sql = "SELECT User.User_ID, U_Name, U_D_Img, U_D_T_add FROM HANGLE.User left join User_Detail on User.User_ID = User_Detail.User_Id where User.User_ID = '{$User_ID}'";
+$sql = "SELECT User.user_id, User.user_name, User_Detail.user_img, User_Detail.teacher_register_check FROM HANGLE.User left join User_Detail on User.user_id = User_Detail.user_id where User.user_id = '{$User_ID}'";
 $result = mysqli_query($conn, $sql);
 
 
@@ -49,20 +51,20 @@ $row = mysqli_fetch_array($result);
 
 
 // 값 변수 설정 
- $userid = $row['User_ID'];
- $name = $row['U_Name'];
- $p_img = $row['U_D_Img'];
- $teacher = $row['U_D_T_add'];
+ $userid = $row['user_id'];
+ $name = $row['user_name'];
+ $p_img = $row['user_img'];
+ $teacher = $row['teacher_register_check'];
 
 
- $send["p_img"] = $p_img ;
- $send["name"] = $name;
- $send["teacher"] =  $teacher;
+ $send["user_img"] = $p_img ;
+ $send["user_name"] = $name;
+ $send["teacher_register_check"] =  $teacher;
 
  echo json_encode($send);
  mysqli_close($conn);
 
-
+//2022.12.14 대공사 수정완료 db 테이블 칼럼 및  입출 변수 수정완료 .
 
 
 ?>
