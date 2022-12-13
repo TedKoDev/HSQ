@@ -4,11 +4,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/dist/output.css" rel="stylesheet">
-    </head>    
-    <script>       
-    let type = "all"
-    </script>
+    </head>        
     <script type="module" defer = "defer" src="../myclasses.js"></script>    
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
         <?php include '../../components/navbar/navbar.php' ?>          
@@ -22,7 +20,7 @@
         </div>
         <br>
         <div id = "classList" class = "classList flex flex-col w-1/2 mx-auto">
-            <div class = "flex w-full bg-gray-50 rounded-lg shadow border border-gray-200 py-2 hover:">
+            <!-- <div class = "flex w-full bg-gray-50 rounded-lg shadow border border-gray-200 py-2 hover:shadow">
                 <div class = "flex flex-col w-1/5 text-center">
                     <span class = "text-xs text-gray-500">완료됨</span><span class = "text-lg font-semibold">10</span><span class = "text-xs text-gray-700">12월</span>
                 </div>
@@ -39,7 +37,7 @@
                         <button class = "bg-blue-600 rounded-lg text-white px-3 py-1 hidden group-hover:block">수업 후기</button>
                     </div>                                        
                 </div>
-            </div>
+            </div> -->
         </div>
     </body>
 </html>

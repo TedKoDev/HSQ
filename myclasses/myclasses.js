@@ -2,7 +2,7 @@ import classList from "./src/classList.js";
 import { $ } from "/utils/querySelector.js";
 import { cookieName, getCookie } from "/commenJS/cookie_modules.js";
 
-// 담을 json 목록
+// 담을 json 목록 (나중에 page.js로 전달용)
 export let responseAll;
 export let responseApproved;
 export let responseNotapproved;

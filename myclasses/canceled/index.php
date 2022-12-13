@@ -6,8 +6,7 @@
         <link href="/dist/output.css" rel="stylesheet">
     </head>    
     <script type="module" defer = "defer" src="../myclasses.js"></script>
-
-    <script></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
         <?php include '../../components/navbar/navbar.php' ?>          

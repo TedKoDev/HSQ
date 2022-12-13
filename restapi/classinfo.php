@@ -459,7 +459,7 @@ if ($kind == 'cdetail') {
     } else {
 
       $result["success"]   =  "no";
-      echo json_encode($result1);
+      echo json_encode($result);
       mysqli_close($conn);
     }
   } 
