@@ -123,8 +123,6 @@ if ($tresidence != null) {
 
  $string = implode(",", $list);
 
-
-
 //Class_List에 수업 목록확인  
 $sql = "SELECT $string FROM User
 JOIN User_Detail
@@ -156,6 +154,8 @@ array_push($result3['result'], $send);
 // $result1["success"] = "1";
 $result3["success"] = "1";
 echo json_encode($result3);
+
+
 mysqli_close($conn);
 
 
