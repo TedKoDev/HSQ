@@ -121,7 +121,9 @@ if ($tresidence != null) {
   array_push($list, 'User_Detail.U_D_Residence');
 }
 
-echo $string = implode(",", $list);
+ $string = implode(",", $list);
+
+
 
 //Class_List에 수업 목록확인  
 $sql = "SELECT $string FROM User
