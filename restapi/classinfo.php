@@ -465,7 +465,7 @@ if ($kind == 'cdetail') {
   } 
 
 
-} else if ($kind == 'tclist') {
+}else if ($kind == 'tclist') {
   // 필요한 값이 특정 강사의 수업 목록 이면 
 
 
@@ -474,7 +474,7 @@ $result3['result'] = array();
 $result1['data'] = array();
 $result2['timeprice'] = array();
   //Class_List에 수업 목록확인  
-  $sql = "SELECT * FROM Class_List WHERE User_Id = '{$tusid}'";
+  $sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$tusid}'";
   $response1 = mysqli_query($conn, $sql);
 
 
