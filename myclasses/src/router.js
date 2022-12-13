@@ -21,11 +21,10 @@ function Router($container) {
 
   const init = () => {
     window.addEventListener("historychange", ({ detail }) => {
-      const { to, isReplace } = detail;
 
-      if (isReplace || to === location.pathname)
-        history.replaceState(null, "", to);
-      else history.pushState(null, "", to);
+      const { to, isReplace } = detail;
+      
+      history.replaceState(null, "", to);      
 
       route();
     });
