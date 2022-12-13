@@ -81,8 +81,8 @@ $cllevel = $row['5'];
 
 
 // Class_Add DB TABLE에 저장 
-$sqlClassAdd = "INSERT INTO Class_Add (User_Id_s, User_Id_t CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
-           VALUES ('$User_ID', '$tusid''$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
+$sqlClassAdd = "INSERT INTO Class_Add (User_Id_s, User_Id_t, CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
+           VALUES ('$User_ID', '$tusid','$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
 $insert = mysqli_query($conn, $sqlClassAdd);
 
 if ($sqlClassAdd) 
@@ -93,8 +93,7 @@ $last_CAID = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx �
 
 
 // 위의 수업을 개설한 강사의 '이름','email', 'timezone' 정보 
-$sql = "SELECT 
-User.U_Name, User.U_Email, User_Detail.U_D_Timezone
+$sql = "SELECT User.U_Name, User.U_Email, User_Detail.U_D_Timezone
 FROM User
 JOIN User_Detail ON User.User_ID = User_Detail.User_Id
  where User.User_Id = '$tusid' ";
@@ -157,7 +156,7 @@ $mail->SMTPAuth = true;
 
 $mail->Host = "smtp.gmail.com";
 $mail->Username = "apswtrare@gmail.com";
-$mail->Password = "uxyexqvdxkumbexb";
+$mail->Password = "caofvauzywfzrbxv";
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 $mail->setFrom('apswtrare@gmail.com');
