@@ -156,8 +156,6 @@ array_push($result3['result'], $send);
 // $result1["success"] = "1";
 $result3["success"] = "1";
 echo json_encode($result3);
-
-
 mysqli_close($conn);
 
 
