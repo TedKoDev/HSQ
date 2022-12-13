@@ -6,8 +6,6 @@ export const $ = (selector) => {
   }
 
 export const $_all = (selector) => {
-    const result = document.querySelectorAll(selector);
-    if (!(result instanceof HTMLElement)) return null;
-  
+    const result = document.querySelectorAll(selector);    
     return result;
 }
