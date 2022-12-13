@@ -35,6 +35,8 @@ async function getclassList_cm(tusid) {
 
     const response = await res.json();
 
+    console.log(response);
+
     const result = response.result[0];
     const classList = result.class;
 

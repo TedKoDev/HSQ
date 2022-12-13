@@ -65,7 +65,7 @@ $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //학생의 userid
-$User_ID = 32; //학생의 userid
+
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
@@ -76,6 +76,8 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 // 어떤 내용이 필요한지를 표시 ( clist-수업목록, cdetail-수업상세, tclist-강사의 수업목록)
 $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; // 강사의 User_id 
 $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 예약된 수업 리스트 / 상세 
+
+// error_log( $clReserveCheck, $token, "3", "../php.log");
 
 // $kind            =   'clist';         //  
 // $kind            =   'cdetail';       //  

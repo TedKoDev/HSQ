@@ -128,6 +128,8 @@ function setSchedule(clSchedule) {
 // 예약 버튼 클릭 이벤트
 async function reserveDone() {
 
+    console.log("pass");
+
     const tokenvalue = getCookie("user_info");
 
     const memo = request_forTeacher.value;  
@@ -150,7 +152,9 @@ async function reserveDone() {
         body: JSON.stringify(body)
     });
 
-    const response = await res.json();    
+    const response = await res.json();   
+    
+    console.log(response);
 
     if (response.success == 'yes') {
 

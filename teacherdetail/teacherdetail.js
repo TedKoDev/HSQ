@@ -37,7 +37,7 @@ async function get_utc(tokenValue) {
         
       };
     
-      const res = await fetch('../util/utc.php', {
+      const res = await fetch('../utils/utc.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'

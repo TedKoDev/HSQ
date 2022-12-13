@@ -1,8 +1,9 @@
 import { $, $_all } from "/utils/querySelector.js";
+import { cookieName, getCookie } from "/commenJS/cookie_modules.js";
 
 export function all($container) {
     this.$container = $container;
-  
+        
     this.setState = () => {
       this.render();
     };
@@ -15,9 +16,11 @@ export function all($container) {
       `;
 
       changeSelectBtnStyle($("#allCl"))
+
+      
     };
   
-    this.render();
+    this.render();    
 }
 
 export function notapproved($container) {
@@ -40,7 +43,7 @@ export function notapproved($container) {
     this.render();
 }
 
-export function approved($container) {
+export async function approved($container) {
     this.$container = $container;
   
     this.setState = () => {
@@ -60,7 +63,7 @@ export function approved($container) {
     this.render();
 }
 
-export function done($container) {
+export async function done($container) {
     this.$container = $container;
   
     this.setState = () => {
@@ -80,7 +83,7 @@ export function done($container) {
     this.render();
 }
 
-export function canceled($container) {
+export async function canceled($container) {
     this.$container = $container;
   
     this.setState = () => {
@@ -100,7 +103,7 @@ export function canceled($container) {
     this.render();
 }
 
-export function notfound($container) {
+export async function notfound($container) {
     this.$container = $container;
   
     this.setState = () => {

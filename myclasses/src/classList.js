@@ -3,6 +3,7 @@ import { $, $_all } from "/utils/querySelector.js";
 import { BASE_URL } from "./constants/routeInfo.js";
 import Router from "./router.js";
 
+
 function classList($container) {
   this.$container = $container;
   
@@ -14,8 +15,8 @@ function classList($container) {
       e.preventDefault();
       
       const targetURL = e.target.href.replace(BASE_URL, "");      
-      navigate(targetURL);
-
+      navigate(targetURL);           
+      
       // changeSelectBtnStyle(target);
     });            
     

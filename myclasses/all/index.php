@@ -7,7 +7,10 @@
     </head>    
     <script type="module" defer = "defer" src="../myclasses.js"></script>
 
-    <script></script>
+    <script>
+        
+
+    </script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
         <?php include '../../components/navbar/navbar.php' ?>          
