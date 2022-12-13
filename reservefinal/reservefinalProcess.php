@@ -66,18 +66,6 @@ $tzplanresult = implode("_",$tzplan); // 다시 합체
 
 
 
-// Class_Add DB TABLE에 저장 
-$sqlClassAdd = "INSERT INTO Class_Add (User_Id, CLass_Id, CTP_idx, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_ApprovalDate, C_A_Date) 
-           VALUES ('$User_ID', '$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0', now())";
-$insert = mysqli_query($conn, $sqlClassAdd);
-
-if ($sqlClassAdd)
-$last_uid = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
-
-
-
-
-
 //수업id 기준으로 해당 수업의 정보 
 $sql = "SELECT * FROM Class_List WHERE CLass_Id = '{$classid}'";
 $result = mysqli_query($conn, $sql);
@@ -88,6 +76,19 @@ $clname = $row['2'];
 $cldisc = $row['3'];
 $cltype = $row['4'];
 $cllevel = $row['5'];
+
+
+
+
+// Class_Add DB TABLE에 저장 
+$sqlClassAdd = "INSERT INTO Class_Add (User_Id_s, User_Id_t CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
+           VALUES ('$User_ID', '$tusid''$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
+$insert = mysqli_query($conn, $sqlClassAdd);
+
+if ($sqlClassAdd) 
+$last_CAID = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
+
+
 
 
 
@@ -138,12 +139,12 @@ Message: '.$memo."<br/>".'
 ------------------------'. "<br/>".'
  
 AGREE(예약승인) : Please click this link to accept reservation for class :'.$clname.''. "<br/>".'
-http://localhost/approvalreserv.php?email='.$U_Email.'&CAID='.$last_uid.'&agree='.'0'.'
+http://localhost/reservefinal/reserveApproval.php?email='.$U_Email.'&CAID='.$last_CAID.'&agree='.'1'.'
 '. "<br/>".'
 '. "<br/>".'
 
 REFUSE(예약거절): Please click this link to accept reservation for class :'.$clname.''. "<br/>".'
-http://localhost/approvalreserv.php?email='.$U_Email.'&CAID='.$last_uid.'&agree='.'1'.'
+http://localhost/reservefinal/reserveApproval.php?email='.$U_Email.'&CAID='.$last_CAID.'&agree='.'2'.'
 
 
 '; // Our message above including the link;

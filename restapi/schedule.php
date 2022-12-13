@@ -87,7 +87,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
-$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id = '$tusid'";
+$sql = "SELECT Schedule FROM Teacher_Schedule WHERE User_Id_t = '$tusid'";
 $response2 = mysqli_query($conn, $sql);
 $result2['Schedule'] = array();
 // 1시간 = 3600;
@@ -103,7 +103,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
  
 
 //예약된 수업 리스트만 
- $sql = "SELECT * FROM Teacher_Schedule WHERE User_Id = '$User_ID' and  Status = '1'";
+ $sql = "SELECT * FROM Teacher_Schedule WHERE User_Id_t = '$User_ID' and  Status = '1'";
  $response2 = mysqli_query($conn, $sql);
   
  // 1시간 = 3600;

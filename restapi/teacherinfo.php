@@ -94,17 +94,39 @@ $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
 }
 
 
+
+
+$list = array();
+
+array_push($list, 'User.U_Name');
+if ($tspecial != null) {
+  array_push($list, 'User_Teacher.U_T_Special');
+}
+if ($timg != null) {
+  array_push($list, 'User_Detail.U_D_Img');
+}
+if ($tlanguage != null) {
+  array_push($list, 'User_Detail.U_D_Language');
+}
+if ($intro != null) {
+  array_push($list, 'User_Detail.U_D_Intro');
+}
+if ($tintro != null) {
+  array_push($list, 'User_Teacher.U_T_Intro');
+}
+if ($tcountry != null) {
+  array_push($list, 'User_Detail.U_D_Country');
+}
+if ($tresidence != null) {
+  array_push($list, 'User_Detail.U_D_Residence');
+}
+
+ $string = implode(",", $list);
+
+
+
 //Class_List에 수업 목록확인  
-$sql = "SELECT 
-User.U_Name, 
-User_Teacher.U_T_Special,  
-User_Detail.U_D_Img,
-User_Detail.U_D_Language,
-User_Detail.U_D_Intro,
-User_Teacher.U_T_Intro ,
-User_Detail.U_D_Country,
-User_Detail.U_D_Residence
-FROM User
+$sql = "SELECT $string FROM User
 JOIN User_Detail
   ON User.User_ID = User_Detail.User_Id
 JOIN User_Teacher
@@ -118,27 +140,15 @@ $row1 = mysqli_fetch_array($response1);
 
 $send['U_Name'] = $row1['0'];
 
-if ($tspecial != null) {
-$send['U_T_Special'] = $row1['1'];}
+$send['U_T_Special'] = $row1['1'];
 
-if ($timg != null) {
-$send['U_D_Img'] = $row1['2'];}
-
-if ($tlanguage != null) {
-$send['U_D_Language'] = $row1['3'];}
-
-if ($intro != null) {
-$send['U_D_Intro'] = $row1['4'];}
-
-if ($tintro != null) {
-$send['U_T_Intro'] = $row1['5'];}
-
-if ($tcountry != null) {
-$send['U_D_Country'] = $row1['6'];}
-
-if ($tresidence != null) {
+$send['U_D_Img'] = $row1['2'];
+$send['U_D_Language'] = $row1['3'];
+$send['U_D_Intro'] = $row1['4'];
+$send['U_T_Intro'] = $row1['5'];
+$send['U_D_Country'] = $row1['6'];
 $send['U_D_Residence'] = $row1['7'];
-}
+
 
 
 
@@ -146,11 +156,7 @@ array_push($result3['result'], $send);
 // $result1["success"] = "1";
 $result3["success"] = "1";
 echo json_encode($result3);
-
-
 mysqli_close($conn);
-
-
 
 
 } else {
@@ -204,7 +210,7 @@ mysqli_close($conn);
 
   
       // Class_List에 수업 목록확인   강사의 수업이 있는지 확인하는 절차 없으면 넣지않으려함 .
-      $sql = "SELECT * FROM Class_List WHERE User_Id = '{$tusid}'";
+      $sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$tusid}'";
       $response4 = mysqli_query($conn, $sql);
   
       $row4 = mysqli_fetch_array($response4);
@@ -213,14 +219,14 @@ mysqli_close($conn);
   
   
       //Class_List_Time_Price 수업 시간, 가격 확인   
-      $sql = "SELECT Class_List_Time_Price.CLass_Id, User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
-  On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id = '{$tusid}' order by Class_List_Time_Price.Price asc limit 1";
+      $sql = "SELECT Class_List_Time_Price.CLass_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
+  On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id_t = '{$tusid}' order by Class_List_Time_Price.Price asc limit 1";
 
       $response5 = mysqli_query($conn, $sql);
   
       $row5 = mysqli_fetch_array($response5);
-      $send['Time'] = $row5['2'];
-      $send['Price'] = $row5['3'];
+      $send['Time'] = $row5['1'];
+      $send['Price'] = $row5['2'];
   
       if ($send['class_id'] != null) { // 수업이 없는 것은 넣지 않는다. 
           array_push($result1['data'], $send);

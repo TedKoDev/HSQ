@@ -71,7 +71,7 @@ $timezone = $row1['0'].'</br>';
 
 
   
-$check = "SELECT * FROM Teacher_Schedule where User_Id = '$User_ID'";
+$check = "SELECT * FROM Teacher_Schedule where User_Id_t = '$User_ID'";
 $checkresult = mysqli_query($conn, $check);
 
 
@@ -95,15 +95,15 @@ json_encode($resultarray);
 
 
 
-    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '32' ";
-     $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '$User_ID' ";
+    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_s = '32' ";
+     $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_t = '$User_ID' ";
      $response = mysqli_query($conn, $result);
 
  foreach($resultarray as $val){
 
   $val;
 
-  $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('$User_ID', '$val') ";
+  $result = "INSERT INTO Teacher_Schedule (User_Id_t, Schedule) VALUES ('$User_ID', '$val') ";
   $response = mysqli_query($conn, $result);
 
 

@@ -137,87 +137,120 @@ $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     
 
 
 
+
 // 수업상세 출력인지 목록 출력인지 
 if ($kind == 'udetail') {
   //해당 fusid (찾고자하는 유저) 해당하는 상세정보를 가져옴 
+
+
+
+  $list = array();
+     array_push($list, 'User.User_Id');
+ 
+  if ($uemail != null) {
+    array_push($list, 'User.U_Email');
+  }
+  if ($uname != null) {
+    array_push($list, 'User.U_Name');
+  }
+  if ($uchar != null) {
+    array_push($list, 'User.U_Character');
+  }
+  if ($uactive != null) {
+    array_push($list, 'User.U_Active');
+  }
+   if ($udate != null) {
+    array_push($list, 'User.U_Register_Date');
+  }
+   if ($udimg != null) {
+    array_push($list, 'User_Detail.U_D_Img');
+  }
+   if ($udbday != null) {
+    array_push($list, 'User_Detail.U_D_Bday');
+  }
+   if ($udsex != null) {
+    array_push($list, 'User_Detail.U_D_Sex');
+  }
+   if ($udcon != null) {
+    array_push($list, 'User_Detail.U_D_Contact');
+  }
+   if ($udcoun != null) {
+    array_push($list, 'User_Detail.U_D_Country');
+  }
+   if ($udresi != null) {
+    array_push($list, 'User_Detail.U_D_Residence');
+  }
+   if ($udlang != null) {
+    array_push($list, 'User_Detail.U_D_Language');
+  }
+   if ($udkore != null) {
+    array_push($list, 'User_Detail.U_D_Korean');
+  }
+   if ($udtadd != null) {
+    array_push($list, 'User_Detail.U_D_T_add');
+  }
+   if ($udintro != null) {
+    array_push($list, 'User_Detail.U_D_Intro');
+  }
+   if ($udtz != null) {
+    array_push($list, 'User_Detail.U_D_Timezone');
+  }
+   if ($utintro != null) {
+    array_push($list, 'User_Teacher.U_T_Intro');
+  }
+   if ($utcerti != null) {
+    array_push($list, 'User_Teacher.U_T_Certificate');
+  }
+   if ($utagree != null) {
+    array_push($list, 'User_Teacher.U_T_Agreement');
+  }
+   if ($utspec != null) {
+    array_push($list, 'User_Teacher.U_T_Special');
+  }
+   if ($utdate != null) {
+    array_push($list, 'User_Teacher.U_T_Date');
+  }
+ 
+
+  $string = implode(",", $list);
+
 
 
   $result1['result'] = array();
 
 
   //수업 상세 정보 
-  $sql = "SELECT User.User_Id, User.U_Email, User.U_Name, User.U_Character, User.U_Active, User.U_Register_Date,
-  User_Detail.U_D_Img, User_Detail.U_D_Bday, User_Detail.U_D_Sex, User_Detail.U_D_Contact, User_Detail.U_D_Country,
-  User_Detail.U_D_Residence, User_Detail.U_D_Language, User_Detail.U_D_Korean, User_Detail.U_D_T_add, User_Detail.U_D_Intro,
-  User_Detail.U_D_Timezone, User_Teacher.U_T_Intro, User_Teacher.U_T_Certificate, User_Teacher.U_T_Agreement, User_Teacher.U_T_Special,
-  User_Teacher.U_T_Date FROM HANGLE.User LEFT OUTER JOIN User_Detail
+  $sql = "SELECT $string FROM HANGLE.User LEFT OUTER JOIN User_Detail
           ON User.User_ID = User_Detail.User_Id
           LEFT OUTER JOIN User_Teacher
           ON User_Teacher.User_Id = User_Detail.User_Id 
         where User.User_Id = {$fusid}";
   $response1 = mysqli_query($conn, $sql);
 
+
+
+  
   $row1 = mysqli_fetch_array($response1);
 
 
-  $clid = $row1['0'];
-  $tusid = $row1['1'];
-
-
-  $send['User_Id'] = $row1['0'];
-  if ($uemail != null) {
-  $send['U_Email'] = $row1['1'];}
-  if ($uname != null) {
-  $send['U_Name'] = $row1['2'];}
-  if ($uchar != null) {
-  $send['U_Character'] = $row1['3'];}
-  if ($uactive != null) {
-  $send['U_Active'] = $row1['4'];}
-  if ($udate != null) {
-  $send['U_Register_Date'] = $row1['5'];}
-  if ($udimg != null) {
-  $send['U_D_Img'] = $row1['6'];  }
-  if ($udbday != null) {
-  $send['U_D_Bday'] = $row1['7']; }
-   if ($udsex != null) {
-  $send['U_D_Sex'] = $row1['8'];  }
-  if ($udcon != null) {
-  $send['U_D_Contact'] = $row1['9']; }
-   if ($udcoun != null) {
-  $send['U_D_Country'] = $row1['10']; }
-   if ($udresi != null) {
-  $send['U_D_Residence'] = $row1['11'];  }
-  if ($udlang != null) {
-  $send['U_D_Language'] = $row1['12']; }
-  if ($udkore != null) {
-  $send['U_D_Korean'] = $row1['13']; }
-   if ($udtadd != null) {
-  $send['U_D_T_add'] = $row1['14'];  }
-  if ($udintro != null) {
-  $send['U_D_Intro'] = $row1['15']; }
-   if ($udtz != null) {
-  $send['U_D_Timezone'] = $row1['16'];  }
-  if ($utintro != null) {
-  $send['U_T_Intro'] = $row1['17'];  }
-  if ($utcerti != null) {
-  $send['U_T_Certificate'] = $row1['18']; }
-   if ($utagree != null) {
-  $send['U_T_Agreement'] = $row1['19']; }
-   if ($utspec != null) {
-  $send['U_T_Special'] = $row1['20']; }
-  if ($utdate != null) {
-  $send['U_T_Date'] = $row1['21'];}
+  foreach ($response1 as $key) {
+      
+  
+    // echo key($key); // 키
+    // echo current($key); // 값
+    // $clid = current($key); // 값
+   
+      array_push($result1['result'], $key);
+  }
 
 
 
-
-  array_push($result1['result'], $send);
   echo json_encode($result1);
   mysqli_close($conn);
 
 
 
-} else if ($kind == 'ulist') {
+}  else if ($kind == 'ulist') {
   //필요한 값이 fusid 이면  
 
 
@@ -227,15 +260,81 @@ if ($kind == 'udetail') {
   $start =  $i + (20 * $plus);
   $till = 20;
 
+
+  $list = array();
+     array_push($list, 'User.User_Id');
+ 
+  if ($uemail != null) {
+    array_push($list, 'User.U_Email');
+  }
+  if ($uname != null) {
+    array_push($list, 'User.U_Name');
+  }
+  if ($uchar != null) {
+    array_push($list, 'User.U_Character');
+  }
+  if ($uactive != null) {
+    array_push($list, 'User.U_Active');
+  }
+   if ($udate != null) {
+    array_push($list, 'User.U_Register_Date');
+  }
+   if ($udimg != null) {
+    array_push($list, 'User_Detail.U_D_Img');
+  }
+   if ($udbday != null) {
+    array_push($list, 'User_Detail.U_D_Bday');
+  }
+   if ($udsex != null) {
+    array_push($list, 'User_Detail.U_D_Sex');
+  }
+   if ($udcon != null) {
+    array_push($list, 'User_Detail.U_D_Contact');
+  }
+   if ($udcoun != null) {
+    array_push($list, 'User_Detail.U_D_Country');
+  }
+   if ($udresi != null) {
+    array_push($list, 'User_Detail.U_D_Residence');
+  }
+   if ($udlang != null) {
+    array_push($list, 'User_Detail.U_D_Language');
+  }
+   if ($udkore != null) {
+    array_push($list, 'User_Detail.U_D_Korean');
+  }
+   if ($udtadd != null) {
+    array_push($list, 'User_Detail.U_D_T_add');
+  }
+   if ($udintro != null) {
+    array_push($list, 'User_Detail.U_D_Intro');
+  }
+   if ($udtz != null) {
+    array_push($list, 'User_Detail.U_D_Timezone');
+  }
+   if ($utintro != null) {
+    array_push($list, 'User_Teacher.U_T_Intro');
+  }
+   if ($utcerti != null) {
+    array_push($list, 'User_Teacher.U_T_Certificate');
+  }
+   if ($utagree != null) {
+    array_push($list, 'User_Teacher.U_T_Agreement');
+  }
+   if ($utspec != null) {
+    array_push($list, 'User_Teacher.U_T_Special');
+  }
+   if ($utdate != null) {
+    array_push($list, 'User_Teacher.U_T_Date');
+  }
+ 
+  $string = implode(",", $list);
+
   $result1['result'] = array();
 
 
   //에 수업 목록확인  
-  $sql = "SELECT User.User_Id, User.U_Email, User.U_Name, User.U_Character, User.U_Active, User.U_Register_Date,
-  User_Detail.U_D_Img, User_Detail.U_D_Bday, User_Detail.U_D_Sex, User_Detail.U_D_Contact, User_Detail.U_D_Country,
-  User_Detail.U_D_Residence, User_Detail.U_D_Language, User_Detail.U_D_Korean, User_Detail.U_D_T_add, User_Detail.U_D_Intro,
-  User_Detail.U_D_Timezone, User_Teacher.U_T_Intro, User_Teacher.U_T_Certificate, User_Teacher.U_T_Agreement, User_Teacher.U_T_Special,
-  User_Teacher.U_T_Date FROM HANGLE.User LEFT OUTER JOIN User_Detail
+  $sql = "SELECT $string FROM HANGLE.User LEFT OUTER JOIN User_Detail
           ON User.User_ID = User_Detail.User_Id
         LEFT OUTER JOIN User_Teacher
           ON User_Teacher.User_Id = User_Detail.User_Id 
@@ -243,80 +342,14 @@ if ($kind == 'udetail') {
 
   $response1 = mysqli_query($conn, $sql);
 
-  while ($row1 = mysqli_fetch_array($response1)) {
-
-    $send['User_Id'] = $row1['0'];
-    if ($uemail != null) {
-    $send['U_Email'] = $row1['1'];}
-    if ($uname != null) {
-    $send['U_Name'] = $row1['2'];}
-    if ($uchar != null) {
-    $send['U_Character'] = $row1['3'];}
-    if ($uactive != null) {
-    $send['U_Active'] = $row1['4'];}
-    if ($udate != null) {
-    $send['U_Register_Date'] = $row1['5'];}
-    if ($udimg != null) {
-    $send['U_D_Img'] = $row1['6'];  }
-    if ($udbday != null) {
-    $send['U_D_Bday'] = $row1['7']; }
-     if ($udsex != null) {
-    $send['U_D_Sex'] = $row1['8'];  }
-    if ($udcon != null) {
-    $send['U_D_Contact'] = $row1['9']; }
-     if ($udcoun != null) {
-    $send['U_D_Country'] = $row1['10']; }
-     if ($udresi != null) {
-    $send['U_D_Residence'] = $row1['11'];  }
-    if ($udlang != null) {
-    $send['U_D_Language'] = $row1['12']; }
-    if ($udkore != null) {
-    $send['U_D_Korean'] = $row1['13']; }
-     if ($udtadd != null) {
-    $send['U_D_T_add'] = $row1['14'];  }
-    if ($udintro != null) {
-    $send['U_D_Intro'] = $row1['15']; }
-     if ($udtz != null) {
-    $send['U_D_Timezone'] = $row1['16'];  }
-    if ($utintro != null) {
-    $send['U_T_Intro'] = $row1['17'];  }
-    if ($utcerti != null) {
-    $send['U_T_Certificate'] = $row1['18']; }
-     if ($utagree != null) {
-    $send['U_T_Agreement'] = $row1['19']; }
-     if ($utspec != null) {
-    $send['U_T_Special'] = $row1['20']; }
-    if ($utdate != null) {
-    $send['U_T_Date'] = $row1['21'];}
-     
-    //  $send['User_Id'] = $row1['0'];
-    //  $send['U_Email'] = $row1['1'];
-    //  $send['U_Name'] = $row1['2'];
-    //  $send['U_Character'] = $row1['3'];
-    //  $send['U_Active'] = $row1['4'];
-    //  $send['U_Register_Date'] = $row1['5'];
-    //  $send['U_D_Img'] = $row1['6'];
-    //  $send['U_D_Bday'] = $row1['7'];
-    //  $send['U_D_Sex'] = $row1['8'];
-    //  $send['U_D_Contact'] = $row1['9'];
-    //  $send['U_D_Country'] = $row1['10'];
-    //  $send['U_D_Residence'] = $row1['11'];
-    //  $send['U_D_Language'] = $row1['12'];
-    //  $send['U_D_Korean'] = $row1['13'];
-    //  $send['U_D_T_add'] = $row1['14'];
-    //  $send['U_D_Intro'] = $row1['15'];
-    //  $send['U_D_Timezone'] = $row1['16'];
-    //  $send['U_T_Intro'] = $row1['17'];
-    //  $send['U_T_Certificate'] = $row1['18'];
-    //  $send['U_T_Agreement'] = $row1['19'];
-    //  $send['U_T_Special'] = $row1['20'];
-    //  $send['U_T_Date'] = $row1['21'];
- 
+  foreach ($response1 as $key) {
+  
+    array_push($result1['result'], $key);
+  }
+  // echo json_encode($result4);
 
 
-  array_push($result1['result'], $send);
 
-}
 
 $result1["success"] = "1";
 echo json_encode($result1);

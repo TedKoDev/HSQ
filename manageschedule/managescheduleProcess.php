@@ -56,7 +56,7 @@ $timezone = $row1['0'].'</br>';
 
 
 
-$sql = "SELECT Schedule, Status FROM Teacher_Schedule WHERE User_Id = '$User_ID'";
+$sql = "SELECT Schedule, Status FROM Teacher_Schedule WHERE User_Id_t = '$User_ID'";
 $response2 = mysqli_query($conn, $sql);
 
 $result2['Schedule'] = array();
@@ -77,7 +77,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
  
 
  
- $sql = "SELECT * FROM Teacher_Schedule WHERE User_Id = '$User_ID' and  Status = '1'";
+ $sql = "SELECT * FROM Teacher_Schedule WHERE User_Id_t = '$User_ID' and  Status = '1'";
  $response2 = mysqli_query($conn, $sql);
   
  // 1시간 = 3600;
