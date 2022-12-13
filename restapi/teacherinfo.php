@@ -210,7 +210,7 @@ mysqli_close($conn);
 
   
       // Class_List에 수업 목록확인   강사의 수업이 있는지 확인하는 절차 없으면 넣지않으려함 .
-      $sql = "SELECT * FROM Class_List WHERE User_Id = '{$tusid}'";
+      $sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$tusid}'";
       $response4 = mysqli_query($conn, $sql);
   
       $row4 = mysqli_fetch_array($response4);
@@ -219,14 +219,14 @@ mysqli_close($conn);
   
   
       //Class_List_Time_Price 수업 시간, 가격 확인   
-      $sql = "SELECT Class_List_Time_Price.CLass_Id, User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
-  On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id = '{$tusid}' order by Class_List_Time_Price.Price asc limit 1";
+      $sql = "SELECT Class_List_Time_Price.CLass_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
+  On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id_t = '{$tusid}' order by Class_List_Time_Price.Price asc limit 1";
 
       $response5 = mysqli_query($conn, $sql);
   
       $row5 = mysqli_fetch_array($response5);
-      $send['Time'] = $row5['2'];
-      $send['Price'] = $row5['3'];
+      $send['Time'] = $row5['1'];
+      $send['Price'] = $row5['2'];
   
       if ($send['class_id'] != null) { // 수업이 없는 것은 넣지 않는다. 
           array_push($result1['data'], $send);

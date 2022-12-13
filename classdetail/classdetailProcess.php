@@ -209,7 +209,7 @@ $result1["success"] = "1";
 
 //접속자의 수업 목록이 불ㄹ
 //Class_List에 수업 목록확인  
-$sql = "SELECT * FROM Class_List WHERE User_Id = '{$usid}'";
+$sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$usid}'";
 $response1 = mysqli_query($conn, $sql);
 
 

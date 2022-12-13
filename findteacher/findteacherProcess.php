@@ -96,7 +96,7 @@ while ($row1 = mysqli_fetch_array($response1)) {
 
 
     //Class_List에 수업 목록확인  
-    $sql = "SELECT * FROM Class_List WHERE User_Id = '{$usid}'";
+    $sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$usid}'";
     $response4 = mysqli_query($conn, $sql);
 
     $row4 = mysqli_fetch_array($response4);
@@ -105,15 +105,15 @@ while ($row1 = mysqli_fetch_array($response1)) {
 
 
     //Class_List_Time_Price 수업 시간, 가격 확인   
-    $sql = "SELECT Class_List_Time_Price.CLass_Id, User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
-On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id = '{$usid}' order by Class_List_Time_Price.Price asc limit 1";
+    $sql = "SELECT Class_List_Time_Price.CLass_Id, Class_List_Time_Price.User_Id, Class_List_Time_Price.Time, Class_List_Time_Price.Price FROM HANGLE.Class_List Join Class_List_Time_Price 
+On Class_List.CLass_Id = Class_List_Time_Price.CLass_Id where Class_List.User_Id_t = '{$usid}' order by Class_List_Time_Price.Price asc limit 1";
 
     // $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
     $response5 = mysqli_query($conn, $sql);
 
     $row5 = mysqli_fetch_array($response5);
-    $send['Time'] = $row5['2'];
-    $send['Price'] = $row5['3'];
+    $send['Time'] = $row5['1'];
+    $send['Price'] = $row5['2'];
 
     if ($send['class_id'] != null) {
         array_push($result1['data'], $send);

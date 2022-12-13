@@ -71,14 +71,14 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 // Class_List에 수업 등록 
-$result = "INSERT INTO Class_List (User_Id, CL_Name, CL_Disc, CL_People, CL_Type, CL_Level,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type','$level', now()) ";
+$result = "INSERT INTO Class_List (User_Id_t, CL_Name, CL_Disc, CL_People, CL_Type, CL_Level,  CL_Date) VALUES ('$User_ID','$cname','$cintro','$people','$type','$level', now()) ";
 
 $insert = mysqli_query($conn, $result);
 
 
 
 // DB 정보 가져오기 
-$sql = "SELECT * FROM Class_List WHERE User_Id = '{$User_ID}'ORDER BY CLass_Id DESC LIMIT 1";
+$sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$User_ID}'ORDER BY CLass_Id DESC LIMIT 1";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($result);
 $Class_Id = $row['CLass_Id'];
