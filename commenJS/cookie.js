@@ -7,6 +7,7 @@ let cookieName = 'user_info';
 // s3 url (다른 곳에서 참조용)
 let s3_url = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/";
 
+
 // 쿠키 생성 함수
 function setCookie(cName, cValue, cDay){
     

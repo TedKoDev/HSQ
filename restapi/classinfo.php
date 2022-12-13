@@ -84,7 +84,7 @@ $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReser
 // $kind          =   'tcdetail';      // 
 // $clReserveCheck  =  'all';          // 
 // $clReserveCheck  =  'approved';     // 
-// $clReserveCheck  =  'not_approved'; // 
+// $clReserveCheck  =  'wait'; // 
 // $clReserveCheck  =  'done';         // 
 // $clReserveCheck  =  'reply';        // 
 
@@ -459,7 +459,7 @@ if ($kind == 'cdetail') {
     } else {
 
       $result["success"]   =  "no";
-      // echo json_encode($result1);
+      echo json_encode($result1);
       mysqli_close($conn);
     }
   } 

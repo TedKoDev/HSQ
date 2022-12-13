@@ -13,7 +13,7 @@
   </script>
   <body class = "bg-gray-100">   
     <!-- 네비바 -->
-    <?php include '../components/navbar.php' ?>
+    <?php include '../components/navbar/navbar.php' ?>
     <!-- 회원가입 블록 -->
     <br>
     <div class = "max-w-3xl mx-auto">

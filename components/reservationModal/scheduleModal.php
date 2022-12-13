@@ -2,42 +2,50 @@
     class="reserve-modal-schedule h-full w-full fixed bottom-0 justify-center items-center bg-black bg-opacity-50 hidden">
     <div class="flex flex-col-reverse w-full h-full">
         <!-- modal -->
-        <div class="bg-white rounded shadow-lg w-full h-5/6">
+        <div class="flex flex-col justify-between bg-white rounded shadow-lg w-full h-5/6">
             <!-- modal_header -->
-            <div class="px-3 items-center">
+            <div class="flex justify-between px-3 items-center h-1/8 border-b">
+                <svg
+                    class="beforeArrow_clschedule float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/>
+                </svg>
                 <div class="text-base text-center border-b-1 py-3">수업 일정을 선택하세요
-                    <svg
-                        class="close-modal float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
-                        id="close-modal"
-                        fill="currentColor"
-                        viewbox="0 0 20 20">
-                        <path
-                            fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0
-                                111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293
-                                4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
+
                 </div>
+                <svg
+                    class="close-modal float-right h-8 w-8 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
+                    id="close-modal"
+                    fill="currentColor"
+                    viewbox="0 0 20 20">
+                    <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0
+                            111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293
+                            4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
             </div>
             <!-- modal_body -->
-            <div class="class-schedule flex flex-col max-w-3xl mx-auto h-4/5">                
-                <div class="flex flex-col w-full bg-gray-50 rounded-lg px-4 py-2 shadow">                    
+            <div class="class-schedule flex flex-col max-w-3xl mx-auto h-3/4">                
+                <div class="flex flex-col w-full bg-gray-50 rounded-lg px-4 py-2 shadow h-full">                    
                     <div class = "flex max-w-3xl justify-around px-2 mb-2">
                         <div class = "flex">
                             <div class = "flex items-center">
                                 <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
                                 <span class = "ml-1 mr-2">예약 가능</span>
-                                <a class = "bg-gray-800 rounded-full px-1 py-1"></a>
-                                <span class = "ml-1 mr-2">예약 불가</span>
+                                <a class = "bg-gray-400 rounded-full px-1 py-1 ml-2"></a>
+                                <span class = "mx-1">예약 불가</span>   
                             </div>                    
                         </div>
                         <div class="flex ml-auto">
-                            <button onclick = "change_schedule_sm('before', 'header_s_sm', '_sm_l', '_sm')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
-                            <button onclick = "change_schedule_sm('after', 'header_s_sm', '_sm_l', '_sm')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
+                            <button id = "beforeDate_btn_cs" onclick = "change_schedule_sm('before', 'header_s_sm', '_sm_l', '_sm')" class = "disabled: border-2 border-gray-200 bg-gray-200 text-gray-50 px-1 py-1 rounded ml-1 mr-1">이전</button>
+                            <button id = "afterDate_btn_cs" onclick = "change_schedule_sm('after', 'header_s_sm', '_sm_l', '_sm')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                         </div>
                     </div>       
-                    <div id="schedule" class="flex flex-col h-96 overflow-auto">
+                    <div id="schedule" class="flex flex-col overflow-auto">
                         <div id="header_s_sm" class="flex mx-auto">
 
                         </div>
@@ -111,7 +119,7 @@
                 </div>   
             </div>
                 
-            <div class = "border-t flex items-center justify-between px-4">
+            <div class = "border-t flex items-center justify-between px-4 h-1/8">
                 <div class = "flex">
                     <span class = "cl-name mx-1 px-1 py-1 text-gray-500"></span>
                     <span class = "cl-time mx-1 px-1 py-1 text-gray-500"></span>

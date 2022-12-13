@@ -98,12 +98,12 @@ $classid = json_decode(file_get_contents("php://input"))->{"classid"}; // 수업
 $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
-$User_ID =  base64_decode($payload['User_ID']);
-// $User_ID = 32;
+// $User_ID =  base64_decode($payload['User_ID']);
+$User_ID = 32;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
-// $classid =  34;
+$classid =  34;
 
 //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
 $sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$User_ID}'";
@@ -166,7 +166,7 @@ JOIN User_Detail
 JOIN User_Teacher
   ON User_Teacher.User_Id = User_Detail.User_Id 
 JOIN Teacher_Schedule
-  ON Teacher_Schedule.User_Id = User_Detail.User_Id
+  ON Teacher_Schedule.User_Id_t = User_Detail.User_Id
  where User.User_Id = '$usid' ";
 $response3 = mysqli_query($conn, $sql);
 

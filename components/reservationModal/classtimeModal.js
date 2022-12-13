@@ -19,11 +19,22 @@ let cl_time_b = document.querySelectorAll(".cl-time");
 // 모달창 하단에 가격 표시하는 뷰 초기화
 let cl_price_b = document.querySelectorAll(".cl-price");
 
+// 수업 시간에서 이전 버튼 초기화
+let beforeArrow_cltime = document.querySelector(".beforeArrow_cltime");
+
 // 최종적으로 선택할 수업 시간 변수 
 let clTime_final;
 
 // 최종적으로 선택할 수업의 가격 변수
 let clPrice_final;
+
+// 만약 수업 상세에서 예약 클릭한 경우이면 이전 버튼 안보이게 처리
+if (checkStartpoint == "class") {
+    beforeArrow_cltime.style.visibility = 'hidden';
+}
+else {
+    beforeArrow_cltime.style.visibility = 'visible';
+}
 
 // 해당 수업의 가격 화면에 출력하는 함수
 async function getclassPrice_tm() {
@@ -123,6 +134,7 @@ function classtimeClick(price_and_number, price) {
             }
 
             name.innerHTML = string;
+            name.setAttribute("class", "cl-time text-xs cl-name mx-1 px-3 py-2 bg-gray-200 rounded-2xl text-gray-800 border border-gray-500 border-2")
         }
 
         // 다음버튼 활성화 여부 체크
@@ -178,6 +190,7 @@ function showPrice(price) {
     for (const text of cl_price_b) {
         
         text.innerHTML = string;
+        
     }
 }
 
@@ -219,6 +232,7 @@ function initTimeModal() {
     // 4. 모달창 하단에 클릭했던 수업시간 표시되는거 초기화
     for (const label of cl_time_b) {
         label.innerHTML = "";
+        label.setAttribute("class", "");
     }    
 }
 
@@ -226,18 +240,31 @@ function initTimeModal() {
 // 활성화된 다음버튼 클릭하면 수업 일정 선택하는 모달창 띄우고 이전 모달창들 없애기
 nextBtn_ct.addEventListener('click', function() {
 
-    // 수업 목록 모달, 수업 시간 모달, 수업일정 모달 값 가져오기
-    const classlistModal = document.querySelector('.reserve-modal-class');
+    // 수업 시간 모달, 수업일정 모달 값 가져오기    
     const classtimeModal = document.querySelector('.reserve-modal-time');
     const classscheduleModal = document.querySelector('.reserve-modal-schedule');
 
-    // 수업 목록, 수업시간 모달 없어지게 처리
-    classlistModal.classList.add('hidden');
+    // 수업시간 모달 없어지게 처리    
     classtimeModal.classList.add('hidden');
     // 수업 일정 모달 표시되게 처리
     classscheduleModal.classList.remove('hidden');
-
+    
     // 수업 일정 출력하는 함수
     getclassSchedule_sm();
     
 })
+
+const beforeClick_cltime = () => {
+
+    // 수업 목록 모달, 수업 시간 모달, 수업일정 모달 값 가져오기
+    const classlistModal = document.querySelector('.reserve-modal-class');
+    const classtimeModal = document.querySelector('.reserve-modal-time');
+
+     // 수업 목록 보이고 수업 시간 없어지게 처리
+     classlistModal.classList.remove('hidden');
+     classtimeModal.classList.add('hidden');
+};
+
+// 이전 버튼 클릭하면 수업 목록 모달창 띄우고 수업 시간 모달창 지우기
+beforeArrow_cltime.addEventListener('click', beforeClick_cltime);
+

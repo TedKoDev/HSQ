@@ -71,7 +71,7 @@ $timezone = $row1['0'].'</br>';
 
 
   
-$check = "SELECT * FROM Teacher_Schedule where User_Id_s = '$User_ID'";
+$check = "SELECT * FROM Teacher_Schedule where User_Id_t = '$User_ID'";
 $checkresult = mysqli_query($conn, $check);
 
 

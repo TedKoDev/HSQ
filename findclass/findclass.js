@@ -50,7 +50,7 @@ async function see_more() {
     more_num = more_num + 1;
         
     const body = {
-
+      kind: 'clist',
       plus : more_num,
     };
    
