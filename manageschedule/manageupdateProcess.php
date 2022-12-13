@@ -36,8 +36,8 @@ file_get_contents("php://input") . "<br/>";
 
 // 토큰 
 $token     =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰값 
-// $repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // 몇주 반복 여부  4, 8, 12 주  
-// $utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // 
+$repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // 몇주 반복 여부  4, 8, 12 주  
+$utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // 
 $plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일정 
 // $plan      =  '1669894200_1669896000_1669897800';
 // $plan      =  '1000_2000';

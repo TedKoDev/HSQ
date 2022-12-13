@@ -236,9 +236,9 @@ if ($kind == 'cdetail') {
     
       $send['class_add_id'] = $row1['0']; //수업id
     
-      $send['classid'] = $row1['2']; //수업 이름
-      $send['ctime'] = $row1['3']; // 수업 설명
-      $plan = $row1['4']; // utc 0 기준 예약한 시간 
+      $send['classid'] = $row1['3']; //수업 id
+      $send['ctime'] = $row1['4']; // 수업 시간 (30분 60분)
+      $plan = $row1['5']; // utc 0 기준 예약한 시간 
       $explodePlan = (explode("_", $plan)); // _기준으로 string 분해 
       $hour = 3600000; // 시간의 밀리초 
       $splanArray = array(); // utc 적용한 값 담을 배열 
@@ -254,21 +254,21 @@ if ($kind == 'cdetail') {
       $send['utcplan'] = $utc_plan;  //user의 timezone이 적용된 예약한 수업 일정 값 
     
     
-      $send['camemo'] = $row1['5']; // 수업인원
-      $send['status'] = $row1['6'];   //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done),4(후기완료 reply),
-      $send['cmethod'] = $row1['7']; // 신청한 수업 진행 방식
+      $send['camemo'] = $row1['6']; // 수업인원
+      $send['status'] = $row1['7'];   //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done),4(후기완료 reply),
+      $send['cmethod'] = $row1['8']; // 신청한 수업 진행 방식
     
-      $answerdate = $row1['8']; //응답한 시간 
+      $answerdate = $row1['9']; //응답한 시간 
       $send['answerdate'] = $answerdate * 1000;  //응답한 시간 js 에서 밀리초 단위이기 때문에 *1000 적용    
         
-      $send['cadate'] = $row1['9']; // 수업예약 신청한 시간 
-      $send['classid'] = $row1['10'];  // 수업 id 
-      $send['tusid'] = $row1['11'];  //강사의 userid
-      $send['cname'] = $row1['12']; //
-      $send['cdisc'] = $row1['13']; //
-      $send['cpeople'] = $row1['14']; //
-      $send['ctype'] = $row1['15']; //
-      $send['clevel'] = $row1['16']; //
+      $send['cadate'] = $row1['10']; // 수업예약 신청한 시간 
+      $send['classid'] = $row1['11'];  // 수업 id 
+      $send['tusid'] = $row1['12'];  //강사의 userid
+      $send['cname'] = $row1['13']; //
+      $send['cdisc'] = $row1['14']; //
+      $send['cpeople'] = $row1['15']; //
+      $send['ctype'] = $row1['16']; //
+      $send['clevel'] = $row1['17']; //
     
     
       array_push($result1['result'], $send);
@@ -459,7 +459,7 @@ if ($kind == 'cdetail') {
     } else {
 
       $result["success"]   =  "no";
-      echo json_encode($result1);
+      echo json_encode($result);
       mysqli_close($conn);
     }
   } 

@@ -56,7 +56,7 @@ $timezone = $row1['0'].'</br>';
 
 
 
-$sql = "SELECT Schedule, Status FROM Teacher_Schedule WHERE User_Id_t = '$User_ID'";
+$sql = "SELECT Schedule Status FROM Teacher_Schedule WHERE User_Id_t = '$User_ID'";
 $response2 = mysqli_query($conn, $sql);
 
 $result2['Schedule'] = array();

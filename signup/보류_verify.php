@@ -47,7 +47,7 @@ if ($password == $hashedPassword) {
 
 } else {
     // 로그인 실패 
-echo 'dsf';
+
     $send["message"] = "no";
 
     echo json_encode($send);

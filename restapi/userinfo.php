@@ -65,7 +65,7 @@ file_get_contents("php://input") . "<br/>";
 $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; // 필요 정보 종류 
 // $kind          =  'ulist'; // 필요 정보 종류 
 // $kind          =  'udetail'; // 필요 정보 종류 
-$fusid         =   json_decode(file_get_contents("php://input"))->{"fusid"}; // 필요 정보 종류 
+$fusid         =   json_decode(file_get_contents("php://input"))->{"fusid"}; // 
 // $fusid         =   4; // 필요 정보 종류 
 //ulist    유저리스트 
 //udetail  유저 상세 (검색할 user_id가 필요함  fusid ) 
@@ -97,8 +97,8 @@ $udtz         =   json_decode(file_get_contents("php://input"))->{"udtz"};     /
 
 $utintro      =   json_decode(file_get_contents("php://input"))->{"utintro"};  // U_T_Intro (강사 자기소개)
 $utcerti      =   json_decode(file_get_contents("php://input"))->{"utcerti"};  // U_T_Certificate (자격증정보)
-$utagree      =   json_decode(file_get_contents("php://input"))->{"utspec"};   // U_T_Agreement (강사 허가 여부) 
-$utspec       =   json_decode(file_get_contents("php://input"))->{"utdate"};   // U_T_Special (전문가 여부 ) 
+$utagree      =   json_decode(file_get_contents("php://input"))->{"utagree"};   // U_T_Agreement (강사 허가 여부) 
+$utspec       =   json_decode(file_get_contents("php://input"))->{"utspec"};   // U_T_Special (전문가 여부 ) 
 $utdate       =   json_decode(file_get_contents("php://input"))->{"utdate"};   // U_T_Date (강사 신청일) 
 
 // $uemail       =  1;  // U_Email (Email)

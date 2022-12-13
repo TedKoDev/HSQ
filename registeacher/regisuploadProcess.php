@@ -196,25 +196,19 @@ if (isset($_FILES['img'])) {
 
 
 
-//강사 전환 부분 
+// //강사 전환 부분 
 
-if($check1 = 1 && $check2 =1 ){
-    $select = "UPDATE User_Detail SET U_D_T_add = 'yes' where User_Id = '$User_ID'";  
-    $result9 = mysqli_query($conn, $select);
+// if($check1 = 1 && $check2 =1 ){
+//     $select = "UPDATE User_Detail SET U_D_T_add = 'yes' where User_Id = '$User_ID'";  
+//     $result9 = mysqli_query($conn, $select);
 
     
-    $send["tadd"]   =  "yes";
-    // echo json_encode( $send);
+//     $send["tadd"]   =  "yes";
+//     // echo json_encode( $send);
  
-}else {
+// }else {
 
-    $send["tadd"]   =  "no";
-    // echo json_encode( $send);
-}
+//     $send["tadd"]   =  "no";
+//     // echo json_encode( $send);
+// }
 ?>
-<!-- <script>
-
-    등록 완료 되면강사 페이지의 내 수업으로 이동
-    alert("강사 등록되었습니다.");
-    location.replace('../teacherpage/t_myclass.php');
-</script> -->
