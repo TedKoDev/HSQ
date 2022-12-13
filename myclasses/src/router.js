@@ -3,7 +3,7 @@ import { notfound } from "./pages.js";
 
 
 function Router($container) {
-  this.$container = $container;
+  this.$container = $container;  
   let currentPage = undefined; 
 
   
@@ -13,14 +13,12 @@ function Router($container) {
   const route = () => {
     currentPage = null;    
 
-    console.log("location.pathname : "+location.pathname);
-    
     const TargetPage = findMatchedRoute()?.element || notfound;
     currentPage = new TargetPage(this.$container);    
   };
 
   const init = () => {
-    window.addEventListener("historychange", ({ detail }) => {
+    window.addEventListener("classtypeChange", ({ detail }) => {
 
       const { to, isReplace } = detail;
       

@@ -1,8 +1,16 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie } from "/commenJS/cookie_modules.js";
+import { responseAll, responseApproved, responseNotapproved, responseDone, responseCanceled } from "../myclasses.js";
+
+// 담을 json 목록
+// let responseAll;
+// let responseApproved;
+// let responseNotapproved;
+// let responseDone;
+// let responseCanceled;
 
 export function all($container) {
-    this.$container = $container;
+    this.$container = $container;    
         
     this.setState = () => {
       this.render();
@@ -15,6 +23,8 @@ export function all($container) {
         </main>
       `;
 
+      console.log(responseAll);
+
       changeSelectBtnStyle($("#allCl"))
 
       
@@ -24,7 +34,7 @@ export function all($container) {
 }
 
 export function notapproved($container) {
-    this.$container = $container;
+    this.$container = $container;    
   
     this.setState = () => {
       this.render();
@@ -35,7 +45,9 @@ export function notapproved($container) {
         <main class="mainPage">
           예약되지 않은 수업
         </main>
-      `;
+      `;      
+      
+      console.log(responseNotapproved);
 
       changeSelectBtnStyle($("#notApprovedCl"))
     };
@@ -43,9 +55,9 @@ export function notapproved($container) {
     this.render();
 }
 
-export async function approved($container) {
+export function approved($container) {
     this.$container = $container;
-  
+   
     this.setState = () => {
       this.render();
     };
@@ -57,14 +69,16 @@ export async function approved($container) {
         </main>
       `;
 
+      console.log(responseApproved);
+
       changeSelectBtnStyle($("#approvedCl"))
     };
   
     this.render();
 }
 
-export async function done($container) {
-    this.$container = $container;
+export function done($container) {
+    this.$container = $container;    
   
     this.setState = () => {
       this.render();
@@ -77,14 +91,16 @@ export async function done($container) {
         </main>
       `;
 
+      console.log(responseDone);
+      
       changeSelectBtnStyle($("#doneCl"))
     };
   
     this.render();
 }
 
-export async function canceled($container) {
-    this.$container = $container;
+export function canceled($container) {
+    this.$container = $container;    
   
     this.setState = () => {
       this.render();
@@ -96,6 +112,8 @@ export async function canceled($container) {
           취소된 수업
         </main>
       `;
+
+      console.log(responseCanceled);
 
       changeSelectBtnStyle($("#canceledCl"))
     };
@@ -122,6 +140,7 @@ export async function notfound($container) {
     this.render();
 }
 
+// 클릭한 타입의 텍스트 굵게 하고 하단에 색깔 칠하기
 const changeSelectBtnStyle = (target) => {
 
   const classType = $_all(".classType");
