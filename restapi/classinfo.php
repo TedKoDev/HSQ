@@ -167,35 +167,58 @@ if ($kind == 'cdetail') {
 
   if ($clReserveCheck  == null) {
 
+
     $result1['result'] = array();
     $result2['timeprice'] = array();
-
-
+  
+  
     //수업 상세 정보 
-    $Clist_Sql = "SELECT $string FROM Class_List WHERE CLass_Id = '{$classid}'";
+    $Clist_Sql = "SELECT * FROM Class_List WHERE Class_Id = '{$classid}'";
     $response1 = mysqli_query($conn, $Clist_Sql);
-
+  
     $row1 = mysqli_fetch_array($response1);
-
-    foreach ($response1 as $key) {
-
-      array_push($result1['result'], $key);
+  
+  
+    $clid = $row1['0'];
+    $tusid = $row1['1'];
+  
+    $send['CLass_Id'] = $row1['0'];
+  
+    $send['User_Id'] = $row1['1'];
+    if ($clname != null) {
+      $send['CL_Name'] = $row1['2'];
     }
-    // echo json_encode($result4);
-
+    if ($cldisc != null) {
+      $send['CL_Disc'] = $row1['3'];
+    }
+    if ($clpeople != null) {
+      $send['CL_People'] = $row1['4'];
+    }
+    if ($cltype != null) {
+      $send['CL_Type'] = $row1['5'];
+    }
+    if ($cllevel != null) {
+      $send['CL_Level'] = $row1['6'];
+    }
+  
+  
+  
+  
     //Class_List_Time_Price 수업 시간, 가격 확인   
-    $Cltp_Sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$classid'";
-
+    $Cltp_Sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+  
+  
     if ($clprice != null) {
       $response2 = mysqli_query($conn, $Cltp_Sql);
       while ($row2 = mysqli_fetch_array($response2)) {
+  
         $send1 = $row2['3'];
         array_push($result2['timeprice'], $send1);
       }
       $send['tp'] = $result2['timeprice'];
     }
-
-
+  
+  
     array_push($result1['result'], $send);
     echo json_encode($result1);
     mysqli_close($conn);
@@ -445,65 +468,48 @@ if ($kind == 'cdetail') {
 } else if ($kind == 'tclist') {
   // 필요한 값이 특정 강사의 수업 목록 이면 
 
-  $result1['data'] = array();
-  $result3['result'] = array();
-  $result2['timeprice'] = array();
 
 
-
-  $list = array();
-  array_push($list, 'CLass_Id');
-  if ($clname != null) {
-    array_push($list, 'CL_Name');
-  }
-  if ($cldisc != null) {
-    array_push($list, 'CL_Disc');
-  }
-  if ($clpeople != null) {
-    array_push($list, 'CL_People');
-  }
-  if ($cltype != null) {
-    array_push($list, 'CL_Type');
-  }
-  if ($cllevel != null) {
-    array_push($list, 'CL_Level');
-  }
-
-  $string = implode(",", $list);
-
-
+$result3['result'] = array();
+$result1['data'] = array();
+$result2['timeprice'] = array();
   //Class_List에 수업 목록확인  
-  $sql = "SELECT  $string FROM Class_List WHERE User_Id_t = '{$tusid}'";
+  $sql = "SELECT * FROM Class_List WHERE User_Id = '{$tusid}'";
   $response1 = mysqli_query($conn, $sql);
 
-  foreach ($response1 as $key) {
 
 
-    // echo key($key); // 키
-    // echo current($key); // 값
-    $clid = current($key); // 값
+  while ($row1 = mysqli_fetch_array($response1)) {
+    $clid = $row1['0'];
 
-    array_push($result1['data'], $key);
-
-
-
-
+   
+    $send1['class_id'] = $row1['0'];
+    if ($clname != null) {
+    $send1['clname'] = $row1['2'];}//수업이름
+    if ($cldisc != null) {
+    $send1['cldisc'] = $row1['3'];} // 수업 소개 
+    if ($clpeople != null) {
+    $send1['clpeople'] = $row1['4'];}
+    if ($cltype != null) {
+    $send1['cltype'] = $row1['5'];}
+    if ($cllevel != null) {
+    $send1['cllevel'] = $row1['6'];}
 
     if ($clprice != null) {
-      //Class_List_Time_Price 수업 시간, 가격 확인   
-      $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
-      $response2 = mysqli_query($conn, $sql);
+    //Class_List_Time_Price 수업 시간, 가격 확인   
+    $sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+    $response2 = mysqli_query($conn, $sql);
 
-      while ($row2 = mysqli_fetch_array($response2)) {
+    while ($row2 = mysqli_fetch_array($response2)) {
+   
+      $tp= $row2['3'];
 
-        $tp = $row2['3'];
-
-        array_push($result2['timeprice'], $tp);
-      }
-
-
-      $send1['tp'] = $result2['timeprice'];
+      array_push($result2['timeprice'], $tp);
     }
+    
+
+    $send1['tp'] = $result2['timeprice'];
+  }
 
 
 
@@ -514,8 +520,9 @@ if ($kind == 'cdetail') {
   array_push($result3['result'], $send);
   $result3["success"] = "1";
   echo json_encode($result3);
-  mysqli_close($conn);
 
+
+  mysqli_close($conn);
 
 
 } else if ($kind == 'tcdetail'){

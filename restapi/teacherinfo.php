@@ -94,37 +94,17 @@ $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
 }
 
 
-
-
-$list = array();
-
-array_push($list, 'User.U_Name');
-if ($tspecial != null) {
-  array_push($list, 'User_Teacher.U_T_Special');
-}
-if ($timg != null) {
-  array_push($list, 'User_Detail.U_D_Img');
-}
-if ($tlanguage != null) {
-  array_push($list, 'User_Detail.U_D_Language');
-}
-if ($intro != null) {
-  array_push($list, 'User_Detail.U_D_Intro');
-}
-if ($tintro != null) {
-  array_push($list, 'User_Teacher.U_T_Intro');
-}
-if ($tcountry != null) {
-  array_push($list, 'User_Detail.U_D_Country');
-}
-if ($tresidence != null) {
-  array_push($list, 'User_Detail.U_D_Residence');
-}
-
-echo $string = implode(",", $list);
-
 //Class_List에 수업 목록확인  
-$sql = "SELECT $string FROM User
+$sql = "SELECT 
+User.U_Name, 
+User_Teacher.U_T_Special,  
+User_Detail.U_D_Img,
+User_Detail.U_D_Language,
+User_Detail.U_D_Intro,
+User_Teacher.U_T_Intro ,
+User_Detail.U_D_Country,
+User_Detail.U_D_Residence
+FROM User
 JOIN User_Detail
   ON User.User_ID = User_Detail.User_Id
 JOIN User_Teacher
@@ -138,15 +118,27 @@ $row1 = mysqli_fetch_array($response1);
 
 $send['U_Name'] = $row1['0'];
 
-$send['U_T_Special'] = $row1['1'];
+if ($tspecial != null) {
+$send['U_T_Special'] = $row1['1'];}
 
-$send['U_D_Img'] = $row1['2'];
-$send['U_D_Language'] = $row1['3'];
-$send['U_D_Intro'] = $row1['4'];
-$send['U_T_Intro'] = $row1['5'];
-$send['U_D_Country'] = $row1['6'];
+if ($timg != null) {
+$send['U_D_Img'] = $row1['2'];}
+
+if ($tlanguage != null) {
+$send['U_D_Language'] = $row1['3'];}
+
+if ($intro != null) {
+$send['U_D_Intro'] = $row1['4'];}
+
+if ($tintro != null) {
+$send['U_T_Intro'] = $row1['5'];}
+
+if ($tcountry != null) {
+$send['U_D_Country'] = $row1['6'];}
+
+if ($tresidence != null) {
 $send['U_D_Residence'] = $row1['7'];
-
+}
 
 
 
@@ -157,6 +149,8 @@ echo json_encode($result3);
 
 
 mysqli_close($conn);
+
+
 
 
 } else {
