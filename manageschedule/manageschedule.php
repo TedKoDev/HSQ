@@ -17,9 +17,9 @@
     </style>
     <body class="bg-gray-100">
         <!-- 네비바 -->
-        <?php include '../components/navbar.php' ?>
+        <?php include '../components/navbar/navbar.php' ?>
         <!-- 강사용 네비바 -->
-        <?php include '../components/navbar_t.php' ?>
+        <?php include '../components/navbar/navbar_t.php' ?>
         <br><br>
         <div>
             <div

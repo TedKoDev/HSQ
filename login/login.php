@@ -6,17 +6,17 @@
     <link href="../dist/output.css" rel="stylesheet">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
   </head>  
-  <script defer src = "../commenJS/cookie.js"></script> 
+  <script defer src = "/commenJS/cookie.js"></script> 
   <script src = "./login.js"></script>  
   <body class = "bg-gray-100">   
     <!-- 네비바 -->
-    <?php include '../components/navbar.php' ?>
+    <?php include '../components/navbar/navbar.php' ?>
     <!-- 로그인 블록 -->
     <br>
     <div class = "max-w-3xl mx-auto">
       <div class = "flex justify-center">
         <div class = "max-w-md mr-8">                  
-            <img class = "w-100 h-100 rounded-lg" src = "<?php echo $hs_url; ?>images_forHS/광장.PNG"></img>            
+            <img class = "w-100 h-100 rounded-lg" src = "/images_forHS/광장.PNG"></img>            
         </div>
         <div class = "flex flex-col max-w-lg bg-gray-50 px-4 py-4 shadow rounded-lg">
           <div>

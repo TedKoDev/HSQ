@@ -1,7 +1,7 @@
 // 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
 
 // 해당 유저의 utc 가져온후 date에 가져온 utc 적용
-
+let checkCookie = getCookie("user_info");
 get_utc(checkCookie);
 
 // 서버에서 받아온 타임존 대입할 선언

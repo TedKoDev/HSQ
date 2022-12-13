@@ -6,11 +6,11 @@
         <link href="../dist/output.css" rel="stylesheet">
     </head>
     <script defer="defer" src="../commenJS/cookie.js"></script>
+    <script defer="defer" src="./teacherdetail.js"></script>
     <script defer="defer" src="../components/reservationModal/classlistModal.js"></script>
     <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
     <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>
-    <script defer="defer" src="../components/reservationModal/streamingtoolModal.js"></script>
-    <script defer="defer" src="./teacherdetail.js"></script>
+    <script defer="defer" src="../components/reservationModal/streamingtoolModal.js"></script>    
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
         .scrollLock {
@@ -20,7 +20,7 @@
     </style>
     <body class="bg-gray-100">
         <!-- 네비바 -->
-        <?php include '../components/navbar.php' ?>
+        <?php include '../components/navbar/navbar.php' ?>
         <br>
         <div class="flex max-w-4xl mx-auto justify-between">
             <div class="flex flex-col w-3/4  bg-gray-50 rounded-lg px-4 py-2 mb-3 shadow">
@@ -110,13 +110,15 @@
                 
                 <div class = "flex max-w-3xl justify-around px-2 mb-2">
                     <div class = "flex">
-                        <div class = "flex items-center">
+                        <div class = "flex items-center">                            
                             <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
-                            <span class = "ml-1">예약 가능</span>
+                            <span class = "mx-1">예약 가능</span>                           
+                            <a class = "bg-gray-400 rounded-full px-1 py-1 ml-2"></a>
+                            <span class = "mx-1">예약 불가</span>                            
                         </div>                    
                     </div>
                     <div class="flex ml-auto">
-                        <button onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
+                        <button id = "beforeDate_btn" onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
                         <button onclick = "change_schedule('after', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                     </div>
                 </div>       

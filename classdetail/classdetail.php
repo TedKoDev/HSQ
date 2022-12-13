@@ -5,8 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="../dist/output.css" rel="stylesheet">
     </head>
-    <script defer="defer" src="../commenJS/cookie.js"></script>
+    <script defer="defer" src="/commenJS/cookie.js"></script>
     <script defer="defer" src="./classdetail.js"></script>
+    <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>
+    <script defer="defer" src="../components/reservationModal/streamingtoolModal.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
         .scrollLock {
@@ -16,7 +19,7 @@
     </style>
     <body class="bg-gray-100">
         <!-- 네비바 -->
-        <?php include '../components/navbar.php' ?>
+        <?php include '../components/navbar/navbar.php' ?>
         <br>
         <div class="flex max-w-4xl mx-auto justify-between">
             <div class="flex flex-col w-3/4 bg-gray-50 rounded-lg px-4 py-2 mb-3 shadow">
@@ -41,7 +44,7 @@
                     <div>60분 : <span id = "c_price60"></span>$</div> 
                 </div>                
                 <div class = "px-4 py-2 text-center ">
-                    <div class = " bg-blue-500 hover:bg-blue-600 text-white rounded-lg border-blue-900 px-1 py-1 my-1">수업 예약</div>
+                    <div class = "show-reserve bg-blue-500 hover:bg-blue-600 text-white rounded-lg border-blue-900 px-1 py-1 my-1">수업 예약</div>
                     <div class = " bg-gray-500 hover:bg-gray-600 text-white rounded-lg border-gray-900 px-1 py-1 my-1">강사에게 연락하기</div>
                 </div>
             </div>
@@ -81,10 +84,12 @@
                         <div class = "flex items-center">
                             <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
                             <span class = "ml-1">예약 가능</span>
+                            <a class = "bg-gray-400 rounded-full px-1 py-1 ml-2"></a>
+                            <span class = "mx-1">예약 불가</span>      
                         </div>                    
                     </div>
                     <div class="flex ml-auto">                       
-                        <button onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
+                        <button id = "beforeDate_btn" onclick = "change_schedule('before', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">이전</button>
                         <button onclick = "change_schedule('after', 'header_s', '_l', '')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
                     </div>
                 </div>       
@@ -197,6 +202,12 @@
                 </div>
                 <a class = "w-16 mt-2 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">예약하기</a>               
             </div>                            
-        </div>         
+        </div>             
+        <!-- 수업 시간 모달창(예약) -->   
+        <?php include '../components/reservationModal/classtimeModal.php'?>
+        <!-- 수업 일정 모달창(예약) -->   
+        <?php include '../components/reservationModal/scheduleModal.php'?>
+        <!-- 커뮤니케이션 도구 모달창(예약) -->   
+        <?php include '../components/reservationModal/streamingtoolModal.php'?>   
     </body>    
 </html>
