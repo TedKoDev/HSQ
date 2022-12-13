@@ -19,11 +19,11 @@ async function getclassList_cm(tusid) {
     const body = {
 
         kind: 'tclist',
-        tusid: tusid,
-        clname: 1,
-        cltype: 1,
-        cllevel: 1,
-        clprice: 1
+        user_id_teacher: tusid,
+        class_name: 1,
+        class_type: 1,
+        class_level: 1,
+        class_price: 1
     };
     const res = await fetch('../restapi/classinfo.php', {
         method: 'POST',
@@ -48,9 +48,9 @@ async function getclassList_cm(tusid) {
     for (let i = 0; i < classList.length; i++) {
 
         const clid = classList[i].class_id;
-        const clname = classList[i].clname;
-        const cllevel = classList[i].cllevel;
-        const cltype = classList[i].cltype;
+        const clname = classList[i].class_name;
+        const cllevel = classList[i].class_level;
+        const cltype = classList[i].class_type;
         const price30 = classList[i].tp[0];
         const price60 = classList[i].tp[1];
 

@@ -28,7 +28,7 @@ async function getClassList(type, response) {
 
     kind: 'clist',
     token: getCookie(cookieName),
-    clReserveCheck: type,      
+    class_reserve_check: type,      
     };
     const res = await fetch('/restapi/classinfo.php', {
     method: 'POST',

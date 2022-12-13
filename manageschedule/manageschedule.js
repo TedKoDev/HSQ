@@ -37,7 +37,7 @@ async function get_utc(tokenValue) {
 
       const response = await res.json();  
       const success = response.success;
-      timezone = response.timezone;
+      timezone = response.user_timezone;
 
       if (success == "yes") {
 
@@ -229,7 +229,7 @@ async function setschedule(type, for_modal) {
     
     const response = await res.json();   
     const check = response.success; 
-    schedule_string = response.schedule;  
+    schedule_string = response.schedule_list;  
       
 
     // 값이 있을 경우에만 추출해서 대입
@@ -374,7 +374,8 @@ async function edit_done() {
     const body = {
 
         token: checkCookie,
-        plan: send_string,  
+        schedule_list: send_string,  
+        user_timezone: timezone
 
         };
     const res = await fetch('./manageupdateProcess.php', {
@@ -428,7 +429,8 @@ async function upload_done() {
  
          token: checkCookie,
          repeat: check_value,
-         plan: send_string,  
+         schedule_list: send_string,  
+         user_timezone: timezone
  
          };
      const res = await fetch('./manageuploadProcess.php', {

@@ -81,13 +81,13 @@ function setClassinfo(response) {
     for (let i = 0; i < res_array.length; i++) {
 
         let class_id = res_array[i].class_id;
-        let teacher_id = res_array[i].tusid;
-        let clname = res_array[i].clname;
-        let cldisc = res_array[i].cldisc;
-        let cltype = res_array[i].cltype;
-        let cllevel = res_array[i].cllevel;
-        let user_name = res_array[i].U_Name;
-        let user_img = res_array[i].U_D_Img;
+        let teacher_id = res_array[i].user_id_teacher;
+        let clname = res_array[i].class_name;
+        let cldisc = res_array[i].class_description;
+        let cltype = res_array[i].class_type;
+        let cllevel = res_array[i].class_level;
+        let user_name = res_array[i].user_name;
+        let user_img = res_array[i].user_img;
 
         // 유저 이미지 값이 없으면 디폴트 이미지로 표시 표시
         if (user_img == 'default' || user_img == null) {

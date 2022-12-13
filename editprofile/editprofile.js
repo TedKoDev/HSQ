@@ -55,17 +55,17 @@
       const userinfo_parse = JSON.parse(userinfo_json);
 
       
-      const user_name = userinfo_parse.name;      
-      const user_p_img = userinfo_parse.p_img; 
-      const user_bday = userinfo_parse.bday; 
-      const user_sex = userinfo_parse.sex; 
-      const user_contact = userinfo_parse.contact; 
-      const user_country = userinfo_parse.country; 
-      const user_residence = userinfo_parse.residence;   
-      const user_timezone = userinfo_parse.timezone;    
-      const user_language = userinfo_parse.language; 
-      const user_korean = userinfo_parse.korean;       
-      const user_intro = userinfo_parse.intro; 
+      const user_name = userinfo_parse.user_name;      
+      const user_p_img = userinfo_parse.user_img; 
+      const user_bday = userinfo_parse.user_birthday; 
+      const user_sex = userinfo_parse.user_sex; 
+      const user_contact = userinfo_parse.user_contact; 
+      const user_country = userinfo_parse.user_country; 
+      const user_residence = userinfo_parse.user_residence;   
+      const user_timezone = userinfo_parse.user_timezone;    
+      const user_language = userinfo_parse.user_language; 
+      const user_korean = userinfo_parse.uesr_korean;       
+      const user_intro = userinfo_parse.user_intro; 
 
       // const user_intro_parsing = user_intro.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
 
@@ -1112,7 +1112,7 @@
       const body = {
         token: token,
         position: position,
-        desc: desc,
+        class_description: desc,
       };
       const res = await fetch('./editprofileProcess.php', {
         method: 'POST',
