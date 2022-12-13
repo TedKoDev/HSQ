@@ -209,7 +209,7 @@ myinfo.addEventListener('click', goMyinfo)
 // 내 수업 클릭시
 const goMyclasses = () =>  {
   
-  location.assign("/myclasses/myclasses.php");
+  location.assign("/myclasses/all/");
 }
 const myclass = document.getElementById("myclasses");
 myclass.addEventListener('click', goMyclasses);

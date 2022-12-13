@@ -21,7 +21,7 @@
                 <!-- 강사,수업, 커뮤니티 -->
                 <div class="hidden md:flex items-center space-x-1 ml-3">
                     <a
-                        href="/findteacher/"
+                        href="/findteacher/findteacher.php"
                         class="py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded">강사</a>
                     <a
                         href="/findclass/findclass.php"

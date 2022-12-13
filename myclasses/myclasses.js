@@ -1,3 +1,11 @@
+import App from "./src/classList.js";
+import { $ } from "/utils/querySelector.js";
+
+// 처음 로드되면 유형에 맞는 내 수업 렌더링 
+window.addEventListener("DOMContentLoaded", (e) => {
+  new App($("#classList"));
+});
+
 
 // 수업 유형 클릭할 때마다 하단에 파란줄 위치 변경
 const allCl = document.getElementById("allCl");
@@ -7,24 +15,24 @@ const doneCl = document.getElementById("doneCl");
 const cancelCL = document.getElementById("cancelCl");
 
 // 버튼 선택
-function selectClasstype(type) {  
+// function selectClasstype(type) {  
     
-    if (type == 'all') {
-      changeSelectBtnStyle(allCl, notApprovedCl, waitingCl, doneCl, cancelCL);  
-    }    
-    else if (type == 'notApproved') {
-      changeSelectBtnStyle(notApprovedCl, allCl, waitingCl, doneCl, cancelCL);      
-    }  
-    else if (type == 'waiting') {
-      changeSelectBtnStyle(waitingCl, allCl, notApprovedCl, doneCl, cancelCL);      
-    } 
-    else if (type == 'done') {
-      changeSelectBtnStyle(doneCl, allCl, notApprovedCl, waitingCl, cancelCL);      
-    } 
-    else if (type == 'cancel') {
-      changeSelectBtnStyle(cancelCL, allCl, notApprovedCl, waitingCl, doneCl);      
-    }
-}
+//     if (type == 'all') {
+//       changeSelectBtnStyle(allCl, notApprovedCl, waitingCl, doneCl, cancelCL);  
+//     }    
+//     else if (type == 'notApproved') {
+//       changeSelectBtnStyle(notApprovedCl, allCl, waitingCl, doneCl, cancelCL);      
+//     }  
+//     else if (type == 'waiting') {
+//       changeSelectBtnStyle(waitingCl, allCl, notApprovedCl, doneCl, cancelCL);      
+//     } 
+//     else if (type == 'done') {
+//       changeSelectBtnStyle(doneCl, allCl, notApprovedCl, waitingCl, cancelCL);      
+//     } 
+//     else if (type == 'cancel') {
+//       changeSelectBtnStyle(cancelCL, allCl, notApprovedCl, waitingCl, doneCl);      
+//     }
+// }
 
 // 버튼 선택에 따른 스타일 변경
 function changeSelectBtnStyle (change, reset1, reset2, reset3, reset4) {

@@ -3,24 +3,24 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="../dist/output.css" rel="stylesheet">
+        <link href="/dist/output.css" rel="stylesheet">
     </head>    
-    <script defer = "defer" src="./myclasses.js"></script>
+    <script type="module" defer = "defer" src="../myclasses.js"></script>
 
     <script></script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
-        <?php include '../components/navbar/navbar.php' ?>          
+        <?php include '../../components/navbar/navbar.php' ?>          
         <!-- 수업 유형(모든수업, 예약되지 않은 수업, 대기중인 수업, 완료된 수업) -->
-        <div class = "flex bg-gray-50 border-y-2 border-gray-200 px-4">
-            <button id = "allCl" onclick = "selectClasstype('all')" class = "mx-2 py-5 font-semibold text-sm border-b-4 border-blue-400 text-gray-800">모든 수업</button>
-            <button id = "notApprovedCl" onclick = "selectClasstype('notApproved')" class = "mx-2 py-5 text-sm text-gray-600">예약되지 않은 수업</button>
-            <button id = "waitingCl" onclick = "selectClasstype('waiting')" class = "mx-2 py-5 text-sm text-gray-600">대기중인 수업</button>
-            <button id = "doneCl" onclick = "selectClasstype('done')" class = "mx-2 py-5 text-sm text-gray-600">완료된 수업</button>
-            <button id = "cancelCl" onclick = "selectClasstype('cancel')" class = "mx-2 py-5 text-sm text-gray-600">취소된 수업</button>
+        <div class = "navbar flex bg-gray-50 border-y-2 border-gray-200 px-4">
+            <a href = "/myclasses/all/" id = "allCl" class = "classType mx-2 py-5 font-semibold text-sm border-b-4 border-blue-400 text-gray-800">모든 수업</a>
+            <a href = "/myclasses/notapproved/"  id = "notApprovedCl" class = "classType mx-2 py-5 text-sm text-gray-600">예약되지 않은 수업</a>
+            <a href = "/myclasses/approved/"  id = "waitingCl" class = "classType mx-2 py-5 text-sm text-gray-600">대기중인 수업</a>
+            <a href = "/myclasses/done/"  id = "doneCl" class = "classType mx-2 py-5 text-sm text-gray-600">완료된 수업</a>
+            <a href = "/myclasses/canceled/"  id = "cancelCl" class = "classType mx-2 py-5 text-sm text-gray-600">취소된 수업</a>
         </div>
         <br>
-        <div class = "classList flex flex-col w-1/2 mx-auto">
+        <div id = "classList" class = "classList flex flex-col w-1/2 mx-auto">
             <div class = "flex w-full bg-gray-50 rounded-lg shadow border border-gray-200 py-2 hover:">
                 <div class = "flex flex-col w-1/5 text-center">
                     <span class = "text-xs text-gray-500">완료됨</span><span class = "text-lg font-semibold">10</span><span class = "text-xs text-gray-700">12월</span>
