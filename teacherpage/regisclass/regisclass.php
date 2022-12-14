@@ -6,7 +6,7 @@
         <link href="/dist/output.css" rel="stylesheet">
     </head>
     <script defer="defer" src="/commenJS/cookie.js"></script>
-    <script src="./regisclass.js"></script>
+    <script defer = "defer" src="./regisclass.js"></script>
 
     <body class="bg-gray-100">
         <!-- 네비바 -->

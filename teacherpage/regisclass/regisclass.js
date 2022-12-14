@@ -1,3 +1,6 @@
+// 쿠기 값(토큰) 가져오기
+let tokenValue = getCookie(cookieName);   
+
 let type_num = 0;
 let type_array = new Array();
 
@@ -95,10 +98,12 @@ async function regisclass_btn() {
 
     let test = JSON.stringify(price_array);
 
+    console.log(test);
+
     console.log("level_total : "+level_total);
 
     let body = {
-        token: checkCookie,
+        token: tokenValue,
         class_name: cname,
         class_description: cintro,
         class_people: 1,
@@ -112,7 +117,7 @@ async function regisclass_btn() {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
-    }).then(alert("수업이 등록되었습니다."), location.replace('../myclass/myclass.php'))
+    }).then(alert("수업이 등록되었습니다."), location.replace('../t_myclass/t_myclass.php'))
 
     let response = await res.json();
 

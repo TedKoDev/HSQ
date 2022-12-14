@@ -5,7 +5,7 @@
 
 //1. "token"    : "토큰값".
 //2. "class_name"    : "수업명".
-//3. "class_intro"   : "수업소개".
+//3. "class_description"   : "수업소개".
 //4. "class_timeprice"     : "[{"class_time":"30","class_price":"10"},{"class_time":"40","class_price":"20"},{"class_time":"50","class_price":"30"}]" 
 
 //5. "class_people"   : "수업인원" 
@@ -17,7 +17,7 @@
 // {
 //  "token"    : "토큰값".
 //  "class_name"    : "수업명".
-//  "class_intro"   : "수업소개".
+//  "class_description"   : "수업소개".
 //  "class_timeprice"     :  "[{"class_time":"30","class_price":"10"},{"class_time":"40","class_price":"20"},{"class_time":"50","class_price":"30"}]" 
 
 //  "class_people"   : "수업인원" 
@@ -42,18 +42,19 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
 $class_name      =   json_decode(file_get_contents("php://input"))->{"class_name"}; // 수업명 
-$class_intro     =   json_decode(file_get_contents("php://input"))->{"class_intro"}; //수업소개
+$class_description     =   json_decode(file_get_contents("php://input"))->{"class_description"}; //수업소개
 $class_timeprice  =   json_decode(file_get_contents("php://input"))->{"class_timeprice"};  //수업시간, 수업가격 
 $class_people     =   json_decode(file_get_contents("php://input"))->{"class_people"};  //수업인원
 $class_type       =   json_decode(file_get_contents("php://input"))->{"class_type"};  //수업유형 
 $class_level       =   json_decode(file_get_contents("php://input"))->{"class_level"};  //수업수준
+// $class_timeprice       =   json_decode(file_get_contents("php://input"))->{"class_timeprice"};  //수업수준
 
 
 
 
 // date_default_timezone_set('Asia/Seoul');
 // $time_now = date("Y-m-d H:i:s");
-error_log("$token, $class_name, $class_intro,$class_timeprice,$class_people,$class_type ,$class_level  \n", "3", "../php.log");
+error_log("$token, $class_name, $class_description,$class_timeprice,$class_people,$class_type ,$class_level ,$class_timeprice \n", "3", "../php.log");
 
 
 //토큰 해체 
@@ -71,7 +72,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 // Class_List에 수업 등록 
-$result = "INSERT INTO Class_List (user_id_teacher, class_name, class_description, class_people, class_type, class_level,  class_open_date) VALUES ('$User_ID','$class_name','$class_intro','$class_people','$class_type','$class_level', now()) ";
+$result = "INSERT INTO Class_List (user_id_teacher, class_name, class_description, class_people, class_type, class_level,  class_open_date) VALUES ('$User_ID','$class_name','$class_description','$class_people','$class_type','$class_level', now()) ";
 
 $insert = mysqli_query($conn, $result);
 

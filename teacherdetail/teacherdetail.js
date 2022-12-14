@@ -51,6 +51,7 @@ async function get_utc(tokenValue) {
 
       timezone = timezone_s;
      
+      console.log("success : "+success);
       if (success == "yes") {
 
         getDate("header_s", timezone, "");
@@ -150,7 +151,7 @@ async function setschedule(type, for_modal) {
   const check = response.success; 
   schedule_string = response.schedule_list;
 
-  console.log("STRING : "+schedule_string);
+  // console.log("STRING : "+schedule_string);
 
   // 값이 있을 경우에만 추출해서 대입
   if (check == "yes") {     
@@ -394,7 +395,7 @@ async function getTeacherdatail(tokenValue, usid) {
       const response = await res.json(); 
       
       const result = response.result[0];
-      // console.log(response);      
+      console.log(response);      
 
       // console.log(result);
       const name = result.user_name;
@@ -512,8 +513,8 @@ function setClass(class_list) {
     const cllevel = class_list[i].class_level;  
 
     // 가격 파싱
-    const price_30 = tp[0].Price;
-    const price_60 = tp[1].Price;
+    const price_30 = tp[0].class_price;
+    const price_60 = tp[1].class_price;
     
 
     // 수업 뷰 출력을 위한 태그 생성

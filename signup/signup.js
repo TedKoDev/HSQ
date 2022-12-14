@@ -103,8 +103,8 @@
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
-      const user_message = userinfo_parse.message;
-      const user_name = userinfo_parse.name;
+      const user_message = userinfo_parse.success;
+      const user_name = userinfo_parse.user_name;
       const user_token = userinfo_parse.token;
 
       console.log(user_message);

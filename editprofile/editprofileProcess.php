@@ -67,9 +67,9 @@ $payload = json_decode($parted[1], true);
 //ar_dump($payload);
 
 
-$user_id =  base64_decode($payload['user_id']);
+$user_id = base64_decode($payload['User_ID']);
 
-$user_name  = base64_decode($payload['user_name']);
+$user_name = base64_decode($payload['U_Name']);
 
 $U_Email = base64_decode($payload['U_Email']);
 

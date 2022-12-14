@@ -51,13 +51,15 @@ async function getclassSchedule_sm() {
 
     const response = await res.json();   
 
+    console.log(response);
+
     if (response.success == 'yes') {
 
         schedule_string_sm = response.schedule_list;
         const timezone = response.user_timezone;
 
         // 전역으로 사용할 타임존 대입
-        timezone_cs = response.timezone;
+        timezone_cs = response.user_timezone;
 
         // 현재 시간대 텍스트에 timezone 세팅
         setUtc(timezone);
@@ -448,6 +450,7 @@ function checkNextbtn_cs() {
  // 이번주에서 이전 날짜 버튼 클릭할 수 없게 처리
  function checkBeforebtn_cs(beforeDate_btn_cs, timezone_cs) {
 
+    console.log("timezone_cs : "+timezone_cs);
     // 현재 날짜 객체 생성
     const now = new Date();
 

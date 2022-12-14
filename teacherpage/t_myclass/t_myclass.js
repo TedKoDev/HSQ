@@ -35,6 +35,8 @@ async function postToken(tokenValue) {
   let response = await res.json();  
   let class_json = JSON.stringify(response);  
   let class_parse = JSON.parse(class_json);
+
+  console.log(response);
   
   let data = class_parse.data;
   
@@ -49,7 +51,7 @@ async function postToken(tokenValue) {
     const clpeoeple = data[i].class_people;
     const cltype = data[i].class_type;
     const tp = data[i].tp;   
-    const cllevel = data[i].cllevel;
+    const cllevel = data[i].class_level;
     
     // console.log("tp0 : "+tp[0].Price);
     // console.log("tp1 : "+tp[1].Price);
