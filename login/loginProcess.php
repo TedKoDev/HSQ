@@ -49,22 +49,22 @@ $password = json_decode(file_get_contents("php://input"))->{"password"};
 // $password = $_POST['password'];
 
 // DB 정보 가져오기 
-$sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
+$sql = "SELECT * FROM User WHERE user_email = '{$email}'";
 $result = mysqli_query($conn, $sql);
 
 $row = mysqli_fetch_array($result);
-$hashedPassword = $row['U_PW'];
+$hashedPassword = $row['user_password'];
 
 
 //토큰화를 base64인코딩을 진행 
- $email = $row['U_Email'];
+ $email = $row['user_email'];
 $tokenemail = base64_encode($email);
 
- $userid = $row['User_ID'];
+ $userid = $row['user_id'];
 $tokenuserid = base64_encode($userid);
 
 
- $name = $row['U_Name'];
+ $name = $row['user_name'];
 $tokenusername = base64_encode($name);
 
 
