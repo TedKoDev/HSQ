@@ -61,9 +61,9 @@ async function getSchedule(teacher_id, tokenvalue) {
 
   const body = {
     
-    tusid : teacher_id,
+    user_id_teacher : teacher_id,
     token : tokenvalue,
-    utc : utc,    
+    user_timezone : utc,    
   };
  
   const res = await fetch('../restapi/schedule.php', {
@@ -81,9 +81,9 @@ async function getSchedule(teacher_id, tokenvalue) {
   if (response.success == "yes") {
 
     // 전역으로 선언한 일정에 가져온 값 대입
-    schedule_string = response.schedule;
+    schedule_string = response.schedule_list;
     // 전역으로 선언한 timezone 값 대입
-    timezone = response.timezone;
+    timezone = response.user_timezone;
 
     console.log("STRING : "+schedule_string);
 
@@ -424,13 +424,13 @@ async function getClassinfo(C_id) {
     const body = {
     
         kind : 'cdetail',
-        classid : C_id,
-        clname : 1,
-        cldisc : 1,
-        cltype : 1,
-        cllevel : 1,
-        cltime : 1,
-        clprice : 1,
+        class_id : C_id,
+        class_name : 1,
+        class_description : 1,
+        class_type : 1,
+        class_level : 1,
+        class_time : 1,
+        class_price : 1,
       };
      
       const res = await fetch('../restapi/classinfo.php', {
@@ -449,10 +449,10 @@ async function getClassinfo(C_id) {
 
     // console.log(result);
 
-    const clname = result.CL_Name;
-    const cldisc = result.CL_Disc;
-    const cltype = result.CL_Type;
-    const cllevel = result.CL_Level;
+    const clname = result.class_name;
+    const cldisc = result.class_description;
+    const cltype = result.class_type;
+    const cllevel = result.class_level;
     const price = result.tp;
 
     // 전역변수에 대입 (모달창 하단에 표기할 용도)
@@ -496,14 +496,14 @@ async function getTeacherinfo(U_id) {
 
     const body = {
     
-        tusid : U_id,
-        timg : 1,
-        tname : 1,
-        tintro : 1,
-        tcountry : 1,
-        tresidence : 1,
-        tspecial : 1,
-        tlanguage : 1,
+        user_id_teacher : U_id,
+        teacher_img : 1,
+        teacher_name : 1,
+        teacher_intro : 1,
+        teacher_country : 1,
+        teacher_residence : 1,
+        teacher_special : 1,
+        teacher_language : 1,
       };
      
       const res = await fetch('../restapi/teacherinfo.php', {
@@ -520,13 +520,13 @@ async function getTeacherinfo(U_id) {
 
     const result = response.result[0];
 
-    const t_name = result.U_Name;
-    const t_img = result.U_D_Img;
-    const t_special = result.U_T_Special;
-    const t_intro = result.U_T_Intro;
-    const t_country = result.U_D_Country;
-    const t_residence = result.U_D_Residence;
-    const t_language = result.U_D_Language;
+    const t_name = result.user_name;
+    const t_img = result.user_img;
+    const t_special = result.teacher_special;
+    const t_intro = result.teacher_intro;
+    const t_country = result.user_country;
+    const t_residence = result.user_residence;
+    const t_language = result.user_language;
 
     // 강사 정보와 관련된 id들 가져오기
     const name_t = document.getElementById("t_name");

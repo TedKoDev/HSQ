@@ -47,7 +47,7 @@ async function get_utc(tokenValue) {
 
       const response = await res.json();  
       const success = response.success;
-      const timezone_s = response.timezone;      
+      const timezone_s = response.user_timezone;      
 
       timezone = timezone_s;
      
@@ -135,8 +135,8 @@ async function setschedule(type, for_modal) {
   const body = {
 
       token: checkCookie,
-      utc: utc,
-      tusid: U_id
+      user_timezone: utc,
+      user_id_teacher: U_id
   };
   const res = await fetch('../restapi/schedule.php', {
       method: 'POST',
@@ -148,7 +148,7 @@ async function setschedule(type, for_modal) {
 
   const response = await res.json(); 
   const check = response.success; 
-  schedule_string = response.schedule;
+  schedule_string = response.schedule_list;
 
   console.log("STRING : "+schedule_string);
 
@@ -379,8 +379,8 @@ async function getTeacherdatail(tokenValue, usid) {
     const body = {
     
         token: tokenValue,
-        usid: usid,
-        utc: utc,
+        user_id: usid,
+        user_timezone: utc,
       };
     
       const res = await fetch('./teacherdetailProcess.php', {
@@ -397,15 +397,15 @@ async function getTeacherdatail(tokenValue, usid) {
       // console.log(response);      
 
       // console.log(result);
-      const name = result.U_Name;
-      const certi = result.U_T_Special;
-      const language = result.U_D_Language;
-      const intro = result.U_D_Intro;
-      const t_intro = result.U_T_Intro;
-      const p_img = result.U_D_Img;
-      const country = result.U_D_Country;
-      const residence = result.U_D_Residence;
-      const schedule = result.Schedule;
+      const name = result.user_name;
+      const certi = result.user_Special;
+      const language = result.user_language;
+      const intro = result.user_intro;
+      const t_intro = result.teacher_intro;
+      const p_img = result.user_img;
+      const country = result.user_country;
+      const residence = result.user_residence;
+      const schedule = result.schedule_list;
       const class_list = result.class;                  
 
       // 바로 대입할 수 있는 것들 우선 대입 
@@ -504,12 +504,12 @@ function setClass(class_list) {
 
     // 대입할 데이터 파싱
     const class_id = class_list[i].class_id;
-    const clname = class_list[i].clname;
-    const cldesc = class_list[i].cldisc;
-    const clpeoeple = class_list[i].clpeople;
-    const cltype = class_list[i].cltype;
+    const clname = class_list[i].class_name;
+    const cldesc = class_list[i].class_description;
+    const clpeoeple = class_list[i].class_people;
+    const cltype = class_list[i].class_type;
     const tp = class_list[i].tp;   
-    const cllevel = class_list[i].cllevel;  
+    const cllevel = class_list[i].class_level;  
 
     // 가격 파싱
     const price_30 = tp[0].Price;

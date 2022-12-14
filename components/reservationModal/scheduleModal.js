@@ -11,8 +11,8 @@ let schedule_string_sm;
 // 서버에서 받아온 유저의 timezone 전역으로 쓰기 위해 선언
 let timezone_cs;
 
- // 수업 일정에서 다음 버튼 초기화
- let nextBtn_cs = document.querySelector(".nextBtn_cs");
+// 수업 일정에서 다음 버튼 초기화
+let nextBtn_cs = document.querySelector(".nextBtn_cs");
 
 // 모달창 하단에 수업시간 표시하는 뷰 초기화
 let cl_schedule_b = document.querySelectorAll(".cl-schedule");
@@ -38,8 +38,8 @@ async function getclassSchedule_sm() {
     const body = {
 
         token: checkCookie,
-        utc: utc,
-        tusid: U_id
+        user_timezone: utc,
+        user_id_teacher: U_id
     };
     const res = await fetch('../restapi/schedule.php', {
         method: 'POST',
@@ -53,8 +53,8 @@ async function getclassSchedule_sm() {
 
     if (response.success == 'yes') {
 
-        schedule_string_sm = response.schedule;
-        const timezone = response.timezone;
+        schedule_string_sm = response.schedule_list;
+        const timezone = response.user_timezone;
 
         // 전역으로 사용할 타임존 대입
         timezone_cs = response.timezone;

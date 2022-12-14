@@ -66,6 +66,7 @@ $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //학생의 userid
 // $User_ID = 32; //학생의 userid
+// $User_ID = 32; //학생의 userid
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
@@ -99,6 +100,7 @@ $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReser
 // 2. approved (예약 승인 되었지만 아직 수강은 안한 수업)
 // 3. not_approved (예약 신청은 했는데 강사가 아직 예약 승인은 안한 수업)
 // 4. done (완료한 수업) 
+
 
 
 
@@ -168,13 +170,17 @@ if ($kind == 'cdetail') {
   if ($clReserveCheck  == null) {
 
 
+
     $result1['result'] = array();
     $result2['timeprice'] = array();
+  
+  
   
   
     //수업 상세 정보 
     $Clist_Sql = "SELECT * FROM Class_List WHERE class_id = '{$class_id}'";
     $response1 = mysqli_query($conn, $Clist_Sql);
+  
   
     $row1 = mysqli_fetch_array($response1);
   
@@ -204,6 +210,10 @@ if ($kind == 'cdetail') {
   
   
   
+  
+  
+  
+  
     //Class_List_Time_Price 수업 시간, 가격 확인   
     $Cltp_Sql = "SELECT * FROM Class_List_Time_Price WHERE class_id = '$clid'";
   
@@ -212,11 +222,14 @@ if ($kind == 'cdetail') {
       $response2 = mysqli_query($conn, $Cltp_Sql);
       while ($row2 = mysqli_fetch_array($response2)) {
   
+  
         $send1 = $row2['3'];
         array_push($result2['timeprice'], $send1);
       }
       $send['tp'] = $result2['timeprice'];
     }
+  
+  
   
   
     array_push($result1['result'], $send);
@@ -463,14 +476,21 @@ if ($kind == 'cdetail') {
 
       $result["success"]   =  "no";
       echo json_encode($result);
+      echo json_encode($result);
       mysqli_close($conn);
     }
   } 
 
 
 }else if ($kind == 'tclist') {
+}else if ($kind == 'tclist') {
   // 필요한 값이 특정 강사의 수업 목록 이면 
 
+
+
+$result3['result'] = array();
+$result1['data'] = array();
+$result2['timeprice'] = array();
 
 
 $result3['result'] = array();
@@ -482,6 +502,8 @@ $result2['timeprice'] = array();
 
 
 
+  while ($row1 = mysqli_fetch_array($response1)) {
+    $clid = $row1['0'];
   while ($row1 = mysqli_fetch_array($response1)) {
     $clid = $row1['0'];
 
@@ -506,11 +528,19 @@ $result2['timeprice'] = array();
     while ($row2 = mysqli_fetch_array($response2)) {
    
       $tp= $row2['3'];
+    while ($row2 = mysqli_fetch_array($response2)) {
+   
+      $tp= $row2['3'];
 
       array_push($result2['timeprice'], $tp);
     }
     
+      array_push($result2['timeprice'], $tp);
+    }
+    
 
+    $send1['tp'] = $result2['timeprice'];
+  }
     $send1['tp'] = $result2['timeprice'];
   }
 
@@ -523,6 +553,8 @@ $result2['timeprice'] = array();
   array_push($result3['result'], $send);
   $result3["success"] = "1";
   echo json_encode($result3);
+
+
 
 
   mysqli_close($conn);

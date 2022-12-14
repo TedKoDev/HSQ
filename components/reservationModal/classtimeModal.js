@@ -45,8 +45,8 @@ async function getclassPrice_tm() {
     const body = {
 
         kind: 'cdetail',
-        classid: classid,          
-        clprice: 1
+        class_id: classid,          
+        class_price: 1
     };
     const res = await fetch('../restapi/classinfo.php', {
         method: 'POST',

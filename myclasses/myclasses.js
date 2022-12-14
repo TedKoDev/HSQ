@@ -1,50 +1,69 @@
-import App from "./src/classList.js";
+import classList from "./src/classList.js";
 import { $ } from "/utils/querySelector.js";
+import { cookieName, getCookie } from "/commenJS/cookie_modules.js";
 
-// 처음 로드되면 유형에 맞는 내 수업 렌더링 
-window.addEventListener("DOMContentLoaded", (e) => {
-  new App($("#classList"));
-});
+// 담을 json 목록 (나중에 page.js로 전달용)
+export let responseAll;
+export let responseApproved;
+export let responseNotapproved;
+export let responseDone;
+export let responseCanceled;
 
 
-// 수업 유형 클릭할 때마다 하단에 파란줄 위치 변경
-const allCl = document.getElementById("allCl");
-const notApprovedCl = document.getElementById("notApprovedCl");
-const waitingCl = document.getElementById("waitingCl");
-const doneCl = document.getElementById("doneCl");
-const cancelCL = document.getElementById("cancelCl");
+// 모든 종류의 수업 유형 불러오기 
+// (예제 코드랑 연동하다보니 중간에 비동기 통신 함수를 쓰는게 불가능하여 우선은 이런식으로 진행)
+// (다른 부분(수업 히스토리, 강사/수업 필터등등)에서는 미리 비동기로 불러오는거 고려해서 설계하기)
+getClassList("all", responseAll);
+getClassList("approved", responseApproved);
+getClassList("wait", responseNotapproved);
+getClassList("done", responseDone);
+getClassList("cancel", responseCanceled);
 
-// 버튼 선택
-// function selectClasstype(type) {  
-    
-//     if (type == 'all') {
-//       changeSelectBtnStyle(allCl, notApprovedCl, waitingCl, doneCl, cancelCL);  
-//     }    
-//     else if (type == 'notApproved') {
-//       changeSelectBtnStyle(notApprovedCl, allCl, waitingCl, doneCl, cancelCL);      
-//     }  
-//     else if (type == 'waiting') {
-//       changeSelectBtnStyle(waitingCl, allCl, notApprovedCl, doneCl, cancelCL);      
-//     } 
-//     else if (type == 'done') {
-//       changeSelectBtnStyle(doneCl, allCl, notApprovedCl, waitingCl, cancelCL);      
-//     } 
-//     else if (type == 'cancel') {
-//       changeSelectBtnStyle(cancelCL, allCl, notApprovedCl, waitingCl, doneCl);      
-//     }
-// }
+// 1. 수업리스트 가져오기
+// 2. 수업 유형별로 json에 대입
+// 3. all일 때만 classList 객체 생성
+async function getClassList(type, response) {
 
-// 버튼 선택에 따른 스타일 변경
-function changeSelectBtnStyle (change, reset1, reset2, reset3, reset4) {
+  const body = {
 
-  change.setAttribute("class", "mx-2 py-5 font-semibold text-sm border-b-4 border-blue-400 text-gray-800");
-  reset1.setAttribute("class", "mx-2 py-5 font-normal text-sm border-0");
-  reset2.setAttribute("class", "mx-2 py-5 font-normal text-sm border-0");
-  reset3.setAttribute("class", "mx-2 py-5 font-normal text-sm border-0");
-  reset4.setAttribute("class", "mx-2 py-5 font-normal text-sm border-0");
+    kind: 'clist',
+    token: getCookie(cookieName),
+    class_reserve_check: type,      
+    };
+    const res = await fetch('/restapi/classinfo.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(body)
+    });
+  
+    response = await res.json();         
+       
+    // 디폴트가 all 이므로 all일 경우 classList 인스턴스 선언
+    if (type == "all") {
+      responseAll = response;      
+      new classList($("#classList"));       
+    }
+    else if (type == "approved") {
+      responseApproved = response;      
+    }
+    else if (type == "wait") {
+      responseNotapproved = response;
+      
+    }
+    else if (type == "done") {
+      responseDone = response;
+      
+    }
+    else if (type == "cancel") {
+      responseCanceled = response;      
+    }  
 }
 
-// innerHTML 테스트
-const classList = document.querySelector('.classList');
-// classList.innerHTML
+
+
+
+
+
 

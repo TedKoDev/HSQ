@@ -1,4 +1,4 @@
-
+   
     // 토큰 보내서 유저 정보 가져오기 
     // 가져올 정보 목록 :
     
@@ -55,20 +55,20 @@
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
-      const user_id = userinfo_parse.userid;
-      const user_name = userinfo_parse.name;
-      const user_email = userinfo_parse.email; 
-      const user_p_img = userinfo_parse.p_img; 
-      const user_bday = userinfo_parse.bday; 
-      const user_sex = userinfo_parse.sex; 
-      const user_contact = userinfo_parse.contact; 
-      const user_country = userinfo_parse.country; 
-      const user_residence = userinfo_parse.residence; 
-      const user_point = userinfo_parse.point; 
-      const user_language = userinfo_parse.language; 
-      const user_korean = userinfo_parse.korean; 
-      const user_teacher = userinfo_parse.teacher; 
-      const user_intro = userinfo_parse.intro; 
+      const user_id = userinfo_parse.user_id;
+      const user_name = userinfo_parse.user_name;
+      const user_email = userinfo_parse.user_email; 
+      const user_p_img = userinfo_parse.user_img; 
+      const user_bday = userinfo_parse.user_birthday; 
+      const user_sex = userinfo_parse.user_sex; 
+      const user_contact = userinfo_parse.user_contact; 
+      const user_country = userinfo_parse.user_country; 
+      const user_residence = userinfo_parse.user_residence; 
+      const user_point = userinfo_parse.user_point; 
+      const user_language = userinfo_parse.user_language; 
+      const user_korean = userinfo_parse.user_korean; 
+      const user_teacher = userinfo_parse.teacher_regis_check; 
+      const user_intro = userinfo_parse.user_intro; 
       
       console.log("source : "+user_p_img);
       // 프로필 이미지, 이름, 나이, 성별, 출신국가, 거주국가 대입, 구사 가능 언어, 한국어 구사 수준 대입
