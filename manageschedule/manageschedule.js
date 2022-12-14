@@ -27,7 +27,7 @@ async function get_utc(tokenValue) {
         token: tokenValue
       };
     
-      const res = await fetch('../util/utc.php', {
+      const res = await fetch('../utils/utc.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
@@ -318,6 +318,8 @@ function test_click(event) {
     
             // 일정 저장을 위한 array에 해당 value 추가
             array_for_edit.push(result);    
+
+            console.log(array_for_edit);
                 
         } 
         // 체크 풀를 경우 해당 인덱스 배열에서 제외
@@ -328,6 +330,8 @@ function test_click(event) {
             const delete_index = array_for_edit.indexOf(result)
                 
             array_for_edit.splice(delete_index, 1);
+
+            console.log(array_for_edit);
             
         }
     }
