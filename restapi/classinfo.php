@@ -65,7 +65,7 @@ $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //학생의 userid
-// $User_ID = 32; //학생의 userid
+// $User_ID = 320; //학생의 userid
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
@@ -285,7 +285,7 @@ if ($kind == 'cdetail') {
   
 } else if ($kind == 'clist') {
   //필요한 값이 class list 이면  
-
+echo 'clist';
 
 
   $i = 0;
@@ -302,9 +302,9 @@ if ($kind == 'cdetail') {
 
   if ($clReserveCheck  == null) {
     //Class_List에 수업 목록확인  
-    $Clist_Sql = "SELECT * FROM Class_List order by  class_id DESC LIMIT $start, $till";
+    $Clist_Sql = "SELECT * FROM Class_List order by class_id DESC LIMIT $start, $till";
     $response1 = mysqli_query($conn, $Clist_Sql);
-
+    echo 'clist1';
     while ($row1 = mysqli_fetch_array($response1)) {
       $clid = $row1['0'];
       $usid = $row1['1'];
@@ -371,11 +371,13 @@ if ($kind == 'cdetail') {
     }
   } else if ($clReserveCheck  != null) {
     // 학생(사용자)가 자신이 예약 신청한 수업 목록을 얻어옴 all , wait, approved, cancel, done, reply
-
+    echo 'clist2';
     if ($clReserveCheck == 'all') {
       $sqlWhere = 'where Class_Add.user_id_student ='. $User_ID;    
+      echo 'clist3';
     } else if ($clReserveCheck != 'all') {
       if ($clReserveCheck == 'wait' ) {
+        echo 'clist4';
         $clRCValue = '0';
       } else if ($clReserveCheck == 'approved') {
         $clRCValue = '1';
