@@ -48,7 +48,7 @@ $payload = json_decode($parted[1], true);
 
 // User_ID값 얻음 
 $User_ID =  base64_decode($payload['User_ID']);
-$User_ID =  32;
+// $User_ID =  32;
 
 $U_Name  = base64_decode($payload['U_Name']);
 
