@@ -27,10 +27,10 @@ async function getReserveinfo() {
 
     const body = {
        
-        utc: 9, // 임의의 수 넣기
-        tusid: tusid,
-        timg: 1,
-        tname: 1,
+        user_timezone: 9, // 임의의 수 넣기
+        user_id_teacher: tusid,
+        teacher_img: 1,
+        teacher_name: 1,
     };
     const res = await fetch('../restapi/teacherinfo.php', {
         method: 'POST',
@@ -45,8 +45,8 @@ async function getReserveinfo() {
     console.log(response);
 
     const result = response.result[0];
-    const tName = result.U_Name;
-    const tImg = result.U_D_Img;
+    const tName = result.user_name;
+    const tImg = result.user_img;
 
     // 강사 이미지,이름, 수업 이름, 수업 도구, 수업가격 세팅
     t_img.src = s3_url+"Profile_Image/"+tImg;
@@ -128,6 +128,8 @@ function setSchedule(clSchedule) {
 // 예약 버튼 클릭 이벤트
 async function reserveDone() {
 
+    console.log("pass");
+
     const tokenvalue = getCookie("user_info");
 
     const memo = request_forTeacher.value;  
@@ -136,11 +138,11 @@ async function reserveDone() {
     const body = {
 
         token: tokenvalue,
-        classid: classid,
+        class_id: classid,
         tp: tp,
-        plan: plan,
-        cmethod: cmethod,
-        memo: memo,
+        schedule_list: plan,
+        class_register_method: cmethod,
+        class_register_memo: memo,
     };
     const res = await fetch('./reservefinalProcess.php', {
         method: 'POST',
@@ -150,7 +152,9 @@ async function reserveDone() {
         body: JSON.stringify(body)
     });
 
-    const response = await res.json();    
+    const response = await res.json();   
+    
+    console.log(response);
 
     if (response.success == 'yes') {
 

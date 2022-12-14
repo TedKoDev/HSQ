@@ -35,6 +35,8 @@ async function postToken(tokenValue) {
   let response = await res.json();  
   let class_json = JSON.stringify(response);  
   let class_parse = JSON.parse(class_json);
+
+  console.log(response);
   
   let data = class_parse.data;
   
@@ -44,12 +46,12 @@ async function postToken(tokenValue) {
 
     // 대입할 데이터 파싱
     const class_id = data[i].class_id;
-    const clname = data[i].clname;
-    const cldesc = data[i].cldisc;
-    const clpeoeple = data[i].clpeople;
-    const cltype = data[i].cltype;
+    const clname = data[i].class_name;
+    const cldesc = data[i].class_description;
+    const clpeoeple = data[i].class_people;
+    const cltype = data[i].class_type;
     const tp = data[i].tp;   
-    const cllevel = data[i].cllevel;
+    const cllevel = data[i].class_level;
     
     // console.log("tp0 : "+tp[0].Price);
     // console.log("tp1 : "+tp[1].Price);
@@ -57,8 +59,8 @@ async function postToken(tokenValue) {
     console.log("cllevel : "+cllevel);
 
     // 가격 파싱
-    const price_30 = tp[0].Price;
-    const price_60 = tp[1].Price;
+    const price_30 = tp[0].class_price;
+    const price_60 = tp[1].class_price;
     
 
     // 수업 뷰 출력을 위한 태그 생성

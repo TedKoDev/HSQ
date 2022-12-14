@@ -59,13 +59,13 @@ function setData(response) {
   // array 개수만큼 반복문 돌려서 태그 생성한다음 대입
   for (let i = 0; i < res_array.length; i++) {
 
-    let User_Id = res_array[i].User_Id;
-    let U_D_Img = res_array[i].U_D_Img;
-    let U_Name = res_array[i].U_Name;
-    let U_T_Special = res_array[i].U_T_Special;
-    let U_D_Language = res_array[i].U_D_Language;
-    let U_T_Intro = res_array[i].U_T_Intro;
-    let Price = res_array[i].Price;
+    let User_Id = res_array[i].user_id;
+    let U_D_Img = res_array[i].user_img;
+    let U_Name = res_array[i].user_name;
+    let U_T_Special = res_array[i].teacher_Special;
+    let U_D_Language = res_array[i].user_language;
+    let U_T_Intro = res_array[i].teacher_intro;
+    let Price = res_array[i].class_price;
     let class_id = res_array[i].class_id;
 
     if (U_T_Special == 'default') {

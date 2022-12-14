@@ -11,8 +11,8 @@ let schedule_string_sm;
 // 서버에서 받아온 유저의 timezone 전역으로 쓰기 위해 선언
 let timezone_cs;
 
- // 수업 일정에서 다음 버튼 초기화
- let nextBtn_cs = document.querySelector(".nextBtn_cs");
+// 수업 일정에서 다음 버튼 초기화
+let nextBtn_cs = document.querySelector(".nextBtn_cs");
 
 // 모달창 하단에 수업시간 표시하는 뷰 초기화
 let cl_schedule_b = document.querySelectorAll(".cl-schedule");
@@ -38,8 +38,8 @@ async function getclassSchedule_sm() {
     const body = {
 
         token: checkCookie,
-        utc: utc,
-        tusid: U_id
+        user_timezone: utc,
+        user_id_teacher: U_id
     };
     const res = await fetch('../restapi/schedule.php', {
         method: 'POST',
@@ -51,13 +51,15 @@ async function getclassSchedule_sm() {
 
     const response = await res.json();   
 
+    console.log(response);
+
     if (response.success == 'yes') {
 
-        schedule_string_sm = response.schedule;
-        const timezone = response.timezone;
+        schedule_string_sm = response.schedule_list;
+        const timezone = response.user_timezone;
 
         // 전역으로 사용할 타임존 대입
-        timezone_cs = response.timezone;
+        timezone_cs = response.user_timezone;
 
         // 현재 시간대 텍스트에 timezone 세팅
         setUtc(timezone);
@@ -448,6 +450,7 @@ function checkNextbtn_cs() {
  // 이번주에서 이전 날짜 버튼 클릭할 수 없게 처리
  function checkBeforebtn_cs(beforeDate_btn_cs, timezone_cs) {
 
+    console.log("timezone_cs : "+timezone_cs);
     // 현재 날짜 객체 생성
     const now = new Date();
 

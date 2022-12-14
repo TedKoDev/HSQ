@@ -71,6 +71,13 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
 
+
+
+
+
+
+
+
 //수업id 기준으로 해당 수업의 정보 
 $sql = "SELECT * FROM Class_List WHERE class_id = '{$class_id}'";
 $result = mysqli_query($conn, $sql);
@@ -82,6 +89,26 @@ $cldisc = $row['3'];
 $cltype = $row['4'];
 $cllevel = $row['5'];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
+$explan = (explode("_", $plan));
+$tzplan = array(); //Timezone 적용을 위한 배열 생성
+foreach($explan as $val){ 
+$save = $val - $timezone* $hour;
+$date = date('Y-m-d H:i:s',  $save);
 
 
 
@@ -97,12 +124,22 @@ $save = $val - $timezone* $hour;
 // $date = date('Y-m-d H:i:s',  $save);
 
 // Class_Add DB TABLE에 저장 
-$sqlClassAdd = "INSERT INTO Class_Add (user_id_student, user_id_teacher, class_id, class_time, schedule_list,class_register_memo,class_register_status,class_register_method, class_register_answer_date, class_register_date) 
-           VALUES ('$User_ID', '$tusid','$class_id', '$tp', '$save', '$class_register_memo', '0', '$class_method', '0' , now())";
+$sqlClassAdd = "INSERT INTO Class_Add (User_Id_s, User_Id_t CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
+           VALUES ('$User_ID', '$tusid''$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
 $insert = mysqli_query($conn, $sqlClassAdd);
 
 if ($sqlClassAdd) 
 $last_CAID = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
+
+
+
+
+
+array_push($tzplan,$save);
+}
+$tzplanresult = implode("_",$tzplan); // 다시 합체 
+
+
 
 
 array_push($tzschedule,$save);
@@ -173,6 +210,7 @@ $mail->SMTPAuth = true;
 
 $mail->Host = "smtp.gmail.com";
 $mail->Username = "apswtrare@gmail.com";
+$mail->Password = "caofvauzywfzrbxv";
 $mail->Password = "caofvauzywfzrbxv";
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;

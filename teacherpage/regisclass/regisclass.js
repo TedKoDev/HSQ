@@ -1,3 +1,6 @@
+// 쿠기 값(토큰) 가져오기
+let tokenValue = getCookie(cookieName);   
+
 let type_num = 0;
 let type_array = new Array();
 
@@ -84,10 +87,10 @@ async function regisclass_btn() {
     let p_60 = new Object();
 
     // 각 json에 key, value 넣기
-    p_30.time = "30";
-    p_30.price = price_30;
-    p_60.time = "60";
-    p_60.price = price_60;
+    p_30.class_time = "30";
+    p_30.class_price = price_30;
+    p_60.class_time = "60";
+    p_60.class_price = price_60;
 
     // array에 json 넣기
     price_array.push(p_30);
@@ -95,16 +98,18 @@ async function regisclass_btn() {
 
     let test = JSON.stringify(price_array);
 
+    console.log(test);
+
     console.log("level_total : "+level_total);
 
     let body = {
-        token: checkCookie,
-        cname: cname,
-        cintro: cintro,
-        people: 1,
-        type: type_list,
-        level: level_total,
-        timeprice: test
+        token: tokenValue,
+        class_name: cname,
+        class_description: cintro,
+        class_people: 1,
+        class_type: type_list,
+        class_level: level_total,
+        class_timeprice: test
     };
     let res = await fetch('#', {
         method: 'POST',
@@ -112,7 +117,7 @@ async function regisclass_btn() {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
-    }).then(alert("수업이 등록되었습니다."), location.replace('../myclass/myclass.php'))
+    }).then(alert("수업이 등록되었습니다."), location.replace('../t_myclass/t_myclass.php'))
 
     let response = await res.json();
 

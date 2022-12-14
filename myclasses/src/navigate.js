@@ -4,7 +4,7 @@
  */
 export const navigate = (to, isReplace = false) => {
     
-      const historyChangeEvent = new CustomEvent("historychange", {
+      const historyChangeEvent = new CustomEvent("classtypeChange", {
         detail: {
           to,
           isReplace,
