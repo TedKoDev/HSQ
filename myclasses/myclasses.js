@@ -40,7 +40,7 @@ async function getClassList(type, response) {
   
     response = await res.json();         
 
-    console.log(type+" : "+response);
+    console.log(response);
        
     // 디폴트가 all 이므로 all일 경우 classList 인스턴스 선언
     if (type == "all") {

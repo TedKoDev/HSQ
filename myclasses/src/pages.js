@@ -18,9 +18,7 @@ export function all($container) {
     };
   
     this.render = () => {
-      
-      console.log(responseAll);
-
+           
       showClassList($container, responseAll);
 
       changeSelectBtnStyle($("#allCl"))
@@ -153,12 +151,12 @@ const showClassList = ($container, response) => {
 
     for (let i = 0; i < classList.length; i++) {
       //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done)
-      const status = classList[i].status;
-      const classDate = classList[i].utcplan;
-      const className = classList[i].cname;
-      const classTime = " - "+classList[i].ctime+"분";
-      const teacherImage = classList[i].U_D_Img;
-      const classId = classList[i].class_add_id;
+      const status = classList[i].class_register_status;
+      const classDate = classList[i].class_start_time;
+      const className = classList[i].class_name;
+      const classTime = " - "+classList[i].class_time+"분";
+      const teacherImage = classList[i].user_img;
+      const classId = classList[i].class_register_id;
 
       // 수업시간 int로 변환
       const string_to_int = parseInt(classDate);
@@ -170,7 +168,8 @@ const showClassList = ($container, response) => {
 
       // 이미지 경로 
       const teacherImgeLink = s3_url+"Profile_Image/"+teacherImage;
-
+      
+      console.log(teacherImage);
       // a 태그 생성
       const a = document.createElement("a");
       // 속성 값에 해당 수업의 id 대입
