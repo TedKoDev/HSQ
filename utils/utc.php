@@ -23,7 +23,7 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
+$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
 $result = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($result);
 $timezone = $row1['0'];

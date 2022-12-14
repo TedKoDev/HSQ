@@ -254,8 +254,8 @@ if ($kind == 'cdetail') {
       $send['class_start_time'] = $utc_plan;  //user의 timezone이 적용된 예약한 수업 일정 값 
     
     
-      $send['class_register_memo'] = $row1['6']; // 수업인원
-      $send['class_register_status'] = $row1['7'];   //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done),4(후기완료 reply),
+      $send['class_register_memo'] = $row1['6']; // 수업메모
+      $send['class_register_status'] = $row1['7'];   //  신청한 수업 진행 방식  
       $send['class_register_method'] = $row1['8']; // 신청한 수업 진행 방식
     
       $answerdate = $row1['9']; //응답한 시간 
@@ -477,7 +477,7 @@ $result3['result'] = array();
 $result1['data'] = array();
 $result2['timeprice'] = array();
   //Class_List에 수업 목록확인  
-  $sql = "SELECT * FROM Class_List WHERE User_Id_t = '{$user_id_teacher}'";
+  $sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$user_id_teacher}'";
   $response1 = mysqli_query($conn, $sql);
 
 
@@ -500,7 +500,7 @@ $result2['timeprice'] = array();
 
     if ($class_price != null) {
     //Class_List_Time_Price 수업 시간, 가격 확인   
-    $sql = "SELECT * FROM Class_List_Time_Price WHERE class = '$clid'";
+    $sql = "SELECT * FROM Class_List_Time_Price WHERE class_id = '$clid'";
     $response2 = mysqli_query($conn, $sql);
 
     while ($row2 = mysqli_fetch_array($response2)) {

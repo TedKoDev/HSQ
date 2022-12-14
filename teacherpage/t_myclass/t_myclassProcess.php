@@ -75,7 +75,7 @@ while ($row1 = mysqli_fetch_array($response1)){
  
 
 //Class_List_Time_Price 수업 시간, 가격 확인   
-$sql = "SELECT * FROM Class_List_Time_Price WHERE CLass_Id = '$clid'";
+$sql = "SELECT * FROM Class_List_Time_Price WHERE class_id = '$clid'";
 $response2 = mysqli_query($conn, $sql);
 
 while ($row2 = mysqli_fetch_array($response2)){
