@@ -99,12 +99,12 @@ async function regisclass_btn() {
 
     let body = {
         token: checkCookie,
-        cname: cname,
-        cintro: cintro,
-        people: 1,
-        type: type_list,
-        level: level_total,
-        timeprice: test
+        class_name: cname,
+        class_description: cintro,
+        class_people: 1,
+        class_type: type_list,
+        class_level: level_total,
+        class_timeprice: test
     };
     let res = await fetch('#', {
         method: 'POST',
