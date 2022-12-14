@@ -87,10 +87,10 @@ async function regisclass_btn() {
     let p_60 = new Object();
 
     // 각 json에 key, value 넣기
-    p_30.time = "30";
-    p_30.price = price_30;
-    p_60.time = "60";
-    p_60.price = price_60;
+    p_30.class_time = "30";
+    p_30.class_price = price_30;
+    p_60.class_time = "60";
+    p_60.class_price = price_60;
 
     // array에 json 넣기
     price_array.push(p_30);

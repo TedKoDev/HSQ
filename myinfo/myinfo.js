@@ -92,7 +92,7 @@
       setInfo(intro, user_intro, "");
       setInfo(korean, user_korean, "")
       // intro.innerText = user_intro;      
-      setLanguage(language, JSON.parse(user_language));
+      setLanguage(language, user_language);
     }
    
     // 값이 있을 경우에만 브라우저에 출력
@@ -123,6 +123,8 @@
       
       // 값이 있을 경우에만 등록한 구사 가능 언어 수만큼 화면에 출력
       if ((value != 'default') && (value != null)) {  
+
+        value = JSON.parse(value);
         
         // // 처음에는 key 값 초기화 (리턴 클릭했을 경우 기존 값들 없애줘야 함)
         // while (key.hasChildNodes())

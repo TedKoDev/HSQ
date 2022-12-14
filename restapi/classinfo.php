@@ -75,7 +75,11 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 # 필요값 
 // 어떤 내용이 필요한지를 표시 ( clist-수업목록, cdetail-수업상세, tclist-강사의 수업목록)
 $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; // 
-$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 예약된 수업 리스트 / 상세 
+$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_reserve_check"}; // 예약된 수업 리스트 / 상세 
+
+
+error_log("$kind ,   $clReserveCheck,  $User_ID \n", "3", "../php.log");
+
 
 // $kind            =   'clist';         //  
 // $kind            =   'cdetail';       //  
