@@ -88,7 +88,7 @@ const showClassList = ($container, response) => {
                                     <span class = "classStartDate text-xs text-gray-600">`+date_format+`</span>
                                 </div>
                                 <div class = "flex flex-col w-1/5">
-                                    <span class = "classStatus text-sm text-gray-400">`+statusChange(status)+`</span>
+                                    <span class = "classStatus text-sm text-gray-400">`+statusChange(status, $('.classStatus'))+`</span>
                                     <span class = "text-sm text-gray-500">$ <span class = "classPrice">`+price+`</span> USD</span>
                                 </div>                    
                             </div>                
@@ -101,7 +101,7 @@ const showClassList = ($container, response) => {
 }
 
 // 수업 상태에 따라 텍스트 변경하는 함수
-const statusChange = (status) => {
+const statusChange = (status, $classStyle) => {
 
     if (status == "0") {
         status = "승인 대기"
@@ -111,6 +111,7 @@ const statusChange = (status) => {
         status = "취소됨"
     } else if (status == "3") {
         status = "완료됨"
+        $classStyle.setAttribute("class", "text-sm text-gray-400");
     }
     return status;
 }
