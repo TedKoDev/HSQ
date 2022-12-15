@@ -565,7 +565,7 @@ if ($kind == 'cdetail') {
   // $till = 20;
   
   // $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where  $sqlWhere  order by class_id DESC LIMIT $start, $till";
-  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where  $sqlWhere ";
+  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add  $sqlWhere ";
 
 
   $SRCList_Result1 = mysqli_query($conn, $Sql1);
@@ -632,7 +632,7 @@ if ($kind == 'cdetail') {
   } else {
   
     $result["success"]   =  "no";
-    echo json_encode($result1);
+    echo json_encode($result);
     mysqli_close($conn);
   }
 }
