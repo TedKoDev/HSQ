@@ -38,7 +38,7 @@ $class_id    =   json_decode(file_get_contents("php://input"))->{"class_id"}; //
 // $class_id    =   167; // 수업id 
 $tp         =   json_decode(file_get_contents("php://input"))->{"tp"}; // 수업시간 
 // $tp         =  30 ; // 수업시간 
-$schedule       =   json_decode(file_get_contents("php://input"))->{"schedule"}; // 수업일정 
+$schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
 // $schedule       =   '1670385600000_1670383800000_1670387400000_1670389200000_1670391000000'; // 수업일정 
 
 
@@ -124,7 +124,7 @@ $save = $val - $timezone* $hour;
 // $date = date('Y-m-d H:i:s',  $save);
 
 // Class_Add DB TABLE에 저장 
-$sqlClassAdd = "INSERT INTO Class_Add (User_Id_s, User_Id_t CLass_Id, CTime, C_A_Schedule,C_A_Memo,C_A_Status,C_A_Method, C_A_AnswerDate, C_A_Date) 
+$sqlClassAdd = "INSERT INTO Class_Add (user_id_student, user_id_teacher, class_id, class_time, schedule_list, class_register_memo, class_register_status ,class_register_method, class_register_answer_date, class_register_date) 
            VALUES ('$User_ID', '$tusid''$classid', '$tp', '$tzplanresult', '$memo', '0', '$cmethod', '0' , now())";
 $insert = mysqli_query($conn, $sqlClassAdd);
 
@@ -169,13 +169,13 @@ $sendtime = array();
 $i =0;
 foreach($exschedule as $val){
 
-echo'dd'. $save1 = ($val + $tTimezone * $hour)/1000 . '</br>';
+ $save1 = ($val + $tTimezone * $hour)/1000 . '</br>';
 // echo $save2 = $save1/1000;
 
-echo $date = date('Y-m-d H:i:s', $save1);
+ $date = date('Y-m-d H:i:s', $save1);
 
 $i =$i +1;
-echo $i;
+ $i;
 array_push($sendtime,$date);
 }
 $sendtimeresult = implode(",  ",$sendtime);

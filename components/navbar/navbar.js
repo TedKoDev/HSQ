@@ -1,4 +1,4 @@
-import {getCookie} from '/commenJS/cookie_modules.js';
+import {getCookie, deleteCookie} from '/commenJS/cookie_modules.js';
 
 // 1. 쿠키 여부에 따라 네비바 우측 상단 변경 (로그인/회원가입 or 유저 아이콘)
 // 2. 유저 정보 클릭 시 아이콘 하단에 창 (수강신청, 프로필 설정, 로그아웃 등)
