@@ -169,13 +169,13 @@ $sendtime = array();
 $i =0;
 foreach($exschedule as $val){
 
-echo'dd'. $save1 = ($val + $tTimezone * $hour)/1000 . '</br>';
+ $save1 = ($val + $tTimezone * $hour)/1000 . '</br>';
 // echo $save2 = $save1/1000;
 
-echo $date = date('Y-m-d H:i:s', $save1);
+ $date = date('Y-m-d H:i:s', $save1);
 
 $i =$i +1;
-echo $i;
+ $i;
 array_push($sendtime,$date);
 }
 $sendtimeresult = implode(",  ",$sendtime);
