@@ -78,7 +78,7 @@ $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; //
 $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_reserve_check"}; // 예약된 수업 리스트 / 상세 
 
 
-error_log("$kind ,   $clReserveCheck,  $User_ID \n", "3", "../php.log");
+// error_log("$kind ,   $clReserveCheck,  $User_ID \n", "3", "../php.log");
 
 
 // $kind            =   'clist';         //  
