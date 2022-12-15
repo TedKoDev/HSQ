@@ -78,6 +78,22 @@ $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; //
 $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_reserve_check"}; // 예약된 수업 리스트 / 상세 
 
 
+
+
+$clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_reserve_check"}; // 예약된 수업 리스트 / 상세 
+
+$filter_class_name                 =   json_decode(file_get_contents("php://input"))->{"filter_class_name"}; // 수업 이름 검색 필터 
+$filter_user_name                 =   json_decode(file_get_contents("php://input"))->{"filter_user_name"}; // 학생 이름 검색 필터 
+$filter_class_resister_time_from     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_from"}; // 학생 이름 검색 필터 
+$filter_class_resister_time_to     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_to"}; // 학생 이름 검색 필터 
+
+
+// filter_class_resister_time_from
+// filter_class_resister_time_to
+
+
+
+
 // error_log("$kind ,   $clReserveCheck,  $User_ID \n", "3", "../php.log");
 
 
@@ -174,20 +190,20 @@ if ($kind == 'cdetail') {
 
     $result1['result'] = array();
     $result2['timeprice'] = array();
-  
-  
+
+
     //수업 상세 정보 
     $Clist_Sql = "SELECT * FROM Class_List WHERE class_id = '{$class_id}'";
     $response1 = mysqli_query($conn, $Clist_Sql);
-  
+
     $row1 = mysqli_fetch_array($response1);
-  
-  
+
+
     $clid = $row1['0'];
     $user_id_teacher = $row1['1'];
-  
+
     $send['class_id'] = $row1['0'];
-  
+
     $send['user_id'] = $row1['1'];
     if ($class_name != null) {
       $send['class_name'] = $row1['2'];
@@ -204,85 +220,79 @@ if ($kind == 'cdetail') {
     if ($class_level != null) {
       $send['class_level'] = $row1['6'];
     }
-  
-  
-  
-  
+
+
+
+
     //Class_List_Time_Price 수업 시간, 가격 확인   
     $Cltp_Sql = "SELECT * FROM Class_List_Time_Price WHERE class_id = '$clid'";
-  
-  
+
+
     if ($class_price != null) {
       $response2 = mysqli_query($conn, $Cltp_Sql);
       while ($row2 = mysqli_fetch_array($response2)) {
-  
+
         $send1 = $row2['3'];
         array_push($result2['timeprice'], $send1);
       }
       $send['tp'] = $result2['timeprice'];
     }
-  
-  
+
+
     array_push($result1['result'], $send);
     echo json_encode($result1);
     mysqli_close($conn);
+  } else if ($clReserveCheck  == 'detail') {
 
-
-  } else if ($clReserveCheck  == 'detail' ) {
-
-      $result1['result'] = array();
-      //수업 상세 정보 
-      $Clist_Sql = "SELECT Class_Add.*,Class_List.* FROM Class_Add LEFT OUTER JOIN Class_List ON Class_Add.class_id = Class_List.class_id 
+    $result1['result'] = array();
+    //수업 상세 정보 
+    $Clist_Sql = "SELECT Class_Add.*,Class_List.* FROM Class_Add LEFT OUTER JOIN Class_List ON Class_Add.class_id = Class_List.class_id 
       where Class_Add.user_id_student = '$User_ID' and class_register_id = '$class_register_id'";
-      $response1 = mysqli_query($conn, $Clist_Sql);
-    
-      $row1 = mysqli_fetch_array($response1);
-    
-      $send['class_register_id'] = $row1['0']; //수업id
-    
-      $send['class_id'] = $row1['3']; //수업 id
-      $send['class_time'] = $row1['4']; // 수업 시간 (30분 60분)
-      $plan = $row1['5']; // utc 0 기준 예약한 시간 
-      $explodePlan = (explode("_", $plan)); // _기준으로 string 분해 
-      $hour = 3600000; // 시간의 밀리초 
-      $splanArray = array(); // utc 적용한 값 담을 배열 
-    
-      foreach ($explodePlan as $val) {
-        'User utc 기준 : 변환  ' . $save = $val + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
-        array_push($splanArray, $save);
-      }
-    
-      $utc_plan = implode("_", $splanArray); // 담긴 배열을 _기준으로 스트링으로 저장 
-    
-    
-      $send['class_start_time'] = $utc_plan;  //user의 timezone이 적용된 예약한 수업 일정 값 
-    
-    
-      $send['class_register_memo'] = $row1['6']; // 수업메모
-      $send['class_register_status'] = $row1['7'];   //  신청한 수업 진행 방식  
-      $send['class_register_method'] = $row1['8']; // 신청한 수업 진행 방식
-    
-      $answerdate = $row1['9']; //응답한 시간 
-      $send['class_register_answer_date'] = $answerdate * 1000;  //응답한 시간 js 에서 밀리초 단위이기 때문에 *1000 적용    
-        
-      $send['class_register_date'] = $row1['10']; // 수업예약 신청한 시간 
-      $send['class_id'] = $row1['11'];  // 수업 id 
-      $send['user_id_teacher'] = $row1['12'];  //강사의 userid
-      $send['class_name'] = $row1['13']; //
-      $send['class_description'] = $row1['14']; //
-      $send['class_people'] = $row1['15']; //
-      $send['class_type'] = $row1['16']; //
-      $send['class_levelr'] = $row1['17']; //
-    
-    
-      array_push($result1['result'], $send);
-      echo json_encode($result1['result'],);
-      mysqli_close($conn);
-    
-    
-  }
+    $response1 = mysqli_query($conn, $Clist_Sql);
 
-  
+    $row1 = mysqli_fetch_array($response1);
+
+    $send['class_register_id'] = $row1['0']; //수업id
+
+    $send['class_id'] = $row1['3']; //수업 id
+    $send['class_time'] = $row1['4']; // 수업 시간 (30분 60분)
+    $plan = $row1['5']; // utc 0 기준 예약한 시간 
+    $explodePlan = (explode("_", $plan)); // _기준으로 string 분해 
+    $hour = 3600000; // 시간의 밀리초 
+    $splanArray = array(); // utc 적용한 값 담을 배열 
+
+    foreach ($explodePlan as $val) {
+      'User utc 기준 : 변환  ' . $save = $val + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+      array_push($splanArray, $save);
+    }
+
+    $utc_plan = implode("_", $splanArray); // 담긴 배열을 _기준으로 스트링으로 저장 
+
+
+    $send['class_start_time'] = $utc_plan;  //user의 timezone이 적용된 예약한 수업 일정 값 
+
+
+    $send['class_register_memo'] = $row1['6']; // 수업메모
+    $send['class_register_status'] = $row1['7'];   //  신청한 수업 진행 방식  
+    $send['class_register_method'] = $row1['8']; // 신청한 수업 진행 방식
+
+    $answerdate = $row1['9']; //응답한 시간 
+    $send['class_register_answer_date'] = $answerdate * 1000;  //응답한 시간 js 에서 밀리초 단위이기 때문에 *1000 적용    
+
+    $send['class_register_date'] = $row1['10']; // 수업예약 신청한 시간 
+    $send['class_id'] = $row1['11'];  // 수업 id 
+    $send['user_id_teacher'] = $row1['12'];  //강사의 userid
+    $send['class_name'] = $row1['13']; //
+    $send['class_description'] = $row1['14']; //
+    $send['class_people'] = $row1['15']; //
+    $send['class_type'] = $row1['16']; //
+    $send['class_levelr'] = $row1['17']; //
+
+
+    array_push($result1['result'], $send);
+    echo json_encode($result1['result'],);
+    mysqli_close($conn);
+  }
 } else if ($kind == 'clist') {
   //필요한 값이 class list 이면  
 
@@ -304,7 +314,7 @@ if ($kind == 'cdetail') {
     //Class_List에 수업 목록확인  
     $Clist_Sql = "SELECT * FROM Class_List order by class_id DESC LIMIT $start, $till";
     $response1 = mysqli_query($conn, $Clist_Sql);
- 
+
     while ($row1 = mysqli_fetch_array($response1)) {
       $clid = $row1['0'];
       $usid = $row1['1'];
@@ -366,18 +376,17 @@ if ($kind == 'cdetail') {
     } else {
 
       $result1["success"]   =  "no";
-      // echo json_encode($result1);
+      echo json_encode($result1);
       mysqli_close($conn);
     }
   } else if ($clReserveCheck  != null) {
     // 학생(사용자)가 자신이 예약 신청한 수업 목록을 얻어옴 all , wait, approved, cancel, done, reply
- 
+
     if ($clReserveCheck == 'all') {
-      $sqlWhere = 'where Class_Add.user_id_student ='. $User_ID;    
-     
+      $sqlWhere = 'where Class_Add.user_id_student =' . $User_ID;
     } else if ($clReserveCheck != 'all') {
-      if ($clReserveCheck == 'wait' ) {
-  
+      if ($clReserveCheck == 'wait') {
+
         $clRCValue = '0';
       } else if ($clReserveCheck == 'approved') {
         $clRCValue = '1';
@@ -387,18 +396,18 @@ if ($kind == 'cdetail') {
         $clRCValue = '3';
       } else if ($clReserveCheck == 'reply') {
         $clRCValue = '4';
-      }        
-      $sqlWhere = 'where Class_Add.user_id_student = '. $User_ID.' and Class_Add.class_register_status = '. $clRCValue;
-    } 
-    
+      }
+      $sqlWhere = 'where Class_Add.user_id_student = ' . $User_ID . ' and Class_Add.class_register_status = ' . $clRCValue;
+    }
+
     //해당 Class_List 와 Class_Add 에서 값을 가져옴     
     $Student_ReserveClassList_Sql = "SELECT Class_List.*,Class_Add.schedule_list,Class_Add.class_register_status,Class_Add.class_register_answer_date,
     Class_Add.class_register_date,Class_Add.class_time,Class_Add.class_register_id,Class_Add.class_register_method  
     
     FROM Class_Add LEFT  OUTER JOIN Class_List ON Class_Add.class_id = Class_List.class_id
      $sqlWhere  order by  class_id DESC LIMIT $start, $till";
-    
-    
+
+
     $SRCList_Result = mysqli_query($conn, $Student_ReserveClassList_Sql);
     $result['result'] = array();
     while ($row1 = mysqli_fetch_array($SRCList_Result)) {
@@ -471,178 +480,237 @@ if ($kind == 'cdetail') {
       echo json_encode($result);
       mysqli_close($conn);
     }
-  } 
-
-
-}else if ($kind == 'tclist') {
+  }
+} else if ($kind == 'tclist') {
   // 필요한 값이 특정 강사의 수업 목록 이면 
 
 
-  if($clReserveCheck == null){
+  if ($clReserveCheck == null) {
 
-  $result3['result'] = array();
-  $result1['data'] = array();
-  $result2['timeprice'] = array();
-
-
-
-  
-  //Class_List에 수업 목록확인  
-  $sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$user_id_teacher}'";
-  $response1 = mysqli_query($conn, $sql);
-
-
-
-  while ($row1 = mysqli_fetch_array($response1)) {
-    $clid = $row1['0'];
-
-   
-    $send1['class_id'] = $row1['0'];
-    if ($class_name != null) {
-    $send1['class_name'] = $row1['2'];}//수업이름
-    if ($class_description != null) {
-    $send1['class_description'] = $row1['3'];} // 수업 소개 
-    if ($class_people != null) {
-    $send1['class_people'] = $row1['4'];}
-    if ($class_type != null) {
-    $send1['class_type'] = $row1['5'];}
-    if ($class_level != null) {
-    $send1['class_level'] = $row1['6'];}
-
-    if ($class_price != null) {
-    //Class_List_Time_Price 수업 시간, 가격 확인   
-    $sql = "SELECT * FROM Class_List_Time_Price WHERE class_id = '$clid'";
-    $response2 = mysqli_query($conn, $sql);
-
-    while ($row2 = mysqli_fetch_array($response2)) {
-   
-      $tp= $row2['3'];
-
-      array_push($result2['timeprice'], $tp);
-    }
-    
-
-    $send1['tp'] = $result2['timeprice'];
-  }
-
-
-
-    array_push($result1['data'], $send1);
+    $result3['result'] = array();
+    $result1['data'] = array();
     $result2['timeprice'] = array();
-  }
-  $send['class'] = $result1['data'];
-  array_push($result3['result'], $send);
-  $result3["success"] = "1";
-  echo json_encode($result3);
-  mysqli_close($conn);
 
 
 
 
-}else if($clReserveCheck != null){
+    //Class_List에 수업 목록확인  
+    $sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$user_id_teacher}'";
+    $response1 = mysqli_query($conn, $sql);
 
 
 
-  if ($clReserveCheck == 'all') {
-    $sqlWhere = 'where Class_Add.user_id_teacher ='. $User_ID;       
-  } else if ($clReserveCheck != 'all') {
-    if ($clReserveCheck == 'wait' ) {
-      $clRCValue = '0';
-    } else if ($clReserveCheck == 'approved') {
-      $clRCValue = '1';
-    } else if ($clReserveCheck == 'cancel') {
-      $clRCValue = '2';
-    } else if ($clReserveCheck == 'done') {
-      $clRCValue = '3';
+    while ($row1 = mysqli_fetch_array($response1)) {
+      $clid = $row1['0'];
+
+
+      $send1['class_id'] = $row1['0'];
+      if ($class_name != null) {
+        $send1['class_name'] = $row1['2'];
+      } //수업이름
+      if ($class_description != null) {
+        $send1['class_description'] = $row1['3'];
+      } // 수업 소개 
+      if ($class_people != null) {
+        $send1['class_people'] = $row1['4'];
+      }
+      if ($class_type != null) {
+        $send1['class_type'] = $row1['5'];
+      }
+      if ($class_level != null) {
+        $send1['class_level'] = $row1['6'];
+      }
+
+      if ($class_price != null) {
+        //Class_List_Time_Price 수업 시간, 가격 확인   
+        $sql = "SELECT * FROM Class_List_Time_Price WHERE class_id = '$clid'";
+        $response2 = mysqli_query($conn, $sql);
+
+        while ($row2 = mysqli_fetch_array($response2)) {
+
+          $tp = $row2['3'];
+
+          array_push($result2['timeprice'], $tp);
+        }
+
+
+        $send1['tp'] = $result2['timeprice'];
+      }
+
+
+
+      array_push($result1['data'], $send1);
+      $result2['timeprice'] = array();
     }
-    $sqlWhere = 'where Class_Add.user_id_teacher = '. $User_ID.' and Class_Add.class_register_status = '. $clRCValue;
-  } 
-
-
-  // $i = 0;
-
-  // $start =  $i + (20 * $plus);
-  // $till = 20;
-  
-  // $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where  $sqlWhere  order by class_id DESC LIMIT $start, $till";
-  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add  $sqlWhere ";
-
-
-  $SRCList_Result1 = mysqli_query($conn, $Sql1);
-  
-  $result['result'] = array();
-  while ($row1 = mysqli_fetch_array($SRCList_Result1)) {
-  
-    $class_time = $row1['class_time']; //수업 30분  60분  시간 
-    $schedule_list = $row1['schedule_list']; //수업상태 
-  
-    $hour = 3600000; // 시간의 밀리초     
-    $save = $schedule_list + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
-   
-  
-  
-    
-    $class_id = $row1['class_id']; //수업id
-  
-  
-  
-    $Sql3 = "SELECT Class_List.class_name FROM Class_List where  Class_List.class_id = ' $class_id'";
-    $SRCList_Result3 = mysqli_query($conn, $Sql3);
-  
-    $row3 = mysqli_fetch_array($SRCList_Result3);
-  
-    
-  
-    $user_id_student = $row1['user_id_student']; //예약한 학생의 id 
-    $Sql4 = "SELECT User_Detail.user_img, User.user_name FROM User_Detail LEFT  OUTER JOIN User ON User_Detail.user_id = User.user_id  where  User_Detail.user_id = '$user_id_student'";
-    $SRCList_Result4 = mysqli_query($conn, $Sql4);
-  
-    $row4 = mysqli_fetch_array($SRCList_Result4);
-   
-  
-  
-    $Sql5 = "SELECT Class_List_Time_Price.class_price FROM Class_List_Time_Price where Class_List_Time_Price.class_time =  '$class_time'  and Class_List_Time_Price.class_id = '$class_id'";
-    $SRCList_Result5 = mysqli_query($conn, $Sql5);
-  
-    $row5 = mysqli_fetch_array($SRCList_Result5);
-  
-  
-  
-    $send['class_register_id'] = $row1['class_register_id']; //예약한 수업 id 
-    $send['class_id'] = $row1['class_id']; //강의 자체 id
-    $send['user_img'] = $row4['user_img']; //사용자 이미지 
-    $send['user_name'] = $row4['user_name']; //사용자 이름
-    $send['class_name'] = $row3['class_name']; //수업이름
-    $send['schedule_list']  = $save; //수업 일정  
-    $send['class_time'] = $row1['class_time']; //수업 30분  60분  시간 
-    $send['class_register_method'] = $row1['class_register_method']; //수업도구
-    $send['class_register_status'] = $row1['class_register_status']; //수업상태
-    $send['class_price'] = $row5['class_price']; //수업가격
-  
-  
-    array_push($result['result'], $send);
-   }
-  
-  
-  if ($SRCList_Result1) { //정상적으로 저장되었을때 
-  
-    $result["success"] = "yes";
-    echo json_encode($result);
+    $send['class'] = $result1['data'];
+    array_push($result3['result'], $send);
+    $result3["success"] = "1";
+    echo json_encode($result3);
     mysqli_close($conn);
-  } else {
-  
-    $result["success"]   =  "no";
-    echo json_encode($result);
-    mysqli_close($conn);
+
+
+  } else if ($clReserveCheck != null) {
+
+
+    if ($clReserveCheck == 'all') {
+
+      if ($filter_class_resister_time_from != null && $filter_class_resister_time_to != null) {
+
+        $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and class_register_date >=   ' . $filter_class_resister_time_from . ' and class_register_date <= ' . $filter_class_resister_time_to;
+      } else if ($filter_class_resister_time_from != null && $filter_class_resister_time_to == null) {
+
+        $sqlWhere =  'where Class_Add.user_id_teacher = ' . $User_ID . ' and class_register_date >=   ' . $filter_class_resister_time_from;
+      } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to != null) {
+
+
+        $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . '  and class_register_date <=  ' . $filter_class_resister_time_to;
+      } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to == null) {
+        $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID;
+      }
+    } else if ($clReserveCheck != 'all') {
+      if ($clReserveCheck == 'wait') {
+        $clRCValue = '0';
+      } else if ($clReserveCheck == 'approved') {
+        $clRCValue = '1';
+      } else if ($clReserveCheck == 'cancel') {
+        $clRCValue = '2';
+      } else if ($clReserveCheck == 'done') {
+        $clRCValue = '3';
+      }
+
+
+
+
+      if ($filter_class_resister_time_from != null && $filter_class_resister_time_to != null) {
+
+
+        $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_date = ' . $clRCValue . ' and class_register_date >=   ' . $filter_class_resister_time_from . ' and class_register_date <= ' . $filter_class_resister_time_to;
+      } else if ($filter_class_resister_time_from != null && $filter_class_resister_time_to == null) {
+
+        $sqlWhere =  'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_date = ' . $clRCValue . ' and class_register_date >=   ' . $filter_class_resister_time_from;
+      } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to != null) {
+
+
+        $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_date = ' . $clRCValue . '  and class_register_date <=  ' . $filter_class_resister_time_to;
+      } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to == null) {
+        $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_date = ' . $clRCValue;
+      }
+    }
+
+
+    // $timezone = '-9'; //사용자(학생)의 TimeZone
+    // $timezone2 = +1; //사용자(학생)의 TimeZone
+
+
+
+
+    if ($timezone >= 0) {
+      $plus_minus = '+';
+    } else {
+      $plus_minus = '';
+    }
+
+
+    $timezone2 =  $plus_minus . $timezone . ':00'; //수업이 신청된 시간에 timezone을 적용하여 출력함. 
+
+
+
+    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, '+00:00','$timezone2') FROM Class_Add  $sqlWhere   order by class_register_id desc ";
+
+
+    $SRCList_Result = mysqli_query($conn, $Student_ReserveClassList_Sql);
+
+    $result['result'] = array();
+
+
+    while ($row1 = mysqli_fetch_array($SRCList_Result)) {
+
+
+      $class_time = $row1['class_time']; //수업 30분  60분  시간 
+      $schedule_list = $row1['schedule_list']; //수업상태 
+
+      $hour = 3600000; // 시간의 밀리초     
+      $save = $schedule_list + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+
+
+
+
+      $class_id = $row1['class_id']; //수업id
+
+
+      if ($filter_class_name != null) {
+        $class_name_sqlwhere =  'Class_List.class_id = '  . $class_id .  ' and Class_List.class_name = ' . $filter_class_name;
+      } else {
+        $class_name_sqlwhere =  'Class_List.class_id = '  . $class_id;
+      }
+
+
+      $Sql3 = "SELECT Class_List.class_name FROM Class_List where  $class_name_sqlwhere ";
+      $SRCList_Result3 = mysqli_query($conn, $Sql3);
+
+      $row3 = mysqli_fetch_array($SRCList_Result3);
+
+
+
+      if ($filter_user_name != null) {
+        $user_name_sqlwhere = 'User_Detail.user_id = ' . $user_id_student . ' and User.user_name = ' . $filter_user_name;
+      } else {
+        $user_name_sqlwhere =  'User_Detail.user_id = ' . $user_id_student;
+      }
+
+
+      $user_id_student = $row1['user_id_student']; //예약한 학생의 id 
+      $Sql4 = "SELECT User_Detail.user_img, User.user_name FROM User_Detail LEFT  OUTER JOIN User ON User_Detail.user_id = User.user_id  where   $user_name_sqlwhere ";
+      $SRCList_Result4 = mysqli_query($conn, $Sql4);
+
+      $row4 = mysqli_fetch_array($SRCList_Result4);
+
+
+
+      $Sql5 = "SELECT Class_List_Time_Price.class_price FROM Class_List_Time_Price where Class_List_Time_Price.class_time =  '$class_time'  and Class_List_Time_Price.class_id = '$class_id'";
+      $SRCList_Result5 = mysqli_query($conn, $Sql5);
+
+      $row5 = mysqli_fetch_array($SRCList_Result5);
+
+
+
+      $send['class_register_id']   = $row1['class_register_id']; //예약한 수업 id 
+      $send['class_id'] = $row1['class_id']; //강의 자체 id
+      $send['user_img'] = $row4['user_img']; //사용자 이미지 
+      $send['user_name'] = $row4['user_name']; //사용자 이름
+      $send['class_name'] = $row3['class_name']; //수업이름
+      $send['schedule_list']  = $save; //수업 일정  
+      $send['class_time'] = $row1['class_time']; //수업 30분  60분  시간 
+      $send['class_register_method'] = $row1['class_register_method']; //수업도구
+      $send['class_register_status'] = $row1['class_register_status']; //수업상태
+      $send['class_price'] = $row5['class_price']; //수업가격
+      $send['class_register_date'] = $row1['7']; //수업신청일 
+
+
+      if ($send['class_register_id'] != null &&  $send['class_id'] != null  && $send['user_img'] != null && $send['user_name'] != null && $send['class_name'] != null && $send['schedule_list'] != null && $send['class_time'] != null && $send['class_register_method'] != null && $send['class_register_status'] != null && $send['class_price'] != null && $send['class_register_date'] != null) {
+        array_push($result['result'], $send);
+      }
+    }
+
+
+    if ($SRCList_Result) { //정상적으로 저장되었을때 
+
+      $result["success"] = "yes";
+      echo json_encode($result);
+      mysqli_close($conn);
+    } else {
+
+      $result["success"]   =  "no";
+      echo json_encode($result);
+      mysqli_close($conn);
+    }
   }
-}
-
-} else if ($kind == 'tcdetail'){
-  
+} else if ($kind == 'tcdetail') {
 
 
 
-  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'" ;
+
+  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
 
 
   $SRCList_Result1 = mysqli_query($conn, $Sql1);
@@ -673,20 +741,20 @@ if ($kind == 'cdetail') {
   $save = $schedule_list + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
   $send['teacher_schedule_list']  = $save; //수업 일정  
   $send['teacher_timezone']  = $timezone; //수업 일정  
- 
 
-  $Sql2 = "SELECT User_Detail.user_timezone  FROM User_Detail where  User_Detail.user_id = '$user_id_student'" ;
+
+  $Sql2 = "SELECT User_Detail.user_timezone  FROM User_Detail where  User_Detail.user_id = '$user_id_student'";
   $SRCList_Result2 = mysqli_query($conn, $Sql2);
   $row2 = mysqli_fetch_array($SRCList_Result2);
   $send['student_timezone'] = $row2['user_timezone']; //학생 타임존
   $student_timezone = $row2['user_timezone']; //학생 타임존
 
-  
+
   $save = $schedule_list + $student_timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
   $send['student_schedule_list']  = $save; //수업 일정  
- 
 
-  
+
+
 
   $Sql3 = "SELECT Class_List_Time_Price.class_price FROM Class_List_Time_Price where Class_List_Time_Price.class_time =  '$class_time'  and Class_List_Time_Price.class_id = '$class_id'";
   $SRCList_Result3 = mysqli_query($conn, $Sql3);
@@ -706,24 +774,20 @@ if ($kind == 'cdetail') {
 
 
 
-  
+
   array_push($result['result'], $send);
 
 
 
-if ($SRCList_Result1) { //정상적으로 저장되었을때 
+  if ($SRCList_Result1) { //정상적으로 저장되었을때 
 
-  $result["success"] = "yes";
-  echo json_encode($result);
-  mysqli_close($conn);
-} else {
+    $result["success"] = "yes";
+    echo json_encode($result);
+    mysqli_close($conn);
+  } else {
 
-  $result["success"]   =  "no";
-  echo json_encode($result1);
-  mysqli_close($conn);
-}
-
-
-
-
+    $result["success"]   =  "no";
+    echo json_encode($result1);
+    mysqli_close($conn);
+  }
 }
