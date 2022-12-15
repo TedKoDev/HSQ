@@ -559,12 +559,13 @@ if ($kind == 'cdetail') {
   } 
 
 
-  $i = 0;
+  // $i = 0;
 
-  $start =  $i + (20 * $plus);
-  $till = 20;
+  // $start =  $i + (20 * $plus);
+  // $till = 20;
   
-  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where  $sqlWhere  order by class_id DESC LIMIT $start, $till";
+  // $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where  $sqlWhere  order by class_id DESC LIMIT $start, $till";
+  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where  $sqlWhere ";
 
 
   $SRCList_Result1 = mysqli_query($conn, $Sql1);
