@@ -483,8 +483,6 @@ if ($kind == 'cdetail') {
   }
 } else if ($kind == 'tclist') {
   // 필요한 값이 특정 강사의 수업 목록 이면 
-
-
   if ($clReserveCheck == null) {
 
     $result3['result'] = array();
@@ -550,7 +548,7 @@ if ($kind == 'cdetail') {
 
 
   } else if ($clReserveCheck != null) {
-
+    //강사가 수업신청이 들어온 목록을 확인할때 
 
     if ($clReserveCheck == 'all') {
 
