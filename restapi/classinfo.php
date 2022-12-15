@@ -82,15 +82,18 @@ $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_r
 
 $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_reserve_check"}; // 예약된 수업 리스트 / 상세 
 
-$filter_class_name                 =   json_decode(file_get_contents("php://input"))->{"filter_class_name"}; // 수업 이름 검색 필터 
-$filter_user_name                 =   json_decode(file_get_contents("php://input"))->{"filter_user_name"}; // 학생 이름 검색 필터 
-$filter_class_resister_time_from     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_from"}; // 학생 이름 검색 필터 
-$filter_class_resister_time_to     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_to"}; // 학생 이름 검색 필터 
+$filter_class_name                 =   json_decode(file_get_contents("php://input"))->  {"filter_class_name"}; // 수업 이름 검색 필터 
+$filter_user_name                 =   json_decode(file_get_contents("php://input"))->   {"filter_user_name"}; // 학생 이름 검색 필터 
+$filter_class_resister_time_from     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_from"}; //날짜 시작 시점 필터 
+$filter_class_resister_time_to     =   json_decode(file_get_contents("php://input"))->  {"filter_class_resister_time_to"}; //날짜 종료 시점 필터 
 
 
 // filter_class_resister_time_from
 // filter_class_resister_time_to
 
+
+
+ 
 
 
 
