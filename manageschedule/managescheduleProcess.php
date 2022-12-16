@@ -64,15 +64,19 @@ $result2['Schedule'] = array();
 // 1시간 = 3600;
 $hour = 3600000;
 $resultarray = array();
+$status_resultarray = array();
 
 while ($row1 = mysqli_fetch_array($response2)) {
 
  $schedule = $row1['0'];
  $status = $row1['1'];
  $schedule2 = $schedule + $hour*$timezone;
+
   array_push($resultarray, $schedule2);
+  array_push($status_resultarray, $status);
 }
  $string = implode("_",$resultarray);
+ $string_status = implode("_",$status_resultarray);
 
  
 
@@ -104,6 +108,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
  if ($response1) { //정상일떄  
   $data = array(
     'schedule_list'	=>	$string,
+    'schedule_list_status'	=>	$ $string_status,
     'reserved_schedule_list'	=>	$string2,
     'success'        	=>	'yes'
   );

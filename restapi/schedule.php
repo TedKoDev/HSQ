@@ -42,7 +42,7 @@ $token      =   json_decode(file_get_contents("php://input"))->{"token"};
 $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; 
 // $utc      =   9; 
 $tusid      =   json_decode(file_get_contents("php://input"))->{"user_id_teacher"};  // 강사의 userid 
-// $tusid      =   32;  // 강사의 userid 
+// $tusid      =   324;  // 강사의 userid 
 
 
 
@@ -87,44 +87,51 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
-$sql = "SELECT schedule_list FROM Teacher_Schedule WHERE user_id_teacher = '$tusid'";
+$sql = "SELECT schedule_list, teacher_schedule_status FROM Teacher_Schedule WHERE user_id_teacher = '$tusid'";
 $response2 = mysqli_query($conn, $sql);
 $result2['schedule_list'] = array();
 // 1시간 = 3600;
 $hour = 3600000;
 $resultarray = array();
+$status_resultarray = array();
 while ($row1 = mysqli_fetch_array($response2)) {
  $schedule = $row1['0'];
+ $schedule_status = $row1['1'];
  $schedule2 = $schedule + $hour*$timezone;
   array_push($resultarray, $schedule2);
+  array_push($status_resultarray, $schedule_status);
 }
  $string = implode("_",$resultarray);
+ $string_status = implode("_",$status_resultarray);
   
  
 
 //예약된 수업 리스트만 
- $sql = "SELECT * FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID' and  Status = '1'";
- $response2 = mysqli_query($conn, $sql);
+//  $sql = "SELECT * FROM Teacher_Schedule WHERE user_id_teacher = '$tusid' and  teacher_schedule_status = '1'";
+ $sql = "SELECT * FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID' and  teacher_schedule_status = '1'";
+ $response3 = mysqli_query($conn, $sql);
   
  // 1시간 = 3600;
  $hour = 3600000;
  $예약된스케쥴 = array();
-  while ($row1 = mysqli_fetch_array($response2)) {
+  while ($row1 = mysqli_fetch_array($response3)) {
    $schedule = $row1['2'];
   $status = $row1['3'];
-    $schedule2 = $schedule + $hour*$timezone;
-    array_push($예약된스케쥴, $schedule2);
+    $schedule3 = $schedule + $hour*$timezone;
+    array_push($예약된스케쥴, $schedule3);
  }
  
   $string2 = implode("_",$예약된스케쥴);
 
   
      
- if ($response1) { //정상일떄  
+ if ($response1&&$response2&&$response3) { //정상일떄  
   $data = array(
     'user_timezone'  => $timezone,
-    'schedule_list'	=>	$string,
-    'reserved_schedule_list'	=>	$string2,
+    'teacher_schedule_list'	=>	$string,
+    'teacher_schedule_list_status'	=>	$string_status,
+    'user_reserved_schedule_list'	=>	$string2,
+ 
     'success'        	=>	'yes'
   );
   echo json_encode($data);
