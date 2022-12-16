@@ -1,4 +1,4 @@
-import {changeSelectBtnStyle, getFilterblock} from "./pages.js";
+import {changeSelectBtnStyle, getFilterInit, getFilterblock} from "./pages.js";
 import {$, $_all} from "/utils/querySelector.js";
 import {classList_json} from "../../classhistory.js";
 import {s3_url} from "../../../../commenJS/cookie_modules.js";
@@ -16,6 +16,7 @@ export function classhistorylist($container) {
         console.log("수업목록");
 
         changeSelectBtnStyle($('#classList'), $_all(".historyType"));
+        
 
         // 수업 목록 이외의 부분 표시 (ex : 필터 관련된 input이랑 검색 버튼)
         getFilterblock($('.filter'));
@@ -41,6 +42,7 @@ const showClassList = ($container, response) => {
     // 값이 있을 경우에만 화면에 뿌려주기
     if (classList.length != 0) {
 
+       //  for (let i = 0; i < classList.length; i++) {
         for (let i = 0; i < classList.length; i++) {
             //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done)
             const status = classList[i].class_register_status;
@@ -94,10 +96,35 @@ const showClassList = ($container, response) => {
                             </div>                
                           </div>`;
 
-            $container.appendChild(a) // 없으면 수업이 없다는 뷰 뿌려주기;
+            $container.appendChild(a) 
         }
 
-    } else {}
+        // 일단 처음에는 20개만 화면에 출력
+        displayRow(0, $_all('.classList'), 5);
+        
+        // 페이징 뷰 표시하는 로직
+        const pagingDiv = document.createElement("div");  
+        pagingDiv.setAttribute("class", "flex mt-5");      
+        pagingDiv.innerHTML = ` <div class = "pagination mx-auto flex items-center">
+                                    <span class = "prevBtn" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg>
+                                    </span>
+                                    <ol id = "numbers">
+                                        
+                                    </ol>
+                                    <span class = "nextBtn" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"/></svg>
+                                    </span>
+                                </div>`;
+            
+        $container.appendChild(pagingDiv);
+
+        paging();
+    } 
+    // 없으면 수업이 없다는 뷰 뿌려주기;
+    else {
+
+    }
 }
 
 // 수업 상태에 따라 텍스트 변경하는 함수
@@ -115,6 +142,165 @@ const statusChange = (status, $classStyle) => {
     }
     return status;
 }
+
+
+
+function paging() {
+
+    const rowsPerPage = 5;
+    const rows = $_all('.classList');
+    const rowsCount = rows.length;
+    const pageCount = Math.ceil(rowsCount/rowsPerPage);
+    const numbers = $('#numbers');
+
+    const prevPageBtn = $('.prevBtn');
+    const nextPageBtn = $('.nextBtn');
+    let pageActiveIdx = 0; // 현재 보고 있는 페이지그룹 번호
+    let currentPageNum = 0; // 현재 보고 있는 페이지네이션 번호
+    let maxPageNum = 3; // 페이지 그룹 최대 갯수    
+    
+    // console.log(pageCount);
+    for (let i = 1; i <= pageCount; i++) {
+        const li = document.createElement("li");
+        li.setAttribute("class", "float-left");
+        
+        if (i == 1) {
+            li.innerHTML = `<li ><a id = ${i-1}_page class = " bg-gray-500 mx-1 px-2">${i}</a></li>`;            
+        }
+        else {
+            li.innerHTML = `<li ><a id = ${i-1}_page class = " mx-1 px-2">${i}</a></li>`;            
+        }
+
+        numbers.appendChild(li);        
+    } 
+
+    const numberBtn = numbers.querySelectorAll('a');
+
+    // 모든 페이지네이션 번호 감추기
+    for (const nb of numberBtn) {
+    nb.style.display = 'none';
+    }
+    
+    numberBtn.forEach((item, idx) => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            for (const nb of numberBtn) {
+                nb.setAttribute("class", "mx-1 px-2");
+            }
+            e.target.setAttribute("class", "bg-gray-500 mx-1 px-2");
+
+            console.log(idx);
+
+            displayRow(idx, rows, rowsPerPage);
+
+            scrolltoTop();
+        })
+    })
+
+    nextPageBtn.addEventListener('click', () => {
+
+        let nextPageNum = pageActiveIdx*maxPageNum + maxPageNum;        
+        displayRow(nextPageNum, rows, rowsPerPage);
+        ++pageActiveIdx;
+        displayPage(pageActiveIdx, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx);
+
+        // 이전/다음 버튼 눌렀을 때 표시되는 게시글에 맞게 클릭 표시 처리
+        next_prev_clickCheck(nextPageNum);
+
+        scrolltoTop();
+    })
+
+    prevPageBtn.addEventListener('click', () => {
+        
+        let nextPageNum = pageActiveIdx*maxPageNum - 1;        
+        displayRow(nextPageNum, rows, rowsPerPage);
+        --pageActiveIdx;
+        displayPage(pageActiveIdx, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx);
+
+        // 이전/다음 버튼 눌렀을 때 표시되는 게시글에 맞게 클릭 표시 처리
+        next_prev_clickCheck(nextPageNum);
+
+        scrolltoTop();
+    })
+
+    displayPage(0, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx);
+}
+
+// 이전/다음 버튼 눌렀을 때 표시되는 게시글에 맞게 클릭 표시 처리
+function next_prev_clickCheck(idx) {
+
+    const numbers = $('#numbers');
+    const numberBtn = numbers.querySelectorAll('a');
+    for (const nb of numberBtn) {
+        nb.setAttribute("class", "mx-1 px-2");
+    }
+    document.getElementById(idx+"_page").setAttribute("class", "bg-gray-500 mx-1 px-2");
+}
+
+function displayRow(idx, rows, rowsPerPage) {
+
+    let start = idx*rowsPerPage;
+    let end = start+rowsPerPage;
+    let rowsArray = [...rows];
+    
+    for (const ra of rowsArray) {
+        ra.style.display = 'none';
+    }
+
+    let newRows = rowsArray.slice(start, end);
+    
+    for (const nr of newRows) {
+        nr.style.display = 'block';
+    }    
+}
+
+
+// 페이지 그룹 표시 함수
+function displayPage(num, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx) {
+
+     // 모든 페이지네이션 번호 감추기
+     for (const nb of numberBtn) {
+        nb.style.display = 'none';
+    }
+
+    let totalPageCount = Math.ceil(pageCount/maxPageNum);
+
+    let pageArr = [...numberBtn];
+    let start = num*maxPageNum;
+    let end = start+maxPageNum;
+    let pageListArr = pageArr.slice(start, end);
+
+    for (let item of pageListArr) {
+        item.style.display = 'block';
+    }
+
+    // 이전 버튼 안보이게
+    if(pageActiveIdx == 0) {
+        prevPageBtn.style.display = 'none';
+    }
+    else {
+        prevPageBtn.style.display = 'block';
+    }
+
+    // 다음 버튼 안보이게
+    if(pageActiveIdx == totalPageCount - 1) {
+        nextPageBtn.style.display = 'none';
+    }
+    else {
+        nextPageBtn.style.display = 'block';
+    }
+}
+
+// 클릭 시 맨 위로 올리는 함수
+function scrolltoTop() {
+    
+    window.scrollTo({
+
+        top:0,
+        left:0
+    });
+}
+
 
 
 

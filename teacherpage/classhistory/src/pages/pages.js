@@ -39,6 +39,6 @@ export const getFilterblock = ($filter) => {
 
 export const getFilterInit = ($filter) => {    
     
-    $filter.innerHTML = "";
+  $filter.innerHTML = "";
   }
 

@@ -8,8 +8,8 @@ export function feedbacklist($container) {
       this.render();
     };
   
-    this.render = () => {
-      
+    this.render = () => {            
+
       // 수업 목록의 필터 부분 초기화
       getFilterInit($('.filter'));
 
