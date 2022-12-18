@@ -56,7 +56,7 @@ $timezone = $row1['0'].'</br>';
 
 
 
-$sql = "SELECT schedule_list, teacher_schedule_status FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID'";
+$sql = "SELECT schedule_list, teacher_schedule_status, teacher_schedule_review FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID'";
 $response2 = mysqli_query($conn, $sql);
 
 $result2['Schedule'] = array();
@@ -65,18 +65,22 @@ $result2['Schedule'] = array();
 $hour = 3600000;
 $resultarray = array();
 $status_resultarray = array();
+$review_resultarray = array();
 
 while ($row1 = mysqli_fetch_array($response2)) {
 
  $schedule = $row1['0'];
  $status = $row1['1'];
+ $review = $row1['2'];
  $schedule2 = $schedule + $hour*$timezone;
 
   array_push($resultarray, $schedule2);
   array_push($status_resultarray, $status);
+  array_push($review_resultarray, $review);
 }
  $string = implode("_",$resultarray);
  $string_status = implode("_",$status_resultarray);
+ $string_review = implode("_",$review_resultarray);
 
  
 
@@ -109,6 +113,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
   $data = array(
     'schedule_list'	=>	$string,
     'schedule_list_status'	=>	$ $string_status,
+    'schedule_list_review'	=>	$ $string_review,
     'reserved_schedule_list'	=>	$string2,
     'success'        	=>	'yes'
   );

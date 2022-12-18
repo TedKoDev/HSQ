@@ -16,7 +16,7 @@ classinfo.php
 2. 예약된 수업의 리스트 또는 상세 페이지  
 $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"clReserveCheck"}; // 예약된 수업 리스트 / 상세 
 
--리스트의 경우 value = all, approved, cancel  ,done ,reply
+-리스트의 경우 value = all, approved, cancel  ,done ,review
 -상세의 경우  value = cdetail  와   
     $class_register_id       =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 예약한 수업 번호 
     "class_register_id"(key) = 137(value) 값 이 필요함 ; // 예약한 수업 번호  
@@ -102,21 +102,21 @@ $filter_class_resister_time_to     =   json_decode(file_get_contents("php://inpu
 
 // $kind            =   'clist';         //  
 // $kind            =   'cdetail';       //  
-// $clReserveCheck  =   'cdetail';       // 예약된 수업 상세 페이지 
+// $clReserveCheck  =   'detail';       // 예약된 수업 상세 페이지 
 
 // $kind          =   'tcdetail';      // 
 // $clReserveCheck  =  'all';          // 
 // $clReserveCheck  =  'approved';     // 
 // $clReserveCheck  =  'wait'; // 
 // $clReserveCheck  =  'done';         // 
-// $clReserveCheck  =  'reply';        // 
+// $clReserveCheck  =  'review';        // 
 
 
 // $kind          =   'cdetail'; // 강사의 User_id 
 // 수업목록        : kind = clist 
 // 수업상세        : kind = cdetail    
 // 예약체크        : kind = clReserveCheck    // 전체 목록 또는 상세 정보 
-// 예약체크 필요값 : value = all, approved, not_approved  ,done ,reply
+// 예약체크 필요값 : value = all, approved, not_approved  ,done ,review
 // value : 
 // 1. all (해당 유저가 예약/완료한 모든 수업)
 // 2. approved (예약 승인 되었지만 아직 수강은 안한 수업)
@@ -133,7 +133,7 @@ $class_id       =   json_decode(file_get_contents("php://input"))->{"class_id"};
 $class_register_id       =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 예약한 수업 번호 
 
 
-// $class_register_id       =  26; // 예약한 수업 번호 
+// $class_register_id       =  239; // 예약한 수업 번호 
 // $class_id       =   34; // 수업번호 
 // 강사의 수업목록 : kind = tclist
 // 강사의 userid 값이 필요함 
@@ -275,21 +275,22 @@ if ($kind == 'cdetail') {
     $send['class_start_time'] = $utc_plan;  //user의 timezone이 적용된 예약한 수업 일정 값 
 
 
-    $send['class_register_memo'] = $row1['6']; // 수업메모
-    $send['class_register_status'] = $row1['7'];   //  신청한 수업 진행 방식  
-    $send['class_register_method'] = $row1['8']; // 신청한 수업 진행 방식
+    $send['class_register_memo'] = $row1['class_register_memo']; // 수업메모
+    $send['class_register_status'] = $row1['class_register_status'];   //  신청한 수업 상태   
+    $send['class_register_review'] = $row1['class_register_review'];   //  신청한 수업 review   
+    $send['class_register_method'] = $row1['class_register_method']; // 신청한 수업 진행 방식
 
-    $answerdate = $row1['9']; //응답한 시간 
+    $answerdate = $row1['class_register_answer_date']; //응답한 시간 
     $send['class_register_answer_date'] = $answerdate * 1000;  //응답한 시간 js 에서 밀리초 단위이기 때문에 *1000 적용    
 
-    $send['class_register_date'] = $row1['10']; // 수업예약 신청한 시간 
-    $send['class_id'] = $row1['11'];  // 수업 id 
-    $send['user_id_teacher'] = $row1['12'];  //강사의 userid
-    $send['class_name'] = $row1['13']; //
-    $send['class_description'] = $row1['14']; //
-    $send['class_people'] = $row1['15']; //
-    $send['class_type'] = $row1['16']; //
-    $send['class_levelr'] = $row1['17']; //
+    $send['class_register_date'] = $row1['class_register_date']; // 수업예약 신청한 시간 
+    $send['class_id'] = $row1['class_id'];  // 수업 id 
+    $send['user_id_teacher'] = $row1['user_id_teacher'];  //강사의 userid
+    $send['class_name'] = $row1['class_name']; //
+    $send['class_description'] = $row1['class_description']; //
+    $send['class_people'] = $row1['class_people']; //
+    $send['class_type'] = $row1['class_type']; //
+    $send['class_level'] = $row1['class_level']; //
 
 
     array_push($result1['result'], $send);
@@ -383,7 +384,7 @@ if ($kind == 'cdetail') {
       mysqli_close($conn);
     }
   } else if ($clReserveCheck  != null) {
-    // 학생(사용자)가 자신이 예약 신청한 수업 목록을 얻어옴 all , wait, approved, cancel, done, reply
+    // 학생(사용자)가 자신이 예약 신청한 수업 목록을 얻어옴 all , wait, approved, cancel, done, review
 
     if ($clReserveCheck == 'all') {
       $sqlWhere = 'where Class_Add.user_id_student =' . $User_ID;
@@ -397,15 +398,13 @@ if ($kind == 'cdetail') {
         $clRCValue = '2';
       } else if ($clReserveCheck == 'done') {
         $clRCValue = '3';
-      } else if ($clReserveCheck == 'reply') {
-        $clRCValue = '4';
-      }
+      } 
       $sqlWhere = 'where Class_Add.user_id_student = ' . $User_ID . ' and Class_Add.class_register_status = ' . $clRCValue;
     }
 
     //해당 Class_List 와 Class_Add 에서 값을 가져옴     
     $Student_ReserveClassList_Sql = "SELECT Class_List.*,Class_Add.schedule_list,Class_Add.class_register_status,Class_Add.class_register_answer_date,
-    Class_Add.class_register_date,Class_Add.class_time,Class_Add.class_register_id,Class_Add.class_register_method  
+    Class_Add.class_register_date,Class_Add.class_time,Class_Add.class_register_id,Class_Add.class_register_method  ,Class_Add.class_register_review
     
     FROM Class_Add LEFT  OUTER JOIN Class_List ON Class_Add.class_id = Class_List.class_id
      $sqlWhere  order by  class_id DESC LIMIT $start, $till";
@@ -440,13 +439,14 @@ if ($kind == 'cdetail') {
 
 
       $send['class_start_time'] = $utc_plan;  //user의 timezone이 적용된 예약한 수업 일정 값 
-      $send['class_register_status'] = $row1['9'];   //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done),4(후기완료 reply),
+      $send['class_register_status'] = $row1['9'];   //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done)
       $answerdate = $row1['10']; //응답한 시간 
       $send['class_register_answer_date'] = $answerdate * 1000;  //응답한 시간 js 에서 밀리초 단위이기 때문에 *1000 적용      
       $send['class_register_date'] = $row1['11']; // 수업예약 신청한 시간 
       $send['class_time'] = $row1['12']; // 수업 시간 (30분, 60분)
       $send['class_register_id'] = $row1['13']; // 신청한 수업 리스트의 idx 값
       $send['class_register_method'] = $row1['14']; // 신청한 수업 진행 방식
+      $send['class_register_review'] = $row1['15']; // 신청한 수업 진행 방식
 
 
       //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
@@ -616,7 +616,7 @@ if ($kind == 'cdetail') {
 
 
 
-    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, '+00:00','$timezone2') FROM Class_Add  $sqlWhere   order by class_register_id desc ";
+    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, '+00:00','$timezone2'), Class_Add.class_register_review FROM Class_Add  $sqlWhere   order by class_register_id desc ";
 
 
     $SRCList_Result = mysqli_query($conn, $Student_ReserveClassList_Sql);
@@ -684,6 +684,7 @@ if ($kind == 'cdetail') {
       $send['class_time'] = $row1['class_time']; //수업 30분  60분  시간 
       $send['class_register_method'] = $row1['class_register_method']; //수업도구
       $send['class_register_status'] = $row1['class_register_status']; //수업상태
+      $send['class_register_review'] = $row1['class_register_review']; //수업후기 
       $send['class_price'] = $row5['class_price']; //수업가격
       $send['class_register_date'] = $row1['7']; //수업신청일 
 
@@ -711,7 +712,7 @@ if ($kind == 'cdetail') {
 
 
 
-  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
+  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_register_review, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
 
 
   $SRCList_Result1 = mysqli_query($conn, $Sql1);
@@ -725,6 +726,7 @@ if ($kind == 'cdetail') {
 
   $send['class_register_method'] = $row1['class_register_method']; //수업도구
   $send['class_register_status'] = $row1['class_register_status']; //수업상태
+  $send['class_register_review'] = $row1['class_register_review']; //수업리뷰 상태 
   $send['class_id'] = $row1['class_id']; //강의 자체 id
   $send['class_time'] = $row1['class_time']; //수업 30분  60분  시간  
 
