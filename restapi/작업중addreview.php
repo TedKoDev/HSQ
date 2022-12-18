@@ -1,6 +1,6 @@
 <?php
 
-// == class_register_accept 프로세스==
+// == add_review 프로세스==
 //   #요구되는 파라미터 
 //  token 
 //  kind

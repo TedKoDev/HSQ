@@ -33,6 +33,7 @@ $timezone = $row1['0'];
  
 if ($result) { //정상적으로 값이 나왔을 때  
   $send["user_timezone"]   =  "$timezone";
+  $send["user_id"]   =  "$User_ID";
   $send["success"]   =  "yes";
   echo json_encode($send);
 
