@@ -65,7 +65,7 @@ file_get_contents("php://input") . "<br/>";
 $kind          =   json_decode(file_get_contents("php://input"))->{"kind"}; // 필요 정보 종류 
 // $kind          =  'ulist'; // 필요 정보 종류 
 // $kind          =  'udetail'; // 필요 정보 종류 
-$fusid         =   json_decode(file_get_contents("php://input"))->{"fusid"}; // 
+$fusid         =   json_decode(file_get_contents("php://input"))->{"user_id"}; // 
 // $fusid         =   4; // 필요 정보 종류 
 //ulist    유저리스트 
 //udetail  유저 상세 (검색할 user_id가 필요함  fusid ) 
