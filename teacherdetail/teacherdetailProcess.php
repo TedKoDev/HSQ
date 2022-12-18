@@ -91,12 +91,12 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-$user_id      =   json_decode(file_get_contents("php://input"))->{"user_id"}; // 선택된 강사의 userid 
+$tuser_id      =   json_decode(file_get_contents("php://input"))->{"user_id"}; // 선택된 강사의 userid 
 
 $user_timezone      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; // user_timezone 
 
 
-error_log("'111','token:',$token , 'user_id:',$user_id , 'user_timezone:',$user_timezone  \n", "3", "../php.log");
+error_log("'111','token:',$token , 'user_id:',$tuser_id , 'user_timezone:',$user_timezone  \n", "3", "../php.log");
 
 
 error_log("'111'  \n", "3", "/php.log");
@@ -104,11 +104,11 @@ error_log("'111'  \n", "3", "/php.log");
 $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
-$user_id =  base64_decode($payload['User_ID']);
+$User_ID =  base64_decode($payload['User_ID']);
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
-$user_id      =   324; // 선택된 강사의 userid 
+// $user_id      =   324; // 선택된 강사의 userid 
 //배열생성 
 $result3['result'] = array();
 $result1['data'] = array();
@@ -118,7 +118,7 @@ $result2['timeprice'] = array();
 if($token != null){
 
 //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE user_id = '{$user_id}'";
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1);
 
@@ -162,7 +162,7 @@ JOIN User_Detail
   ON User.user_id = User_Detail.user_id
 JOIN User_Teacher
   ON User_Teacher.user_id = User_Detail.user_id 
- where User.user_id = '$user_id' ";
+ where User.user_id = '$tuser_id' ";
 $response1 = mysqli_query($conn, $sql);
 
 
@@ -231,7 +231,7 @@ $send['schedule_status'] = $row1['1'];
 
 
 //Class_List에 수업 목록확인  
-$sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$user_id}'";
+$sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$tuser_id}'";
 $response3 = mysqli_query($conn, $sql);
 
 

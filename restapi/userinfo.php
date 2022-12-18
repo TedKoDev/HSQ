@@ -220,7 +220,7 @@ if ($kind == 'udetail') {
 
 
   //수업 상세 정보 
-  $sql = "SELECT $string FROM HANGLE.User LEFT OUTER JOIN User_Detail
+  $sql = "SELECT * FROM HANGLE.User LEFT OUTER JOIN User_Detail
           ON User.user_id = User_Detail.user_id
           LEFT OUTER JOIN User_Teacher
           ON User_Teacher.user_id = User_Detail.user_id 
@@ -334,7 +334,7 @@ if ($kind == 'udetail') {
 
 
   //에 수업 목록확인  
-  $sql = "SELECT $string FROM HANGLE.User LEFT OUTER JOIN User_Detail
+  $sql = "SELECT * FROM HANGLE.User LEFT OUTER JOIN User_Detail
           ON User.user_id = User_Detail.user_id
         LEFT OUTER JOIN User_Teacher
           ON User_Teacher.user_id = User_Detail.user_id 
