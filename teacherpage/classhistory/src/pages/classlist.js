@@ -130,6 +130,7 @@ const showClassList = ($container, response) => {
     }
 }
 
+// 수업 히스토리 상세로 이동
 function move_history_detail(a, classId) {
 
     // 유저 id localstorage로 전달
