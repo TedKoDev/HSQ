@@ -406,7 +406,7 @@ async function getTeacherdatail(tokenValue, usid) {
       const p_img = result.user_img;
       const country = result.user_country;
       const residence = result.user_residence;
-      const schedule = result.schedule_list;
+      // const schedule = result.schedule_list;
       const class_list = result.class;                  
 
       // 바로 대입할 수 있는 것들 우선 대입 

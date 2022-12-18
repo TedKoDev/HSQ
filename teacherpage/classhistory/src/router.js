@@ -1,20 +1,20 @@
 import { routes } from "./constants/routeInfo.js";
-import { notfound } from "./pages.js";
-
+import { notfound } from "./pages/notfound.js";
 
 function Router($container) {
-  this.$container = $container;  
-  let currentPage = undefined; 
-
-  
+  this.$container = $container;
+  let currentPage = undefined;  
+    
   const findMatchedRoute = () =>
     routes.find((route) => route.path.test(location.pathname));    
-    
+
+
   const route = () => {
     currentPage = null;    
-
+    
     const TargetPage = findMatchedRoute()?.element || notfound;
     currentPage = new TargetPage(this.$container);    
+
   };
 
   const init = () => {
@@ -22,10 +22,10 @@ function Router($container) {
 
       const { to, isReplace } = detail;
       
-      history.replaceState(null, "", to);    
+      history.pushState(null, "", to);   
       
-      console.log("to : "+to)
-      console.log("location.pathname : "+location.pathname);
+      // console.log("to : "+to)
+      // console.log("location.pathname : "+location.pathname);
 
       route();
     });

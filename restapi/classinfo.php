@@ -302,6 +302,7 @@ if ($kind == 'cdetail') {
 
 
 
+
   $i = 0;
 
   $start =  $i + (20 * $plus);

@@ -14,7 +14,7 @@
                         href="/manageschedule/manageschedule.php"
                         class="py-1 px-2  text-white hover:bg-gray-600 rounded">일정</a>
                     <a
-                        href="/teacherpage/classhistory/classhistory.php"
+                        href="/teacherpage/classhistory/classlist"
                         class="py-1 px-2  text-white hover:bg-gray-600 rounded">수업 히스토리</a>
                 </div>
             </div>                    

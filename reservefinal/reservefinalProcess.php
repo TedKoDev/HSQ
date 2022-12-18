@@ -39,6 +39,7 @@ $class_id    =   json_decode(file_get_contents("php://input"))->{"class_id"}; //
 $tp         =   json_decode(file_get_contents("php://input"))->{"tp"}; // 수업시간 
 // $tp         =  30 ; // 수업시간 
 $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
+$schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
 // $schedule       =   '1670385600000_1670383800000_1670387400000_1670389200000_1670391000000'; // 수업일정 
 // $schedule       =   '1670385600000'; // 수업일정 
 
@@ -163,8 +164,10 @@ foreach($exschedule as $val){
 // echo $save2 = $save1/1000;
 
  $date = date('Y-m-d H:i:s', $save1);
+ $date = date('Y-m-d H:i:s', $save1);
 
 $i =$i +1;
+ $i;
  $i;
 array_push($sendtime,$date);
 }
