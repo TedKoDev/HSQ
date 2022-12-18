@@ -41,6 +41,7 @@ $kind = base64_decode($payload['kind']); //kind
 $class_register_id = base64_decode($payload['class_register_id']); //class_register_id
 // $class_register_id = 38; //class_register_id
 $class_register_status = base64_decode($payload['class_register_status']); //class_registe_status 승인 or 취소 
+// $class_register_status = 1 ; //class_registe_status 승인 or 취소 
 // $class_register_status = 1 or 2; //class_registe_status 승인 or 취소 
 
 
@@ -52,6 +53,21 @@ if($class_register_status == '1'){
 
 
 
+$Sql3 = "SELECT Class_Add.user_id_teacher, Class_Add.schedule_list FROM Class_Add where Class_Add.class_register_id =  '$class_register_id'";
+$SRCList_Result3 = mysqli_query($conn, $Sql3);
+
+$row3 = mysqli_fetch_array($SRCList_Result3);
+
+$send['user_id_teacher'] = $row3['user_id_teacher']; //강사의 유저 번호  
+$user_id_teacher = $row3['user_id_teacher']; //강사의 유저 번호  
+
+$send['schedule_list'] = $row3['schedule_list']; //수업일정
+$schedule_list = $row3['schedule_list']; //수업일정
+
+
+
+
+
 
  $answerTime =    time();
  $class_register_answer_date =     $answerTime * 1000;
@@ -59,13 +75,19 @@ if($class_register_status == '1'){
 
 
 if($kind == 'teacher'){
- $select = "UPDATE Class_Add SET class_register_status = '$class_register_status', class_register_answer_date = $answerTime where class_register_id = '$class_register_id' ";
- $select = "UPDATE Teacher_Schedule SET teacher_schedule_status = '$class_register_status' where class_register_id = '$class_register_id' ";
- $response = mysqli_query($conn, $select);
- mysqli_close($conn);
 
 
- if ($response) { //정상적으로 파일 저장되었을때 
+  $select2 = "UPDATE Teacher_Schedule INNER JOIN Class_Add ON Teacher_Schedule.user_id_teacher = Class_Add.user_id_teacher SET Teacher_Schedule.teacher_schedule_status = '$class_register_status', 
+  Class_Add.class_register_status = '$class_register_status' , Class_Add.class_register_answer_date = '$class_register_answer_date'
+  where Class_Add.class_register_id = '$class_register_id' and Class_Add.user_id_teacher = '$user_id_teacher' and Class_Add.schedule_list = '$schedule_list' and Teacher_Schedule.schedule_list = '$schedule_list' and Teacher_Schedule.user_id_teacher = '$user_id_teacher'";
+$response2 = mysqli_query($conn, $select2);
+mysqli_close($conn);
+
+
+
+
+
+ if ($response2) { //정상적으로 파일 저장되었을때 
   $send["class_register_status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
   $send["success"]   =  "yes";
@@ -74,16 +96,18 @@ if($kind == 'teacher'){
 } else {
   $send["status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
-  $send["success"]   =  "no";
+  $send["success"]   =  "no22";
   echo json_encode($send);
  
 }
 }else if($kind == 'student'){
 
 
-  $select = "UPDATE Class_Add SET class_register_status = '$class_register_status', class_register_answer_date = $answerTime where class_register_id = '$class_register_id' ";
-  $response = mysqli_query($conn, $select);
-  mysqli_close($conn);
+  $select = "UPDATE Teacher_Schedule INNER JOIN Class_Add ON Teacher_Schedule.user_id_teacher = Class_Add.user_id_teacher SET Teacher_Schedule.teacher_schedule_status = '$class_register_status', 
+  Class_Add.class_register_status = '$class_register_status' , Class_Add.class_register_answer_date = '$class_register_answer_date'
+  where Class_Add.class_register_id = '$class_register_id' and Class_Add.user_id_teacher = '$user_id_teacher' and Class_Add.schedule_list = '$schedule_list' and Teacher_Schedule.schedule_list = '$schedule_list' and Teacher_Schedule.user_id_teacher = '$user_id_teacher'";
+$response = mysqli_query($conn, $select);
+mysqli_close($conn);
  
  
   if ($response) { //정상적으로 파일 저장되었을때 
