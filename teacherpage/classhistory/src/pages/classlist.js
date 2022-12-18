@@ -100,7 +100,7 @@ const showClassList = ($container, response) => {
         }
 
         // 일단 처음에는 20개만 화면에 출력
-        displayRow(0, $_all('.classList'), 5);
+        displayRow(0, $_all('.classList'), 20);
         
         // 페이징 뷰 표시하는 로직
         const pagingDiv = document.createElement("div");  
@@ -147,7 +147,7 @@ const statusChange = (status, $classStyle) => {
 
 function paging() {
 
-    const rowsPerPage = 5;
+    const rowsPerPage = 20;
     const rows = $_all('.classList');
     const rowsCount = rows.length;
     const pageCount = Math.ceil(rowsCount/rowsPerPage);
