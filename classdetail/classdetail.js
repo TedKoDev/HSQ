@@ -81,7 +81,7 @@ async function getSchedule(teacher_id, tokenvalue) {
   if (response.success == "yes") {
 
     // 전역으로 선언한 일정에 가져온 값 대입
-    schedule_string = response.schedule_list;
+    schedule_string = response.teacher_schedule_list;
     // 전역으로 선언한 timezone 값 대입
     timezone = response.user_timezone;
 

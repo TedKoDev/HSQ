@@ -149,7 +149,9 @@ async function setschedule(type, for_modal) {
 
   const response = await res.json(); 
   const check = response.success; 
-  schedule_string = response.schedule_list;
+
+  console.log(response);
+  schedule_string = response.teacher_schedule_list;
 
   // console.log("STRING : "+schedule_string);
 

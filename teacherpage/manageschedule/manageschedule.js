@@ -19,6 +19,8 @@ let array_for_edit = new Array();
 // 모달창에서 정규 일정 등록할 때 체크한 값들 담을 배열 선언
 let array_for_upload = new Array();
 
+let user_id;
+
 // 타임스탬프 담을 전역 변수 선언
 let time;
 
@@ -39,11 +41,12 @@ async function get_utc(tokenValue) {
       });  
 
       const response = await res.json();  
-      const success = response.success;
+      const success = response.success;      
       timezone = response.user_timezone;
 
       if (success == "yes") {
 
+        user_id = response.user_id;
         // 날짜 설정하고 checkbox값에 timestamp 부여
         getDate("header_s", timezone, "");
 
@@ -221,7 +224,7 @@ async function setschedule(type, for_modal) {
 
         token: checkCookie,
         user_timezone: timezone,
-        user_id_teacher: 324        
+        user_id_teacher: user_id        
     
         };
     const res = await fetch('/restapi/schedule.php', {
@@ -234,7 +237,7 @@ async function setschedule(type, for_modal) {
     
     const response = await res.json();   
     const check = response.success; 
-    schedule_string = response.schedule_list;  
+    schedule_string = response.teacher_schedule_list;  
 
     console.log(response);
       

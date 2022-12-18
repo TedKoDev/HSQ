@@ -11,9 +11,7 @@ export function classhistorylist($container) {
         this.render();
     };
 
-    this.render = () => {
-
-        console.log("수업목록");
+    this.render = () => {        
 
         changeSelectBtnStyle($('#classList'), $_all(".historyType"));
         
@@ -53,6 +51,7 @@ const showClassList = ($container, response) => {
             const classId = classList[i].class_register_id;
             const userName = classList[i].user_name;
             const price = classList[i].class_price;
+            const userId = classList[i].user_id;
 
             // 수업일 int로 변환
             const dateToint = parseInt(classDate);
@@ -131,7 +130,7 @@ const showClassList = ($container, response) => {
 }
 
 // 수업 히스토리 상세로 이동
-function move_history_detail(a, classId) {
+function move_history_detail(a, classId, userId) {
 
     // 유저 id localstorage로 전달
     const class_info = {
