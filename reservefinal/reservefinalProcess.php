@@ -39,7 +39,7 @@ $class_id    =   json_decode(file_get_contents("php://input"))->{"class_id"}; //
 $tp         =   json_decode(file_get_contents("php://input"))->{"tp"}; // 수업시간 
 // $tp         =  30 ; // 수업시간 
 $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
-$schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
+// $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
 // $schedule       =   '1670385600000_1670383800000_1670387400000_1670389200000_1670391000000'; // 수업일정 
 // $schedule       =   '1670385600000'; // 수업일정 
 
@@ -48,8 +48,7 @@ $class_method    =   json_decode(file_get_contents("php://input"))->{"class_regi
 // $class_method    =   0; // 수업방식 
 
 $class_register_memo       =   json_decode(file_get_contents("php://input"))->{"class_register_memo"}; // 강사메모
-// $class_register_memo       =  '밥바오밥'; // 강사메모
-
+// $class_register_memo       =  '123밥바오밥'; // 강사메모
 
 
 
@@ -60,14 +59,14 @@ $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //학생의 userid
-$User_ID = 324; //학생의 userid
+// $User_ID = 32; //학생의 userid
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
 
-// error_log("$User_ID , '''' $class_id ,'''' $tp  , ''',$schedule ''',$class_method ''',$class_register_memo   \n", "3", "../php.log");
+error_log("token : $token , user_id : $User_ID ,  class_id :  $class_id , 수업시간(30,60) :  $tp  , 수업일정: $schedule,  수업도구: $class_method, 수업메모:  $class_register_memo   \n", "3", "../php.log");
 
 
 
@@ -78,7 +77,7 @@ $sql = "SELECT * FROM Class_List WHERE class_id = '{$class_id}'";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($result);
 
-$tusid = $row['1'];
+ $tusid = $row['1'];
 $clname = $row['2'];
 $cldisc = $row['3'];
 $cltype = $row['4'];
@@ -117,13 +116,54 @@ $sqlClassAdd = "INSERT INTO Class_Add (user_id_student, user_id_teacher, class_i
 // $sqlClassAdd = "INSERT INTO Class_Add (user_id_student, user_id_teacher, class_id, class_time, schedule_list, class_register_memo, class_register_status ,class_register_method, class_register_answer_date, class_register_date) 
 //            VALUES ('1', '2', '3', '4', '5555555555','6', '0', '33', '0' , now())";
 
-
-
 $insert = mysqli_query($conn, $sqlClassAdd);
 
 if ($sqlClassAdd) 
 $last_CAID = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
 // echo 'ff'. $last_CAID ;
+
+
+
+if ($insert) { //정상일떄
+
+  $select = "UPDATE Teacher_Schedule  SET teacher_schedule_status = '0' where user_id_teacher = '$tusid' and schedule_list = '$save'";
+
+$response4 = mysqli_query($conn, $select);
+
+
+if ($response4) { //정상일떄
+  
+  
+  $data = array(
+    'schedule_list'            =>   'Teacher_Schedule 값 업뎃 됨',
+    'success'           =>   'yes'
+  );
+  // echo json_encode($data);
+  // mysqli_close($conn);
+} else {//비정상일떄 
+  $data = array(
+    'schedule_list'            =>   'Teacher_Schedule 값 업뎃 안됨',
+    'success'           =>   'no'
+  );
+  // echo json_encode($data);
+  // mysqli_close($conn);
+}
+  
+  $data = array(
+    'schedule_list'            =>   'class_add  잘됨',
+    'success'           =>   'yes'
+  );
+  // echo json_encode($data);
+  // mysqli_close($conn);
+} else {//비정상일떄 
+  $data = array(
+ 
+    'success'           =>   'no'
+  );
+  // echo json_encode($data);
+  // mysqli_close($conn);
+}
+
 
 
 array_push($tzplan,$save);
@@ -218,7 +258,7 @@ $mail->send();
 
 $data = array(
  
-  'success'        	=> "yes"
+  'success'           => "yes"
 );
 echo json_encode($data);
   mysqli_close($conn);
@@ -227,7 +267,7 @@ echo json_encode($data);
 //비정상일떄 
 $data = array(
  
-  'success'        	=> "Message could not be sent . Mailer Error: {
+  'success'           => "Message could not be sent . Mailer Error: {
     $mail->ErrorInfo}"
 );
 echo json_encode($data);

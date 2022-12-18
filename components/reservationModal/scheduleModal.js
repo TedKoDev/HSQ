@@ -55,7 +55,7 @@ async function getclassSchedule_sm() {
 
     if (response.success == 'yes') {
 
-        schedule_string_sm = response.schedule_list;
+        schedule_string_sm = response.teacher_schedule_list;
         const timezone = response.user_timezone;
 
         // 전역으로 사용할 타임존 대입

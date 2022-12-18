@@ -5,13 +5,13 @@
                 
                 <div class="hidden md:flex items-center space-x-1 ml-3">
                     <a
-                        href="/teacherpage/t_myclass/t_myclass.php"
+                        href="/teacherpage/t_myclass/"
                         class="py-1 px-2 text-white  hover:bg-gray-600 rounded">내 수업</a>
                     <a
                         href="#"
                         class="py-1 px-2  text-white  hover:bg-gray-600 rounded">학생 관리</a>
                     <a
-                        href="/manageschedule/manageschedule.php"
+                        href="/teacherpage/manageschedule/"
                         class="py-1 px-2  text-white hover:bg-gray-600 rounded">일정</a>
                     <a
                         href="/teacherpage/classhistory/classlist"

@@ -164,7 +164,7 @@ const go_teacher_page = async () => {
     
     if (response.success == 'yes') {
 
-      location.replace("/registeacher/registeacher.php");
+      location.replace("/registeacher/");
 
     }
     else {
@@ -177,7 +177,7 @@ const go_teacher_page = async () => {
   // 강사일 경우 강사페이지의 내 수업으로 이동
   else {
     
-    location.assign("/teacherpage/t_myclass/t_myclass.php");
+    location.assign("/teacherpage/t_myclass/");
   }
 }
 teacher_page.addEventListener('click', go_teacher_page)
@@ -192,7 +192,7 @@ const clickLogout = async () => {
   deleteCookie("user_info");
 
   // 메인화면으로 이동
-  location.replace("/index.php");
+  location.replace("/");
 }
 
 logout.addEventListener('click', clickLogout)
@@ -200,7 +200,7 @@ logout.addEventListener('click', clickLogout)
 // 내 정보 클릭시
 const goMyinfo = () =>  {
   
-  location.assign("/myinfo/myinfo.php");
+  location.assign("/myinfo/");
 }
 const myinfo = document.getElementById("myinfo");
 myinfo.addEventListener('click', goMyinfo)

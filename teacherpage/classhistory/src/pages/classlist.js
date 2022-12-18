@@ -11,9 +11,7 @@ export function classhistorylist($container) {
         this.render();
     };
 
-    this.render = () => {
-
-        console.log("수업목록");
+    this.render = () => {        
 
         changeSelectBtnStyle($('#classList'), $_all(".historyType"));
         
@@ -53,6 +51,7 @@ const showClassList = ($container, response) => {
             const classId = classList[i].class_register_id;
             const userName = classList[i].user_name;
             const price = classList[i].class_price;
+            const userId = classList[i].user_id;
 
             // 수업일 int로 변환
             const dateToint = parseInt(classDate);
@@ -97,6 +96,9 @@ const showClassList = ($container, response) => {
                           </div>`;
 
             $container.appendChild(a) 
+
+            // 수업 목록 클릭했을 때 수업 상세로 이동할 수 있는 리스너
+            move_history_detail(a, classId, userId);
         }
 
         // 일단 처음에는 20개만 화면에 출력
@@ -127,6 +129,24 @@ const showClassList = ($container, response) => {
     }
 }
 
+// 수업 히스토리 상세로 이동
+function move_history_detail(a, classId, userId) {
+
+    // 유저 id localstorage로 전달
+    const class_info = {
+  
+      class_id : classId,
+      user_id : userId,
+    }
+    
+    a.addEventListener('click', () => {
+     
+     localStorage.setItem("classId", JSON.stringify(class_info));
+
+     location.assign("/teacherpage/classhistory/historydetail");
+    });    
+  }
+
 // 수업 상태에 따라 텍스트 변경하는 함수
 const statusChange = (status, $classStyle) => {
 
@@ -149,7 +169,7 @@ function paging() {
 
     const rowsPerPage = 20;
     const rows = $_all('.classList');
-    const rowsCount = rows.length;
+    const rowsCount = rows.length;    
     const pageCount = Math.ceil(rowsCount/rowsPerPage);
     const numbers = $('#numbers');
 
@@ -157,7 +177,7 @@ function paging() {
     const nextPageBtn = $('.nextBtn');
     let pageActiveIdx = 0; // 현재 보고 있는 페이지그룹 번호
     let currentPageNum = 0; // 현재 보고 있는 페이지네이션 번호
-    let maxPageNum = 3; // 페이지 그룹 최대 갯수    
+    let maxPageNum = 10; // 페이지 그룹 최대 갯수    
     
     // console.log(pageCount);
     for (let i = 1; i <= pageCount; i++) {
@@ -189,7 +209,7 @@ function paging() {
             }
             e.target.setAttribute("class", "bg-gray-500 mx-1 px-2");
 
-            console.log(idx);
+            // console.log(idx);
 
             displayRow(idx, rows, rowsPerPage);
 
@@ -262,7 +282,7 @@ function displayPage(num, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPag
      for (const nb of numberBtn) {
         nb.style.display = 'none';
     }
-
+    
     let totalPageCount = Math.ceil(pageCount/maxPageNum);
 
     let pageArr = [...numberBtn];
@@ -272,14 +292,16 @@ function displayPage(num, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPag
 
     for (let item of pageListArr) {
         item.style.display = 'block';
-    }
+    }        
 
     // 이전 버튼 안보이게
-    if(pageActiveIdx == 0) {
+    if(pageActiveIdx == 0) {        
         prevPageBtn.style.display = 'none';
+        
     }
     else {
         prevPageBtn.style.display = 'block';
+        
     }
 
     // 다음 버튼 안보이게

@@ -13,7 +13,10 @@ async function getClasslist() {
 
         token: getCookie(cookieName),
         kind: "tclist",
-        class_reserve_check: "all"
+        class_reserve_check: "all",      
+        // filter_class_status_check: "approved",  
+        filter_user_name: "ahsenq",
+        
     };
     const res = await fetch('/restapi/classinfo.php', {
         method: 'POST',
@@ -21,9 +24,11 @@ async function getClasslist() {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
-    });
+    });    
     
     classList_json = await res.json();    
+
+    console.log(classList_json);
     
     new selectHistoryType($('#List'));
 }

@@ -88,7 +88,7 @@ function setData(response) {
     // div.setAttribute("href", "../teacherdetail/teacherdetail.php");
 
     div.innerHTML = [
-      '<a class = "" href = "../teacherdetail/teacherdetail.php">',
+      '<a class = "" href = "../teacherdetail/">',
         '<div class = "flex mb-2 bg-gray-50 rounded-lg border border-gray-400">',
             '<div class = "flex flex-col w-1/6 py-2">',
                 '<img id = "profile_image" class = "mx-auto w-20 h-20 border-3 border-gray-900 rounded-full "', 

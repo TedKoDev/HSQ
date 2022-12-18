@@ -134,7 +134,7 @@ nextBtn_cct.addEventListener('click', function() {
  
     
     // 최종 수업 예약 화면으로 이동
-    location.assign("../reservefinal/reservefinal.php");     
+    location.assign("../reservefinal/");     
 
 })
 

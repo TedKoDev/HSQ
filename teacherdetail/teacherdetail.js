@@ -3,6 +3,8 @@
 // 유저 id 받아온 후 로컬 스토리지에서 삭제
 const {id} = JSON.parse(localStorage.getItem("user_id"));
 let U_id = id;
+
+console.log(U_id);
 // localStorage.removeItem("user_id");
 
 // 수업 예약할 때 강사 상세인지, 수업 상세인지 표시 (나중에 수업 시간 모달 띄울 때 분기처리 하기 위해)
@@ -149,7 +151,9 @@ async function setschedule(type, for_modal) {
 
   const response = await res.json(); 
   const check = response.success; 
-  schedule_string = response.schedule_list;
+
+  console.log(response);
+  schedule_string = response.teacher_schedule_list;
 
   // console.log("STRING : "+schedule_string);
 
