@@ -19,7 +19,7 @@ export function classhistorylist($container) {
         // 수업 목록 이외의 부분 표시 (ex : 필터 관련된 input이랑 검색 버튼)
         getFilterblock($('.filter'));
         // 수업 목록 표시
-        showClassList($container, classList_json);
+        showClassList($container, classList_json);      
 
     };
 

@@ -152,8 +152,10 @@ function setClassRegisterStatus(status) {
         status = "완료됨"
         
         // 예약 승인/취소 버튼 비활성화
-        $('.class_approve_btn').setAttribute("class", "class_approve_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2 disabled")
-        $('.class_cancel_btn').setAttribute("class", "class_approve_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2 disabled")
+        $('.class_approve_btn').setAttribute("class", "class_approve_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
+        $('.class_cancel_btn').setAttribute("class", "class_cancel_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
+        $('.class_approve_btn').disabled = true;        
+        $('.class_cancel_btn').disabled = true;
     }
     $('.class_status').innerText = status;
 
@@ -163,3 +165,31 @@ function setClassRegisterStatus(status) {
 function setClassReview(class_review) {
 
 }
+
+async function classAccept() {    
+        
+    console.log("class_id : "+class_id);
+    
+    const body = {
+        
+        token: getCookie(cookieName),
+        kind: "teacher",
+        class_register_id: class_id,
+        class_register_status: 1
+    };
+    const res = await fetch('/restapi/classaccept.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    });
+    
+    const response = await res.json();  
+
+    console.log(response);
+}
+
+
+$('.class_approve_btn').addEventListener('click', classAccept)
+

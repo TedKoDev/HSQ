@@ -45,6 +45,8 @@ $class_register_status = base64_decode($payload['class_register_status']); //cla
 // $class_register_status = 1 or 2; //class_registe_status 승인 or 취소 
 
 
+error_log("$kind ,   $token,  $class_register_id,   $class_register_status, \n", "3", "../php.log");
+
 if($class_register_status == '1'){
   $status = 'approved';
 } else if ($class_register_status == '2'){
@@ -107,7 +109,7 @@ mysqli_close($conn);
   Class_Add.class_register_status = '$class_register_status' , Class_Add.class_register_answer_date = '$class_register_answer_date'
   where Class_Add.class_register_id = '$class_register_id' and Class_Add.user_id_teacher = '$user_id_teacher' and Class_Add.schedule_list = '$schedule_list' and Teacher_Schedule.schedule_list = '$schedule_list' and Teacher_Schedule.user_id_teacher = '$user_id_teacher'";
 $response = mysqli_query($conn, $select);
-mysqli_close($conn);
+// mysqli_close($conn);
  
  
   if ($response) { //정상적으로 파일 저장되었을때 
