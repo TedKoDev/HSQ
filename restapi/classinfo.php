@@ -65,11 +65,11 @@ $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //학생의 userid
-$User_ID = 324; //학생의 userid
+// $User_ID = 324; //학생의 userid
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
-$timezone = 9; //사용자(학생)의 TimeZone
+// $timezone = 9; //사용자(학생)의 TimeZone
 
 
 
@@ -84,7 +84,7 @@ $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_r
 $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_reserve_check"}; // 예약된 수업 리스트 / 상세 
 
 $filter_class_status_check                 =   json_decode(file_get_contents("php://input"))->{"filter_class_status_check"}; // 수업 상태 필터 
-$filter_class_status_check                 =  'all'; // 수업 상태 필터 
+// $filter_class_status_check                 =  'all'; // 수업 상태 필터 
 // $filter_class_status_check                 =  'approved'; // 수업 상태 필터 
 $filter_class_name                 =   json_decode(file_get_contents("php://input"))->{"filter_class_name"}; // 수업 이름 검색 필터 
 $filter_user_name                 =   json_decode(file_get_contents("php://input"))->{"filter_user_name"}; // 학생 이름 검색 필터 
