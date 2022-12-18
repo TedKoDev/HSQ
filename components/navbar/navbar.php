@@ -21,10 +21,10 @@
                 <!-- 강사,수업, 커뮤니티 -->
                 <div class="hidden md:flex items-center space-x-1 ml-3">
                     <a
-                        href="/findteacher/findteacher.php"
+                        href="/findteacher/"
                         class="py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded">강사</a>
                     <a
-                        href="/findclass/findclass.php"
+                        href="/findclass/"
                         class="py-1 px-2 text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded">수업</a>
                     <a
                         href="#"
@@ -117,11 +117,11 @@
                 <!-- 로그인/회원가입 -->
                 <a
                     id="id_login"
-                    href="../login/login.php"
+                    href="../login/"
                     class="hidden py-1 px-3 hover:bg-gray-400 hover:text-gray-800 rounded">로그인</a>
                 <a
                     id="id_signup"
-                    href="../signup/signup.php"
+                    href="../signup/"
                     class="hidden py-1 px-3 bg-yellow-300 hover:bg-yellow-500 text-yellow-900 hover:text-yellow-900 rounded
         transition duration-300">회원가입</a>
             </div>
