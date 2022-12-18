@@ -14,7 +14,8 @@ async function getClasslist() {
         token: getCookie(cookieName),
         kind: "tclist",
         class_reserve_check: "all",      
-        filter_class_status_check: "all",  
+        // filter_class_status_check: "approved",  
+        filter_user_name: "ahsenq",
         
     };
     const res = await fetch('/restapi/classinfo.php', {

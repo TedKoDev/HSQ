@@ -83,7 +83,6 @@
                         <span class = "text-xs my-1 mt-2">한국어 레벨 : </span>   
                         <span class = "user_korean text-xs text-gray-500"></span>
                      </div>            
-                                 
                 </div>
             </div>
         </div>
