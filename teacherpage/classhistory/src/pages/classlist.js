@@ -45,7 +45,7 @@ const showClassList = ($container, response) => {
        //  for (let i = 0; i < classList.length; i++) {
         for (let i = 0; i < classList.length; i++) {
             //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done)
-            const status = classList[i].class_register_status;
+            const status = classList[i].class_register_status;            
             const classDate = classList[i].schedule_list;
             const className = classList[i].class_name;
             const classTime = classList[i].class_time;
@@ -100,7 +100,7 @@ const showClassList = ($container, response) => {
         }
 
         // 일단 처음에는 20개만 화면에 출력
-        displayRow(0, $_all('.classList'), 5);
+        displayRow(0, $_all('.classList'), 20);
         
         // 페이징 뷰 표시하는 로직
         const pagingDiv = document.createElement("div");  
@@ -113,6 +113,7 @@ const showClassList = ($container, response) => {
                                         
                                     </ol>
                                     <span class = "nextBtn" >
+                                    <div>asdassdfsdfsdfsdfsdff</div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"/></svg>
                                     </span>
                                 </div>`;
@@ -132,13 +133,17 @@ const statusChange = (status, $classStyle) => {
 
     if (status == "0") {
         status = "승인 대기"
+        console.log(status);
     } else if (status == "1") {
         status = "미완료"
+        console.log(status);
     } else if (status == "2") {
         status = "취소됨"
+        console.log(status);
     } else if (status == "3") {
         status = "완료됨"
-        $classStyle.setAttribute("class", "text-sm text-gray-400");
+        console.log(status);
+        // $classStyle.setAttribute("class", "text-sm text-gray-400");
     }
     return status;
 }
@@ -147,7 +152,7 @@ const statusChange = (status, $classStyle) => {
 
 function paging() {
 
-    const rowsPerPage = 5;
+    const rowsPerPage = 20;
     const rows = $_all('.classList');
     const rowsCount = rows.length;
     const pageCount = Math.ceil(rowsCount/rowsPerPage);
