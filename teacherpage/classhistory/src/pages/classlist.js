@@ -98,7 +98,7 @@ const showClassList = ($container, response) => {
             $container.appendChild(a) 
 
             // 수업 목록 클릭했을 때 수업 상세로 이동할 수 있는 리스너
-            move_history_detail(a, classId);
+            move_history_detail(a, classId, userId);
         }
 
         // 일단 처음에는 20개만 화면에 출력
@@ -135,7 +135,8 @@ function move_history_detail(a, classId, userId) {
     // 유저 id localstorage로 전달
     const class_info = {
   
-      id : classId,
+      class_id : classId,
+      user_id : userId,
     }
     
     a.addEventListener('click', () => {

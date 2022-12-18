@@ -16,11 +16,11 @@
         <div class="flex w-4/5 mx-auto justify-between">
             <div class="flex flex-col w-3/4 bg-gray-50 rounded-lg hover:shadow px-2 mx-2">
                 <div class="flex justify-between mt-2 items-center">
-                    <span class="class_date text-xs text-gray-700">2022년 12월 10일 토</span>
+                    <span class="class_date text-xs text-gray-700"></span>
                     <span
-                        class="class_status text-xs bg-gray-200 text-gray-700 rounded-lg px-2 py-1">완료됨</span>
+                        class="class_status text-xs bg-gray-200 text-gray-700 rounded-lg px-2 py-1"></span>
                 </div>
-                <span class="class_time text-2xl font-bold my-5">21:00 / 21:30</span>
+                <span class="class_time text-2xl font-bold my-5"></span>
              
                 <hr class="bg-gray-300 border border-1">
                 <div class = "flex w-full justify-between items-center">
@@ -40,8 +40,8 @@
                         value="0"
                         id="hs_meta"
                         name="HangleSquare Metaverse">
-                        <img class="tool_image w-5 h-5" src="/images_forHS/logo.png"></img>
-                        <span class="tool_text mx-1 text-gray-600">HangleSquare Metaverse</span>
+                        <img class="tool_image w-5 h-5" src=""></img>
+                        <span class="tool_text mx-1 text-gray-600"></span>
                     </div>
                 </div>
                 <hr class="bg-gray-300 border border-1">
@@ -71,17 +71,17 @@
             </div>
             <div class="w-1/4 mx-2">
                 <div class="flex flex-col rounded-lg bg-gray-50 shadow px-4 py-2 text-center">
-                    <img class="toolImage w-14 h-14 mx-auto my-2" src="/images_forHS/userImage_default.png"></img>
-                    <span class = "user_name text-sm py-2">학생 이름</span>
-                    <span class = "text-sm text-gray-700">거주 국가 : <span class = "user_residence text-sm text-gray-700">대한민국</span></span>
+                    <img class="user_img w-14 h-14 mx-auto my-2 rounded-full" src="/images_forHS/userImage_default.png"></img>
+                    <span class = "user_name text-sm py-2"></span>
+                    <span class = "text-sm text-gray-700">거주 국가 : <span class = "user_residence text-sm text-gray-700"></span></span>
                     <div>
-                        <span class = "text-xs text-gray-500 mx-1">UTC <span class = "user_utc">09:00</span></span><span class = "text-xs text-gray-500 mx-1">(<span class = "utc_difference mr-1">0</span>시간차)</span>
+                        <span class = "text-xs text-gray-500 mx-1">UTC <span class = "student_utc"></span></span><span class = "text-xs text-gray-500 mx-1">(<span class = "utc_difference mr-1">0</span>시간차)</span>
                     </div>     
                     <div class = "flex flex-col text-left mt-2">
-                        <span class = "text-sm">구사 가능 언어 : </span>        
+                        <span class = "text-xs my-1">구사 가능 언어 : </span>        
                         <span class = "user_language"></span>           
-                        <span class = "text-sm">한국어 레벨 : </span>   
-                        <span class = "user_korean"></span>
+                        <span class = "text-xs my-1 mt-2">한국어 레벨 : </span>   
+                        <span class = "user_korean text-xs text-gray-500"></span>
                      </div>            
                                  
                 </div>
