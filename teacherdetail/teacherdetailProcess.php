@@ -91,11 +91,7 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-<<<<<<< HEAD
-$user_id      =   json_decode(file_get_contents("php://input"))->{"user_id"}; // 선택된 강사의 userid 
-=======
 $tuser_id      =   json_decode(file_get_contents("php://input"))->{"user_id"}; // 선택된 강사의 userid 
->>>>>>> 5515b6169e2bc4518d10a3e2e8b3e7cd60407a86
 
 $user_timezone      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; // user_timezone 
 
@@ -112,11 +108,7 @@ $User_ID =  base64_decode($payload['User_ID']);
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
-<<<<<<< HEAD
-$user_id      =   324; // 선택된 강사의 userid 
-=======
 // $user_id      =   324; // 선택된 강사의 userid 
->>>>>>> 5515b6169e2bc4518d10a3e2e8b3e7cd60407a86
 //배열생성 
 $result3['result'] = array();
 $result1['data'] = array();
@@ -239,11 +231,7 @@ $send['schedule_status'] = $row1['1'];
 
 
 //Class_List에 수업 목록확인  
-<<<<<<< HEAD
-$sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$user_id}'";
-=======
 $sql = "SELECT * FROM Class_List WHERE user_id_teacher = '{$tuser_id}'";
->>>>>>> 5515b6169e2bc4518d10a3e2e8b3e7cd60407a86
 $response3 = mysqli_query($conn, $sql);
 
 
