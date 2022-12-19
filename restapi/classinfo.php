@@ -110,10 +110,10 @@ if ($filter_class_resister_time_to1 != null) {
 
 
 //테스트용 ! 
-// $User_ID = 324; //학생의 userid
-// $kind = 'tclist';
-// $clReserveCheck  =  'all';
-// $filter_class_status_check =  'all'; // 수업 상태 필터 
+// // $User_ID = 324; //학생의 userid
+// // $kind = 'tclist';
+// // $clReserveCheck  =  'all';
+// // $filter_class_status_check = 'all'; // 수업 상태 필터 
 // $filter_class_name  =  '기';             
 // $filter_user_name   =  'a';             
 // $filter_class_resister_time_from =  '2022-12-19 02:21:41';
@@ -122,7 +122,7 @@ if ($filter_class_resister_time_to1 != null) {
 
 
 
-error_log("$kind ,   $clReserveCheck,  $User_ID \n", "3", "../php.log");
+// error_log("$kind ,   $clReserveCheck,  $User_ID \n", "3", "../php.log");
 
 
 // $kind            =   'clist';         //  
@@ -579,9 +579,9 @@ if ($kind == 'cdetail') {
     if ($clReserveCheck == 'all') {
 
 
-      if ($filter_class_status_check = !null) {
-        if ($filter_class_status_check == 'all') {
+      if ($filter_class_status_check != null) {
 
+        if ($filter_class_status_check == 'all') {
 
           if ($filter_class_resister_time_from != null && $filter_class_resister_time_to != null) {
 
@@ -597,12 +597,14 @@ if ($kind == 'cdetail') {
             $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID;
           }
         } else if ($filter_class_status_check  != 'all') {
+
+      
           if ($filter_class_status_check == 'wait') {
-            $filter_clRCValue = '0';
+            echo $filter_clRCValue = '0';
           } else if ($filter_class_status_check == 'approved') {
-            $filter_clRCValue = '1';
+            echo $filter_clRCValue = '1';
           } else if ($filter_class_status_check == 'cancel') {
-            $filter_clRCValue = '2';
+            echo $filter_clRCValue = '2';
           } else if ($filter_class_status_check == 'done') {
             $filter_clRCValue = '3';
           }
@@ -619,7 +621,7 @@ if ($kind == 'cdetail') {
             $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_status = ' . $filter_clRCValue . '  and class_register_date <=  ' . $filter_class_resister_time_to;
           } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to == null) {
 
-            $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_status = ' . $filter_clRCValue;
+          echo  $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_status = ' . $filter_clRCValue;
           }
         }
       } else if ($filter_class_status_check == null) {
@@ -686,7 +688,7 @@ if ($kind == 'cdetail') {
 
 
 
-    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, $timezero ,$timezone2), Class_Add.class_register_review FROM Class_Add  $sqlWhere   order by class_register_id desc ";
+    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, $timezero ,$timezone2), Class_Add.class_register_review,Class_Add.class_register_memo FROM Class_Add  $sqlWhere   order by class_register_id desc ";
 
 
     $SRCList_Result = mysqli_query($conn, $Student_ReserveClassList_Sql);
@@ -735,7 +737,7 @@ if ($kind == 'cdetail') {
       }
 
 
-      $Sql4 = "SELECT User_Detail.user_img, User.user_name FROM User_Detail LEFT  OUTER JOIN User ON User_Detail.user_id = User.user_id  where  $user_name_sqlwhere  ";
+      $Sql4 = "SELECT User_Detail.user_id,User_Detail.user_img, User.user_name FROM User_Detail LEFT  OUTER JOIN User ON User_Detail.user_id = User.user_id  where  $user_name_sqlwhere  ";
       $SRCList_Result4 = mysqli_query($conn, $Sql4);
 
       $row4 = mysqli_fetch_array($SRCList_Result4);
@@ -751,11 +753,13 @@ if ($kind == 'cdetail') {
 
       $send['class_register_id']   = $row1['class_register_id']; //예약한 수업 id 
       $send['class_id'] = $row1['class_id']; //강의 자체 id
+      $send['user_id'] = $row4['user_id']; //사용자 이미지 
       $send['user_img'] = $row4['user_img']; //사용자 이미지 
       $send['user_name'] = $row4['user_name']; //사용자 이름
       $send['class_name'] = $row3['class_name']; //수업이름
       $send['schedule_list']  = $save; //수업 일정  
       $send['class_time'] = $row1['class_time']; //수업 30분  60분  시간 
+      $send['class_register_memo'] = $row1['class_register_memo']; //수업도구
       $send['class_register_method'] = $row1['class_register_method']; //수업도구
       $send['class_register_status'] = $row1['class_register_status']; //수업상태
       $send['class_register_review'] = $row1['class_register_review']; //수업후기 
