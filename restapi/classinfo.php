@@ -110,10 +110,10 @@ if ($filter_class_resister_time_to1 != null) {
 
 
 //테스트용 ! 
-// $User_ID = 324; //학생의 userid
-// $kind = 'tclist';
-// $clReserveCheck  =  'all';
-// $filter_class_status_check =  'all'; // 수업 상태 필터 
+$User_ID = 324; //학생의 userid
+$kind = 'tclist';
+$clReserveCheck  =  'all';
+$filter_class_status_check =  'all'; // 수업 상태 필터 
 // $filter_class_name  =  '기';             
 // $filter_user_name   =  'a';             
 // $filter_class_resister_time_from =  '2022-12-19 02:21:41';
@@ -634,8 +634,6 @@ if ($kind == 'cdetail') {
           $sqlWhere =  'where Class_Add.user_id_teacher = ' . $User_ID . ' and class_register_date >=   ' . '"' . $filter_class_resister_time_from . '"';
         } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to != null) {
 
-          $sqlWhere =  'where Class_Add.user_id_teacher = ' . $User_ID . ' and class_register_date >=   ' . $filter_class_resister_time_from;
-        } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to != null) {
 
           $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . '  and class_register_date <=  ' . '"' . $filter_class_resister_time_to . '"';
         } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to == null) {
@@ -722,6 +720,7 @@ if ($kind == 'cdetail') {
 
       $Sql3 = "SELECT Class_List.class_name FROM Class_List where  $class_name_sqlwhere ";
       $SRCList_Result3 = mysqli_query($conn, $Sql3);
+
       $row3 = mysqli_fetch_array($SRCList_Result3);
 
 
@@ -732,7 +731,6 @@ if ($kind == 'cdetail') {
         //  echo '이름 있음 '."</br>";
         $user_name_sqlwhere = 'User_Detail.user_id = ' . $user_id_student . ' and User.user_name  like ' . $filter_user_name2;;
       } else {
-        // echo '이름 없음 ';
         $user_name_sqlwhere =  'User_Detail.user_id = ' . $user_id_student;
       }
 
@@ -744,7 +742,7 @@ if ($kind == 'cdetail') {
 
 
 
-      $Sql5 = "SELECT Class_List_Time_Price.class_price FROM Class_List_Time_Price where Class_List_Time_Price.class_time=  '$class_time'  and Class_List_Time_Price.class_id = '$class_id'";
+      $Sql5 = "SELECT Class_List_Time_Price.class_price FROM Class_List_Time_Price where Class_List_Time_Price.class_time =  '$class_time'  and Class_List_Time_Price.class_id = '$class_id'";
       $SRCList_Result5 = mysqli_query($conn, $Sql5);
 
       $row5 = mysqli_fetch_array($SRCList_Result5);
