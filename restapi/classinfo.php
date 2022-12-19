@@ -110,10 +110,10 @@ if ($filter_class_resister_time_to1 != null) {
 
 
 //테스트용 ! 
-$User_ID = 324; //학생의 userid
-$kind = 'tclist';
-$clReserveCheck  =  'all';
-$filter_class_status_check =  'all'; // 수업 상태 필터 
+// $User_ID = 324; //학생의 userid
+// $kind = 'tclist';
+// $clReserveCheck  =  'all';
+// $filter_class_status_check =  'all'; // 수업 상태 필터 
 // $filter_class_name  =  '기';             
 // $filter_user_name   =  'a';             
 // $filter_class_resister_time_from =  '2022-12-19 02:21:41';
