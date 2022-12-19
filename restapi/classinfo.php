@@ -688,7 +688,7 @@ if ($kind == 'cdetail') {
 
 
 
-    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, $timezero ,$timezone2), Class_Add.class_register_review,Class_Add.class_register_memo FROM Class_Add  $sqlWhere   order by class_register_id desc ";
+    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, $timezero ,$timezone2), Class_Add.class_register_review, Class_Add.class_register_memo FROM Class_Add  $sqlWhere   order by class_register_id desc ";
 
 
     $SRCList_Result = mysqli_query($conn, $Student_ReserveClassList_Sql);
@@ -759,7 +759,10 @@ if ($kind == 'cdetail') {
       $send['class_name'] = $row3['class_name']; //수업이름
       $send['schedule_list']  = $save; //수업 일정  
       $send['class_time'] = $row1['class_time']; //수업 30분  60분  시간 
+
       $send['class_register_memo'] = $row1['class_register_memo']; //수업도구
+      
+      
       $send['class_register_method'] = $row1['class_register_method']; //수업도구
       $send['class_register_status'] = $row1['class_register_status']; //수업상태
       $send['class_register_review'] = $row1['class_register_review']; //수업후기 
@@ -790,7 +793,7 @@ if ($kind == 'cdetail') {
 
 
 
-  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_register_review, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list  FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
+  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_register_review, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list,  Class_Add.class_register_memo   FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
 
 
   $SRCList_Result1 = mysqli_query($conn, $Sql1);
@@ -803,6 +806,7 @@ if ($kind == 'cdetail') {
 
 
   $send['class_register_method'] = $row1['class_register_method']; //수업도구
+  $send['class_register_memo'] = $row1['class_register_memo']; //수업도구
   $send['class_register_status'] = $row1['class_register_status']; //수업상태
   $send['class_register_review'] = $row1['class_register_review']; //수업리뷰 상태 
   $send['class_id'] = $row1['class_id']; //강의 자체 id
