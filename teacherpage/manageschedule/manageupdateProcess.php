@@ -25,8 +25,8 @@
 
 
 
-include("../conn.php");
-include("../jwt.php");
+include("../../conn.php");
+include("../../jwt.php");
 
 
 $jwt = new JWT();
@@ -49,7 +49,6 @@ $hour = 3600000;
 
 
 
-// error_log("$time_now, $position, $desc\n", "3", "/php.log");
 
 //토큰 해체 
 $data = $jwt->dehashing($token);

@@ -35,15 +35,9 @@ $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-$kind = base64_decode($payload['kind']); //kind
-// $kind = 'teacher'; //kind
-// $kind = 'student'; //kind
-$class_register_id = base64_decode($payload['class_register_id']); //class_register_id
-// $class_register_id = 38; //class_register_id
-$class_register_status = base64_decode($payload['class_register_status']); //class_registe_status 승인 or 취소 
-// $class_register_status = 1 ; //class_registe_status 승인 or 취소 
-// $class_register_status = 1 or 2; //class_registe_status 승인 or 취소 
-
+$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 사용자(학생)토큰 
+$class_register_id      =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 사용자(학생)토큰 
+$class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 사용자(학생)토큰 
 
 error_log("$kind ,   $token,  $class_register_id,   $class_register_status, \n", "3", "../php.log");
 
@@ -52,7 +46,6 @@ if($class_register_status == '1'){
 } else if ($class_register_status == '2'){
   $status = 'cancel';
 }
-
 
 
 $Sql3 = "SELECT Class_Add.user_id_teacher, Class_Add.schedule_list FROM Class_Add where Class_Add.class_register_id =  '$class_register_id'";

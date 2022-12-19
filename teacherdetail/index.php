@@ -113,8 +113,8 @@
                         <div class = "flex items-center">                            
                             <a class = "bg-blue-600 rounded-full px-1 py-1"></a>
                             <span class = "mx-1">예약 가능</span>                           
-                            <a class = "bg-gray-400 rounded-full px-1 py-1 ml-2"></a>
-                            <span class = "mx-1">예약 불가</span>                            
+                            <a class = "bg-gray-500 rounded-full px-1 py-1 ml-2"></a>
+                            <span class = "mx-1">예약됨</span>                            
                         </div>                    
                     </div>
                     <div class="flex ml-auto">
@@ -177,7 +177,7 @@
                                             <label
                                                 for="<?php echo $num; ?>"
                                                 id="<?php echo $num; ?>_l"
-                                                class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
+                                                class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-500 text-white
                                                     rounded border"
                                                 name="schedule_label">
                                             </label>

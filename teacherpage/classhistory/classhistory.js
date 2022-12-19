@@ -14,8 +14,10 @@ async function getClasslist() {
         token: getCookie(cookieName),
         kind: "tclist",
         class_reserve_check: "all",      
-        filter_class_status_check: "all",  
+        // filter_class_status_check: "wait",  
         // filter_user_name: "ahsenq",
+        // filter_class_name: "기초 한국어 회화"
+        
         
     };
     const res = await fetch('/restapi/classinfo.php', {
