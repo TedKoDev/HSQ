@@ -39,7 +39,7 @@ $class_id    =   json_decode(file_get_contents("php://input"))->{"class_id"}; //
 $tp         =   json_decode(file_get_contents("php://input"))->{"tp"}; // 수업시간 
 // $tp         =  30 ; // 수업시간 
 $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
-// $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
+// // $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
 // $schedule       =   '1670385600000_1670383800000_1670387400000_1670389200000_1670391000000'; // 수업일정 
 // $schedule       =   '1670385600000'; // 수업일정 
 
@@ -136,14 +136,14 @@ if ($response4) { //정상일떄
   
   $data = array(
     'schedule_list'            =>   'Teacher_Schedule 값 업뎃 됨',
-    'success'           =>   'yes'
+    'success'        	=>	'yes'
   );
   // echo json_encode($data);
   // mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
     'schedule_list'            =>   'Teacher_Schedule 값 업뎃 안됨',
-    'success'           =>   'no'
+    'success'        	=>	'no'
   );
   // echo json_encode($data);
   // mysqli_close($conn);
@@ -151,14 +151,14 @@ if ($response4) { //정상일떄
   
   $data = array(
     'schedule_list'            =>   'class_add  잘됨',
-    'success'           =>   'yes'
+    'success'        	=>	'yes'
   );
   // echo json_encode($data);
   // mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
  
-    'success'           =>   'no'
+    'success'        	=>	'no'
   );
   // echo json_encode($data);
   // mysqli_close($conn);
