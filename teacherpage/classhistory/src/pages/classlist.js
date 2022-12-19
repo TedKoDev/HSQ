@@ -1,4 +1,4 @@
-import {changeSelectBtnStyle, getFilterInit, getFilterblock} from "./pages.js";
+import {changeSelectBtnStyle, getFilterInit} from "./pages.js";
 import {$, $_all} from "/utils/querySelector.js";
 import {classList_json} from "../../classhistory.js";
 import {s3_url} from "../../../../commenJS/cookie_modules.js";
@@ -17,7 +17,8 @@ export function classhistorylist($container) {
         
 
         // 수업 목록 이외의 부분 표시 (ex : 필터 관련된 input이랑 검색 버튼)
-        getFilterblock($('.filter'));
+        // getFilterblock($('.filter'));
+        $('.filter').classList.remove('hidden');
         // 수업 목록 표시
         showClassList($container, classList_json);      
 

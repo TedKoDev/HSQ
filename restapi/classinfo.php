@@ -600,11 +600,11 @@ if ($kind == 'cdetail') {
 
       
           if ($filter_class_status_check == 'wait') {
-            echo $filter_clRCValue = '0';
+            $filter_clRCValue = '0';
           } else if ($filter_class_status_check == 'approved') {
-            echo $filter_clRCValue = '1';
+            $filter_clRCValue = '1';
           } else if ($filter_class_status_check == 'cancel') {
-            echo $filter_clRCValue = '2';
+            $filter_clRCValue = '2';
           } else if ($filter_class_status_check == 'done') {
             $filter_clRCValue = '3';
           }
@@ -621,7 +621,7 @@ if ($kind == 'cdetail') {
             $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_status = ' . $filter_clRCValue . '  and class_register_date <=  ' . $filter_class_resister_time_to;
           } else if ($filter_class_resister_time_from == null && $filter_class_resister_time_to == null) {
 
-          echo  $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_status = ' . $filter_clRCValue;
+          $sqlWhere = 'where Class_Add.user_id_teacher = ' . $User_ID . ' and Class_Add.class_register_status = ' . $filter_clRCValue;
           }
         }
       } else if ($filter_class_status_check == null) {
