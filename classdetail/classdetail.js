@@ -33,6 +33,8 @@ getTeacherinfo(U_id);
 let timezone;
 // 서버에서 요청받은 일정이 담긴 string값 담을 변수 선언
 let schedule_string;
+// 서버에서 받은 일정의 상태 (승인대기/미완료/완료/취소된 수업)
+let schedule_string_status;
 // 모달창에서 수업 신청할 때 일정 담긴 string을 배열로 변환하는 변수 선언
 let array_for_edit = new Array();
 // 타임스탬프 담을 전역 변수 선언
@@ -82,6 +84,8 @@ async function getSchedule(teacher_id, tokenvalue) {
 
     // 전역으로 선언한 일정에 가져온 값 대입
     schedule_string = response.teacher_schedule_list;
+    // 일정의 상태 대입
+    schedule_string_status = response.teacher_schedule_list_status;  
     // 전역으로 선언한 timezone 값 대입
     timezone = response.user_timezone;
 
@@ -252,8 +256,9 @@ async function setschedule(type, for_modal, schedule_string) {
     // let test_string = "54_62_88";
 
     // 서버에서 받아온 string 배열로 변환
-    let test_array = schedule_string.split('_');
-
+    const scheduleList = schedule_string.split('_');
+    // 일정의 상태 배열로 변환
+    const statusList = schedule_string_status.split('_');
     
 
     // 현재 모달창에서 체크하고 있는 배열 가져오기
@@ -277,11 +282,18 @@ async function setschedule(type, for_modal, schedule_string) {
         // 모달창 아닐 때만 서버에서 받아온 값 뿌려주기
         if (for_modal == "") {
 
-            for (let j = 0; j < test_array.length; j++) {
+            for (let j = 0; j < scheduleList.length; j++) {
                             
-                if (input_i == test_array[j]) {                                      
+                if (input_i == scheduleList[j]) {                                      
                                                                          
                     label.style.backgroundColor = '#2563EB';
+
+                    // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하기
+                    // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
+                    if (!(statusList[j] == 9 || statusList[j] == 2)) {
+                                                                      
+                      label.style.backgroundColor = '#6B7280';                   
+                    }
                 }               
             }
             // 현재 시간 이전 날짜일 경우에는 디폴트 색인 회색으로 두기

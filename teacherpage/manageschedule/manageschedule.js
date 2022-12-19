@@ -1,6 +1,3 @@
-import { $, $_all } from "/utils/querySelector.js";
-import { getCookie } from "/commenJS/cookie_modules.js";
-
 // 오늘부터 7일후까지 요일, 날짜 가져와서 일정에 출력
 
 // 해당 유저의 utc 가져온후 date에 가져온 utc 적용
@@ -12,6 +9,8 @@ let timezone;
 
 // 서버에서 요청받은 일정이 담긴 string값 담을 변수 선언
 let schedule_string;
+// 서버에서 받은 일정의 상태 (승인대기/미완료/완료/취소된 수업)
+let schedule_string_status;
 
 // 모달창에서 수정할 때 일정 담긴 string을 배열로 변환하는 변수 선언
 let array_for_edit = new Array();
@@ -19,10 +18,11 @@ let array_for_edit = new Array();
 // 모달창에서 정규 일정 등록할 때 체크한 값들 담을 배열 선언
 let array_for_upload = new Array();
 
-let user_id;
-
 // 타임스탬프 담을 전역 변수 선언
 let time;
+
+// utc api에서 받아온 해당 유저의 id
+let user_id;
 
 
 async function get_utc(tokenValue) {
@@ -41,12 +41,12 @@ async function get_utc(tokenValue) {
       });  
 
       const response = await res.json();  
-      const success = response.success;      
+      const success = response.success;
       timezone = response.user_timezone;
+      user_id = response.user_id;
 
       if (success == "yes") {
 
-        user_id = response.user_id;
         // 날짜 설정하고 checkbox값에 timestamp 부여
         getDate("header_s", timezone, "");
 
@@ -222,9 +222,9 @@ async function setschedule(type, for_modal) {
 
     const body = {
 
-        token: checkCookie,
+        token: checkCookie,   
         user_timezone: timezone,
-        user_id_teacher: user_id        
+        user_id_teacher: user_id,    
     
         };
     const res = await fetch('/restapi/schedule.php', {
@@ -236,17 +236,19 @@ async function setschedule(type, for_modal) {
     });
     
     const response = await res.json();   
-    const check = response.success; 
-    schedule_string = response.teacher_schedule_list;  
 
     console.log(response);
+    const check = response.success; 
+    schedule_string = response.teacher_schedule_list;  
+    schedule_string_status = response.teacher_schedule_list_status;
       
 
     // 값이 있을 경우에만 추출해서 대입
     if (check == "yes") {
                
         // 서버에서 받아온 string 배열로 변환
-        let test_array = schedule_string.split('_');
+        const classList = schedule_string.split('_');
+        const statusList = schedule_string_status.split('_');
 
         // 현재 모달창에서 체크하고 있는 배열 가져오기
         let check_array = new Array();
@@ -268,12 +270,9 @@ async function setschedule(type, for_modal) {
             // 모달창 아닐 때만 서버에서 받아온 값 뿌려주기
             if (for_modal == "") {
 
-                for (let j = 0; j < test_array.length; j++) {
+                for (let j = 0; j < classList.length; j++) {
                                 
-                    if (input_i == test_array[j]) {
-                        
-                        // console.log("input_i : "+input_i);
-                        // console.log("test_array[j] : "+test_array[j]);
+                    if (input_i == classList[j]) {                                               
                         
                         let label = document.getElementById(i + type);                    
                         let input = document.getElementById(i+"_m");
@@ -281,6 +280,13 @@ async function setschedule(type, for_modal) {
                         // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
                         input.checked = true;
                         label.style.backgroundColor = '#2563EB';
+
+                         // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하기
+                        // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함
+                        if (!(statusList[j] == 9 || statusList[j] == 2)) {
+                                                                        
+                            label.style.backgroundColor = '#6B7280';                   
+                        }
                     }               
                 }
             }
@@ -300,7 +306,15 @@ async function setschedule(type, for_modal) {
 
                         input.checked = true;
                         label.style.backgroundColor = '#2563EB';
-                    }
+
+                        // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하고 checkbox 비활성화
+                        // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
+                        if (!(statusList[z] == 9 || statusList[z] == 2)) {
+                                                                            
+                            label.style.backgroundColor = '#6B7280';      
+                            input.disabled = true;             
+                        }
+                            }
                                 
                 }
             }            

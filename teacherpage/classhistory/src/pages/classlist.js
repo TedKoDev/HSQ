@@ -1,4 +1,4 @@
-import {changeSelectBtnStyle, getFilterInit, getFilterblock} from "./pages.js";
+import {changeSelectBtnStyle, getFilterInit} from "./pages.js";
 import {$, $_all} from "/utils/querySelector.js";
 import {classList_json} from "../../classhistory.js";
 import {s3_url} from "../../../../commenJS/cookie_modules.js";
@@ -17,9 +17,10 @@ export function classhistorylist($container) {
         
 
         // 수업 목록 이외의 부분 표시 (ex : 필터 관련된 input이랑 검색 버튼)
-        getFilterblock($('.filter'));
+        // getFilterblock($('.filter'));
+        $('.filter').classList.remove('hidden');
         // 수업 목록 표시
-        showClassList($container, classList_json);
+        showClassList($container, classList_json);      
 
     };
 
@@ -52,6 +53,7 @@ const showClassList = ($container, response) => {
             const userName = classList[i].user_name;
             const price = classList[i].class_price;
             const userId = classList[i].user_id;
+            
 
             // 수업일 int로 변환
             const dateToint = parseInt(classDate);
@@ -131,6 +133,8 @@ const showClassList = ($container, response) => {
 
 // 수업 히스토리 상세로 이동
 function move_history_detail(a, classId, userId) {
+
+    // console.log(classId);
 
     // 유저 id localstorage로 전달
     const class_info = {

@@ -5,9 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/dist/output.css" rel="stylesheet">
 
-    </head>   
-    <script type = "module" defer = "defer" src="./manageschedule.js"></script>      
-    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>  
+    </head>
+    <script src="/commenJS/cookie.js"></script>
+    <script src="./manageschedule.js" defer="defer"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
         .scrollLock {
             height: 100%;
@@ -42,6 +43,8 @@
                         <div class="flex items-center">
                             <a class="bg-blue-600 rounded-full px-1 py-1"></a>
                             <span class="ml-1">예약 가능</span>
+                            <a class = "bg-gray-500 rounded-full px-1 py-1 ml-2"></a>
+                            <span class = "mx-1">예약됨</span> 
                         </div>
                     </div>
                     <div class="flex ml-auto">

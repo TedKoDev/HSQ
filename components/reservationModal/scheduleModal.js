@@ -7,6 +7,8 @@ let classCount_sm = 0;
 // 신청한 스케줄 전역으로 선언
 let scheduleReserve_array_sm = new Array();
 let schedule_string_sm;
+// 스케줄의 상태 전역으로 선언
+let schedule_string_status_sm;
 
 // 서버에서 받아온 유저의 timezone 전역으로 쓰기 위해 선언
 let timezone_cs;
@@ -56,6 +58,7 @@ async function getclassSchedule_sm() {
     if (response.success == 'yes') {
 
         schedule_string_sm = response.teacher_schedule_list;
+        schedule_string_status_sm = response.teacher_schedule_list_status;  
         const timezone = response.user_timezone;
 
         // 전역으로 사용할 타임존 대입
@@ -200,7 +203,9 @@ function setDate_Value_sm(header_s, for_modal) {
 async function setschedule_sm(type, for_modal, schedule) {                        
     
     // 서버에서 받아온 string 배열로 변환
-    let test_array = schedule.split('_');   
+    const classList = schedule.split('_');   
+    // 일정의 상태 배열로 전환
+    const statusList = schedule_string_status_sm.split('_');
     
     // 디폴트로 일단 회색으로 칠해놓기
     let default_label = document.querySelectorAll(".label_sm");
@@ -217,15 +222,23 @@ async function setschedule_sm(type, for_modal, schedule) {
         let input_i = input.getAttribute("value");
         let label = document.getElementById(i + type);  
                    
-        for (let j = 0; j < test_array.length; j++) {
+        for (let j = 0; j < classList.length; j++) {
             
             // 수업 가능한 시간일 경우 파란색으로 표시하고 checkbox 활성화            
-            if (input_i == test_array[j]) {    
+            if (input_i == classList[j]) {    
                                                                
                                 
                 label.style.backgroundColor = '#2563EB';
                                     
-                input.disabled = false;                    
+                input.disabled = false;      
+                
+                // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하고 checkbox 비활성화
+                // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
+                if (!(statusList[j] == 9 || statusList[j] == 2)) {
+                                                                    
+                    label.style.backgroundColor = '#6B7280';      
+                    input.disabled = true;             
+                }
             }      
                      
         }  
