@@ -29,20 +29,29 @@ $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //강사/학생의 userid
-$User_ID = 324; //강사/학생의 userid
+
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-$kind = base64_decode($payload['kind']); //kind
- $kind = 'teacher'; //kind
-// $kind = 'student'; //kind
-$class_register_id = base64_decode($payload['class_register_id']); //class_register_id
-$class_register_id = 38; //class_register_id
+$kind = json_decode(file_get_contents("php://input"))->{"kind"}; //kind
+$class_register_id = json_decode(file_get_contents("php://input"))->{"class_register_id"}; //class_register_id
 
-$teacher_review = base64_decode($payload['teacher_review']); //class_registe_status 승인 or 취소 
-  $teacher_review = '텍스트' ; //teacher_review 텍스트 
+$teacher_review = json_decode(file_get_contents("php://input"))->{"teacher_review"}; //class_registe_status 승인 or 취소 
+
+$User_ID = 324; //강사or 학생의 userid
+$kind = 'teacher'; //kind
+$teacher_review = '텍스트리뷰 ' ; //teacher_review 텍스트 
+$class_register_id = 254; //class_register_id
+
+
+
+
+
+
+
+
 
 
 $Sql3 = "SELECT Class_Add.user_id_teacher, Class_Add.schedule_list FROM Class_Add where Class_Add.class_register_id =  '$class_register_id'";
@@ -51,10 +60,15 @@ $SRCList_Result3 = mysqli_query($conn, $Sql3);
 $row3 = mysqli_fetch_array($SRCList_Result3);
 
 $send['user_id_teacher'] = $row3['user_id_teacher']; //강사의 유저 번호  
-echo $user_id_teacher = $row3['user_id_teacher']; //강사의 유저 번호  
+$user_id_teacher = $row3['user_id_teacher']; //강사의 유저 번호  
 
 $send['schedule_list'] = $row3['schedule_list']; //수업일정
-echo $schedule_list = $row3['schedule_list']; //수업일정
+$schedule_list = $row3['schedule_list']; //수업일정
+
+
+
+
+
 
 
 
