@@ -14,8 +14,6 @@ getClassDetail();
 // 수업 신청한 학생과 관련된 데이터 가져와서 대입
 getUserInfo();
 
-console.log("ss");
-
 async function getClassDetail() {
 
     const body = {

@@ -89,7 +89,8 @@
         </div>  
         <!-- 예약 승인 모달  -->        
         <?php include './modal/acceptModal.php' ?>  
-         
+         <!-- 수업 취소 모달 -->
+        <?php include './modal/cancelModal.php' ?>  
         <br><br>        
     </body>
 </html>

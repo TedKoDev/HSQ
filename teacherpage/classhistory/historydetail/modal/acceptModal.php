@@ -6,7 +6,7 @@
             <div class = "flex justify-between border-b-2 border-gray-200">
                 <div class = "mx-auto">수업 일정 확정</div>
                 <svg                        
-                    class="acceptCancelBtn h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
+                    class="acceptModalCloseBtn h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                     id="close-modal"
                     fill="currentColor"
                     viewbox="0 0 20 20"
@@ -19,10 +19,10 @@
             </div><br>
             <div class = "font-semibold" id = "clname_m">수업을 확정 하시겠습니까?</div>
             <br>
-            <div class = "text-sm text-gray-500" >확정 시 신청한 학생에게 메세지가 전달됩니다.</div>
+            <div class = "text-sm text-gray-500" >확정 시 신청한 학생에게 수업 승인 여부 및 수업 정보가 포함된 메세지가 전달됩니다.</div>
             <div class = "flex-row-reverse mr-0">
                 <a class = "acceptBtn text-right mt-2 mx-1 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">확정하기</a>   
-                <a class = "acceptCancelBtn text-right mt-2 mx-1 px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-500 rounded float-right">취소</a>                             
+                <a class = "acceptModalCloseBtn text-right mt-2 mx-1 px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-500 rounded float-right">취소</a>                             
             </div>                          
         </div>                       
     </div>               
