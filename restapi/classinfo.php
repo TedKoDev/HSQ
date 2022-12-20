@@ -66,6 +66,7 @@ $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //학생의 userid
 
+
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
@@ -162,7 +163,7 @@ $filter_class_price_max = 100000;
 //테스트용 ! 
 // $User_ID = 320; //학생의 userid
 // $kind = 'clist';
-// $clReserveCheck  =  'all';
+// $clReserveCheck  =  'detail';
 // $filter_class_status_check = 'all'; // 수업 상태 필터 
 // $filter_class_name  =  '기';             
 // $filter_user_name   =  'a';             
@@ -171,7 +172,7 @@ $filter_class_price_max = 100000;
 // $timezone =9; //사용자(학생)의 TimeZone
 
 
-
+// $User_ID = 320; //학생의 userid
 // error_log("$kind ,   $clReserveCheck,  $User_ID \n", "3", "../php.log");
 
 
@@ -188,6 +189,7 @@ $filter_class_price_max = 100000;
 
 
 // $kind          =   'cdetail'; // 강사의 User_id 
+// $clReserveCheck  =  'detail';
 // 수업목록        : kind = clist 
 // 수업상세        : kind = cdetail    
 // 예약체크        : kind = clReserveCheck    // 전체 목록 또는 상세 정보 
@@ -208,7 +210,7 @@ $class_id       =   json_decode(file_get_contents("php://input"))->{"class_id"};
 $class_register_id       =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 예약한 수업 번호 
 
 
-// $class_register_id       =  239; // 예약한 수업 번호 
+// $class_register_id       =  258; // 예약한 수업 번호 
 // $class_id       =   34; // 수업번호 
 // 강사의 수업목록 : kind = tclist
 // 강사의 userid 값이 필요함 
@@ -361,11 +363,28 @@ if ($kind == 'cdetail') {
     $send['class_register_date'] = $row1['class_register_date']; // 수업예약 신청한 시간 
     $send['class_id'] = $row1['class_id'];  // 수업 id 
     $send['user_id_teacher'] = $row1['user_id_teacher'];  //강사의 userid
+    $tusid = $row1['user_id_teacher'];  //강사의 userid
     $send['class_name'] = $row1['class_name']; //
     $send['class_description'] = $row1['class_description']; //
     $send['class_people'] = $row1['class_people']; //
     $send['class_type'] = $row1['class_type']; //
     $send['class_level'] = $row1['class_level']; //
+
+    $tinfosql = "SELECT User.*, User_Detail.*, User_Teacher.* FROM User LEFT OUTER JOIN User_Detail ON User.user_id = User_Detail.user_id LEFT OUTER JOIN User_Teacher ON User_Teacher.user_id = User_Detail.user_id
+    where User.user_id = '$tusid'";
+  $response2 = mysqli_query($conn, $tinfosql);
+
+  $row2 = mysqli_fetch_array($response2);
+
+  $send['teacher_name'] = $row2['user_name']; //
+  $send['teacher_img'] = $row2['user_img']; //
+  $send['teacher_birthday'] = $row2['user_birthday']; //
+  $send['teacher_country'] = $row2['user_country']; //
+  $send['teacher_language'] = $row2['user_language']; //
+  $send['teacher_intro'] = $row2['teacher_intro']; //
+  $send['teacher_special'] = $row2['teacher_special']; //
+
+
 
 
     array_push($result1['result'], $send);
