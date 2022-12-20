@@ -1,12 +1,14 @@
 import { $ } from "/utils/querySelector.js";
 import { cookieName, getCookie } from "/commenJS/cookie_modules.js";
+import { calendarInit} from "./settingDate.js";
 
 // 타임존이랑 유저id 가져오기
 get_utc(getCookie(cookieName));
 
 // 타임존이랑 유저id 변수
-let timezone;
+export let timezone;
 let user_id;
+
 
 async function get_utc(tokenValue) {
 
@@ -24,23 +26,19 @@ async function get_utc(tokenValue) {
       });  
 
       const response = await res.json();  
-      const success = response.success;
-      timezone = response.user_timezone;
-      user_id = response.user_id;
+      const success = response.success;      
 
       if (success == "yes") {
 
-        // // 날짜 설정하고 checkbox값에 timestamp 부여
-        // getDate("header_s", timezone, "");
-
-        // // checkbox값 부여된 이후에 저장된 일정 세팅
-        // setschedule("_l", "");
+        timezone = response.user_timezone;
+        user_id = response.user_id;
       }
       else {
         console.log("타임존 못불러옴")
       }
 }
 
+// 해당 유저의 수업 목록 불러오기
 const body = {
 
     token: getCookie(cookieName),
@@ -59,4 +57,9 @@ const res = await fetch('../restapi/classinfo.php', {
 // 받아온 json 파싱하고 array 추출
 const response = await res.json();  
 
-console.log(response);
+// console.log(response);
+
+calendarInit();
+
+
+

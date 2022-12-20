@@ -62,11 +62,13 @@ function setData(response) {
     let User_Id = res_array[i].user_id;
     let U_D_Img = res_array[i].user_img;
     let U_Name = res_array[i].user_name;
-    let U_T_Special = res_array[i].teacher_Special;
+    let U_T_Special = res_array[i].teacher_special;
     let U_D_Language = res_array[i].user_language;
     let U_T_Intro = res_array[i].teacher_intro;
     let Price = res_array[i].class_price;
     let class_id = res_array[i].class_id;
+
+    console.log(U_T_Special);
 
     if (U_T_Special == 'default') {
         U_T_Special = "커뮤니티 튜터";
