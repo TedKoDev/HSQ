@@ -6,7 +6,7 @@ async function postData() {
     const password = document.getElementById('pw').value;
 
     const body = {      
-    email: email,
+    user_email: email,
     password: password,
     };
     const res = await fetch('./loginProcess.php', {
@@ -22,8 +22,8 @@ async function postData() {
     const userinfo_json = JSON.stringify(response);     
     const userinfo_parse = JSON.parse(userinfo_json);
 
-    const user_message = userinfo_parse.message;
-    const user_name = userinfo_parse.name;
+    const user_message = userinfo_parse.success;
+    const user_name = userinfo_parse.user_name;
     const user_token = userinfo_parse.token;
 
     console.log(user_message);
@@ -53,15 +53,15 @@ async function postData() {
 }    
 
 
-// 쿠키 생성 함수
-function setCookie(cName, cValue, cDay){
+// // 쿠키 생성 함수
+// function setCookie(cName, cValue, cDay){
 
-const expire = new Date();
-expire.setDate(expire.getDate() + cDay);
-cookies = cName + '=' + escape(cValue) + '; path=/ '; // 한글 깨짐을 막기위해 escape(cValue)
-if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
-document.cookie = cookies;
-}
+// const expire = new Date();
+// expire.setDate(expire.getDate() + cDay);
+// cookies = cName + '=' + escape(cValue) + '; path=/ '; // 한글 깨짐을 막기위해 escape(cValue)
+// if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
+// document.cookie = cookies;
+// }
 
 // 이메일 입력값 실시간 확인
 function printEmail() {

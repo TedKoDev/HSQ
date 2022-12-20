@@ -3,14 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="./css/tailwind.css"> -->
-    <script src="https://cdn.tailwindcss.com"></script>    
+    <link rel="stylesheet" href="./dist/output.css">
+    <!-- <script src="https://cdn.tailwindcss.com"></script>     -->
   </head>      
-  <body class = "bg-gray-100">   
+  <script defer src = "./commenJS/cookie.js"></script>   
+  <script type = "module" defer = "defer" src = "./index.js"></script>
+  <body class = "bg-gray-100">       
     <!-- 네비바 -->
-    <?php include './components/navbar.php' ?>
+    <?php include './components/navbar/navbar.php' ?>
     <!-- 한글스퀘어 소개하는 블록 -->
-    <br>    
+    <br>        
     <div class = "max-w-4xl mx-auto">
       <div class = "flex justify-between">
         <div class = "flex flex-col max-w-lg mr-4 bg-gray-50 px-4 py-4 shadow rounded-lg">
@@ -29,8 +31,8 @@
           <div>                  
             <img class = "w-100 h-100 rounded-lg" src = "<?php echo $hs_url; ?>images_forHS/광장.PNG"></img>            
           </div>    
-          <button class="w-60 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-3 rounded">
-            HangleSquare 입장하기 
+          <button class="goMetavarse w-60 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-3 rounded">
+            HangulSquare 입장하기 
           </button>                
         </div>        
       </div>

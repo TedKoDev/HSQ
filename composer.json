@@ -1,0 +1,7 @@
+{
+    "require": {
+        "paypal/rest-api-sdk-php": "*",
+        "aws/aws-sdk-php": "^3.252"
+   
+    }
+}
