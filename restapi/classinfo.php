@@ -161,7 +161,7 @@ $filter_class_price_max = 100000;
 
 
 //테스트용 ! 
-// $User_ID = 320; //학생의 userid
+$User_ID = 320; //학생의 userid
 // $kind = 'clist';
 // $clReserveCheck  =  'detail';
 // $filter_class_status_check = 'all'; // 수업 상태 필터 
@@ -188,8 +188,8 @@ $filter_class_price_max = 100000;
 // $clReserveCheck  =  'review';        // 
 
 
-// $kind          =   'cdetail'; // 강사의 User_id 
-// $clReserveCheck  =  'detail';
+$kind          =   'cdetail'; // 강사의 User_id 
+$clReserveCheck  =  'detail';
 // 수업목록        : kind = clist 
 // 수업상세        : kind = cdetail    
 // 예약체크        : kind = clReserveCheck    // 전체 목록 또는 상세 정보 
@@ -210,7 +210,7 @@ $class_id       =   json_decode(file_get_contents("php://input"))->{"class_id"};
 $class_register_id       =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 예약한 수업 번호 
 
 
-// $class_register_id       =  258; // 예약한 수업 번호 
+$class_register_id       =  258; // 예약한 수업 번호 
 // $class_id       =   34; // 수업번호 
 // 강사의 수업목록 : kind = tclist
 // 강사의 userid 값이 필요함 
@@ -362,6 +362,18 @@ if ($kind == 'cdetail') {
 
     $send['class_register_date'] = $row1['class_register_date']; // 수업예약 신청한 시간 
     $send['class_id'] = $row1['class_id'];  // 수업 id 
+    $send['class_time'] = $row1['class_time'];  // 수업 id 
+    $ctime = $row1['class_time'];  // 수업 id 
+    $cid = $row1['class_id'];  // 수업 id 
+
+    $cpricesql = "SELECT * FROM Class_List_Time_Price   where Class_List_Time_Price.class_id = '$cid' and Class_List_Time_Price.class_time = $ctime";
+  $response3 = mysqli_query($conn, $cpricesql);
+
+  $row3 = mysqli_fetch_array($response3);
+
+  
+  $send['class_price'] = $row3['class_price'];  // 수업가격
+
     $send['user_id_teacher'] = $row1['user_id_teacher'];  //강사의 userid
     $tusid = $row1['user_id_teacher'];  //강사의 userid
     $send['class_name'] = $row1['class_name']; //
