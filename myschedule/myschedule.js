@@ -1,14 +1,13 @@
 import { $ } from "/utils/querySelector.js";
 import { cookieName, getCookie } from "/commenJS/cookie_modules.js";
-import { calendarInit} from "./settingDate.js";
+import { calendarInit } from "./settingDate.js";
 
 // 타임존이랑 유저id 가져오기
 get_utc(getCookie(cookieName));
 
 // 타임존이랑 유저id 변수
 export let timezone;
-let user_id;
-
+export let user_id;
 
 async function get_utc(tokenValue) {
 
@@ -57,9 +56,8 @@ const res = await fetch('../restapi/classinfo.php', {
 // 받아온 json 파싱하고 array 추출
 const response = await res.json();  
 
-// console.log(response);
-
-calendarInit();
+// 캘린더에 날짜 세팅하고 받아온 json값 calendarInit에 전달
+calendarInit(response);
 
 
 
