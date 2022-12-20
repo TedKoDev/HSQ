@@ -49,14 +49,14 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '$User_ID'";
+$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1); 
 $timezone = $row1['0'].'</br>';
 
 
 
-$sql = "SELECT Schedule, Status FROM Teacher_Schedule WHERE User_Id = '$User_ID'";
+$sql = "SELECT schedule_list, teacher_schedule_status, teacher_schedule_review FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID'";
 $response2 = mysqli_query($conn, $sql);
 
 $result2['Schedule'] = array();
@@ -64,20 +64,28 @@ $result2['Schedule'] = array();
 // 1시간 = 3600;
 $hour = 3600000;
 $resultarray = array();
+$status_resultarray = array();
+$review_resultarray = array();
 
 while ($row1 = mysqli_fetch_array($response2)) {
 
  $schedule = $row1['0'];
  $status = $row1['1'];
+ $review = $row1['2'];
  $schedule2 = $schedule + $hour*$timezone;
+
   array_push($resultarray, $schedule2);
+  array_push($status_resultarray, $status);
+  array_push($review_resultarray, $review);
 }
  $string = implode("_",$resultarray);
+ $string_status = implode("_",$status_resultarray);
+ $string_review = implode("_",$review_resultarray);
 
  
 
  
- $sql = "SELECT * FROM Teacher_Schedule WHERE User_Id = '$User_ID' and  Status = '1'";
+ $sql = "SELECT * FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID' and  teacher_schedule_status = '1'";
  $response2 = mysqli_query($conn, $sql);
   
  // 1시간 = 3600;
@@ -103,15 +111,17 @@ while ($row1 = mysqli_fetch_array($response2)) {
      
  if ($response1) { //정상일떄  
   $data = array(
-    'schedule'	=>	$string,
-    'reserved_schedule'	=>	$string2,
+    'schedule_list'	=>	$string,
+    'schedule_list_status'	=>	$ $string_status,
+    'schedule_list_review'	=>	$ $string_review,
+    'reserved_schedule_list'	=>	$string2,
     'success'        	=>	'yes'
   );
   echo json_encode($data);
   mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
-    'schedule'	=>	'no',
+    'schedule_list'	=>	'no',
     'success'        	=>	'no'
   );
   echo json_encode($data);

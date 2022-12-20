@@ -55,17 +55,17 @@
       const userinfo_parse = JSON.parse(userinfo_json);
 
       
-      const user_name = userinfo_parse.name;      
-      const user_p_img = userinfo_parse.p_img; 
-      const user_bday = userinfo_parse.bday; 
-      const user_sex = userinfo_parse.sex; 
-      const user_contact = userinfo_parse.contact; 
-      const user_country = userinfo_parse.country; 
-      const user_residence = userinfo_parse.residence;   
-      const user_timezone = userinfo_parse.timezone;    
-      const user_language = userinfo_parse.language; 
-      const user_korean = userinfo_parse.korean;       
-      const user_intro = userinfo_parse.intro; 
+      const user_name = userinfo_parse.user_name;      
+      const user_p_img = userinfo_parse.user_img; 
+      const user_bday = userinfo_parse.user_birthday; 
+      const user_sex = userinfo_parse.user_sex; 
+      const user_contact = userinfo_parse.user_contact; 
+      const user_country = userinfo_parse.user_country; 
+      const user_residence = userinfo_parse.user_residence;   
+      const user_timezone = userinfo_parse.user_timezone;    
+      const user_language = userinfo_parse.user_language; 
+      const user_korean = userinfo_parse.uesr_korean;       
+      const user_intro = userinfo_parse.user_intro; 
 
       // const user_intro_parsing = user_intro.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
 
@@ -115,7 +115,9 @@
         // 프로필 이미지일 경우
         if (text == 'image') {
           
-          key.src = "../editprofile/image/"+value;
+          // key.src = "../editprofile/image/"+value;
+          key.src = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/Profile_Image/"+value;
+
         }
 
         else {
@@ -200,10 +202,10 @@
         //FormData형태에 file을 담아 fetch로 php로  넘기기
         const form_data = new FormData();
 
-        console.log(checkCookie);
+        console.log(tokenValue);
         
         form_data.append('sample_image', file); // 파일값 
-        form_data.append('token', checkCookie);   // 토큰값 
+        form_data.append('token', tokenValue);   // 토큰값 
         
         console.log(form_data);
         
@@ -222,10 +224,12 @@
 
         }).then(function(responseData){
           
-          console.log(responseData.image_source);
-          document.getElementById('profile_image').src = responseData.image_source;                      
-          document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
+          console.log(responseData.image_path);
+          document.getElementById('profile_image').src = responseData.image_path;                      
+          // document.getElementById('user_image').src = "../editprofile/"+responseData.image_source; 
+          document.getElementById('user_image').src = responseData.image_path; 
 
+          console.log(responseData.image_path);
         });
     }
     
@@ -274,8 +278,8 @@
       // 이름이랑 편집 아이콘 안보이게 처리
       name_not_edit_div.style.display = 'block';       
       
-      console.log(checkCookie);
-      post_edit(checkCookie, "name", now_name.innerHTML);
+      console.log(tokenValue);
+      post_edit(tokenValue, "name", now_name.innerHTML);
       
     }
 
@@ -340,7 +344,7 @@
       // 이름이랑 편집 아이콘 안보이게 처리
       bday_not_edit_div.style.display = 'block';       
             
-      post_edit(checkCookie, "bday", bday_for_server);
+      post_edit(tokenValue, "bday", bday_for_server);
       
     }
 
@@ -394,7 +398,7 @@
       sex_not_edit_div.style.display = 'block';
 
       // 서버로 저장 요청
-      post_edit(checkCookie, "sex", now_sex.innerHTML);
+      post_edit(tokenValue, "sex", now_sex.innerHTML);
     }
 
 
@@ -493,7 +497,7 @@
       not_edit.style.display = 'block';
 
       // 서버로 저장 요청
-      post_edit(checkCookie, nation, now_.innerHTML);
+      post_edit(tokenValue, nation, now_.innerHTML);
     }
 
     // 6. 시간대 수정
@@ -536,7 +540,7 @@
       utc_not_edit_div.style.display = 'block';
 
       // 서버로 저장 요청
-      post_edit(checkCookie, "utc", input_utc.value);
+      post_edit(tokenValue, "utc", input_utc.value);
     }
 
 
@@ -592,7 +596,7 @@
       intro_not_edit_div.style.display = 'block';       
       
       // 서버에 저장 요청
-      post_edit(checkCookie, "intro", string);
+      post_edit(tokenValue, "intro", string);
       
     }
 
@@ -777,7 +781,7 @@
         language_can = JSON.stringify(json_parse);
 
         // 서버에 저장 요청
-        post_edit(checkCookie, "language", language_can);
+        post_edit(tokenValue, "language", language_can);
 
         console.log(language_can);
 
@@ -834,7 +838,7 @@
           language_can = JSON.stringify(new_json);
 
           // 서버에 저장 요청
-          post_edit(checkCookie, "language", language_can);
+          post_edit(tokenValue, "language", language_can);
 
           console.log(language_can);
 
@@ -881,7 +885,7 @@
     //   language_can = JSON.stringify(new_json);
 
     //   // 서버에 저장 요청
-    //   post_edit(checkCookie, "language", language_can);
+    //   post_edit(tokenValue, "language", language_can);
 
     //   console.log(language_can);
 
@@ -1019,7 +1023,7 @@
           language_can = JSON.stringify(json_parse);
 
           // 서버에 삭제 요청
-          post_edit(checkCookie, "language", language_can);
+          post_edit(tokenValue, "language", language_can);
           
           // 해당 div 삭제
           delete_div.parentNode.removeChild(delete_div);
@@ -1098,7 +1102,7 @@
       korean_not_edit_div.style.display = 'block';
 
       // 서버로 저장 요청
-      post_edit(checkCookie, "korean", now_korean.innerHTML);
+      post_edit(tokenValue, "korean", now_korean.innerHTML);
     }
 
         
@@ -1108,7 +1112,7 @@
       const body = {
         token: token,
         position: position,
-        desc: desc,
+        class_description: desc,
       };
       const res = await fetch('./editprofileProcess.php', {
         method: 'POST',

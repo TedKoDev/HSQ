@@ -59,13 +59,13 @@ function setData(response) {
   // array 개수만큼 반복문 돌려서 태그 생성한다음 대입
   for (let i = 0; i < res_array.length; i++) {
 
-    let User_Id = res_array[i].User_Id;
-    let U_D_Img = res_array[i].U_D_Img;
-    let U_Name = res_array[i].U_Name;
-    let U_T_Special = res_array[i].U_T_Special;
-    let U_D_Language = res_array[i].U_D_Language;
-    let U_T_Intro = res_array[i].U_T_Intro;
-    let Price = res_array[i].Price;
+    let User_Id = res_array[i].user_id;
+    let U_D_Img = res_array[i].user_img;
+    let U_Name = res_array[i].user_name;
+    let U_T_Special = res_array[i].teacher_Special;
+    let U_D_Language = res_array[i].user_language;
+    let U_T_Intro = res_array[i].teacher_intro;
+    let Price = res_array[i].class_price;
     let class_id = res_array[i].class_id;
 
     if (U_T_Special == 'default') {
@@ -79,7 +79,7 @@ function setData(response) {
         U_D_Img = "../images_forHS/userImage_default.png"
     }
     else {
-        U_D_Img = "../editprofile/image/"+U_D_Img;
+        U_D_Img = s3_url+"Profile_Image/"+U_D_Img;
     }
 
     // 태그 생성하고 id에 해당 유저의 id 대입
@@ -88,16 +88,16 @@ function setData(response) {
     // div.setAttribute("href", "../teacherdetail/teacherdetail.php");
 
     div.innerHTML = [
-      '<a href = "../teacherdetail/teacherdetail.php">',
-        '<div class = "flex border-2">',
-            '<div class = "flex flex-col border-2 w-1/6 py-2">',
+      '<a class = "" href = "../teacherdetail/">',
+        '<div class = "flex mb-2 bg-gray-50 rounded-lg border border-gray-400">',
+            '<div class = "flex flex-col w-1/6 py-2">',
                 '<img id = "profile_image" class = "mx-auto w-20 h-20 border-3 border-gray-900 rounded-full "', 
                         'src = '+U_D_Img+'>',
                 '</img>',
                 '<div class= "mx-auto">평점</div>',
                 '<div class= "mx-auto">수업 횟수</div>',
                 '</div>',                
-                '<div class = "flex flex-col border-2 w-5/6 mx-auto px-4 py-2">',
+                '<div class = "flex flex-col w-5/6 mx-auto px-4 py-2">',
                     '<div class = "font-semibold">'+U_Name+'</div>',
                     '<div class = "text-gray-500">'+U_T_Special+'</div>',
                     '<div id = "'+User_Id+'_l'+'" class = "flex">',

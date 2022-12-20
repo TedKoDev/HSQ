@@ -5,9 +5,9 @@
     
 // 일반 회원가입 
 // 요구되는 파라미터 
-// 1. email  - email 
+// 1. user_email  - user_email 
 // 2. 비밀번호 - password 
-// 3. 이름     - name 
+// 3. 이름     - user_name 
 
 
 // # 사용가능할때는  (yes 일치한다 ) 
@@ -21,16 +21,16 @@ include("../conn.php");
 include("../jwt.php");
 
  file_get_contents("php://input")."<br/>";
- $name = json_decode(file_get_contents("php://input"))->{"name"};
- $email = json_decode(file_get_contents("php://input"))->{"email"};
+ $user_name = json_decode(file_get_contents("php://input"))->{"user_name"};
+ $user_email = json_decode(file_get_contents("php://input"))->{"user_email"};
  $password = json_decode(file_get_contents("php://input"))->{"password"};
- $utc = json_decode(file_get_contents("php://input"))->{"utc"};
+ $user_timezone = json_decode(file_get_contents("php://input"))->{"user_timezone"};
 
 
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
-// error_log("$time_now, $name, $email,$password \n", "3", "/php.log");
+// error_log("$time_now, $user_name, $user_email,$password \n", "3", "/php.log");
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
@@ -39,7 +39,7 @@ $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
 //아이디 중복 체크 
-$check = "SELECT * FROM User where U_Email = '{$email}'";
+$check = "SELECT * FROM User where user_email = '{$user_email}'";
 $checkresult = mysqli_query($conn, $check);
 
 
@@ -59,8 +59,8 @@ if ($checkresult->num_rows > 0) {
 
 
 
-    $sql = " INSERT INTO User (U_Email, U_PW, U_Name, U_Google_key, U_Facebook_key, U_Character, U_Register_Date)
- VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null','null', NOW() )";
+    $sql = " INSERT INTO User (user_email, user_password, user_name, user_google_key, user_facebook_key, user_character, user_register_date)
+ VALUES('{$user_email}', '{$hashedPassword}','{$user_name}', 'null', 'null','null', NOW() )";
     // echo $sql;
     $result = mysqli_query($conn, $sql);
     if ($result === false) {
@@ -69,7 +69,7 @@ if ($checkresult->num_rows > 0) {
     } else {
 
 
-        $sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
+        $sql = "SELECT * FROM User WHERE user_email = '{$user_email}'";
         $result = mysqli_query($conn, $sql);
 
         $row1 = mysqli_fetch_array($result);
@@ -78,27 +78,27 @@ if ($checkresult->num_rows > 0) {
 
 
 
-        $result = "INSERT INTO User_Detail (User_Id, U_D_Timezone) VALUES ('$User_ID','$utc') ";
+        $result = "INSERT INTO User_Detail (user_id, user_timezone) VALUES ('$User_ID','$user_timezone') ";
         $insert = mysqli_query($conn, $result);
 
 
 // DB 정보 가져오기 
-$sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
+$sql = "SELECT * FROM User WHERE user_email = '{$user_email}'";
 $result = mysqli_query($conn, $sql);
 
 $row = mysqli_fetch_array($result);
-$hashedPassword = $row['U_PW'];
+$hashedPassword = $row['user_password'];
 
 
 //토큰화를 base64인코딩을 진행 
- $tokenemail = $row['U_Email'];
+ $tokenemail = $row['user_email'];
  $tokenemail = base64_encode($tokenemail);
 
- $tokenuserid = $row['User_ID'];
+ $tokenuserid = $row['user_id'];
  $tokenuserid = base64_encode($tokenuserid);
 
- $tokenusername = $row['U_Name'];
- $name = $row['U_Name'];
+ $tokenusername = $row['user_name'];
+ $user_name = $row['user_name'];
  $tokenusername = base64_encode($tokenusername);
 
 
@@ -109,7 +109,7 @@ $hashedPassword = $row['U_PW'];
   $jwt = new JWT();
 
     // 로그인 성공
-    // 토큰 생성  id, name, email 값 저장
+    // 토큰 생성  id, user_name, user_email 값 저장
   
     $token = $jwt->hashing(array(
         'User_ID' => $tokenuserid,
@@ -118,8 +118,8 @@ $hashedPassword = $row['U_PW'];
     ));
 
         $send["token"] = "$token";
-        $send["name"] = "$name";
-        $send["message"] = "yes";
+        $send["user_name"] = "$user_name";
+        $send["success"] = "yes";
         
         echo json_encode($send);
         mysqli_close($conn);

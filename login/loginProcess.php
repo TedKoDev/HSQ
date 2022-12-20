@@ -38,7 +38,7 @@ include("../jwt.php");
 
 file_get_contents("php://input") . "<br/>";
 
-$email = json_decode(file_get_contents("php://input"))->{"email"};
+$email = json_decode(file_get_contents("php://input"))->{"user_email"};
 $password = json_decode(file_get_contents("php://input"))->{"password"};
 
 
@@ -49,22 +49,22 @@ $password = json_decode(file_get_contents("php://input"))->{"password"};
 // $password = $_POST['password'];
 
 // DB 정보 가져오기 
-$sql = "SELECT * FROM User WHERE U_Email = '{$email}'";
+$sql = "SELECT * FROM User WHERE user_email = '{$email}'";
 $result = mysqli_query($conn, $sql);
 
 $row = mysqli_fetch_array($result);
-$hashedPassword = $row['U_PW'];
+$hashedPassword = $row['user_password'];
 
 
 //토큰화를 base64인코딩을 진행 
- $email = $row['U_Email'];
+ $email = $row['user_email'];
 $tokenemail = base64_encode($email);
 
- $userid = $row['User_ID'];
+ $userid = $row['user_id'];
 $tokenuserid = base64_encode($userid);
 
 
- $name = $row['U_Name'];
+ $name = $row['user_name'];
 $tokenusername = base64_encode($name);
 
 
@@ -72,7 +72,7 @@ $tokenusername = base64_encode($name);
 
 // DB 정보 가져오기 
 
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$userid}'";
+$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$userid}'";
 $result = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($result);
 $timezone = $row1['0'];
@@ -94,8 +94,11 @@ if ($passwordResult === true) {
     // 로그인 성공
     // 토큰 생성  id, name, email 값 저장
 
+    $time = time();
     $token = $jwt->hashing(
         array(
+            'exp' => $time + (60*360), // 만료기간
+            'iat' => $time, // 생성일
               'User_ID' => $tokenuserid,
         'U_Name'  =>  $tokenusername,
         'U_Email' => $tokenemail,   
@@ -105,8 +108,8 @@ if ($passwordResult === true) {
 
 
     $send["token"] = "$token";
-    $send["name"] = "$name";
-    $send["message"] = "yes";
+    $send["user_name"] = "$name";
+    $send["success"] = "yes";
 
     echo json_encode($send);
     mysqli_close($conn);
@@ -114,8 +117,8 @@ if ($passwordResult === true) {
 } else {
     // 로그인 실패 
     $send["token"] = "no";
-    $send["name"] = "no";
-    $send["message"] = "no";
+    $send["user_name"] = "no";
+    $send["success"] = "no";
 
     echo json_encode($send);
     mysqli_close($conn);

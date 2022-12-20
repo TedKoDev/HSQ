@@ -85,10 +85,10 @@
     const utc = -(date.getTimezoneOffset() / 60);
 
     const body = {
-      name: name,
-      email: email,
+      user_name: name,
+      user_email: email,
       password: password,
-      utc: utc,
+      user_timezone: utc,
     };
     const res = await fetch('./signupProcess.php', {
       method: 'POST',
@@ -103,8 +103,8 @@
       const userinfo_json = JSON.stringify(response);     
       const userinfo_parse = JSON.parse(userinfo_json);
 
-      const user_message = userinfo_parse.message;
-      const user_name = userinfo_parse.name;
+      const user_message = userinfo_parse.success;
+      const user_name = userinfo_parse.user_name;
       const user_token = userinfo_parse.token;
 
       console.log(user_message);

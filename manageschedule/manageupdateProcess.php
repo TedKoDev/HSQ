@@ -36,9 +36,14 @@ file_get_contents("php://input") . "<br/>";
 
 // 토큰 
 $token     =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰값 
-// $repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // 몇주 반복 여부  4, 8, 12 주  
-// $utc      =   json_decode(file_get_contents("php://input"))->{"utc"}; // 
-$plan      =   json_decode(file_get_contents("php://input"))->{"plan"};  // 일정 
+$repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // 몇주 반복 여부  4, 8, 12 주  
+$utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; // 
+$plan      =   json_decode(file_get_contents("php://input"))->{"schedule_list"};  // 일정 
+
+
+
+
+
 // $plan      =  '1669894200_1669896000_1669897800';
 // $plan      =  '1000_2000';
 // $repeat    = 8; // 몇주 반복 여부  4, 8, 12 주  
@@ -49,7 +54,6 @@ $hour = 3600000;
 
 
 
-// error_log("$time_now, $position, $desc\n", "3", "/php.log");
 
 //토큰 해체 
 $data = $jwt->dehashing($token);
@@ -58,21 +62,22 @@ $payload = json_decode($parted[1], true);
 $User_ID =  base64_decode($payload['User_ID']);
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
-
+$timezone1 = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '$User_ID'";
+$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
 $response1 = mysqli_query($conn, $sql);
 $row1 = mysqli_fetch_array($response1); 
 $timezone = $row1['0'].'</br>';
 
+error_log("$plan , $utc,$timezone1,$timezone \n", "3", "../php.log");
 
 
 
   
-$check = "SELECT * FROM Teacher_Schedule where User_Id = '$User_ID'";
-$checkresult = mysqli_query($conn, $check);
+// $check = "SELECT * FROM Teacher_Schedule where user_id_teacher = '$User_ID'";
+// $checkresult = mysqli_query($conn, $check);
 
 
 // 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
@@ -95,15 +100,15 @@ json_encode($resultarray);
 
 
 
-    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '32' ";
-     $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '$User_ID' ";
+    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_s = '32' ";
+     $result = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
      $response = mysqli_query($conn, $result);
 
  foreach($resultarray as $val){
 
   $val;
 
-  $result = "INSERT INTO Teacher_Schedule (User_Id, Schedule) VALUES ('$User_ID', '$val') ";
+  $result = "INSERT INTO Teacher_Schedule (user_id_teacher, schedule_list) VALUES ('$User_ID', '$val') ";
   $response = mysqli_query($conn, $result);
 
 
@@ -112,7 +117,7 @@ json_encode($resultarray);
      
  if ($response) { //정상일떄  
   $data = array(
-    'plan'            =>   $resultarray,
+    'schedule_list'            =>   $resultarray,
     'success'        	=>	'yes'
   );
   echo json_encode($data);

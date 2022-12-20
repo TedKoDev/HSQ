@@ -36,23 +36,24 @@ $data = $jwt->dehashing($token);
 $parted = explode('.', base64_decode($token));
 $payload = json_decode($parted[1], true);
 $User_ID =  base64_decode($payload['User_ID']);
+// $User_ID =  80;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
 
 
 //Class_List에 수업 목록확인  
-$sql = "SELECT * FROM User_Detail WHERE User_Id = '{$User_ID}'";
+$sql = "SELECT * FROM User_Detail WHERE user_id = '{$User_ID}'";
 $result = mysqli_query($conn, $sql);
 
 $row            = mysqli_fetch_array($result);
-$img           = $row['U_D_Img'];
-$bday             = $row['U_D_Bday'];
-$sex              = $row['U_D_Sex'];
-$country              = $row['U_D_County'];
-$residence        = $row['U_D_Residence'];
-$language          = $row['U_D_Language'];
-$korean                = $row['U_D_Korean'];
+$img           = $row['user_img'];
+$bday             = $row['user_birthday'];
+$sex              = $row['user_sex'];
+$country              = $row['user_country'];
+$residence        = $row['user_residence'];
+$language          = $row['user_language'];
+$korean                = $row['user_korean'];
 
 
 

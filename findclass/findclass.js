@@ -7,11 +7,16 @@ getClassinfo_all();
 async function getClassinfo_all() {
 
     const body = {
-           
+        kind: 'clist'
+
       };
      
       const res = await fetch('../restapi/classinfo.php', {
-        method: 'GET',        
+        method: 'POST',   
+        headers: {
+            'Content-Type': 'application/json;'
+          },
+        body: JSON.stringify(body)          
       });  
 
       console.log("ss");
@@ -45,7 +50,7 @@ async function see_more() {
     more_num = more_num + 1;
         
     const body = {
-
+      kind: 'clist',
       plus : more_num,
     };
    
@@ -76,20 +81,20 @@ function setClassinfo(response) {
     for (let i = 0; i < res_array.length; i++) {
 
         let class_id = res_array[i].class_id;
-        let teacher_id = res_array[i].tusid;
-        let clname = res_array[i].clname;
-        let cldisc = res_array[i].cldisc;
-        let cltype = res_array[i].cltype;
-        let cllevel = res_array[i].cllevel;
-        let user_name = res_array[i].U_Name;
-        let user_img = res_array[i].U_D_Img;
+        let teacher_id = res_array[i].user_id_teacher;
+        let clname = res_array[i].class_name;
+        let cldisc = res_array[i].class_description;
+        let cltype = res_array[i].class_type;
+        let cllevel = res_array[i].class_level;
+        let user_name = res_array[i].user_name;
+        let user_img = res_array[i].user_img;
 
         // 유저 이미지 값이 없으면 디폴트 이미지로 표시 표시
         if (user_img == 'default' || user_img == null) {
             user_img = "../images_forHS/userImage_default.png"
         }
         else {
-            user_img = "../editprofile/image/"+user_img;
+            user_img = s3_url+"Profile_Image/"+user_img;
         }
         
         // 태그 생성하고 id에 해당 유저의 id 대입
@@ -144,7 +149,7 @@ function setClassinfo(response) {
             for (let j = 0; j < type_array.length; j++) {
 
                 let type_list = document.createElement('span');          
-                type_list.innerHTML = ['<span class = "text-xs mr-1 ml-1 bg-gray-300 text-gray-800 mr-2 rounded-lg px-2">'+type_array[j]+'</span>'].join("");
+                type_list.innerHTML = ['<span class = "text-xs ml-1 bg-gray-300 text-gray-800 mr-2 rounded-lg px-2">'+type_array[j]+'</span>'].join("");
                 type_div.appendChild(type_list);  
             }                                
                          

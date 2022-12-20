@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="./dist/output.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script>     -->
   </head>      
-  <script defer src = "./commenJS/cookie.js"></script> 
+  <script defer src = "./commenJS/cookie.js"></script>   
   <body class = "bg-gray-100">       
     <!-- 네비바 -->
-    <?php include './components/navbar.php' ?>
+    <?php include './components/navbar/navbar.php' ?>
     <!-- 한글스퀘어 소개하는 블록 -->
     <br>        
     <div class = "max-w-4xl mx-auto">
