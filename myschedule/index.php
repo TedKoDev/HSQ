@@ -51,13 +51,9 @@
                             <div class = "schedule_block flex flex-col border-b-2 border-r-2 w-full py-1 text-gray-700 px-3 min-h-max"
                                 id = "<?php echo $num; ?>_block">
                                 <span class = "schedule_date text-sm" id = "<?php echo $num; ?>_date"></span>
-                                <div class = "schedule_list" id = "<?php echo $num; ?>_list">
+                                <div class = "schedule_list flex flex-col justify-center" id = "<?php echo $num; ?>_list">
 
-                                </div>
-                                <!-- <div class = "flex flex-col px-2 mt-1 bg-gray-600 rounded-lg py-1">
-                                    <span class = "text-xs mb-1 text-white">21:00 - 21:30</span>
-                                    <span class = "text-xs text-white">안해인</span>
-                                </div>                                 -->                                
+                                </div>                                                                                             
                             </div>
                             <?php
                         }?>

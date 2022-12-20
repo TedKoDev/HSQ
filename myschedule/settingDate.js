@@ -142,14 +142,13 @@ export function calendarInit(scheduleInfo) {
                     const startTime = dayjs(parseInt(schedule.class_start_time)).subtract(parseInt(classTime), 'minute').format('hh:mm');
                     const endTime = dayjs(parseInt(schedule.class_start_time)).format('hh:mm');
                     const time = startTime+" - "+endTime;
-                    const a = document.createElement("a");
-                    a.setAttribute("href", "/");
-                    a.innerHTML = `<div class = "flex flex-col px-2 mt-1 rounded-lg py-1" id = ${classId}_schedule>
-                                        <span class = "text-xs mb-1 text-white">${time}</span>
-                                        <span class = "text-xs text-white">${teacherNmae}</span>
+                    const button = document.createElement("button");                                        
+                    button.innerHTML = `<div class = "flex flex-col px-2 mt-1 rounded-lg py-1" id = ${classId}_schedule>
+                                        <span class = "text-xs mb-1 text-white text-left">${time}</span>
+                                        <span class = "text-xs text-white text-left">${teacherNmae}</span>
                                     </div>`                    
                     
-                    schedule_list_div.appendChild(a);                   
+                    schedule_list_div.appendChild(button);                   
                    
                     // 수업 상태에 따라 수업의 색깔 다르게 처리
                     let status = schedule.class_register_status;
@@ -170,6 +169,12 @@ export function calendarInit(scheduleInfo) {
                     else if (status == 3) {
                         schedule_item.classList.add('bg-violet-600');
                     }
+
+                    // 해당 수업 클릭 시 수업 id post로 전송하고 수업 상세 화면으로 이동
+                    button.addEventListener('click', () => {
+
+                        goClassDetail(classId, '/myclass/');
+                    })
                 }
             }
 
@@ -185,6 +190,26 @@ export function calendarInit(scheduleInfo) {
             date.innerText = i;
         }      
             
+    }
+
+    function goClassDetail(class_id, url) {
+        
+        const form = document.createElement('form');
+        form.setAttribute('method', 'get');
+        // form.setAttribute('target', '_blank');
+        form.setAttribute('action', url);
+
+        const hiddenField = document.createElement('input');
+        hiddenField.setAttribute('type', 'hidden');
+        hiddenField.setAttribute('name', 'class_id');
+        hiddenField.setAttribute('value', class_id);
+        form.appendChild(hiddenField);
+
+        document.body.appendChild(form);
+
+        form.submit();
+        
+        // location.assign(url+"?class_id="+class_id);
     }
 
     // 이전/다음 버튼 눌러서 캘린더 날짜 변경할 때 다시 재 렌더링하는 함수

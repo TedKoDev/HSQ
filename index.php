@@ -31,7 +31,7 @@
             <img class = "w-100 h-100 rounded-lg" src = "<?php echo $hs_url; ?>images_forHS/광장.PNG"></img>            
           </div>    
           <button class="w-60 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-3 rounded">
-            HangleSquare 입장하기 
+            HangulSquare 입장하기 
           </button>                
         </div>        
       </div>

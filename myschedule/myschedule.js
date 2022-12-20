@@ -56,6 +56,8 @@ const res = await fetch('../restapi/classinfo.php', {
 // 받아온 json 파싱하고 array 추출
 const response = await res.json();  
 
+console.log(response);
+
 // 캘린더에 날짜 세팅하고 받아온 json값 calendarInit에 전달
 calendarInit(response);
 

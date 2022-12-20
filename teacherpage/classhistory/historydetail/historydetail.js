@@ -32,6 +32,7 @@ async function getClassDetail() {
     
     const response = await res.json();    
 
+    
     if (response.success == "yes") {
 
         const result = response.result[0];
