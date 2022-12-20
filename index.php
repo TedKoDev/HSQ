@@ -7,6 +7,7 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script>     -->
   </head>      
   <script defer src = "./commenJS/cookie.js"></script>   
+  <script type = "module" defer = "defer" src = "./index.js"></script>
   <body class = "bg-gray-100">       
     <!-- 네비바 -->
     <?php include './components/navbar/navbar.php' ?>
@@ -30,7 +31,7 @@
           <div>                  
             <img class = "w-100 h-100 rounded-lg" src = "<?php echo $hs_url; ?>images_forHS/광장.PNG"></img>            
           </div>    
-          <button class="w-60 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-3 rounded">
+          <button class="goMetavarse w-60 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-3 rounded">
             HangulSquare 입장하기 
           </button>                
         </div>        
