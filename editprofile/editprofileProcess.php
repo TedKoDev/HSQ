@@ -105,8 +105,11 @@ if ($checkresult->num_rows <1) {
     // mysqli_close($conn);
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 840d2b340c6718220355d7007cd3d0d50c58f4fd
 
 // 있으면 update 시작 
 

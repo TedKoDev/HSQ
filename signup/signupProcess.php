@@ -1,8 +1,5 @@
 <?php
 
-    
-    
-    
 // 일반 회원가입 
 // 요구되는 파라미터 
 // 1. email  - email 
@@ -76,10 +73,39 @@ if ($checkresult->num_rows > 0) {
         $User_ID = $row1['0'];
 
 
-
-
         $result = "INSERT INTO User_Detail (User_Id, U_D_Timezone) VALUES ('$User_ID','$utc') ";
         $insert = mysqli_query($conn, $result);
+
+
+
+
+        $to      = $email; // Send email to our user
+        $subject = 'Signup | Verification'; // Give the email a subject 
+        $message = '
+         
+        Thanks for signing up!
+        Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
+         
+        ------------------------
+        Username: '.$name.'
+        Password: '.$password.'
+        ------------------------
+         
+        Please click this link to activate your account:
+        localhost/signupvertifyProcess.php?email='.$email.'&hash='.$hashedPassword.'
+         
+        '; // Our message above including the link
+                             
+        $headers = 'From:noreply@yourwebsite.com' . "\r\n"; // Set from headers
+        mail($to, $subject, $message, $headers); // Send our email
+
+
+
+
+
+
+
+
 
 
 // DB 정보 가져오기 

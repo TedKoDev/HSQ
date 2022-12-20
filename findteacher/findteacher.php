@@ -18,7 +18,7 @@
         <div class = "flex-col justify-center mx-auto max-w-3xl items-center">
             <div class = "font-bold text-2xl">강사 찾기</div><br>     
             <div class="flex justify-end">
-                <div class="mb-3 xl:w-96">
+                <div class="mb-3 xl:w-80">
                     <div class="flex items-stretch w-full">
                         <input type="search" class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="강사 이름" aria-label="Search" aria-describedby="button-addon2">
                         <button class="btn px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center" type="button" id="button-addon2">
@@ -30,13 +30,13 @@
                 </div>
             </div>        
         </div>    
-        <div id = "teacher_list" class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-50 shadow rounded-lg "><br>
+        <div id = "teacher_list" class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-50 shadow rounded-lg ">
 
             
             
         </div><br>
         <div class = "flex">
-            <div class = "my-5 py-2 w-1/6 mx-auto bg-gray-50 text-center rounded-md 
+            <div id = "see_more" class = "hidden my-5 py-2 w-1/6 mx-auto bg-gray-50 text-center rounded-md 
                 border-gray-400 shadow" onclick = "see_more()">더 보기
             </div>
         </div>

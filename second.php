@@ -1,7 +1,6 @@
 <?php
 
 // 1. Autoload the SDK Package. This will include all the files and classes to your autoloader
-//require __DIR__  . '/PayPal-PHP-SDK/autoload.php';
 require __DIR__  . '/vendor/autoload.php';
 
 // 2. Provide your Secret Key. Replace the given one with your app clientId, and Secret

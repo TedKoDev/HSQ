@@ -74,9 +74,7 @@ async function postToken_nav(tokenValue) {
   const user_p_img = userinfo_parse.p_img;
   const user_name = userinfo_parse.name;
   const user_teacher = userinfo_parse.teacher;
-
-  console.log("user_teacher : "+user_teacher);
-
+ 
   // 강사일 경우 드롭다운 메뉴에 '강사페이지'라고 표시
   if (user_teacher == 'yes') {
 

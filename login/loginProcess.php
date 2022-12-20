@@ -57,15 +57,32 @@ $hashedPassword = $row['U_PW'];
 
 
 //토큰화를 base64인코딩을 진행 
- $tokenemail = $row['U_Email'];
-$tokenemail = base64_encode($tokenemail);
+ $email = $row['U_Email'];
+$tokenemail = base64_encode($email);
 
- $tokenuserid = $row['User_ID'];
-$tokenuserid = base64_encode($tokenuserid);
+ $userid = $row['User_ID'];
+$tokenuserid = base64_encode($userid);
 
-$tokenusername = $row['U_Name'];
+
  $name = $row['U_Name'];
-$tokenusername = base64_encode($tokenusername);
+$tokenusername = base64_encode($name);
+
+
+
+
+// DB 정보 가져오기 
+
+$sql = "SELECT U_D_Timezone FROM User_Detail WHERE User_Id = '{$userid}'";
+$result = mysqli_query($conn, $sql);
+$row1 = mysqli_fetch_array($result);
+$timezone = $row1['0'];
+
+//토큰화를 base64인코딩을 진행 
+
+$tokentimezone = base64_encode($timezone);
+
+
+
 
 
 
@@ -81,7 +98,8 @@ if ($passwordResult === true) {
         array(
               'User_ID' => $tokenuserid,
         'U_Name'  =>  $tokenusername,
-        'U_Email' => $tokenemail,    
+        'U_Email' => $tokenemail,   
+        'TimeZone' => $tokentimezone 
         )
     );
 

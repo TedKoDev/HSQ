@@ -1,6 +1,7 @@
 {
     "require": {
         "paypal/rest-api-sdk-php": "*",
-        "phpmailer/phpmailer": "^6.6"
+        "aws/aws-sdk-php": "^3.252"
+   
     }
 }
