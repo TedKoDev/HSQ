@@ -11,7 +11,7 @@
                         href="#"
                         class="py-1 px-2  text-white  hover:bg-gray-600 rounded">학생 관리</a>
                     <a
-                        href="/teacherpage/manageschedule/"
+                        href="/teacherpage/teacherschedule/"
                         class="py-1 px-2  text-white hover:bg-gray-600 rounded">일정</a>
                     <a
                         href="/teacherpage/classhistory/classlist"
