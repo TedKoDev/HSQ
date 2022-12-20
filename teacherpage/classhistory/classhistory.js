@@ -41,9 +41,11 @@ async function getClasslist() {
     if (key_time_from != "") {
 
        filterObject.filter_class_resister_time_from = dayjs(key_time_from).valueOf();
+       classStart.value = key_time_from;
     }
     if (key_time_to != "") {
         filterObject.filter_class_resister_time_to = dayjs(key_time_to).valueOf();
+        classEnd.value = key_time_end;
     }
 
 

@@ -1,4 +1,5 @@
 import {getCookie, deleteCookie} from '/commenJS/cookie_modules.js';
+import {$, $_all} from '/utils/querySelector.js';
 
 // 1. 쿠키 여부에 따라 네비바 우측 상단 변경 (로그인/회원가입 or 유저 아이콘)
 // 2. 유저 정보 클릭 시 아이콘 하단에 창 (수강신청, 프로필 설정, 로그아웃 등)
@@ -120,18 +121,6 @@ async function userIcon_click() {
 
 }
 
-// 다른곳 클릭시 드롭다운 없어지게 (일단은 좀 비효율적으로 구현함. 나중에 수정 필요)
-// document.addEventListener('mouseup', function(e) { 
-  
-//   let usericon = document.getElementById('id_user_info');
-//   let dropdown_ct = document.getElementById("user_dropdown"); 
-
-//   if (!usericon.contains(e.target) && !dropdown_ct.contains(e.target)) {
-//     dropdown_ct.style.display = 'none';
-//   }
-// });
-
-
 // 강사되기/강사페이지 클릭 시
 const teacher_page = document.getElementById("teacher_page");
 
@@ -215,11 +204,12 @@ const myclass = document.getElementById("myclasses");
 myclass.addEventListener('click', goMyclasses);
 
 
-// // 쿠키 삭제하는 함수
-// function deleteCookie(name) {
-// 	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
-// }
+// 내 캘린더 클릭시
+const goMyschedule = () => {
 
-
+  location.assign("/myschedule/");
+}
+const mycalendar = $('#myschedule');
+mycalendar.addEventListener('click', goMyschedule);
 
 
