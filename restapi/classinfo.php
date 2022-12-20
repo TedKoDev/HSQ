@@ -161,7 +161,7 @@ $filter_class_price_max = 100000;
 
 
 //테스트용 ! 
-$User_ID = 320; //학생의 userid
+// $User_ID = 320; //학생의 userid
 // $kind = 'clist';
 // $clReserveCheck  =  'detail';
 // $filter_class_status_check = 'all'; // 수업 상태 필터 
@@ -188,8 +188,8 @@ $User_ID = 320; //학생의 userid
 // $clReserveCheck  =  'review';        // 
 
 
-$kind          =   'cdetail'; // 강사의 User_id 
-$clReserveCheck  =  'detail';
+// $kind          =   'cdetail'; // 강사의 User_id 
+// $clReserveCheck  =  'detail';
 // 수업목록        : kind = clist 
 // 수업상세        : kind = cdetail    
 // 예약체크        : kind = clReserveCheck    // 전체 목록 또는 상세 정보 
@@ -210,7 +210,7 @@ $class_id       =   json_decode(file_get_contents("php://input"))->{"class_id"};
 $class_register_id       =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 예약한 수업 번호 
 
 
-$class_register_id       =  258; // 예약한 수업 번호 
+// $class_register_id       =  258; // 예약한 수업 번호 
 // $class_id       =   34; // 수업번호 
 // 강사의 수업목록 : kind = tclist
 // 강사의 userid 값이 필요함 
