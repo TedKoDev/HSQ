@@ -52,6 +52,7 @@ $tlanguage      =   json_decode(file_get_contents("php://input"))->{"teacher_lan
 $clReserveCheck     =   json_decode(file_get_contents("php://input"))->{"class_reserve_check"}; //  현재는 미사용 
 //수업찾기 필터 
 $filter_check                = json_decode(file_get_contents("php://input"))->{"filter_check"};    // 필터사용유무
+$filter_search               = json_decode(file_get_contents("php://input"))->{"filter_search"};    // 검색어 필터 (수업명, 수업설명부분 필터 )
 $filter_class_type           = json_decode(file_get_contents("php://input"))->{"filter_class_type"};    //  수업타입 필터 
 $filter_class_price_min      = json_decode(file_get_contents("php://input"))->{"filter_class_price_min"};    // 최저가격
 $filter_class_price_max      = json_decode(file_get_contents("php://input"))->{"filter_class_price_max"};    // 최대가격
@@ -74,6 +75,7 @@ if ($filter_class_price_min == null) {
 //강사 찾기 필터 테스트용 
 // $filter_check      = 'ok(아무값)';
 // $clReserveCheck = null;
+// $filter_search      = '강사';    // 검색어 필터 (강사명, 강사소개 필터 )
 // $filter_class_price_min = 0 ;
 // $filter_class_price_max = 100;
 // $filter_teacher_special = 'default'; // 커뮤니티 강사 
@@ -199,8 +201,13 @@ JOIN User_Teacher
 
     if ($filter_check == null) {
       //Class_List에 수업 목록확인  
+
+
+
       $sql = "SELECT * FROM User_Teacher order by  user_teacher_id DESC LIMIT $start, $till ";
       $response1 = mysqli_query($conn, $sql);
+
+
 
 
       $result1['data'] = array();
@@ -268,6 +275,17 @@ JOIN User_Teacher
 
 
 
+
+
+      // $sql0 = "SELECT * FROM User
+      // JOIN User_Detail
+      //   ON User.user_id = User_Detail.user_id
+      // JOIN User_Teacher
+      //   ON User_Teacher.user_id = User_Detail.user_id " ;
+
+    
+     
+
       if ($filter_teacher_special != null) {
         $filter_teacher_special_val = '"' . $filter_teacher_special . '"';
       } else if ($filter_teacher_special == null) {
@@ -279,8 +297,33 @@ JOIN User_Teacher
 
 
       // 강사 전문여부 
-      $sql = "SELECT * FROM User_Teacher where $tsql_where order by  user_teacher_id DESC LIMIT $start, $till ";
+    $sql = "SELECT * FROM User
+     JOIN User_Detail
+       ON User.user_id = User_Detail.user_id
+     JOIN User_Teacher
+       ON User_Teacher.user_id = User_Detail.user_id where $tsql_where order by  user_teacher_id DESC LIMIT $start, $till ";
       $response1 = mysqli_query($conn, $sql);
+
+
+      if ($filter_search != null) {
+
+        //Class_List에 수업 목록확인  
+   echo    $sql =  "SELECT * FROM User
+   JOIN User_Detail
+     ON User.user_id = User_Detail.user_id
+   JOIN User_Teacher
+     ON User_Teacher.user_id = User_Detail.user_id where $tsql_where  and user_name LIKE '%$filter_search%' 
+        or teacher_intro LIKE '%$filter_search%' order by  user_teacher_id DESC LIMIT $start, $till ";
+    $response1 = mysqli_query($conn, $sql);
+    
+
+     
+      }
+
+
+
+
+
 
 
       $result1['data'] = array();
