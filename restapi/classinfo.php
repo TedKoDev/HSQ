@@ -112,7 +112,8 @@ if ($filter_class_resister_time_to1 != null) {
 
 //수업찾기 필터 
 $filter_check      = json_decode(file_get_contents("php://input"))->{"filter_check"};    // 필터사용유무
-$filter_class_type           = json_decode(file_get_contents("php://input"))->{"filter_class_type"};    //  수업타입 필터 
+$filter_search      = json_decode(file_get_contents("php://input"))->{"filter_search"};    // 검색어 필터 (수업명, 수업설명부분 필터 )
+$filter_class_type           = json_decode(file_get_contents("php://input"))->{"filter_class_type"};    //  수업타입 필터  
 $filter_class_price_min      = json_decode(file_get_contents("php://input"))->{"filter_class_price_min"};    // 최저가격
 $filter_class_price_max      = json_decode(file_get_contents("php://input"))->{"filter_class_price_max"};    // 최대가격
 $filter_teacher_special      = json_decode(file_get_contents("php://input"))->{"filter_teacher_special"};    // 강사 전문가 여부
@@ -135,6 +136,7 @@ $filter_class_price_max = 100000;
 // $kind = 'clist';
 // $clReserveCheck = null;
 // $filter_check      = 'ok(아무값)';  
+// $filter_search      = '문법';  
 // $filter_class_price_min = 0 ;
 // $filter_class_price_max = 100000;
 // $filter_teacher_special = 'default'; // 커뮤니티 강사 
@@ -496,8 +498,22 @@ if ($kind == 'cdetail') {
       //가격범위(최저) 가격범위(최대)  수업종류  done
       //Class_List에 수업 목록확인  
 
+      
+     
+
       // 전체
       $Clist_Sql = "SELECT * FROM Class_List order by class_id DESC LIMIT $start, $till";
+
+      if ($filter_search != null) {
+
+        //Class_List에 수업 목록확인  
+
+
+        // 전체
+        $Clist_Sql = "SELECT * FROM Class_List 
+        where class_name LIKE '%$filter_search%' 
+         or class_description LIKE '%$filter_search%'order by class_id DESC LIMIT $start, $till";
+      }
 
         
 
