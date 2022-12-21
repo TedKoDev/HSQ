@@ -3,6 +3,7 @@ import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
 
 const tokenValue = getCookie(cookieName);
 
+
 async function sendToken(token) {
 
     if (token == "") {        
@@ -28,7 +29,7 @@ async function sendToken(token) {
         
         const response = await res.json();  
                 
-        console.log("ss");
+        console.log(token);
         if (response.state = 'success') {
             
             console.log("ss");
