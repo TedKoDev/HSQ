@@ -1,22 +1,16 @@
 <?php
-// 작성중!!!
-// == 수업 수정 프로세스==
-//   #요구되는 파라미터 (fetch형태 formdat 형태로 요청 ) 
+// 
+// == 수업 삭제 프로세스==
+//   #요구되는 파라미터 
 
 //1. "token"    : "토큰값".
 //2. "class_id"    : "수업 idx 값".
 
 
-// 보낼 줄 때 형태 
-// {
-// "token"    : "토큰값".
-// "class_id"    : "수업 idx 값"
-// }
 
+include("../../conn.php");
+include("../../jwt.php");
 
-
-include("../conn.php");
-include("../jwt.php");
 
 
 
@@ -25,14 +19,8 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-$class_id      =   json_decode(file_get_contents("php://input"))->{"class_id"}; // 수업명 
+$class_id      =   json_decode(file_get_contents("php://input"))->{"delete_class_id"}; // 수업 seq값 
 
-
-
-
-// date_default_timezone_set('Asia/Seoul');
-// $time_now = date("Y-m-d H:i:s");
-// error_log("$time_now, $position, $desc\n", "3", "../php.log");
 
 
 //토큰 해체 
@@ -51,32 +39,46 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
+
 //Class_List에 수업 목록확인  
 $check = "SELECT * FROM Class_List where CLass_Id = '{$class_id}'";
 $checkresult = mysqli_query($conn, $check);
 
 
 $row = mysqli_fetch_array($checkresult);
-$User_Id = $row['User_Id'];
+ $user_id_teacher = $row['user_id_teacher'];
 
 
 // 
-if($User_Id != $User_ID) {
+if ($user_id_teacher != $User_ID) {
 
-  $send["success"]   =  "no";
+  $send["success"]   =  "해당 사용자가 아님";
   echo json_encode($send);
   mysqli_close($conn);
+} else {
 
-}else {
-
-//update 코드 작성중  상세페이지 작성 이후 예정 
-
+  // update 코드 작성중  상세페이지 작성 이후 예정 
 
 
 
+  $updatesql = "DELETE FROM a,b  USING Class_List AS a  LEFT JOIN Class_List_Time_Price AS b  ON a.class_id = b.class_id WHERE b.class_id = '$class_id' ";
+
+  $response = mysqli_query($conn, $updatesql);
+
+
+
+  if ($response) { //정상적으로 저장되었을때 
+
+    $result["success"] = "삭제 완료";
+    echo json_encode($result);
+    mysqli_close($conn);
+
+
+
+  } else {
+
+    $result["success"]   =  "삭제 실패";
+    echo json_encode($result);
+    mysqli_close($conn);
+  }
 }
-
-
-
-
-
