@@ -4,7 +4,7 @@ import {classAccept, classCancel, sendPaypalLink} from "./clickbtnevent.js";
 
 
 // 수업 id랑 수업 신청한 유저 id 가져오기
-let {class_id, user_id} = JSON.parse(localStorage.getItem("classId"));
+// let {class_id, user_id} = JSON.parse(localStorage.getItem("classId"));
 
 // clickbtnevent에서 사용하기 위해 수업id export
 export const classId = class_id;

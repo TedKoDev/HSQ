@@ -43,13 +43,10 @@ export function calendarInit(scheduleInfo) {
         let monthSchedule = new Array();
         
 
-        for (const schedule of allScheduleList) {            
-
-            console.log("left : "+dayjs(parseInt(schedule.schedule_list)).get('month'));
-            console.log("right : "+dayjs(thisMonth).get('month'));
+        for (const schedule of allScheduleList) {                        
 
             if (dayjs(parseInt(schedule.schedule_list)).get('month') == dayjs(thisMonth).get('month')) {
-                console.log("pas");
+                
                 monthSchedule.push(schedule);
             }
         } 
@@ -58,6 +55,7 @@ export function calendarInit(scheduleInfo) {
             return parseInt(a.schedule_list) - parseInt(b.schedule_list);
         })        
         
+        console.log(monthSchedule);
     
         currentYear = thisMonth.getFullYear();
         currentMonth = thisMonth.getMonth();
@@ -138,7 +136,8 @@ export function calendarInit(scheduleInfo) {
 
                 if (dayjs(parseInt(schedule.schedule_list)).format('YYYY-MM-DD') == date_block.value) {
                   
-                    const classId = schedule.class_register_id;                    
+                    const classId = schedule.class_register_id;    
+                    const userId = schedule.user_id;                
                     const teacherNmae = schedule.user_name;
                     const classTime = schedule.class_time;
                     const startTime = dayjs(parseInt(schedule.schedule_list)).subtract(parseInt(classTime), 'minute').format('hh:mm');
@@ -175,7 +174,7 @@ export function calendarInit(scheduleInfo) {
                     // 해당 수업 클릭 시 수업 id post로 전송하고 수업 상세 화면으로 이동
                     button.addEventListener('click', () => {
 
-                        goClassDetail(classId, '../classhistory/historydetail/');
+                        goClassDetail(classId, userId, '../classhistory/historydetail/');
                     })
                 }                
             }
@@ -194,18 +193,24 @@ export function calendarInit(scheduleInfo) {
             
     }
 
-    function goClassDetail(class_id, url) {
+    function goClassDetail(class_id, user_id, url) {
         
         const form = document.createElement('form');
         form.setAttribute('method', 'get');
         // form.setAttribute('target', '_blank');
         form.setAttribute('action', url);
 
-        const hiddenField = document.createElement('input');
-        hiddenField.setAttribute('type', 'hidden');
-        hiddenField.setAttribute('name', 'class_id');
-        hiddenField.setAttribute('value', class_id);
-        form.appendChild(hiddenField);
+        const hiddenField_class = document.createElement('input');
+        hiddenField_class.setAttribute('type', 'hidden');
+        hiddenField_class.setAttribute('name', 'class_id');
+        hiddenField_class.setAttribute('value', class_id);
+        const hiddenField_user = document.createElement('input');
+        hiddenField_user.setAttribute('type', 'hidden');
+        hiddenField_user.setAttribute('name', 'user_id');
+        hiddenField_user.setAttribute('value', user_id);
+
+        form.appendChild(hiddenField_class);
+        form.appendChild(hiddenField_user);
 
         document.body.appendChild(form);
 

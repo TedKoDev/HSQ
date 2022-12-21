@@ -5,6 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/dist/output.css" rel="stylesheet">
     </head>        
+    <script>
+        
+        let class_id = "<?php echo $class_id = $_GET['class_id']; ?>";
+        let user_id = "<?php echo $user_id = $_GET['user_id']; ?>";
+
+    </script>
     <script type = "module" defer = "defer" src="./historydetail.js"></script>      
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>  
     <body class="bg-gray-100 w-full">
