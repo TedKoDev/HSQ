@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
         <link href="/dist/output.css" rel="stylesheet">
     </head>
-    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>   
-    <script type="module" defer="defer" src="./myschedule.js"></script>    
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>      
+    <script type="module" defer="defer" src="./myschedule2.js"></script>    
     <!-- <script type = "module" defer = "defer" src = "../calendartest/test.js"></script> -->
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
@@ -18,11 +18,11 @@
                     <button class = "bg-gray-300 text-gray-800 hover:bg-gray-400 px-3 py-1 rounded-lg">오늘</button>
                     <div class = "flex items-center">
                         <div class = "prev_btn mx-2">
-                            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/></svg>
+                            <svg id = "prev_btn" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/></svg>
                         </div>
                         <div class = "currentMonth mx-2"></div>
                         <div class = "next_btn mx-2">
-                            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/></svg>
+                            <svg id = "next_btn" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/></svg>
                         </div>
                     </div>
                     <button class = "mr-10 invisible">오늘</button>
@@ -51,7 +51,7 @@
                                 id = "<?php echo $num; ?>_block">
                                 <span class = "schedule_date text-sm" id = "<?php echo $num; ?>_date"></span>
                                 <div class = "schedule_list flex flex-col justify-center" id = "<?php echo $num; ?>_list">
-
+                                   
                                 </div>                                                                                             
                             </div>
                             <?php

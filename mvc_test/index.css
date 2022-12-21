@@ -1,0 +1,248 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+* {
+/*  border: 1px solid #000; */
+    position: relative;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #d3cce3;
+    --color-secondary: chocolate;
+    --color-font-dark: darkred;
+    --color-font-light: #eee;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle, #e9e4f0, var(--color-primary));
+    color: var(--color-font-dark);
+    letter-spacing: 2px;
+    font-family: 'Noto Sans TC', sans-serif;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+/* list container */
+.list-container {
+    width: 60%;
+    padding: 16px 0;
+}
+
+@media (max-width: 500px) {
+    .list-container {
+        width: 100%;
+    }
+}
+
+/* form */
+#list-form {
+    display: flex;
+    justify-content: space-around;
+}
+
+.list-form__add-item, 
+.list-form__search-item {
+    width: 45%;
+}
+
+input {
+    background-color: transparent;
+    border: 2px solid var(--color-secondary);
+    border-radius: 100px;
+    padding: 16px;
+    
+    text-indent: 8px;
+    color: var(--color-font-dark);
+    letter-spacing: 2px;
+    
+    transition: 0.5s;
+}
+
+input:focus {
+    outline: none;
+}
+
+/* add input */
+input[type=text],
+input[type=search] {
+    width: 100%;    
+}
+
+#add-item__input:focus,
+#search-item__input:focus {
+    background-color: var(--color-secondary);
+    color: var(--color-font-light);
+}
+
+input[type=text] {
+    padding-right: 40px;
+}
+
+input[type=submit] {
+    border: none;
+    font-size: 16px;
+    
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+/* serch input */
+input[type=search] {
+    text-indent: 24px;
+}
+
+label[for=search-item__input] {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+#add-item__input:focus + input[type=submit], 
+#search-item__input:focus + label[for=search-item__input]{
+    color: var(--color-font-light);
+}
+
+/* list */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* to do list */
+.to-do-list:empty::before {
+    content: 'Nothing to do...';
+    display: block;
+    text-align: center;
+    
+    font-size: 12px;
+    font-weight: lighter;
+}
+
+/* finished list */
+.finished-list:empty::before {
+    content: 'Nothing finished...';
+    display: block;
+    text-align: center;
+    
+    font-size: 12px;
+    font-weight: lighter;
+}
+
+li {
+    border: 1.5px solid transparent;
+    border-radius: 100px;
+    margin: 8px;
+    padding: 8px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    
+    transition: 0.5s;
+/*  animation: fadeIn 0.5s both; */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+li:hover {
+/*  border-color: var(--color-secondary); */
+}
+
+.item__content {
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* item action */
+.item__action {
+    width: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* check input */
+input[type="checkbox"] {
+    appearance: none;
+    padding: 8px;
+
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+input[type=checkbox]:checked,
+input[type=checkbox]:hover {
+    background-color: var(--color-secondary);
+}
+
+input[type=checkbox]:checked::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    
+    color: #eee;
+    font-weight: bold;
+}
+
+.fa-trash {
+    display: block;
+    cursor: pointer;
+    
+    transition: 0.3s 0.1s;
+}
+
+.fa-trash::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    width: 3px;
+    height: 100%;
+    
+    background-color: var(--color-secondary);
+    z-index: -1;
+    
+    transition: 0.3s;
+}
+
+.fa-trash:hover {
+    color: var(--color-font-light);
+}
+
+.fa-trash:hover::after {
+    width: 200%;
+}
+
+/* hr */
+hr {
+    width: 80%;
+    border: 1px solid var(--color-secondary);
+    opacity: 0.5;
+}
+
+.text-center {
+    text-align: center;
+}
