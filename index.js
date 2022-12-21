@@ -27,11 +27,10 @@ async function sendToken(token) {
         
         
         const response = await res.json();  
-    
-        console.log(response);
-    
-        if (response.success = 'yes') {
-    
+                
+        if (response.state = 'success') {
+            
+            location.assign('http://15.164.163.120:8080/');
         }
         else {
             console.log("전송 안됨");

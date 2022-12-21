@@ -175,7 +175,7 @@ export function calendarInit(scheduleInfo) {
                     // 해당 수업 클릭 시 수업 id post로 전송하고 수업 상세 화면으로 이동
                     button.addEventListener('click', () => {
 
-                        goClassDetail(classId, '/myclass/');
+                        goClassDetail(classId, '../classhistory/historydetail/');
                     })
                 }                
             }
