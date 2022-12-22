@@ -62,6 +62,12 @@ $filter_teacher_sex          = json_decode(file_get_contents("php://input"))->{"
 $filter_teacher_language     = json_decode(file_get_contents("php://input"))->{"filter_teacher_language"};   // 강사 사용언어  
 
 
+$filter_date           = json_decode(file_get_contents("php://input"))->{"filter_date"};   // 수업 일자   
+
+
+
+
+
 if ($filter_class_price_min == null) {
   $filter_class_price_min = 0;
 }
@@ -73,9 +79,9 @@ if ($filter_class_price_min == null) {
 
 
 //강사 찾기 필터 테스트용 
-$filter_check      = 'ok(아무값)';
+// $filter_check      = 'ok(아무값)';
 $clReserveCheck = null;
-// $filter_search      = '강사';    // 검색어 필터 (강사명, 강사소개 필터 )
+// $filter_search      = '홍';    // 검색어 필터 (강사명, 강사소개 필터 )
 // $filter_class_price_min = 0 ;
 // $filter_class_price_max = 100;
 // $filter_teacher_special = 'default'; // 커뮤니티 강사 
@@ -88,6 +94,9 @@ $clReserveCheck = null;
 // $filter_teacher_language = array("러시아어", "스페인어");
 
 
+// $filter_date = array("1671517800000","1671521400000","1671517800000","1671521400000");
+
+$filter_date = array("1671517800000");
 
 
 
@@ -141,20 +150,20 @@ if ($tusid != null) {
 
   //Class_List에 수업 목록확인  
   $sql = "SELECT 
-User.user_name, 
-User_Teacher.teacher_special,  
-User_Detail.user_img,
-User_Detail.user_language,
-User_Detail.user_intro,
-User_Teacher.teacher_intro ,
-User_Detail.user_country,
-User_Detail.user_residence
-FROM User
-JOIN User_Detail
-  ON User.user_id = User_Detail.user_id
-JOIN User_Teacher
-  ON User_Teacher.user_id = User_Detail.user_id 
- where User.user_id = '$tusid' ";
+               User.user_name, 
+               User_Teacher.teacher_special,  
+               User_Detail.user_img,
+               User_Detail.user_language,
+               User_Detail.user_intro,
+               User_Teacher.teacher_intro ,
+               User_Detail.user_country,
+               User_Detail.user_residence
+               FROM User
+               JOIN User_Detail
+                 ON User.user_id = User_Detail.user_id
+               JOIN User_Teacher
+       ON User_Teacher.user_id = User_Detail.user_id 
+      where User.user_id = '$tusid' ";
   $response1 = mysqli_query($conn, $sql);
 
 
@@ -196,6 +205,11 @@ JOIN User_Teacher
 
   $start =  $i + (20 * $plus);
   $till = 20;
+
+
+
+
+
 
 
   if ($clReserveCheck == null) {
@@ -273,46 +287,201 @@ JOIN User_Teacher
       mysqli_close($conn);
     } else if ($filter_check != null) {
       //Class_List에 수업 목록확인  
+      echo '필터체크 진입 ';
 
-  
+      if ($filter_date != null) {
+        echo '필터date 진입 ';
+        // $filter_date =  1671667200000;
+        $hour = 3600000;
+        $halfhour = 3600000 / 2;
+        // $day =  3600000*24;
+
+        $day = 86400000;
+
+        $filter_hour_array1 = array(); // 
+
+        $count_filter_date = count($filter_date);
+
+        // if ($filter_hour_check == null) {
+        if ($count_filter_date == '1') {
+
+          //값 1개일때 
+          foreach ($filter_date as $val) {
+            //  $filter_date_i = $val ; // user의 timezone을 적용한 값을  $save 저장 
+            $filter_date_i = $val +  $day; // user의 timezone을 적용한 값을  $save 저장 
+            array_push($filter_date, $filter_date_i); // user의 timezone을 적용한 값을  $save 저장 
+
+          }
+
+          $filter_hour_add = implode(" and ", $filter_date); // 담긴 배열을 _기준으로 스트링으로 저장 
+
+
+          $filter_hour_array2 = array(); // 
+
+
+          foreach ($filter_date as $val) {
+            $filter_date_i = '   ' . '"' . $val . '"'; // user의 timezone을 적용한 값을  $save 저장 
+            array_push($filter_hour_array2, $filter_date_i);
+          }
+
+          $filter_hour_add2 = implode(" and ", $filter_hour_array2); // 담긴 배열을 _기준으로 스트링으로 저장 
+          $filter_hour_add3  = 'schedule_list between ' . $filter_hour_add2;
+        } else if ($count_filter_date >= '2') {
+
+          // 값 2개이상 
+          $explode_filter_date = $filter_date;
+
+          unset($explode_filter_date[0]);
+
+          $explode_filter_date;
+          $filter_hour_array = array(); //
+
+
+          //값 2개이상 일때 
+          foreach ($explode_filter_date as $val) {
+
+            $filter_date_i = $val +  ($hour / 2); // 
+            array_push($explode_filter_date, $filter_date_i); // user의 timezone을 적용한 값을  $save 저장 
+
+          }
+
+          foreach ($explode_filter_date as $val) {
+            $val;
+            $filter_date_i = '  schedule_list like ' . '"' . $val . '"'; // user의 timezone을 적용한 값을  $save 저장 
+            array_push($filter_hour_array, $filter_date_i);
+          }
 
 
 
-      if ($filter_teacher_special != null) {
-        $filter_teacher_special_val = '"' . $filter_teacher_special . '"';
-      } else if ($filter_teacher_special == null) {
-        $filter_teacher_special_val = "'%default%'";
-      }
+
+          $filter_hour_add2 = implode(" or ", $filter_hour_array); // 담긴 배열을 _기준으로 스트링으로 저장 
+          $filter_hour_add3  =  $filter_hour_add2;
+        }
 
 
-      $tsql_where = " teacher_special like  $filter_teacher_special_val ";
 
 
-      // 강사 전문여부 
-      $sql = "SELECT * FROM User
-     JOIN User_Detail
-       ON User.user_id = User_Detail.user_id
-     JOIN User_Teacher
-       ON User_Teacher.user_id = User_Detail.user_id where $tsql_where order by  user_teacher_id DESC LIMIT $start, $till ";
-      $response1 = mysqli_query($conn, $sql);
+        echo  "filter_hour_add3 값 ";
+        echo  $filter_hour_add3;
 
 
-      if ($filter_search != null) {
 
-        //Class_List에 수업 목록확인  
-        $sql =  "SELECT * FROM User
-   JOIN User_Detail
-     ON User.user_id = User_Detail.user_id
-   JOIN User_Teacher
-     ON User_Teacher.user_id = User_Detail.user_id where $tsql_where  and user_name LIKE '%$filter_search%' 
-        or teacher_intro LIKE '%$filter_search%' order by  user_teacher_id DESC LIMIT $start, $till ";
+
+
+        //  $sql = "SELECT DISTINCT * FROM (select DISTINCT User.user_id, User.user_name, User_Teacher.teacher_intro, User_Teacher.teacher_special from User
+        // JOIN User_Detail
+        // ON User.user_id = User_Detail.user_id
+        // JOIN User_Teacher
+        // ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+        //    ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id JOIN Class_List ON Class_List.user_id_teacher = User_Teacher.user_id   WHERE $filter_hour_add3) AS new_userlist  order by  user_id  DESC           LIMIT $start, $till";
+
+
+
+
+
+        if ($filter_teacher_special != null) {
+          $filter_teacher_special_val = '"' . $filter_teacher_special . '"';
+        } else if ($filter_teacher_special == null) {
+          $filter_teacher_special_val = "'%default%'";
+        }
+
+
+        $tsql_where = " teacher_special like  $filter_teacher_special_val ";
+
+
+
+        // 강사 전문여부 
+        //   $sql = "SELECT * FROM User
+        //  JOIN User_Detail
+        //    ON User.user_id = User_Detail.user_id
+        //  JOIN User_Teacher
+        //    ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+        //       ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where order by  user_teacher_id DESC LIMIT $start, $till ";
+        //   $response1 = mysqli_query($conn, $sql);
+
+
+        $sql = "SELECT DISTINCT * FROM (select DISTINCT User.user_id, User.user_name, User_Teacher.teacher_intro, User_Teacher.teacher_special from User
+              JOIN User_Detail
+              ON User.user_id = User_Detail.user_id
+              JOIN User_Teacher
+              ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+                 ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id JOIN Class_List ON Class_List.user_id_teacher = User_Teacher.user_id   WHERE $filter_hour_add3) AS new_userlist where $tsql_where order by            user_id  DESC LIMIT $start, $till";
         $response1 = mysqli_query($conn, $sql);
+
+
+
+
+
+
+        if ($filter_search != null) {
+          echo '서치';
+
+
+          $tsql_where = "$tsql_where  and user_name LIKE '%$filter_search%' 
+                      or teacher_intro LIKE '%$filter_search%' ";
+
+
+          echo  $sql = "SELECT DISTINCT * FROM (select DISTINCT User.user_id, User.user_name, User_Teacher.teacher_intro, User_Teacher.teacher_special from User
+                      JOIN User_Detail
+                      ON User.user_id = User_Detail.user_id
+                      JOIN User_Teacher
+                      ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+                         ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id JOIN Class_List ON Class_List.user_id_teacher = User_Teacher.user_id   WHERE $filter_hour_add3) AS new_userlist where $tsql_where           order by  user_id  DESC LIMIT $start, $till";
+
+          //   $sql = "SELECT * FROM User
+          // JOIN User_Detail
+          //   ON User.user_id = User_Detail.user_id
+          // JOIN User_Teacher
+          //   ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+          //      ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where" ;
+
+
+
+          $response1 = mysqli_query($conn, $sql);
+        }
+      } else if($filter_date == null) {
+
+        if ($filter_teacher_special != null) {
+          $filter_teacher_special_val = '"' . $filter_teacher_special . '"';
+        } else if ($filter_teacher_special == null) {
+          $filter_teacher_special_val = "'%default%'";
+        }
+  
+  
+        $tsql_where = " teacher_special like  $filter_teacher_special_val ";
+  
+  
+        // 강사 전문여부 
+        $sql = "SELECT * FROM User
+       JOIN User_Detail
+         ON User.user_id = User_Detail.user_id
+       JOIN User_Teacher
+         ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+            ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where order by  user_teacher_id DESC LIMIT $start, $till ";
+        $response1 = mysqli_query($conn, $sql);
+  
+  
+        if ($filter_search != null) {
+  
+          //Class_List에 수업 목록확인  
+          $sql =  "SELECT * FROM User
+          JOIN User_Detail
+            ON User.user_id = User_Detail.user_id
+          JOIN User_Teacher
+            ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+               ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where  and user_name LIKE '%$filter_search%' 
+          or teacher_intro LIKE '%$filter_search%' order by  user_teacher_id DESC LIMIT $start, $till ";
+          $response1 = mysqli_query($conn, $sql);
+        }
+  
+  
+  
+  
       }
 
+      //       echo "결말";
 
-
-
-
+      //  echo $sql;
 
 
       $result1['data'] = array();
@@ -385,8 +554,8 @@ JOIN User_Teacher
 
 
 
-        $teacher_Sql = "SELECT 
-    *
+        echo  $teacher_Sql = "SELECT 
+         *
       FROM User
       JOIN User_Detail
         ON User.user_Id = User_Detail.user_Id
@@ -458,8 +627,7 @@ JOIN User_Teacher
         mysqli_close($conn);
       }
     }
-  }
-  if ($clReserveCheck != null) {
+  } else if ($clReserveCheck != null) {
 
     if ($filter_check == null) {
       //Class_List에 수업 목록확인  
@@ -614,15 +782,6 @@ JOIN User_Teacher
 
           $tsql_where = $tsql_where . '  and ' .  $filter_class_type_add;
         }
-
-
-
-
-
-
-
-
-
 
 
 
