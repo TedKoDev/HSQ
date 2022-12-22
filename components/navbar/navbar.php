@@ -7,7 +7,7 @@
 <script type = "module" defer = "defer" src="/commenJS/cookie_modules.js"></script>
 <script type = "module" defer = "defer" src="/components/navbar/navbar.js"></script>
 <!-- 네비바 -->
-<nav class="bg-white border border-b-0 shadow">
+<nav class="bg-white border border-b-2 shadow">
     <div class="max-w-full mx-auto px-4">
         <div class="flex justify-between">
             <div class="flex">

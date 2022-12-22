@@ -216,8 +216,8 @@ function submitForm() {
 
   let formData = new FormData();
   formData.append('token', document.getElementById('token_value').value);
-  formData.append('tintro', document.getElementById('intro_t').value);
-  formData.append('certi', document.getElementById('certi').value);
+  formData.append('teacher_intro', document.getElementById('intro_t').value);
+  formData.append('teacher_certification', document.getElementById('certi').value);
   // formData.append('img', document.getElementById('file_upload').files[0]);
 
     for (var i = 0; i < filesArr.length; i++) {
