@@ -133,19 +133,21 @@ $filter_class_price_max = 100000;
 
 
 //수업찾기 필터 테스트용 
-// $kind = 'clist';
-// $clReserveCheck = null;
-// $filter_check      = 'ok(아무값)';  
+$kind = 'clist';
+$clReserveCheck = null; //안해도됨
+$filter_check      = 'ok(아무값)';  
 // $filter_search      = '문법';  
 // $filter_class_price_min = 0 ;
 // $filter_class_price_max = 100000;
 // $filter_teacher_special = 'default'; // 커뮤니티 강사 
 // $filter_teacher_special = 'notdefault'; // 전문 강사 
-// $filter_class_type = '회화 연습_듣기';
-// $filter_class_type = '발음';
+
+// $filter_class_type=array("회화 연습","듣기");
+// $filter_class_type=array("발음");
 // $filter_teacher_sex  = '남성';
 // $filter_teacher_country = '중국';
-// $filter_teacher_language = '영어';
+// $filter_teacher_language = array("러시아어","스페인어");
+
 
 
 
@@ -519,11 +521,12 @@ if ($kind == 'cdetail') {
 
 // 수업타입 
    if($filter_class_type != null ){
-      $explode_filter_class_type = (explode("_", $filter_class_type)); // _기준으로 string 분해 
+      // $explode_filter_class_type = (explode(",", $filter_class_type)); // _기준으로 string 분해 
+      $explode_filter_class_type = $filter_class_type; // _기준으로 string 분해 
       $class_type_array = array(); // utc 적용한 값 담을 배열 
         foreach ($explode_filter_class_type as $val) {
 
-        $filter_class_type_i ='  class_type like '. '"%'.$val.'%"' ; // user의 timezone을 적용한 값을  $save 저장 
+    echo  $filter_class_type_i ='  class_type like '. '"%'.$val.'%"' ; // user의 timezone을 적용한 값을  $save 저장 
 
 
           array_push($class_type_array, $filter_class_type_i);
@@ -595,7 +598,8 @@ if ($kind == 'cdetail') {
 
 
       if($filter_teacher_language != null ){
-        $explode_filter_teacher_language = (explode("_", $filter_teacher_language)); // _기준으로 string 분해 
+        // $explode_filter_teacher_language = (explode("_", $filter_teacher_language)); // _기준으로 string 분해 
+        $explode_filter_teacher_language = $filter_teacher_language; // _기준으로 string 분해 
         $splanArray = array(); // utc 적용한 값 담을 배열 
           foreach ($explode_filter_teacher_language as $val) {
   

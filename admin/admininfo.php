@@ -1,24 +1,26 @@
 <?php
 
 /***
-강사정보  RestAPI
-teacherinfo.php
-분기 조건 
-1. teacher userid가 있다/없다.
-2. 항목 별 값이 있다/없다. 
-출력정보  
-1. 강사상세  (강사명, 강사이미지, 강사 자기소개, 자기소개, 강사국가, 강사 거주지, 강사 전문성, 강사언어)
-{"timg"};     // 강사이미지
-{"tname"};    // 강사이름
-{"tintro"};    // 강사자기소개
-{"intro"};    // 자기소개
-{"tcountry"};    // 강사국가
-{"tresidence"};    // 강사거주지
-{"tspecial"};    // 강사전문성
-{"tlanguage"};    // 강사언어 
-2. 강사목록  (강사명, 및 기타 정보  + plus 가 있는경우 페이징 동작함)
-수업이 있는 강사만 출력함.
- 
+ 관리자용 페이지 
+총회원수 
+총강사수
+학생수
+신규 신청 강사수 
+
+강사 목록 
+
+
+신규 신청한 강사 목록 
+
+
+신규 신청한 강사의 상세 정보 ( )
+
+
+문의 메세지 
+
+
+
+
  */
 
 
@@ -73,19 +75,18 @@ if ($filter_class_price_min == null) {
 
 
 //강사 찾기 필터 테스트용 
-$filter_check      = 'ok(아무값)';
-$clReserveCheck = null;
+// $filter_check      = 'ok(아무값)';
+// $clReserveCheck = null;
 // $filter_search      = '강사';    // 검색어 필터 (강사명, 강사소개 필터 )
 // $filter_class_price_min = 0 ;
 // $filter_class_price_max = 100;
 // $filter_teacher_special = 'default'; // 커뮤니티 강사 
 // $filter_teacher_special = 'notdefault'; // 전문 강사 
-// $filter_class_type = array("회화 연습", "듣기");
-
-// $filter_class_type = array("발음");
-// $filter_teacher_sex  = '남성';
+// $filter_class_type = '회화 연습_듣기';
+// $filter_class_type = '읽기';
+// $filter_teacher_sex  = '여성';
 // $filter_teacher_country = '중국';
-// $filter_teacher_language = array("러시아어", "스페인어");
+// $filter_teacher_language = '스페인어';
 
 
 
@@ -274,9 +275,18 @@ JOIN User_Teacher
     } else if ($filter_check != null) {
       //Class_List에 수업 목록확인  
 
-  
 
 
+
+
+      // $sql0 = "SELECT * FROM User
+      // JOIN User_Detail
+      //   ON User.user_id = User_Detail.user_id
+      // JOIN User_Teacher
+      //   ON User_Teacher.user_id = User_Detail.user_id " ;
+
+    
+     
 
       if ($filter_teacher_special != null) {
         $filter_teacher_special_val = '"' . $filter_teacher_special . '"';
@@ -289,7 +299,7 @@ JOIN User_Teacher
 
 
       // 강사 전문여부 
-      $sql = "SELECT * FROM User
+    $sql = "SELECT * FROM User
      JOIN User_Detail
        ON User.user_id = User_Detail.user_id
      JOIN User_Teacher
@@ -300,13 +310,16 @@ JOIN User_Teacher
       if ($filter_search != null) {
 
         //Class_List에 수업 목록확인  
-        $sql =  "SELECT * FROM User
+   echo    $sql =  "SELECT * FROM User
    JOIN User_Detail
      ON User.user_id = User_Detail.user_id
    JOIN User_Teacher
      ON User_Teacher.user_id = User_Detail.user_id where $tsql_where  and user_name LIKE '%$filter_search%' 
         or teacher_intro LIKE '%$filter_search%' order by  user_teacher_id DESC LIMIT $start, $till ";
-        $response1 = mysqli_query($conn, $sql);
+    $response1 = mysqli_query($conn, $sql);
+    
+
+     
       }
 
 
@@ -326,7 +339,7 @@ JOIN User_Teacher
 
         $tsql_where = " ";
         if ($filter_teacher_language != null) {
-          $explode_filter_teacher_language = $filter_teacher_language; // 배열 형태 분해 
+          $explode_filter_teacher_language = (explode("_", $filter_teacher_language)); // _기준으로 string 분해 
           $splanArray = array(); // utc 적용한 값 담을 배열 
           foreach ($explode_filter_teacher_language as $val) {
 
@@ -367,8 +380,7 @@ JOIN User_Teacher
 
         // 수업타입 
         if ($filter_class_type != null) {
-          // $explode_filter_class_type = (explode(",", $filter_class_type)); // _기준으로 string 분해 
-          $explode_filter_class_type = $filter_class_type; // _기준으로 string 분해 
+          $explode_filter_class_type = (explode("_", $filter_class_type)); // _기준으로 string 분해 
           $class_type_array = array(); // utc 적용한 값 담을 배열 
           foreach ($explode_filter_class_type as $val) {
 
@@ -380,7 +392,7 @@ JOIN User_Teacher
 
           $filter_class_type_add = implode(" or ", $class_type_array); // 담긴 배열을 _기준으로 스트링으로 저장 
 
-          $tsql_where = $tsql_where . '  and ' .  $filter_class_type_add;
+          echo $tsql_where = $tsql_where . '  and ' .  $filter_class_type_add;
         }
 
 
@@ -458,8 +470,7 @@ JOIN User_Teacher
         mysqli_close($conn);
       }
     }
-  }
-  if ($clReserveCheck != null) {
+  }if ($clReserveCheck != null) {
 
     if ($filter_check == null) {
       //Class_List에 수업 목록확인  
@@ -558,8 +569,7 @@ JOIN User_Teacher
 
         $tsql_where = " ";
         if ($filter_teacher_language != null) {
-
-          $explode_filter_teacher_language = $filter_teacher_language; // _기준으로 string 분해 
+          $explode_filter_teacher_language = (explode("_", $filter_teacher_language)); // _기준으로 string 분해 
           $splanArray = array(); // utc 적용한 값 담을 배열 
           foreach ($explode_filter_teacher_language as $val) {
 
@@ -596,13 +606,13 @@ JOIN User_Teacher
         }
 
 
+
+
         // 수업타입 
         if ($filter_class_type != null) {
-          //  $explode_filter_class_type = (explode("_", $filter_class_type)); // _기준으로 string 분해 
-          $explode_filter_class_type = $filter_class_type; // _기준으로 string 분해 
+          $explode_filter_class_type = (explode("_", $filter_class_type)); // _기준으로 string 분해 
           $class_type_array = array(); // utc 적용한 값 담을 배열 
           foreach ($explode_filter_class_type as $val) {
-
 
             $filter_class_type_i = '  class_type like ' . '"%' . $val . '%"'; // user의 timezone을 적용한 값을  $save 저장 
 
@@ -612,18 +622,8 @@ JOIN User_Teacher
 
           $filter_class_type_add = implode(" or ", $class_type_array); // 담긴 배열을 _기준으로 스트링으로 저장 
 
-          $tsql_where = $tsql_where . '  and ' .  $filter_class_type_add;
+          echo $tsql_where = $tsql_where . '  and ' .  $filter_class_type_add;
         }
-
-
-
-
-
-
-
-
-
-
 
 
 
