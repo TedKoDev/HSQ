@@ -56,7 +56,7 @@
             </div>
         </div>        
         <div class = "">
-            <div class = "filterItemList flex">
+            <div class = "filterItemList flex ml-1">
 
             </div>
             <div id = "class_list" class = "mt-2 flex flex-col justify-center max-w-3xl mx-auto bg-gray-100 rounded-lg ">
