@@ -60,19 +60,19 @@
                         <div class="flex justify-between items-center">
                             <div class="flex w-full">
                                 <div class="flex flex-col w-1/3">
-                                    <span class="classStart text-xs text-gray-700 ml-2 mb-1">시작일</span>
+                                    <span class="text-xs text-gray-700 ml-2 mb-1">시작일</span>
                                     <input
                                         type="date"
                                         name="time_from"
-                                        class="text-xs text-gray-500 px-1 py-1 rounded border border-gray-200 mb-3 mx-1"
+                                        class="classStart text-xs text-gray-500 px-1 py-1 rounded border border-gray-200 mb-3 mx-1"
                                         placeholder="수업 날짜(시작)"></input>
                                 </div>
                                 <div class="flex flex-col w-1/3">
-                                    <span class="classEnd text-xs text-gray-700 ml-2 mb-1">종료일</span>
+                                    <span class="text-xs text-gray-700 ml-2 mb-1">종료일</span>
                                     <input
                                         type="date"
                                         name="time_to"
-                                        class="text-xs text-gray-500 px-1 py-1 rounded border border-gray-200 mb-3 mx-1"
+                                        class="classEnd text-xs text-gray-500 px-1 py-1 rounded border border-gray-200 mb-3 mx-1"
                                         placeholder="수업 날짜(종료)"></input>
                                 </div>
                             </div>
