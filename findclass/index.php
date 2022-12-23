@@ -10,7 +10,7 @@
     <!-- <link rel="stylesheet" src = "./seekbar.css"> -->
     <script defer="defer" src = "./seekbar.js"></script>
     <script defer="defer" src="../commenJS/cookie.js"></script> 
-    <script defer="defer" src="./findclass.js"></script>    
+    <script type = "module" defer="defer" src="./findclass.js"></script>        
     <style>
     .line_clamp_2 {
         overflow: hidden;
@@ -52,18 +52,20 @@
                             </svg>
                         </button>
                     </div> 
-                </div> 
-                               
+                </div>                                
             </div>
         </div>        
-        <div class = "pt-2">
-            <div id = "class_list" class = "flex flex-col justify-center max-w-3xl mx-auto bg-gray-100 rounded-lg ">
+        <div class = "">
+            <div class = "filterItemList flex">
+
+            </div>
+            <div id = "class_list" class = "mt-2 flex flex-col justify-center max-w-3xl mx-auto bg-gray-100 rounded-lg ">
                             
             </div><br>        
             <div class = "flex">
-                <div id = "see_more" class = "hidden my-5 py-2 w-1/6 mx-auto bg-gray-50 text-center rounded-md 
-                    border-gray-400 shadow" onclick = "see_more()">더 보기
-                </div>
+                <button id = "see_more" class = "hidden my-5 py-2 w-1/6 mx-auto bg-gray-50 text-center rounded-md 
+                    border-gray-400 shadow">더 보기
+                </button>
             </div>   
         </div> 
         <!-- 드롭다운 메뉴 -->
