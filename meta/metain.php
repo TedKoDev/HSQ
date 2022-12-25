@@ -56,6 +56,36 @@ $U_Email = base64_decode($payload['U_Email']);
 if ($kind == 'GET') {
 
   
+  $selectCheck = "SELECT * FROM User where user_id = '$user_meta_nickname'";
+  $selectresult = mysqli_query($conn, $selectCheck);
+
+
+
+    $row1 = mysqli_fetch_array($selectresult);
+
+    $send['teacher_name'] = $row1['user_meta_nickname']; //
+    $send['teacher_img'] = $row1['user_img']; //
+
+
+    if ($result) { //정상적으로 저장되었을때 
+
+      $send["success"] = "yes";
+      $send["message"] =  "최초 닉네임 입력 및 캐릭터 선정 완료";
+      $send["user_meta_id"]         =  $user_meta_id;
+      $send["user_meta_nickname"]   =  $user_meta_nickname;
+      echo json_encode($send);
+      mysqli_close($conn);
+    } else {
+      $send["success"] = "no";
+      $send["message"]   =  "최초 닉네임 입력 및 캐릭터 선정 실패";
+      echo json_encode($send);
+      mysqli_close($conn);
+    }
+
+
+
+} else if ($kind == 'POST') {
+
   $nickVertifyCheck = "SELECT * FROM User where user_meta_nickname = '$user_meta_nickname'";
   $checkresult = mysqli_query($conn, $nickVertifyCheck);
   //중복 값이 있는지 없는지 확인한다
@@ -73,7 +103,7 @@ if ($kind == 'GET') {
   }
 
 
-} else if ($kind == 'POST') {
+
 
   $sql = "SELECT * FROM User WHERE user_id = '$User_ID'";
   $result = mysqli_query($conn, $sql);

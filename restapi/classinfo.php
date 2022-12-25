@@ -89,19 +89,22 @@ $filter_class_status_check                 =   json_decode(file_get_contents("ph
 
 $filter_class_name                 =   json_decode(file_get_contents("php://input"))->{"filter_class_name"}; // 수업 이름 검색 필터 
 $filter_user_name                 =   json_decode(file_get_contents("php://input"))->{"filter_user_name"}; // 학생 이름 검색 필터 
-$filter_class_resister_time_from     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_from"}; //날짜 시작 시점 필터 
+$filter_class_resister_time_from1     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_from"}; //날짜 시작 시점 필터 
 // $filter_class_resister_time_from     =  '1671321600000'; //날짜 시작 시점 필터 
-$filter_class_resister_time_to     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_to"}; //날짜 종료 시점 필터 
+$filter_class_resister_time_to1     =   json_decode(file_get_contents("php://input"))->{"filter_class_resister_time_to"}; //날짜 종료 시점 필터 
 // $filter_class_resister_time_to     =  '1671494400000'; //날짜 시작 시점 필터 
 
 
 
-// if ($filter_class_resister_time_from != null) {
-//   $filter_class_resister_time_from =  date('Y-m-d ', $filter_class_resister_time_from / 1000);
-// }
-// if ($filter_class_resister_time_to != null) {
-//   $filter_class_resister_time_to   = date('Y-m-d ',   $filter_class_resister_time_to / 1000);
-// }
+$hour = 3600000;
+
+
+if ($filter_class_resister_time_from1 != null) {
+  $filter_class_resister_time_from =  $filter_class_resister_time_from1 - ($hour * $timezone);
+}
+if ($filter_class_resister_time_to1 != null) {
+  $filter_class_resister_time_to   = $filter_class_resister_time_to1 - ($hour * $timezone);
+}
 
 
 
