@@ -34,7 +34,7 @@
             <!-- 나의 학습, 유저아이콘, 로그인,회원가입 -->
             <div class="hidden md:flex items-center space-x-1">
                 <!-- 나의 학습 -->
-                <button id = "myStudy" class = "relative flex justify-center items-center focus:outline-none text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded group
+                <button id = "myStudy" class = "mr-3 relative flex justify-center items-center focus:outline-none text-gray-700 hover:text-gray-900 hover:bg-gray-400 rounded group
                 ">
                   <div class = "py-1 px-2">나의 학습</div>                  
                   <div class = "absolute hidden group-hover:block top-full min-w-full w-max bg-white rounded transition-all ease-in">
@@ -46,25 +46,30 @@
                     </ul>
                   </div>
                 </button>
+                <!-- 메세지함 -->               
+                <a href = "/message/" id = "msg_icon" class = "bg-gray-300 hover:bg-gray-400 rounded-full p-1.5">
+                    <!-- <svg class = "" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path d="M12 3c5.514 0 10 3.592 10 8.007 0 4.917-5.145 7.961-9.91 7.961-1.937 0-3.383-.397-4.394-.644-1 .613-1.595 1.037-4.272 1.82.535-1.373.723-2.748.602-4.265-.838-1-2.025-2.4-2.025-4.872-.001-4.415 4.485-8.007 9.999-8.007zm0-2c-6.338 0-12 4.226-12 10.007 0 2.05.738 4.063 2.047 5.625.055 1.83-1.023 4.456-1.993 6.368 2.602-.47 6.301-1.508 7.978-2.536 1.418.345 2.775.503 4.059.503 7.084 0 11.91-4.837 11.91-9.961-.001-5.811-5.702-10.006-12.001-10.006zm-3.5 10c0 .829-.671 1.5-1.5 1.5-.828 0-1.5-.671-1.5-1.5s.672-1.5 1.5-1.5c.829 0 1.5.671 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5c.829 0 1.5-.671 1.5-1.5s-.671-1.5-1.5-1.5zm5 0c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5c.829 0 1.5-.671 1.5-1.5s-.671-1.5-1.5-1.5z"/></svg> -->
+                    <svg class = "" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 1c-6.338 0-12 4.226-12 10.007 0 2.05.739 4.063 2.047 5.625l-1.993 6.368 6.946-3c1.705.439 3.334.641 4.864.641 7.174 0 12.136-4.439 12.136-9.634 0-5.812-5.701-10.007-12-10.007zm0 1c6.065 0 11 4.041 11 9.007 0 4.922-4.787 8.634-11.136 8.634-1.881 0-3.401-.299-4.946-.695l-5.258 2.271 1.505-4.808c-1.308-1.564-2.165-3.128-2.165-5.402 0-4.966 4.935-9.007 11-9.007zm-5 7.5c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5-1.5-.672-1.5-1.5.672-1.5 1.5-1.5zm5 0c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5-1.5-.672-1.5-1.5.672-1.5 1.5-1.5zm5 0c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5-1.5-.672-1.5-1.5.672-1.5 1.5-1.5z"/></svg>
+                </a>
+                
                 <!-- 유저아이콘 -->
                      
-                <div id = "id_user_info" class = "w-20 relative flex justify-center items-center focus:outline-none rounded group
+                <div id = "id_user_info" class = "ml-1 w-20 relative flex justify-center items-center focus:outline-none rounded group
                   ">                              
                     <img
                       id="user_image"
-                      class="mx-auto w-10 h-10 border-2 border-gray-900 rounded-full"
+                      class="mx-auto w-8 h-8 border-2 border-gray-900 rounded-full"
                       src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                    </img>
+                    </img>  
                     <div class = "absolute hidden group-hover:block top-full min-w-full w-max bg-white rounded delay-1000 hover:block">
-                      <ul class = "text-left border rounded">
+                        <ul class = "text-left border rounded">
                         <li id = "myinfo" class = "text-sm px-2 py-2 border-b border-gray-100 text-gray-700 hover:bg-gray-200">내 정보</li>
                         <li id = "teacher_page" class = "text-sm px-2 py-1 border-b border-gray-100 text-gray-700 hover:bg-gray-200">강사 되기</li>
                         <li id = "setting" class = "text-sm px-2 py-1 border-b border-gray-100 text-gray-700 hover:bg-gray-200">설정</li>
                         <li id = "logout" class = "text-sm px-2 py-1 border-b border-gray-100 text-gray-700 hover:bg-gray-200">로그아웃</li>                      
-                      </ul>
-                    </div>
-                </div>
-                  
+                        </ul>
+                    </div>                  
+                </div>                
                 
                 <!-- 유저 아이콘
                 <div id="test" class="relative inline-block text-left">

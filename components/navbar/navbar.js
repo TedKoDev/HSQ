@@ -23,13 +23,14 @@ let checkCookie = getCookie("user_info");
 // }      
 
 // 화면 모두 로드되면 쿠키 여부에 따라 메뉴바 우측 상단의 뷰 결정
-window.onload = function () {
+window.addEventListener("DOMContentLoaded", async function () {
 
   // 유저 아이콘, 로그인, 회원가입 뷰 초기화
   let userinfo = document.getElementById("id_user_info"); 
   let login = document.getElementById("id_login");
   let signup = document.getElementById("id_signup");
   let myStudy = document.getElementById("myStudy");
+  let msgIcon = document.getElementById("msg_icon");
 
   if (checkCookie) { // 쿠키가 있을 경우 (로그인이 되어 있는 상태일 경우)       
 
@@ -37,6 +38,7 @@ window.onload = function () {
     login.style.display = 'none';
     signup.style.display = 'none';    
     myStudy.style.display = 'block';
+    msgIcon.style.display = 'block';
 
     // 서버에 토큰값 전달
     postToken_nav(checkCookie);
@@ -47,8 +49,9 @@ window.onload = function () {
     login.style.display = 'block';
     signup.style.display = 'block';
     myStudy.style.display = 'none';
+    msgIcon.style.display = 'none';
   }
-}
+})
 
 // 쿠키가 있을 경우 쿠키의 토큰값을 서버로 전달한 뒤 프로필 이미지, 유저 이름, 강사여부 받아오기
 async function postToken_nav(tokenValue) {
