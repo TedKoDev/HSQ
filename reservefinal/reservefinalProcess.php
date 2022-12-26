@@ -111,8 +111,8 @@ $save = $val - $timezone* $hour;
 // echo $save;
 
 // Class_Add DB TABLE에 저장 
-$sqlClassAdd = "INSERT INTO Class_Add (user_id_student, user_id_teacher, class_id, class_time, schedule_list, class_register_memo, class_register_status ,class_register_method, class_register_answer_date, class_register_date) 
-           VALUES ('$User_ID', '$tusid','$class_id', '$tp', '$save', '$class_register_memo', '0', '$class_method', '0' , now())";
+$sqlClassAdd = "INSERT INTO Class_Add (user_id_student, user_id_teacher, class_id, class_time, schedule_list, class_register_memo, class_register_status , class_register_review , class_register_review_student ,class_register_method, class_register_answer_date, class_register_date) 
+           VALUES ('$User_ID', '$tusid','$class_id', '$tp', '$save', '$class_register_memo', '0','0','0', '$class_method', '0' , now())";
 // $sqlClassAdd = "INSERT INTO Class_Add (user_id_student, user_id_teacher, class_id, class_time, schedule_list, class_register_memo, class_register_status ,class_register_method, class_register_answer_date, class_register_date) 
 //            VALUES ('1', '2', '3', '4', '5555555555','6', '0', '33', '0' , now())";
 

@@ -128,10 +128,10 @@ if($kind == 'teacher'){
 }
 }else if($kind == 'student'){
 
-  $class_register_review = '2';
+  $class_register_review = '1';
 
   $select = "UPDATE Teacher_Schedule INNER JOIN Class_Add ON Teacher_Schedule.user_id_teacher = Class_Add.user_id_teacher SET 
-  Class_Add.class_register_review = '$class_register_review' 
+  Class_Add.class_register_review_student = '$class_register_review' 
   where Class_Add.class_register_id = '$class_register_id' and Class_Add.user_id_teacher = '$user_id_teacher' and Class_Add.schedule_list = '$schedule_list' and Teacher_Schedule.schedule_list = '$schedule_list' and Teacher_Schedule.user_id_teacher = '$user_id_teacher'";
   $response = mysqli_query($conn, $select);
  
