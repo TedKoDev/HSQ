@@ -11,7 +11,7 @@
         <!-- 네비바 -->
         <?php include '../components/navbar/navbar.php' ?>   
         <div class = "w-full h-full">      
-            <div class = "w-4/5 bg-gray-50 rounded-lg mx-auto pl-2 pt-2 mt-3 h-5/6 shadow">
+            <div class = "w-4/5 bg-gray-50 rounded-lg mx-auto pt-2 mt-3 h-5/6 shadow">
                 <!-- 첫번째 블럭(채팅방 검색, 채팅방의 강사 이름) -->
                 <div class = "flex w-full">
                     <div class = "w-1/4">
@@ -24,108 +24,18 @@
                         </div>      
                     </div>                 
                     <button class = "flex items-center ml-4 w-3/4">
-                        <span>유저 이름 </span>
+                        <span class = "chatting_user_name">유저 이름 </span>
                         <svg class="ml-1 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>  
                 </div>
                 <!-- 두번째 블럭 (채팅방 리스트, 채팅내역) -->
                 <div class ="flex w-full h-full">
                     <div class = "chatroom_list w-1/4 h-5/6">
-                        <div class = "flex w-full my-2">
-                            <div class = "w-1/6 flex">
-                                <img
-                                    id="user_image_room"
-                                    class="my-auto w-6 h-6 border-2 border-gray-900 rounded-full"
-                                    src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                                </img>  
-                            </div>
-                            <div class = "flex flex-col w-4/6">
-                                <span class = "text-sm">유저 이름</span>
-                                <span class = "text-xs">메세지 내용</span>
-                            </div>
-                            <span class = "text-xs w-1/6">날짜</span>
-                        </div>
+                        
                     </div>
                     <div class = "w-3/4 h-3/4">
-                        <div class = "flex flex-col w-full chatting_list bg-gray-200 h-96 overflow-auto">
-                            <div class = "px-2">
-                                <div class = "text-center text-xs text-gray-500 my-2 border-2 rounded-br-lg">12월 9일 16:35</div>              
-                                <div class = "flex w-full my-2">
-                                    <img
-                                        id="user_image_chat"
-                                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                                        src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                                    </img> 
-                                    <span class = "w-1/2 ml-2 p-2 text-sm bg-gray-50 rounded-lg">
-                                        안녕하세요~
-                                    </span>
-                                </div>                       
-                            </div>
-                            <div class = "px-2 border-2">
-                                <div class = "text-center text-xs text-gray-500 my-2 border-2">12월 9일 16:35</div>
-                                <div class = "flex flex-row-reverse my-2">
-                                    <img
-                                        id="user_image_chat"
-                                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                                        src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                                    </img> 
-                                    <span class = "w-1/2 mr-2 p-2 text-sm bg-gray-50 rounded-lg">
-                                        hihi~
-                                    </span>
-                                </div>
-                            </div>
-                            <div class = "px-2">
-                                <div class = "text-center text-xs text-gray-500 my-2 border-2 rounded-br-lg">12월 9일 16:35</div>              
-                                <div class = "flex w-full my-2">
-                                    <img
-                                        id="user_image_chat"
-                                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                                        src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                                    </img> 
-                                    <span class = "w-1/2 ml-2 p-2 text-sm bg-gray-50 rounded-lg">
-                                        안녕하세요~
-                                    </span>
-                                </div>                       
-                            </div>
-                            <div class = "px-2 border-2">
-                                <div class = "text-center text-xs text-gray-500 my-2 border-2">12월 9일 16:35</div>
-                                <div class = "flex flex-row-reverse my-2">
-                                    <img
-                                        id="user_image_chat"
-                                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                                        src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                                    </img> 
-                                    <span class = "w-1/2 mr-2 p-2 text-sm bg-gray-50 rounded-lg">
-                                        hihi~
-                                    </span>
-                                </div>
-                            </div>        
-                            <div class = "px-2">
-                                <div class = "text-center text-xs text-gray-500 my-2 border-2 rounded-br-lg">12월 9일 16:35</div>              
-                                <div class = "flex w-full my-2">
-                                    <img
-                                        id="user_image_chat"
-                                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                                        src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                                    </img> 
-                                    <span class = "w-1/2 ml-2 p-2 text-sm bg-gray-50 rounded-lg">
-                                        안녕하세요~
-                                    </span>
-                                </div>                       
-                            </div>
-                            <div class = "px-2 border-2">
-                                <div class = "text-center text-xs text-gray-500 my-2 border-2">12월 9일 16:35</div>
-                                <div class = "flex flex-row-reverse my-2">
-                                    <img
-                                        id="user_image_chat"
-                                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                                        src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
-                                    </img> 
-                                    <span class = "w-1/2 mr-2 p-2 text-sm bg-gray-50 rounded-lg">
-                                        hihi~
-                                    </span>
-                                </div>
-                            </div>                 
+                        <div class = "chatting_list flex flex-col w-full bg-gray-200 h-96 overflow-auto">                            
+                                                                                   
                         </div>
                         <div class = "w-full py-1 flex justify-between">
                             <input class = "px-2 text-gray-700 w-5/6 text-sm py-2 ml-6 bg-gray-50" type = "text" placeholder = "메세지를 입력하세요."/>
