@@ -6,6 +6,7 @@
         <link href="/dist/output.css" rel="stylesheet">
     </head>            
     <script type="module" defer = "defer" src="./message.js"></script>    
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <body class="bg-gray-100">        
         <!-- 네비바 -->
@@ -38,8 +39,8 @@
                                                                                    
                         </div>
                         <div class = "w-full py-1 flex justify-between">
-                            <input class = "px-2 text-gray-700 w-5/6 text-sm py-2 ml-6 bg-gray-50" type = "text" placeholder = "메세지를 입력하세요."/>
-                            <button class = "mr-3 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl">전송</button>
+                            <input class = "input_message px-2 text-gray-700 w-5/6 text-sm py-2 ml-6 bg-gray-50" type = "text" placeholder = "메세지를 입력하세요."/>
+                            <button class = "send_btn mr-3 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl">전송</button>
                         </div>
                     </div>                 
                 </div>           

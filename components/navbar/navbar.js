@@ -7,20 +7,7 @@ import {$, $_all} from '/utils/querySelector.js';
 // 쿠키 값 가져오기   
 let checkCookie = getCookie("user_info");
 
-// 쿠키 가져오는 함수
-// function getCookie(cName) {
-//   cName = cName + '=';
-//   let cookieData = document.cookie;
-//   let start = cookieData.indexOf(cName);
-//   let cValue = '';
-//   if(start != -1){
-//   start += cName.length;
-//   let end = cookieData.indexOf(';', start);
-//   if(end == -1)end = cookieData.length;
-//   cValue = cookieData.substring(start, end);
-//   }
-//   return unescape(cValue);
-// }      
+    
 
 // 화면 모두 로드되면 쿠키 여부에 따라 메뉴바 우측 상단의 뷰 결정
 window.addEventListener("DOMContentLoaded", async function () {

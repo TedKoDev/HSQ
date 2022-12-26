@@ -11,7 +11,8 @@
         let user_id = "<?php echo $user_id = $_GET['user_id']; ?>";
 
     </script>
-    <script type = "module" defer = "defer" src="./historydetail.js"></script>      
+    <script type = "module" defer = "defer" src="./historydetail.js"></script>     
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script> 
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>  
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
