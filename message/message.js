@@ -121,23 +121,7 @@ function getChattingList(msgResult, chat_id) {
                 const user_img = chattingList[j].sender_img;        
                 const msg_desc = chattingList[j].msg_desc;    
 
-                console.log(user_img);
-
-                div.innerHTML = `
-                <div class = "px-2">
-                    <div class = "text-center text-xs text-gray-500 my-2 border-2">${dayjs(parseInt(date)).format("MM월 DD일 hh:mm")}</div>
-                    <div class = "flex flex-row-reverse my-2">
-                        <img
-                            id="user_image_chat"
-                            class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                            src="${s3_url}Profile_Image/${user_img}">
-                        </img> 
-                        <span class = "w-1/2 mr-2 p-2 text-sm bg-gray-50 rounded-lg">
-                            ${msg_desc}
-                        </span>
-                    </div>
-                </div>
-                `;
+                setText(div, date, user_img, msg_desc, 'yes');       
                 
             }
             else {
@@ -145,25 +129,8 @@ function getChattingList(msgResult, chat_id) {
                 const date = chattingList[j].msg_time;
                 const user_img = chattingList[j].sender_img;        
                 const msg_desc = chattingList[j].msg_desc;    
-
-                console.log(user_img);
-
-                div.innerHTML = `
-                <div class = "px-2">
-                    <div class = "text-center text-xs text-gray-500 my-2 border-2 rounded-br-lg">${dayjs(parseInt(date)).format("MM월 DD일 hh:mm")}</div>              
-                    <div class = "flex w-full my-2">
-                        <img
-                            id="user_image_chat"
-                            class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                            src="${s3_url}Profile_Image/${user_img}">
-                        </img> 
-                        <span class = "w-1/2 ml-2 p-2 text-sm bg-gray-50 rounded-lg">
-                            ${msg_desc}
-                        </span>
-                    </div>                       
-                </div>
-                `;
-                
+               
+                setText(div, date, user_img, msg_desc, 'no');     
             }         
         }
         // 페이팔 링크일 경우
@@ -173,7 +140,8 @@ function getChattingList(msgResult, chat_id) {
             const teacher_name = msg_desc.teacher_name;
             const teacher_img = msg_desc.teacher_img;
             const class_name = msg_desc.class_name;
-            const paypal_link = msg_desc.paypal_link;   
+            const paypal_link = msg_desc.paypal_link;  
+            const class_id = msg_desc.class_register_id; 
             const date = chattingList[j].msg_time;
 
             div.innerHTML = `
@@ -183,7 +151,7 @@ function getChattingList(msgResult, chat_id) {
                 </div>
                 <div class = "mx-auto bg-gray-50 rounded-lg px-2 pb-2 pt-1 w-1/2">
                     <div class = "text-sm text-gray-800"><span class = "text-gray-900">${teacher_name}</span class = "text-gray-700">님이 결제 링크를 보냈습니다.</div>
-                    <button class = "w-full">
+                    <button class = "w-full" value = ${class_id}>
                         <div class = "mt-1 flex px-2 py-1 bg-gray-200 rounded-lg items-center hover:shadow">
                             <div>
                                 <img
@@ -200,17 +168,98 @@ function getChattingList(msgResult, chat_id) {
             </div> 
             `;            
         }
-        else if (chattingList[j].msg_type == 'class_request') {
+        // 수업 예약/승인/취소일 경우
+        else {
 
-        }
-        else if (chattingList[j].msg_type == 'class_approve') {
+            const msg_desc = chattingList[j].msg_desc;
+            const sender_name = chattingList[j].sender_name;            
+            const teacher_img = msg_desc.teacher_img;
+            const class_name = msg_desc.class_name;            
+            const date = chattingList[j].msg_time;
+            const class_id = msg_desc.class_register_id;
 
-        }
-        else if (chattingList[j].msg_type == 'class_cancel') {
-
-        }
+            if (chattingList[j].msg_type == 'class_request') {                
+    
+                setClassState(div, date, sender_name, class_id, teacher_img, class_name, '님이 수강 신청했습니다.')           
+            }
+            else if (chattingList[j].msg_type == 'class_approve') {
+                   
+                setClassState(div, date, sender_name, class_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
+            }
+            else if (chattingList[j].msg_type == 'class_cancel') {
+                
+                setClassState(div, date, sender_name, class_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')               
+            }
+        }        
 
         chattingList_div.append(div);
    }
+
+   // 텍스트일 경우 대입하는 함수
+   function setText(div, date, user_img, msg_desc, me) {
+
+        if (me == 'yes') {
+
+            div.innerHTML = `
+            <div class = "px-2">
+                <div class = "text-center text-xs text-gray-500 my-2 border-2">${dayjs(parseInt(date)).format("MM월 DD일 hh:mm")}</div>
+                <div class = "flex flex-row-reverse my-2">
+                    <img
+                        id="user_image_chat"
+                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
+                        src="${s3_url}Profile_Image/${user_img}">
+                    </img> 
+                    <span class = "w-1/2 mr-2 p-2 text-sm bg-gray-50 rounded-lg">
+                        ${msg_desc}
+                    </span>
+                </div>
+            </div>
+            `;
+        }
+        else {
+            div.innerHTML = `
+            <div class = "px-2">
+                <div class = "text-center text-xs text-gray-500 my-2 border-2">${dayjs(parseInt(date)).format("MM월 DD일 hh:mm")}</div>
+                <div class = "flex my-2">
+                    <img
+                        id="user_image_chat"
+                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
+                        src="${s3_url}Profile_Image/${user_img}">
+                    </img> 
+                    <span class = "w-1/2 ml-2 p-2 text-sm bg-gray-50 rounded-lg">
+                        ${msg_desc}
+                    </span>
+                </div>
+            </div>
+            `;
+        }     
+    }
+
+    // 수업 예약/승인/취소일 때 대입하는 함수
+    function setClassState(div, date, sender_name, class_id, teacher_img, class_name, text) {
+
+        div.innerHTML = `
+        <div class = "px-2">
+            <div class = "text-center text-xs text-gray-500 my-2 border-2">
+                ${dayjs(parseInt(date)).format("MM월 DD일 hh:mm")}
+            </div>
+            <div class = "mx-auto bg-gray-50 rounded-lg px-2 pb-2 pt-1 w-1/2">
+                <div class = "text-sm text-gray-800"><span class = "text-gray-900">${sender_name}</span class = "text-gray-700">${text}</div>
+                <button class = "w-full" value = ${class_id}>
+                    <div class = "mt-1 flex px-2 py-1 bg-gray-200 rounded-lg items-center hover:shadow">
+                        <div>
+                            <img
+                                id="user_image_chat"
+                                class="my-auto w-6 h-6 border-gray-900 rounded-full"
+                                src="${s3_url}Profile_Image/${teacher_img}">
+                            </img> 
+                        </div>
+                        <div class = "ml-2 text-xs text-gray-700">${class_name}</div>
+                    </div>
+                </button>                    
+            </div>
+        </div> 
+        `; 
+    }
 }
 
