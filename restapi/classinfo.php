@@ -246,11 +246,11 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 
 
 
-$kind = 'tcdetail';
+// $kind = 'tcdetail';
 
-$User_ID = 324; //학생의 userid
-$class_register_id       =  272; // 예약한 수업 번호 
-$timezone = 9; //사용자(학생)의 TimeZone
+// $User_ID = 324; //학생의 userid
+// $class_register_id       =  272; // 예약한 수업 번호 
+// $timezone = 9; //사용자(학생)의 TimeZone
 
 
 
