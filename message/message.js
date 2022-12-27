@@ -156,7 +156,9 @@ function getChattingList(msgResult, chat_id) {
                 const msg_desc = chattingList[j].msg_desc;    
                
                 setText(div, date, user_img, msg_desc, 'no');     
-            }         
+            }     
+            
+            chattingList_div.append(div);
         }
         // 페이팔 링크일 경우
         else if (chattingList[j].msg_type == 'paypal') {
@@ -165,11 +167,12 @@ function getChattingList(msgResult, chat_id) {
             const teacher_name = msg_desc.teacher_name;
             const teacher_img = msg_desc.teacher_img;
             const class_name = msg_desc.class_name;
-            const paypal_link = msg_desc.paypal_link;  
+            const payment_link = msg_desc.payment_link;  
             const class_id = msg_desc.class_register_id; 
             const date = chattingList[j].msg_time;
 
-            setPaypal(div, date, teacher_name, class_id, teacher_img, class_name, paypal_link);          
+            setPayment(div, date, teacher_name, class_id, teacher_img, class_name, payment_link);  
+                        
         }
         // 수업 예약/승인/취소일 경우
         else {
@@ -193,9 +196,10 @@ function getChattingList(msgResult, chat_id) {
                 
                 setClassState(div, date, sender_name, class_id, teacher_img, class_name, '님이 수업을 취소했습니다.')               
             }
-        }        
 
-        chattingList_div.append(div);
+            chattingList_div.append(div);
+        }       
+       
    }      
 }
 
@@ -242,7 +246,7 @@ function setText(div, date, user_img, msg_desc, me) {
 }
 
 // 페이팔 링크일 경우 대입하는 함수
-function setPaypal(div, date, teacher_name, class_id, teacher_img, class_name, paypal_link) {
+function setPayment(div, date, teacher_name, class_id, teacher_img, class_name, payment_link) {
 
     div.innerHTML = `
         <div class = "px-2">
@@ -263,10 +267,29 @@ function setPaypal(div, date, teacher_name, class_id, teacher_img, class_name, p
                         <div class = "ml-2 text-xs text-gray-700">${class_name}</div>
                     </div>
                 </button>
-                <a class = "text-xs text-blue-700">${paypal_link}</a>
+                <div class = "linkList flex flex-col">
+                </div>
+                
             </div>
         </div> 
         `; 
+
+    console.log(chattingList_div);
+    console.log(div);
+    chattingList_div.append(div);
+
+    // 결제 링크 리스트도 표시해주기
+    const linkList = $('.linkList');
+    for (let i = 0; i < payment_link.length; i++) {
+
+        const a = document.createElement('a');
+        a.setAttribute("class", "text-xs text-blue-700");
+        a.setAttribute("href" , payment_link[i]);
+        a.innerText = payment_link[i];
+
+        linkList.append(a);
+    }
+    
 }
 
 // 수업 예약/승인/취소일 때 대입하는 함수
@@ -361,9 +384,9 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
 
         const div = document.createElement("div");
 
-        setPaypal(div, msg_date, teacher_name, class_id, teacher_img, class_name, paypal_link)
+        setPayment(div, msg_date, teacher_name, class_id, teacher_img, class_name, paypal_link)
 
-        chattingList_div.appendchild(div);
+        // chattingList_div.appendchild(div);
     } 
     else {
 

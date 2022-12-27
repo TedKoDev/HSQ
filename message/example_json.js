@@ -80,7 +80,12 @@ export let test = {
                             class_name : '기초 한국어',
                             teacher_name : '팀노바',
                             teacher_img : 'P_IMG_332.PNG',
-                            paypal_link : '페이팔 링크'
+                            payment_link : [
+                                "paypal.me/KoDevHong",
+                                "paypal.me/KoDevHong2",
+                                "paypal.me/KoDevHong3"
+                            ]
+                
                         },
                     msg_time : 1672014755983   
                 }

@@ -38,7 +38,7 @@
                 <div class = "flex justify-center">
                     <button class = "class_approve_btn px-2 py-1 bg-gray-600 rounded-lg text-white mx-2 my-2 hover:bg-gray-800">수업 일정 확정</button>
                     <button class = "class_cancel_btn px-2 py-1 bg-gray-300 rounded-lg  text-gray-800 mx-2 my-2 hover:bg-gray-400">수업 취소</button> 
-                    <button class = "send_paypal_btn px-2 py-1 bg-blue-500 rounded-lg  text-white mx-2 my-2 hover:bg-blue-600">결제 링크 전송</button>                                   
+                    <button class = "send_link_btn px-2 py-1 bg-blue-500 rounded-lg  text-white mx-2 my-2 hover:bg-blue-600">결제 링크 전송</button>                                   
                 </div>                
                 <hr class="bg-gray-300 border border-1">
                 <div class="flex items-center">
@@ -97,7 +97,9 @@
         <!-- 예약 승인 모달  -->        
         <?php include './modal/acceptModal.php' ?>  
          <!-- 수업 취소 모달 -->
-        <?php include './modal/cancelModal.php' ?>  
+        <?php include './modal/cancelModal.php' ?>
+         <!-- 결제 링크 전송 모달 -->
+         <?php include './modal/paymentModal.php' ?>   
         <br><br>        
     </body>
 </html>
