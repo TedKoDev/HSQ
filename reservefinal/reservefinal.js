@@ -159,6 +159,7 @@ async function reserveDone() {
     if (response.success == 'yes') {
 
         alert("예약 완료되었습니다.");
+        // socket.emit('request_class', student_id, teacher_id, class_id, class_time);
 
         location.replace("../myinfo/");
     }        

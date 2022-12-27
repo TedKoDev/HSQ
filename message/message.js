@@ -77,7 +77,7 @@ function init() {
         button.addEventListener('click', () => {
     
             // 소켓1 : 채팅방 입장 이벤트 (DB에서 해당 사용자의 lastcheck 업데이트)
-            // socket.emit('enter_chat_room', my_id, msgResult[i].chat_id);
+            // socket.emit('enter_chat_room', my_id, msgResult[i].chat_id);            
     
             // 현재 클릭한 채팅방id와 상대방 id를 전역변수에 각각 대입
             chatId_global = msgResult[i].chat_id;
@@ -308,124 +308,159 @@ function sendTextMessage() {
     // socket.emit('send_text_msg', chatId_global, $('.input_message').value, my_id, otherId_global);
 }
 
+// 소켓서버에서 받는 로직
 // 소켓 서버에서 들어오는 요청 받는 곳
-// socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date) => {
+socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date) => {
     
-//     console.log("chat_room_id : "+chat_room_id);
-//     console.log("chat_msg : "+chat_msg);
-//     console.log("sender_id : "+sender_id);
-//     console.log("sender_name : "+sender_name);
-//     console.log("sender_img : "+sender_img);
-
-//     // 재 렌더링
-//     init();
+    console.log("chat_room_id : "+chat_room_id);
+    console.log("chat_msg : "+chat_msg);
+    console.log("sender_id : "+sender_id);
+    console.log("sender_name : "+sender_name);
+    console.log("sender_img : "+sender_img);   
 
 
-//     if (chat_room_id == chatId_global) {        
+    if (chat_room_id == chatId_global) {        
 
-//         const div = document.createElement("div");
+        // 읽었다고 소켓서버에 다시 보내기
+        read_msg_check(chat_room_id, my_id);
 
-//         if (sender_id == my_id) {
+        const div = document.createElement("div");
 
-//             setText(div, msg_date, user_img, msg_desc, 'yes');            
-//         }
-//         else {
+        if (sender_id == my_id) {
 
-//             setText(div, msg_date, user_img, msg_desc, 'no');            
-//         }    
+            setText(div, msg_date, user_img, msg_desc, 'yes');            
+        }
+        else {
 
-//         chattingList_div.appendchild(div);               
-//     }    
-// });
+            setText(div, msg_date, user_img, msg_desc, 'no');            
+        }    
 
-// socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, paypal_link, msg_date) => {
+        chattingList_div.appendchild(div);               
+    }
+    else {
 
-//     console.log("chat_room_id : "+chat_room_id);
-//     console.log("class_register_id : "+class_register_id);
-//     console.log("class_name : "+class_name);
-//     console.log("teacher_name : "+teacher_name);
-//     console.log("teacher_img : "+teacher_img);
-//     console.log("paypal_link : "+paypal_link);
+        init();
+    }    
+});
 
-//     // 재 렌더링
-//     init();
+socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, paypal_link, msg_date) => {
 
+    console.log("chat_room_id : "+chat_room_id);
+    console.log("class_register_id : "+class_register_id);
+    console.log("class_name : "+class_name);
+    console.log("teacher_name : "+teacher_name);
+    console.log("teacher_img : "+teacher_img);
+    console.log("paypal_link : "+paypal_link);
+    
 
-//     if (chat_room_id == chatId_global) {        
+    if (chat_room_id == chatId_global) {        
 
-//         const div = document.createElement("div");
+        // 읽었다고 소켓서버에 다시 보내기
+        read_msg_check(chat_room_id, my_id);
 
-//         setPaypal(div, msg_date, teacher_name, class_id, teacher_img, class_name, paypal_link)
+        const div = document.createElement("div");
 
-//         chattingList_div.appendchild(div);
-//     } 
-// });
+        setPaypal(div, msg_date, teacher_name, class_id, teacher_img, class_name, paypal_link)
 
-// socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
+        chattingList_div.appendchild(div);
+    } 
+    else {
 
-//     console.log("chat_room_id : "+chat_room_id);
-//     console.log("class_register_id : "+class_register_id);
-//     console.log("class_name : "+class_name);
-//     console.log("teacher_name : "+teacher_name);
-//     console.log("teacher_img : "+teacher_img);
+        init();
+    }    
+});
 
-//     // 재 렌더링
-//     init();
+socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
 
-
-//     if (chat_room_id == chatId_global) {
-
-//         const div = document.createElement("div");
-
-//         setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수강 신청했습니다.')
-
-//         chattingList_div.appendchild(div);
-//     }
-// });
-
-// socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
-
-//     console.log("chat_room_id : "+chat_room_id);
-//     console.log("class_register_id : "+class_register_id);
-//     console.log("class_name : "+class_name);
-//     console.log("teacher_name : "+teacher_name);
-//     console.log("teacher_img : "+teacher_img);
-
-//     // 재 렌더링
-//     init();
+    console.log("chat_room_id : "+chat_room_id);
+    console.log("class_register_id : "+class_register_id);
+    console.log("class_name : "+class_name);
+    console.log("teacher_name : "+teacher_name);
+    console.log("teacher_img : "+teacher_img);
 
 
-//     if (chat_room_id == chatId_global) {
+    if (chat_room_id == chatId_global) {
 
-//         const div = document.createElement("div");
+        // 읽었다고 소켓서버에 다시 보내기
+        read_msg_check(chat_room_id, my_id);
 
-//         setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
+        const div = document.createElement("div");
 
-//         chattingList_div.appendchild(div);
-//     }
-// });
+        setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수강 신청했습니다.')
 
-// socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
+        chattingList_div.appendchild(div);
+    }
+    else {
 
-//     console.log("chat_room_id : "+chat_room_id);
-//     console.log("class_register_id : "+class_register_id);
-//     console.log("class_name : "+class_name);
-//     console.log("teacher_name : "+teacher_name);
-//     console.log("teacher_img : "+teacher_img);
+        init();
+    }    
+});
 
-//     // 재 렌더링
-//     init();
+socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
+
+    console.log("chat_room_id : "+chat_room_id);
+    console.log("class_register_id : "+class_register_id);
+    console.log("class_name : "+class_name);
+    console.log("teacher_name : "+teacher_name);
+    console.log("teacher_img : "+teacher_img);
 
 
-//     if (chat_room_id == chatId_global) {
+    if (chat_room_id == chatId_global) {
 
-//         const div = document.createElement("div");
+        // 읽었다고 소켓서버에 다시 보내기
+        read_msg_check(chat_room_id, my_id);
 
-//         setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수업을 취소했습니다.')
+        const div = document.createElement("div");
 
-//         chattingList_div.appendchild(div);
-//     }
-// });
+        setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
+
+        chattingList_div.appendchild(div);
+    }
+    else {
+
+        init();
+    }    
+});
+
+socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
+
+    console.log("chat_room_id : "+chat_room_id);
+    console.log("class_register_id : "+class_register_id);
+    console.log("class_name : "+class_name);
+    console.log("teacher_name : "+teacher_name);
+    console.log("teacher_img : "+teacher_img);  
+
+
+    if (chat_room_id == chatId_global) {
+
+        // 읽었다고 소켓서버에 다시 보내기
+        read_msg_check(chat_room_id, my_id);
+        
+        const div = document.createElement("div");
+
+        setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수업을 취소했습니다.')
+
+        chattingList_div.appendchild(div);
+    }
+    else {
+
+        init();
+    }    
+});
+
+// 메세지 수신 시 수신된 메세지가 있는 방에 들어가 있는 경우
+function read_msg_check(chat_room_id, user_id) {
+
+    // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트
+    socket.emit('read_msg', chat_room_id, user_id);
+
+    // 소켓서버에서 last_check 업데이트 되었다고 신호 오면 그 때 재 렌더링 해주는 이벤트
+    socket.on('read_msg_check', (chat_room_id, user_id) => {        
+    
+        // 재 렌더링
+        init();    
+     });
+}
 
 
 

@@ -48,9 +48,11 @@ async function accept_or_cancel(status) {
 
     if (status == 1) {
         alert("예약 확정되었습니다");
+        socket.emit('acceptance_class', classId);
     }
     else if (status == 2) {
         alert("수업 취소되었습니다");
+        socket.emit('cancel_class', classId);
     }
 
     window.location.reload();

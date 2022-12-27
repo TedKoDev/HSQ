@@ -33,7 +33,7 @@
 
                 </div><br>                                   
             </div>              
-            <div class = "flex w-4/5 mb-3 justify-between mx-auto py-2">
+            <div class = "flex w-full px-3 mb-3 justify-between mx-auto py-2">
                 <div class = "flex">             
                     <button id="classType_btn" data-dropdown-toggle="classType" class="text-gray-800 bg-gray-300 hover:bg-gray-400 font-medium rounded-2xl text-xs px-2 mx-1 py-2 text-center inline-flex items-center " type="button">수업 카테고리<svg class="ml-1 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
                     <button id="classTime_btn" data-dropdown-toggle="classTime" class="text-gray-800 bg-gray-300 hover:bg-gray-400 font-medium rounded-2xl text-xs px-2 mx-1 py-2.5 text-center inline-flex items-center " type="button">강의 시간<svg class="ml-1 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
