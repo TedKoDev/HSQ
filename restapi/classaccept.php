@@ -35,10 +35,9 @@ $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 사용자(학생)토큰 
-$class_register_id      =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 사용자(학생)토큰 
-$class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 사용자(학생)토큰 
-
+$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 
+$class_register_id      =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 
+$class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 
 error_log("$kind ,   $token,  $class_register_id,   $class_register_status, \n", "3", "../php.log");
 
 if($class_register_status == '1'){
