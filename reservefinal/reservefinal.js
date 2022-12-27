@@ -1,6 +1,29 @@
 // 로컬 스토리지에서 예약 관련 정보 가져오기
 const {clId, clName, clTime, clSchedule, clTool, clPrice, tusid} = JSON.parse(localStorage.getItem("reserveInfoAll"));
 
+
+// 내 id 가져와서 대입
+let my_id;
+getMyId();
+async function getMyId() {
+
+    const body = {
+       
+        token : getCookie("user_info")
+    };
+    const res = await fetch('/utils/utc.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    });
+    
+    const response = await res.json();  
+    
+    my_id = response.user_id;
+}
+
 // 강사 이름, 강사 이미지 받아오기
 getReserveinfo();
 
@@ -127,9 +150,7 @@ function setSchedule(clSchedule) {
 
 // 예약 버튼 클릭 이벤트
 async function reserveDone() {
-
-    console.log("pass");
-
+    
     const tokenvalue = getCookie("user_info");
 
     const memo = request_forTeacher.value;  
@@ -159,7 +180,7 @@ async function reserveDone() {
     if (response.success == 'yes') {
 
         alert("예약 완료되었습니다.");
-        // socket.emit('request_class', student_id, teacher_id, class_id, class_time);
+        socket.emit('request_class', my_id, tusid, clId, response.class_register_id);
 
         location.replace("../myinfo/");
     }        

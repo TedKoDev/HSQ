@@ -1,6 +1,6 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
-import { classId } from "./historydetail.js";
+import { classId, student_id, teacher_id } from "./historydetail.js";
 
 const acceptModal = $('.acceptModal');
 const acceptModalCloseBtn = $_all('.acceptModalCloseBtn');
@@ -46,16 +46,23 @@ async function accept_or_cancel(status) {
 
     console.log(response);
 
-    if (status == 1) {
-        alert("예약 확정되었습니다");
-        socket.emit('acceptance_class', classId);
-    }
-    else if (status == 2) {
-        alert("수업 취소되었습니다");
-        socket.emit('cancel_class', classId);
-    }
+    if (response.success = 'yes') {
 
-    window.location.reload();
+        if (status == 1) {
+            alert("예약 확정되었습니다");
+            socket.emit('acceptance_class', student_id, teacher_id, classId, response.class_register_id);
+        }
+        else if (status == 2) {
+            alert("수업 취소되었습니다");
+            socket.emit('cancel_class', student_id, teacher_id, classId, response.class_register_id);
+        }
+    
+        window.location.reload();
+    }
+    else {
+        console.log("통신 오류");
+    }
+    
 }
 
 const cancelModal = $('.cancelModal');

@@ -305,7 +305,8 @@ $('.send_btn').addEventListener('click', () => {
 function sendTextMessage() {
     
     // 소켓서버에 메세지 전송 (채팅방 id, 채팅 메세지, 보내는 사람id, 받는 사람id)
-    // socket.emit('send_text_msg', chatId_global, $('.input_message').value, my_id, otherId_global);
+    socket.emit('send_text_msg', chatId_global, $('.input_message').value, my_id, otherId_global);
+    
 }
 
 // 소켓서버에서 받는 로직
@@ -435,7 +436,7 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
 
         // 읽었다고 소켓서버에 다시 보내기
         read_msg_check(chat_room_id, my_id);
-        
+
         const div = document.createElement("div");
 
         setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수업을 취소했습니다.')

@@ -1,13 +1,41 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {classAccept, classCancel, sendPaypalLink} from "./clickbtnevent.js";
-
+import { getMyId, test } from "../../../utils/getMyid.js";
 
 // 수업 id랑 수업 신청한 유저 id 가져오기
 // let {class_id, user_id} = JSON.parse(localStorage.getItem("classId"));
 
-// clickbtnevent에서 사용하기 위해 수업id export
+
+// clickbtnevent에서 사용하기 위해 수업id, 학생id, 강사id export
 export const classId = class_id;
+export const student_id = user_id;
+export const teacher_id = await getMyId(getCookie(cookieName));
+
+// 내 id 가져와서 대입
+// let my_id;
+// getMyId();
+// async function getMyId() {
+
+//     const body = {
+       
+//         token : getCookie("user_info")
+//     };
+//     const res = await fetch('/utils/utc.php', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json;charset=utf-8'
+//         },
+//         body: JSON.stringify(body)
+//     });
+    
+//     const response = await res.json();  
+    
+//     my_id = response.user_id;
+
+//     console.log(my_id);
+// }
+
 
 // 수업과 관련된 데이터 가져와서 대입
 getClassDetail();
@@ -37,6 +65,7 @@ async function getClassDetail() {
 
         const result = response.result[0];
 
+        
         const class_name = result.class_name;
         const class_price = result.class_price;
         const class_register_method = result.class_register_method;
@@ -79,10 +108,13 @@ async function getUserInfo() {
         body: JSON.stringify(body)
     });
     
-    const response = await res.json();    
+    const response = await res.json();  
+    
+    console.log(response);
     
     const result = response.result[0];
-
+    // 학생id 전역 변수에 대입
+    student_id = result.user_id;
     const user_name = result.user_name;
     const user_language = result.user_language;
     const user_korean = result.user_korean;
