@@ -67,6 +67,7 @@ $payload = json_decode($parted[1], true);
 $User_ID = base64_decode($payload['User_ID']); //학생의 userid
 
 
+
 $U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
 $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
@@ -165,11 +166,6 @@ if ($filter_class_price_min == null) {
 
 
 
-
-
-
-
-
 //테스트용 ! 
 // $User_ID = 320; //학생의 userid
 // $kind = 'clist';
@@ -247,6 +243,14 @@ $teacher_name      =   json_decode(file_get_contents("php://input"))->{"teacher_
 
 // 더보기 (페이징)처리 용 
 $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
+
+
+
+// $kind = 'tcdetail';
+
+// $User_ID = 324; //학생의 userid
+// $class_register_id       =  272; // 예약한 수업 번호 
+
 
 
 // error_log("$User_ID ,   $kind,  $clReserveCheck,   $filter_class_status_check, \n", "3", "../php.log");
@@ -1245,7 +1249,7 @@ if ($kind == 'cdetail') {
       }
 
 
-      $Sql4 = "SELECT User_Detail.user_id,User_Detail.user_img, User.user_name FROM User_Detail LEFT  OUTER JOIN User ON User_Detail.user_id = User.user_id  where  $user_name_sqlwhere  ";
+      $Sql4 = "SELECT User_Detail.user_id,User_Detail.user_img,User_Detail.user_point, User.user_name FROM User_Detail LEFT  OUTER JOIN User ON User_Detail.user_id = User.user_id  where  $user_name_sqlwhere  ";
       $SRCList_Result4 = mysqli_query($conn, $Sql4);
 
       $row4 = mysqli_fetch_array($SRCList_Result4);
@@ -1263,6 +1267,7 @@ if ($kind == 'cdetail') {
       $send['class_id'] = $row1['class_id']; //강의 자체 id
       $send['user_id'] = $row4['user_id']; //사용자 이미지 
       $send['user_img'] = $row4['user_img']; //사용자 이미지 
+      $send['user_payment'] = $row4['user_point']; //사용자 페이먼트 링크
       $send['user_name'] = $row4['user_name']; //사용자 이름
       $send['class_name'] = $row3['class_name']; //수업이름
       $send['schedule_list']  = $save; //수업 일정  
@@ -1300,6 +1305,11 @@ if ($kind == 'cdetail') {
 
 
 
+  $result['result'] = array();
+
+
+
+
 
   $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_register_review, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list,  Class_Add.class_register_memo   FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
 
@@ -1307,7 +1317,7 @@ if ($kind == 'cdetail') {
   $SRCList_Result1 = mysqli_query($conn, $Sql1);
   $row1 = mysqli_fetch_array($SRCList_Result1);
 
-  $result['result'] = array();
+
 
   $send['class_register_id'] = $row1['class_register_id']; //예약한 수업 id 
   $user_id_student = $row1['user_id_student']; //예약한 학생의 id 
@@ -1336,10 +1346,11 @@ if ($kind == 'cdetail') {
   $send['teacher_timezone']  = $timezone; //수업 일정  
 
 
-  $Sql2 = "SELECT User_Detail.user_timezone  FROM User_Detail where  User_Detail.user_id = '$user_id_student'";
+  $Sql2 = "SELECT User_Detail.user_timezone ,User_Detail.user_point  FROM User_Detail where  User_Detail.user_id = '$user_id_student'";
   $SRCList_Result2 = mysqli_query($conn, $Sql2);
   $row2 = mysqli_fetch_array($SRCList_Result2);
   $send['student_timezone'] = $row2['user_timezone']; //학생 타임존
+  $send['user_point'] = $row2['user_point']; //학생 타임존
   $student_timezone = $row2['user_timezone']; //학생 타임존
 
 

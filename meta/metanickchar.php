@@ -1,5 +1,7 @@
 <?php
 
+// error_reporting(E_ALL);
+// ini_set('display_errors', '1');
 // == 수업등록 프로세스==
 //   #요구되는 파라미터 (fetch형태 formdat 형태로 요청 ) 
 
@@ -44,16 +46,24 @@
 include("../conn.php");
 include("../jwt.php");
 
+//headers
+header('Access-Control-Allow-Origin:*');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: POST,GET,PUT,DELETE');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Methods,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
+
+$method = $_SERVER['REQUEST_METHOD'];
 
 
 $jwt = new JWT();
 
 // 토큰값, 항목,내용   전달 받음 
-file_get_contents("php://input") . "<br/>";
-$token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
-$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 용도 
-$user_meta_nickname     =   json_decode(file_get_contents("php://input"))->{"user_meta_nickname"}; //닉네임
-$user_meta_id            =   json_decode(file_get_contents("php://input"))->{"user_meta_id"};  //캐릭터 종류 
+
+
+
+$token                 =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
+$user_meta_nickname    =   json_decode(file_get_contents("php://input"))->{"user_meta_nickname"}; //닉네임
+$user_meta_id          =   json_decode(file_get_contents("php://input"))->{"user_meta_id"};  //캐릭터 종류 
 
 
 //토큰 해체 
@@ -64,11 +74,16 @@ $User_ID =  base64_decode($payload['User_ID']);
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
+// $method = 'POST';
+// $User_ID = 324;
+// $user_meta_nickname    =   'nicktest'; //닉네임
+// $user_meta_id          =  '1' ;  //캐릭터 종류 
+
+if ($method == 'GET') {
 
 
-if ($kind == 'GET') {
+   $user_meta_nickname = isset($_GET['user_meta_nickname']) ? $_GET['user_meta_nickname'] : die();
 
-  
   $nickVertifyCheck = "SELECT * FROM User where user_meta_nickname = '$user_meta_nickname'";
   $checkresult = mysqli_query($conn, $nickVertifyCheck);
   //중복 값이 있는지 없는지 확인한다
@@ -86,21 +101,16 @@ if ($kind == 'GET') {
   }
 
 
-} else if ($kind == 'POST') {
+} else if ($method == 'POST') {
 
-  $sql = "SELECT * FROM User WHERE user_id = '$User_ID'";
-  $result = mysqli_query($conn, $sql);
-  $row = mysqli_fetch_array($result);
-  $user_meta_id = $row['user_meta_id'];
 
-  if ($user_meta_id == '0') {
-    $add_nickname_sql = "UPDATE User_Meta SET user_meta_id = '$user_meta_id', user_meta_nickname = '$user_meta_nickname' where user_id = '$User_ID' ";
+    $add_nickname_sql = "UPDATE User SET user_meta_id = '$user_meta_id', user_meta_nickname = '$user_meta_nickname' where user_id = '$User_ID' ";
     $result = mysqli_query($conn, $add_nickname_sql);
 
     if ($result) { //정상적으로 저장되었을때 
 
-      $send["success"] = "yes";
-      $send["message"] =  "최초 닉네임 입력 및 캐릭터 선정 완료";
+      $send["success"]              = "yes";
+      $send["message"]              =  "최초 닉네임 입력 및 캐릭터 선정 완료";
       $send["user_meta_id"]         =  $user_meta_id;
       $send["user_meta_nickname"]   =  $user_meta_nickname;
       echo json_encode($send);
@@ -111,13 +121,15 @@ if ($kind == 'GET') {
       echo json_encode($send);
       mysqli_close($conn);
     }
-  } else if ($user_meta_id != '0') {
+    
 
-    $add_nickname_sql = "UPDATE User_Meta SET user_meta_id = '$user_meta_id', user_meta_nickname = '$user_meta_nickname' where user_id = '$User_ID' ";
+} else if ($method == 'PUT') {
+
+    $add_nickname_sql = "UPDATE User SET user_meta_id = '$user_meta_id', user_meta_nickname = '$user_meta_nickname' where user_id = '$User_ID' ";
     $result = mysqli_query($conn, $add_nickname_sql);
 
     if ($result) { //정상적으로 저장되었을때 
-      $send["success"] = "yes";
+      $send["success"]              = "yes";
       $send["message"]              =  "캐릭터 및 닉네임 변경 완료";
       $send["user_meta_id"]         =  $user_meta_id;
       $send["user_meta_nickname"]   =  $user_meta_nickname;
@@ -129,5 +141,5 @@ if ($kind == 'GET') {
       echo json_encode($send);
       mysqli_close($conn);
     }
-  }
+
 }

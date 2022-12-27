@@ -53,6 +53,9 @@ $SRCList_Result3 = mysqli_query($conn, $Sql3);
 
 $row3 = mysqli_fetch_array($SRCList_Result3);
 
+// $send['class_register_id'] = $row3['class_register_id']; //신청된 수업 번호   
+// $class_register_id = $row3['class_register_id']; //강사의 유저 번호  
+
 $send['user_id_teacher'] = $row3['user_id_teacher']; //강사의 유저 번호  
 $user_id_teacher = $row3['user_id_teacher']; //강사의 유저 번호  
 
@@ -85,6 +88,8 @@ mysqli_close($conn);
  if ($response2) { //정상적으로 파일 저장되었을때 
   $send["class_register_status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
+  $send["class_register_id"]   =  $class_register_id;
+
   $send["success"]   =  "yes";
   echo json_encode($send);
 
@@ -108,6 +113,7 @@ $response = mysqli_query($conn, $select);
   if ($response) { //정상적으로 파일 저장되었을때 
    $send["class_register_status"]   =  $status;
    $send["class_register_answer_date"]   =  $class_register_answer_date;
+   $send["class_register_id"]   =  $class_register_id;
    $send["success"]   =  "yes";
    echo json_encode($send);
  

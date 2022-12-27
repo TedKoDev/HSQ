@@ -42,8 +42,9 @@ include("../jwt.php");
 $jwt = new JWT();
 
 // 토큰값 전달 받음 
-file_get_contents("php://input") . "<br/>";
+
 $token = json_decode(file_get_contents("php://input"))->{"token"};
+
 
 error_log(" $token\n", "3", "../php.log");
 //토큰 해체 
@@ -57,9 +58,7 @@ $payload = json_decode($parted[1], true);
 
 
 $User_ID =  base64_decode($payload['User_ID']);
-
 $U_Name  = base64_decode($payload['U_Name']);
-
 $U_Email = base64_decode($payload['U_Email']);
 
 // 

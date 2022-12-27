@@ -136,7 +136,7 @@ if ($response4) { //정상일떄
   
   $data = array(
     'schedule_list'            =>   'Teacher_Schedule 값 업뎃 됨',
-    'success'        	=>	'yes'
+    'success'        	=>	'yes'   
   );
   // echo json_encode($data);
   // mysqli_close($conn);
@@ -151,7 +151,8 @@ if ($response4) { //정상일떄
   
   $data = array(
     'schedule_list'            =>   'class_add  잘됨',
-    'success'        	=>	'yes'
+    'success'        	=>	'yes',
+    'lastclassregisterid'        	=>	$last_CAID
   );
   // echo json_encode($data);
   // mysqli_close($conn);
@@ -258,7 +259,8 @@ $mail->send();
 
 $data = array(
  
-  'success'           => "yes"
+  'success'           => "yes",
+  'lastclassregisterid'        	=>	$last_CAID
 );
 echo json_encode($data);
   mysqli_close($conn);
