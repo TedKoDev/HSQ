@@ -28,10 +28,17 @@ init();
 
 function init() {
 
+    // 기존 채팅방 리스트 초기화
+    while(chat_room_div.firstChild)  {
+        chat_room_div.firstChild.remove();     
+     }
+
     for (let i = 0; i < msgResult.length; i++) {
 
         let user_name;
         let user_img;
+        let user_non_read_count;
+
         let recent_chat_date;
         let recent_msg_desc;
         // 브라우저에 접속한 유저 기준에서 상대방의 id
@@ -41,6 +48,7 @@ function init() {
     
             user_name = msgResult[i].sender_name;
             user_img = msgResult[i].sender_img;
+            user_non_read_count = msgResult[i].sender_non_read_count;
     
             // 상대방의 id 대입
             other_id = msgResult[i].receiver_id;
@@ -48,7 +56,8 @@ function init() {
         else{
     
             user_name = msgResult[i].receiver_name;
-            user_img = msgResult[i].receiver_img;   
+            user_img = msgResult[i].receiver_img;  
+            user_non_read_count = msgResult[i].receiver_non_read_count; 
             
             // 상대방의 id 대입
             other_id = msgResult[i].sender_id;
@@ -62,7 +71,7 @@ function init() {
         button.setAttribute("class", "chat_room_btn w-full hover:bg-gray-200 px-2 border-b-2");
         button.setAttribute("id", msgResult[i].chat_id);
         button.innerHTML = `
-                <div class = "flex w-full my-2">
+                <div class = "flex w-full my-2">                
                     <div class = "w-1/5 flex">
                     <img
                         id="user_image_room"
@@ -74,13 +83,29 @@ function init() {
                         <span class = "text-sm">${user_name}</span>
                         <span class = "text-xs">${recent_msg_desc}</span>
                     </div>
-                    <span class = "text-xs w-2/5 text-center">${recent_chat_date}</span>
-                </div>`;
+                    <div class = "flex flex-col w-2/5">
+                        <span class = "text-xs text-center mb-1">${recent_chat_date}</span>    
+                        <div id = ${msgResult[i].chat_id}_count class = "mx-auto w-5 h-5 rounded-full bg-red-500 shadow text-sm text-white">${user_non_read_count}</div>                    
+                    </div>                
+                </div>`
+                ;
             
         chat_room_div.append(button);
+
+        // 안 읽은 메세지 갯수 0이면 빨간 원 안보이게 처리
+        const circle = document.getElementById(msgResult[i].chat_id+"_count");
+        if (user_non_read_count == 0) {
+            circle.classList.add('hidden');
+        }
+        else {
+            circle.classList.remove('hidden');
+        }
     
         // 채팅방 클릭 시 이벤트 리스너
         button.addEventListener('click', () => {
+
+            // 클릭한 채팅방은 안 읽은 메세지 갯수 표시된 원 없애기
+            circle.classList.add('hidden');
     
             // 소켓1 : 채팅방 입장 이벤트 (DB에서 해당 사용자의 lastcheck 업데이트)
             // socket.emit('enter_chat_room', my_id, msgResult[i].chat_id);            
@@ -147,20 +172,17 @@ function getChattingList(msgResult, chat_id) {
         // 일반 채팅일 경우
         if (chattingList[j].msg_type == 'text') {                                        
            
-            if (chattingList[j].sender_id == my_id) {
+            const date = chattingList[j].msg_time;
+            const user_img = chattingList[j].sender_img;        
+            const msg_desc = chattingList[j].msg_desc; 
 
-                const date = chattingList[j].msg_time;
-                const user_img = chattingList[j].sender_img;        
-                const msg_desc = chattingList[j].msg_desc;    
+
+            if (chattingList[j].sender_id == my_id) {                   
 
                 setText(div, date, user_img, msg_desc, 'yes');       
                 
             }
-            else {
-
-                const date = chattingList[j].msg_time;
-                const user_img = chattingList[j].sender_img;        
-                const msg_desc = chattingList[j].msg_desc;    
+            else {               
                
                 setText(div, date, user_img, msg_desc, 'no');     
             }     
@@ -249,7 +271,7 @@ function setText(div, date, user_img, msg_desc, me) {
                 </img> 
                 <span class = "w-1/2 ml-2 p-2 text-sm bg-gray-50 rounded-lg">
                     ${msg_desc}
-                </span>
+                </span>                
             </div>
         </div>
         `;
@@ -284,9 +306,7 @@ function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, cla
             </div>
         </div> 
         `; 
-
-    console.log(chattingList_div);
-    console.log(div);
+    
     chattingList_div.append(div);
 
     // 결제 링크 리스트도 표시해주기
