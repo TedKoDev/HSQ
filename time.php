@@ -28,7 +28,9 @@ echo "The date is $date".'</br>'.'</br>';
 
 
 
-echo $nomal = strtotime("2022-12-01 11:30")."<br/>";
+echo 'ddd'.$nomal = strtotime("2022-12-01 11:30")."<br/>";
+echo 'ddd'.$nomal = strtotime("2022-12-28 07:10:17")."<br/>";
+echo 'dddf'.$nomal = strtotime($date2 )."<br/>";
 echo "2022-12-01 11:30 : ".strtotime("2022-12-01 11:30")."<br/>";
 echo  $plusone = strtotime("2022-12-01 11:30 +1 hours")."<br/>";
 echo "2022-12-01 11:30  기준으로 1시간 뒤 : ".strtotime("2022-12-01 11:30 +1 hours")."<br/>";
