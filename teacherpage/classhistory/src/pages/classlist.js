@@ -156,7 +156,7 @@ function goClassDetail(class_id, user_id, url) {
 
     document.body.appendChild(form);
 
-    form.submit();       
+    form.submit();      
     
 }
 

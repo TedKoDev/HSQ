@@ -1,6 +1,7 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
-import { classId, class_register_id, student_id, teacher_id, payment_array } from "./historydetail.js";
+import { classId, class_register_id, student_id, teacher_id, payment_array} from "./historydetail.js";
+// import {socket} from "./historydetail.js";
 
 const acceptModal = $('.acceptModal');
 const acceptModalCloseBtn = $_all('.acceptModalCloseBtn');
@@ -31,7 +32,7 @@ async function accept_or_cancel(status) {
         
         token: getCookie(cookieName),
         kind: "teacher",
-        class_register_id: classId,
+        class_register_id: class_register_id,
         class_register_status: status
     };
     const res = await fetch('/restapi/classaccept.php', {

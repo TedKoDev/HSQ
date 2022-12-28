@@ -3,6 +3,12 @@ import {$, $_all} from "/utils/querySelector.js";
 import { getCookie, cookieName, s3_url} from "/commenJS/cookie_modules.js";
 
 
+
+// 소켓 연결
+// const socket = io.connect("ws://3.39.249.46:8080/webChatting");
+// socket.emit('enterWebChat', getCookie(cookieName));
+
+
 // 본인 id 가져오기 (일단은 하드코딩)
 const my_id = 324;
 
@@ -109,6 +115,7 @@ function setBtnGray(chat_id) {
     clickBtn.classList.add('bg-gray-200');
 }
 
+
 // 해당 채팅방 id의 채팅 내역 뿌려주는 함수
 const chattingList_div = $('.chatting_list');
 function getChattingList(msgResult, chat_id) {
@@ -163,7 +170,10 @@ function getChattingList(msgResult, chat_id) {
         // 페이팔 링크일 경우
         else if (chattingList[j].msg_type == 'paypal') {
 
+            const msg_id = chattingList[j].msg_id;
             const msg_desc = chattingList[j].msg_desc;
+            const student_id = msg_desc.student_id;
+            const teacher_id = msg_desc.teacher_id;
             const teacher_name = msg_desc.teacher_name;
             const teacher_img = msg_desc.teacher_img;
             const class_name = msg_desc.class_name;
@@ -171,14 +181,17 @@ function getChattingList(msgResult, chat_id) {
             const class_id = msg_desc.class_register_id; 
             const date = chattingList[j].msg_time;
 
-            setPayment(div, date, teacher_name, class_id, teacher_img, class_name, payment_link);  
+            setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, class_id, teacher_img, class_name, payment_link);  
                         
         }
         // 수업 예약/승인/취소일 경우
         else {
 
+            const msg_id = chattingList[j].msg_id;
             const msg_desc = chattingList[j].msg_desc;
-            const sender_name = chattingList[j].sender_name;            
+            const sender_name = chattingList[j].sender_name;    
+            const student_id = msg_desc.student_id;
+            const teacher_id = msg_desc.teacher_id;        
             const teacher_img = msg_desc.teacher_img;
             const class_name = msg_desc.class_name;            
             const date = chattingList[j].msg_time;
@@ -186,18 +199,16 @@ function getChattingList(msgResult, chat_id) {
 
             if (chattingList[j].msg_type == 'class_request') {                
     
-                setClassState(div, date, sender_name, class_id, teacher_img, class_name, '님이 수강 신청했습니다.')           
+                setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, '님이 수강 신청했습니다.')           
             }
             else if (chattingList[j].msg_type == 'class_approve') {
                    
-                setClassState(div, date, sender_name, class_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
+                setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
             }
             else if (chattingList[j].msg_type == 'class_cancel') {
                 
-                setClassState(div, date, sender_name, class_id, teacher_img, class_name, '님이 수업을 취소했습니다.')               
-            }
-
-            chattingList_div.append(div);
+                setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, '님이 수업을 취소했습니다.')               
+            }            
         }       
        
    }      
@@ -246,7 +257,7 @@ function setText(div, date, user_img, msg_desc, me) {
 }
 
 // 페이팔 링크일 경우 대입하는 함수
-function setPayment(div, date, teacher_name, class_id, teacher_img, class_name, payment_link) {
+function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, class_id, teacher_img, class_name, payment_link) {
 
     div.innerHTML = `
         <div class = "px-2">
@@ -255,7 +266,7 @@ function setPayment(div, date, teacher_name, class_id, teacher_img, class_name, 
             </div>
             <div class = "mx-auto bg-gray-50 rounded-lg px-2 pb-2 pt-1 w-1/2">
                 <div class = "text-sm text-gray-800"><span class = "text-gray-900">${teacher_name}</span class = "text-gray-700">님이 결제 링크를 보냈습니다.</div>
-                <button class = "w-full" value = ${class_id}>
+                <button id = ${msg_id}_class class = "w-full" value = ${class_id}>
                     <div class = "mt-1 flex px-2 py-1 bg-gray-200 rounded-lg items-center hover:shadow">
                         <div>
                             <img
@@ -290,10 +301,26 @@ function setPayment(div, date, teacher_name, class_id, teacher_img, class_name, 
         linkList.append(a);
     }
     
+    // 버튼 클릭 이벤트 (클릭 시 해당 수업 상세로 이동)
+    const btn = document.getElementById(msg_id+"_class");    
+    // 클릭한 유저가 학생인지, 강사인지에 따라 분기처리해서 수업 상세로 이동  
+    btn.addEventListener('click', () => {
+
+        // 내가 강사인 경우 historydetail로 이동
+        if (teacher_id == my_id) {
+
+            goClassDetail(class_id, student_id, '/teacherpage/classhistory/historydetail/');
+        }
+        // 학생인 경우 myclass로 이동
+        else {
+
+            goClassDetail(class_id, my_id, '/myclass/');
+        }
+    }) 
 }
 
 // 수업 예약/승인/취소일 때 대입하는 함수
-function setClassState(div, date, sender_name, class_id, teacher_img, class_name, text) {
+function setClassState(div, msg_id,  date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, text) {
 
     div.innerHTML = `
     <div class = "px-2">
@@ -302,7 +329,7 @@ function setClassState(div, date, sender_name, class_id, teacher_img, class_name
         </div>
         <div class = "mx-auto bg-gray-50 rounded-lg px-2 pb-2 pt-1 w-1/2">
             <div class = "text-sm text-gray-800"><span class = "text-gray-900">${sender_name}</span class = "text-gray-700">${text}</div>
-            <button class = "w-full" value = ${class_id}>
+            <button id = ${msg_id}_class class = "w-full" value = ${class_id}>
                 <div class = "mt-1 flex px-2 py-1 bg-gray-200 rounded-lg items-center hover:shadow">
                     <div>
                         <img
@@ -317,7 +344,52 @@ function setClassState(div, date, sender_name, class_id, teacher_img, class_name
         </div>
     </div> 
     `; 
+
+    chattingList_div.append(div);
+        
+    // 버튼 클릭 이벤트 (클릭 시 해당 수업 상세로 이동)
+    const btn = document.getElementById(msg_id+"_class");    
+    // 클릭한 유저가 학생인지, 강사인지에 따라 분기처리해서 수업 상세로 이동  
+    btn.addEventListener('click', () => {
+
+        // 내가 강사인 경우 historydetail로 이동
+        if (teacher_id == my_id) {
+
+            goClassDetail(class_id, student_id, '/teacherpage/classhistory/historydetail/');
+        }
+        // 학생인 경우 myclass로 이동
+        else {
+
+            goClassDetail(class_id, my_id, '/myclass/');
+        }
+    })    
+    
 } 
+
+// 수업 클릭시 수업 상세 화면으로 이동
+function goClassDetail(class_id, user_id, url) {
+        
+    const form = document.createElement('form');
+    form.setAttribute('method', 'get');    
+    form.setAttribute('action', url);
+
+    const hiddenField_class = document.createElement('input');
+    hiddenField_class.setAttribute('type', 'hidden');
+    hiddenField_class.setAttribute('name', 'class_id');
+    hiddenField_class.setAttribute('value', class_id);
+    const hiddenField_user = document.createElement('input');
+    hiddenField_user.setAttribute('type', 'hidden');
+    hiddenField_user.setAttribute('name', 'user_id');
+    hiddenField_user.setAttribute('value', user_id);
+
+    form.appendChild(hiddenField_class);
+    form.appendChild(hiddenField_user);
+
+    document.body.appendChild(form);
+
+    form.submit();      
+    
+}
 
 // 전송버튼 클릭
 $('.send_btn').addEventListener('click', () => {
@@ -367,7 +439,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
     }    
 });
 
-socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, paypal_link, msg_date) => {
+socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, paypal_link, msg_date, student_id, teacher_id) => {
 
     console.log("chat_room_id : "+chat_room_id);
     console.log("class_register_id : "+class_register_id);
@@ -384,7 +456,7 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
 
         const div = document.createElement("div");
 
-        setPayment(div, msg_date, teacher_name, class_id, teacher_img, class_name, paypal_link)
+        setPayment(div, msg_id, msg_date, student_id, teacher_id, teacher_name, class_id, teacher_img, class_name, payment_link)
 
         // chattingList_div.appendchild(div);
     } 
@@ -394,7 +466,7 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
     }    
 });
 
-socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
+socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id) => {
 
     console.log("chat_room_id : "+chat_room_id);
     console.log("class_register_id : "+class_register_id);
@@ -410,9 +482,9 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher
 
         const div = document.createElement("div");
 
-        setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수강 신청했습니다.')
+        setClassState(div, msg_date, teacher_name, class_register_id, student_id, teacher_id, teacher_img, class_name, '님이 수강 신청했습니다.')
 
-        chattingList_div.appendchild(div);
+        // chattingList_div.appendchild(div);
     }
     else {
 
@@ -420,7 +492,7 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher
     }    
 });
 
-socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
+socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id) => {
 
     console.log("chat_room_id : "+chat_room_id);
     console.log("class_register_id : "+class_register_id);
@@ -436,9 +508,9 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
 
         const div = document.createElement("div");
 
-        setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
+        setClassState(div, msg_date, teacher_name, class_register_id, student_id, teacher_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
 
-        chattingList_div.appendchild(div);
+        // chattingList_div.appendchild(div);
     }
     else {
 
@@ -446,7 +518,7 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
     }    
 });
 
-socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date) => {
+socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id) => {
 
     console.log("chat_room_id : "+chat_room_id);
     console.log("class_register_id : "+class_register_id);
@@ -462,9 +534,9 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
 
         const div = document.createElement("div");
 
-        setClassState(div, msg_date, teacher_name, class_register_id, teacher_img, class_name, '님이 수업을 취소했습니다.')
+        setClassState(div, msg_date, teacher_name, class_register_id, student_id, teacher_id, teacher_img, class_name, '님이 수업을 취소했습니다.')
 
-        chattingList_div.appendchild(div);
+        // chattingList_div.appendchild(div);
     }
     else {
 
@@ -473,10 +545,10 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
 });
 
 // 메세지 수신 시 수신된 메세지가 있는 방에 들어가 있는 경우
-function read_msg_check(chat_room_id, user_id) {
+function read_msg_check(chat_room_id, sender_id) {
 
     // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트
-    socket.emit('read_msg', chat_room_id, user_id);
+    socket.emit('read_msg', chat_room_id, sender_id);
 
     // 소켓서버에서 last_check 업데이트 되었다고 신호 오면 그 때 재 렌더링 해주는 이벤트
     socket.on('read_msg_check', (chat_room_id, user_id) => {        

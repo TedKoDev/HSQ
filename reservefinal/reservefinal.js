@@ -1,6 +1,9 @@
 // 로컬 스토리지에서 예약 관련 정보 가져오기
 const {clId, clName, clTime, clSchedule, clTool, clPrice, tusid} = JSON.parse(localStorage.getItem("reserveInfoAll"));
 
+// 소켓 연결
+const socket = io.connect("ws://3.39.249.46:8080/webChatting");
+socket.emit('enterWebChat', getCookie(cookieName));
 
 // 내 id 가져와서 대입
 let my_id;

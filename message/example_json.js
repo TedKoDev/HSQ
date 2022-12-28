@@ -34,21 +34,7 @@ export let test = {
                     sender_img : 'P_IMG_324.PNG',
                     msg_desc : 'hihi',
                     msg_time : 1671964500000   
-                },
-                // {
-                //     msg_id : 22,
-                //     msg_type : 'class_request',
-                //     sender_id : 324,
-                //     sender_name : '홍태의',
-                //     sender_img : 'P_IMG_324.PNG',
-                //     msg_desc : 
-                //         {
-                //             class_name : '기초 한국어',
-                //             teacher_name : '홍태의',
-                //             teacher_img : 'P_IMG_320.PNG'
-                //         },
-                //     msg_time : 1671964507870   
-                // }
+                },                
             ]
         }
         ,
@@ -78,6 +64,8 @@ export let test = {
                         {
                             class_register_id : 25,
                             class_name : '기초 한국어',
+                            student_id : 332,
+                            teacher_id : 324,
                             teacher_name : '팀노바',
                             teacher_img : 'P_IMG_332.PNG',
                             payment_link : [
@@ -91,22 +79,24 @@ export let test = {
                 }
                 ,
                  {
-                    msg_id : 22,
+                    msg_id : 24,
                     msg_type : 'class_request',
                     sender_id : 320,
                     sender_name : '안해인',
                     sender_img : 'P_IMG_320.PNG',
                     msg_desc : 
                         {   
-                            class_register_id : 25,
+                            class_register_id : 276,
                             class_name : '기초 한국어',
+                            student_id : 320,
+                            teacher_id : 324,
                             teacher_name : '홍태의',
                             teacher_img : 'P_IMG_324.PNG'
                         },
                     msg_time : 1671964507870   
                 },
                 {
-                    msg_id : 22,
+                    msg_id : 25,
                     msg_type : 'class_approve',
                     sender_id : 324,
                     sender_name : '홍태의',
@@ -115,13 +105,15 @@ export let test = {
                         {   
                             class_register_id : 25,
                             class_name : '기초 한국어',
+                            student_id : 320,
+                            teacher_id : 324,
                             teacher_name : '홍태의',
                             teacher_img : 'P_IMG_324.PNG'
                         },
                     msg_time : 1671964507870   
                 },
                 {
-                    msg_id : 22,
+                    msg_id : 26,
                     msg_type : 'class_cancel',
                     sender_id : 320,
                     sender_name : '안해인',
@@ -130,6 +122,8 @@ export let test = {
                         {   
                             class_register_id : 25,
                             class_name : '기초 한국어',
+                            student_id : 324,
+                            teacher_id : 320,
                             teacher_name : '홍태의',
                             teacher_img : 'P_IMG_324.PNG'
                         },
