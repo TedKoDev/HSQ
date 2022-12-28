@@ -187,3 +187,6 @@ function moveClassdetail(div, class_id, teacher_id) {
 
 // 필터와 관련된 코드 가져오기
 classfilter();
+
+
+

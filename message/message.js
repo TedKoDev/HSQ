@@ -2,19 +2,38 @@ import { test } from "./example_json.js";
 import {$, $_all} from "/utils/querySelector.js";
 import { getCookie, cookieName, s3_url} from "/commenJS/cookie_modules.js";
 
-
-
 // 소켓 연결
 // const socket = io.connect("ws://3.39.249.46:8080/webChatting");
 // socket.emit('enterWebChat', getCookie(cookieName));
 
+let my_id;
+let msgResult;
 
-// 본인 id 가져오기 (일단은 하드코딩)
-const my_id = 324;
+const body = {
 
-// 받아온 채팅 리스트
-let msgList = test;
-let msgResult = msgList.result;
+    token: getCookie(cookieName)
+
+  };
+ 
+  const res = await fetch('/restapi/getchatmsg.php', {
+    method: 'POST',   
+    headers: {
+        'Content-Type': 'application/json;'
+      },
+    body: JSON.stringify(body)          
+  });   
+
+  // 받아온 json 파싱하고 array 추출
+  const response = await res.json();  
+  
+  if (response.success == 'yes') {
+
+    my_id = response.my_id;
+    msgResult = response.result;
+
+    console.log(msgResult);
+    
+  }
 
 // 채팅방 리스트 뿌리는 div
 const chat_room_div = $('.chatroom_list');
@@ -190,7 +209,7 @@ function getChattingList(msgResult, chat_id) {
             chattingList_div.append(div);
         }
         // 페이팔 링크일 경우
-        else if (chattingList[j].msg_type == 'paypal') {
+        else if (chattingList[j].msg_type == 'payment_link') {
 
             const msg_id = chattingList[j].msg_id;
             const msg_desc = chattingList[j].msg_desc;
@@ -219,15 +238,15 @@ function getChattingList(msgResult, chat_id) {
             const date = chattingList[j].msg_time;
             const class_id = msg_desc.class_register_id;
 
-            if (chattingList[j].msg_type == 'class_request') {                
+            if (chattingList[j].msg_type == 'request_class') {                
     
                 setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, '님이 수강 신청했습니다.')           
             }
-            else if (chattingList[j].msg_type == 'class_approve') {
+            else if (chattingList[j].msg_type == 'acceptance_class') {
                    
                 setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, '님이 수강 요청을 수락했습니다.')
             }
-            else if (chattingList[j].msg_type == 'class_cancel') {
+            else if (chattingList[j].msg_type == 'cancel_class') {
                 
                 setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, '님이 수업을 취소했습니다.')               
             }            

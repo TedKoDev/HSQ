@@ -56,7 +56,7 @@ export let test = {
     
                 {
                     msg_id : 23,
-                    msg_type : 'paypal',
+                    msg_type : 'payment_link',
                     sender_id : 332,
                     sender_name : '팀노바',
                     sender_img : 'P_IMG_332.PNG',
@@ -80,7 +80,7 @@ export let test = {
                 ,
                  {
                     msg_id : 24,
-                    msg_type : 'class_request',
+                    msg_type : 'request_class',
                     sender_id : 320,
                     sender_name : '안해인',
                     sender_img : 'P_IMG_320.PNG',
@@ -97,7 +97,7 @@ export let test = {
                 },
                 {
                     msg_id : 25,
-                    msg_type : 'class_approve',
+                    msg_type : 'acceptance_class',
                     sender_id : 324,
                     sender_name : '홍태의',
                     sender_img : 'P_IMG_324.PNG',
@@ -114,7 +114,7 @@ export let test = {
                 },
                 {
                     msg_id : 26,
-                    msg_type : 'class_cancel',
+                    msg_type : 'cancel_class',
                     sender_id : 320,
                     sender_name : '안해인',
                     sender_img : 'P_IMG_320.PNG',

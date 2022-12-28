@@ -1,8 +1,16 @@
 <div id="teacherSex" class="hidden z-10 w-32 bg-white rounded-xl shadow">
-    <div class = "flex my-2 justify-center"> 
-        <button class = "text-gray-800 bg-gray-300 hover:bg-gray-400 font-medium rounded-2xl text-xs px-2 mx-1 py-2 text-center inline-flex items-center">
-            남성<button>
-        <button class = "text-gray-800 bg-gray-300 hover:bg-gray-400 font-medium rounded-2xl text-xs px-2 mx-1 py-2 text-center inline-flex items-center">
-            여성<button>                                      
-    </div>              
+    <div class = "my-2 justify-center px-2">
+        <!-- <div class = "flex mb-1">
+            <input type='radio' name='teacher_type' value='both'/>
+            <span class = "ml-2 text-xs text-gray-700">상관 없음</span>
+        </div> -->
+        <div class = "flex mb-1">
+            <input type='radio' name='teacher_type' value='tutor'/>
+            <span class = "ml-2 text-xs text-gray-700">남자</span>            
+        </div>  
+        <div class = "flex mb-1">
+            <input type='radio' name='teacher_type' value='special'/>            
+            <span class = "ml-2 text-xs text-gray-700">여자</span>                        
+        </div>           
+    </div>             
 </div>
