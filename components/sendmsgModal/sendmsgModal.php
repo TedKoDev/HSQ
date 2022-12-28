@@ -1,11 +1,11 @@
-<script type="module" defer = "defer" src="./sendmsgModal.js"></script> 
+<script type="module" defer = "defer" src="/components/sendmsgModal/sendmsgModal.js"></script> 
 <div
     class="sendmsgModal bg-gray-700 bg-opacity-50 w-full h-full fixed inset-0 hidden justify-center items-center border-2"
     >
     <div class="bg-gray-50 w-1/2 py-2 px-3 rounded shadow-xl text-gray-800 mx-auto my-24">
         <div class = "flex flex-col">
             <div class = "flex justify-between border-b-2 border-gray-200">
-                <div class = "mx-auto"><span class = "teacher_name"></span>님께 연락하기</div>
+                <div class = "mx-auto">메세지 전송하기</div>
                 <svg                        
                     class="sendmsgModalCloseBtn h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                     id="close-modal"
@@ -18,8 +18,8 @@
                         clip-rule="evenodd"></path>
                 </svg>
             </div><br>
-            <textarea rows = "5" id = "memo" class = "w-full mx-auto text-sm px-1 py-1 rounded border border-gray-200"
-                placeholder = "강사에게 하고 싶은 말을 입력하세요."></textarea>
+            <textarea rows = "5" id = "memo" class = "inputMsg w-full mx-auto text-sm px-1 py-1 rounded border border-gray-200"
+                placeholder = "전하고 싶은 말을 입력하세요."></textarea>
             <div class = "flex-row-reverse mr-0">
                 <a class = "sendBtn text-right mt-2 mx-1 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">전송</a>   
                 <a class = "sendmsgModalCloseBtn text-right mt-2 mx-1 px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-500 rounded float-right">취소</a>                             

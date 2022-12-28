@@ -3,7 +3,7 @@ const {clId, clName, clTime, clSchedule, clTool, clPrice, tusid} = JSON.parse(lo
 
 // 소켓 연결
 const socket = io.connect("ws://3.39.249.46:8080/webChatting");
-socket.emit('enterWebChat', getCookie(cookieName));
+socket.emit('enter_web_chat', getCookie(cookieName));
 
 // 내 id 가져와서 대입
 let my_id;

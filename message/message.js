@@ -30,8 +30,6 @@ const body = {
 
     my_id = response.my_id;
     msgResult = response.result;
-
-    console.log(msgResult);
     
   }
 
@@ -127,7 +125,7 @@ function init() {
             circle.classList.add('hidden');
     
             // 소켓1 : 채팅방 입장 이벤트 (DB에서 해당 사용자의 lastcheck 업데이트)
-            // socket.emit('enter_chat_room', my_id, msgResult[i].chat_id);            
+            // socket.emit('enter_chat_room', msgResult[i].chat_id, my_id);            
     
             // 현재 클릭한 채팅방id와 상대방 id를 전역변수에 각각 대입
             chatId_global = msgResult[i].chat_id;

@@ -9,7 +9,8 @@
         
         let class_id = "<?php echo $class_id = $_GET['class_id']; ?>";
         let user_id = "<?php echo $user_id = $_GET['user_id']; ?>";
-
+        // 학생에게 연락하기 메세지 전송을 위해 선언한 U_id;
+        let U_id = user_id;
     </script>
     <script type = "module" defer = "defer" src="./historydetail.js"></script>     
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script> 
@@ -90,7 +91,8 @@
                         <span class = "user_language"></span>           
                         <span class = "text-xs my-1 mt-2">한국어 레벨 : </span>   
                         <span class = "user_korean text-xs text-gray-500"></span>
-                     </div>            
+                     </div>     
+                     <div class = "showSendmsgModal_btn mt-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg border-gray-900 px-1 py-1 my-1">학생에게 연락하기</div>       
                 </div>
             </div>
         </div>  
@@ -100,6 +102,8 @@
         <?php include './modal/cancelModal.php' ?>
          <!-- 결제 링크 전송 모달 -->
          <?php include './modal/paymentModal.php' ?>   
+         <!-- 학생에게 연락하기 모달 -->        
+        <?php include '../../../components/sendmsgModal/sendmsgModal.php'?>
         <br><br>        
     </body>
 </html>
