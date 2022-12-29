@@ -23,8 +23,8 @@
             <?php for ($i = 0; $i < 7; $i++) 
             
             {?>
-            <input type="checkbox" id = "dateBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden" />
-            <label for="dateBtn_<?php echo $i + 1; ?>" class="filter_checkbox hover:bg-gray-300 rounded-lg">
+            <input type="checkbox" id = "dateBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden filter_checkbox" />
+            <label for="dateBtn_<?php echo $i + 1; ?>" class="hover:bg-gray-300 rounded-lg">
                 <div class = "flex flex-col px-2 py-1 mx-2">
                     <span id = "day_<?php echo $i + 1; ?>" class = "small_text text-center">월</span>
                     <span id = "date_<?php echo $i + 1; ?>" class = "text-sm text-center">1</span>
@@ -39,8 +39,8 @@
                 <?php for ($i = 0; $i < 6; $i++) 
                 
                 {?>
-                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden" />
-                <label for="timeBtn_<?php echo $i + 1; ?>" class="filter_checkbox text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
+                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden filter_checkbox" />
+                <label for="timeBtn_<?php echo $i + 1; ?>" class="text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
                   
                 <?php } ?>                 
             </div>
@@ -48,8 +48,8 @@
                 <?php for ($i = 6; $i < 12; $i++) 
                 
                 {?>
-                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden" />
-                <label for="timeBtn_<?php echo $i + 1; ?>" class="filter_checkbox text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
+                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden filter_checkbox" />
+                <label for="timeBtn_<?php echo $i + 1; ?>" class="text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
                   
                 <?php } ?> 
             </div>
@@ -60,8 +60,8 @@
                 <?php for ($i = 12; $i < 18; $i++) 
                 
                 {?>
-                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden" />
-                <label for="timeBtn_<?php echo $i + 1; ?>" class="filter_checkbox text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
+                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden filter_checkbox" />
+                <label for="timeBtn_<?php echo $i + 1; ?>" class="text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
                   
                 <?php } ?> 
             </div>
@@ -69,8 +69,8 @@
                 <?php for ($i = 18; $i < 24; $i++) 
                 
                 {?>
-                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden" />
-                <label for="timeBtn_<?php echo $i + 1; ?>" class="filter_checkbox text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
+                <input type="checkbox" id = "timeBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden filter_checkbox" />
+                <label for="timeBtn_<?php echo $i + 1; ?>" class="text-xs text-gray-800 rounded-2xl hover:bg-gray-300 px-1 py-1 mx-1"><?php echo sprintf('%02d',$i); ?>:00</label>                    
                   
                 <?php } ?>
             </div>

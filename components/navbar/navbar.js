@@ -118,9 +118,11 @@ const go_teacher_page = async () => {
 
   // 드롭다운의 값 가져오기 (강사되기 or 강사페이지)
   let dropdownText = teacher_page.innerHTML;
+
+  console.log(dropdownText);
   
   // 강사 신청 안한 계정이면 강사 등록 페이지로 이동
-  if (dropdownText == '강사되기') {
+  if (dropdownText == '강사 되기') {
         
     // 유저 프로필에 항목 다 채운 경우에만 강사 등록 화면으로 이동
     const body = {
@@ -149,7 +151,7 @@ const go_teacher_page = async () => {
     else {
 
       alert("강사 등록 시 회원 정보를 모두 작성해야 합니다.");
-      location.replace("/editprofile/editprofile.php");
+      location.replace("/editprofile/");
     }
     
   }

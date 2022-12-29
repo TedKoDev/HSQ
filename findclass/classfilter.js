@@ -10,7 +10,7 @@ export function classfilter() {
     // 수업 유형 담겨있는 div
     const classType_div = $('.classTypeList');
 
-    // 수업 유형 클릭하면 그 value값에 해당하는 버튼을 생성
+    // 수업 유형 클릭하면 그 value값에 해당하는 버튼을 생성하거나 삭제 (삭제하는 건 아직 구현 못함)
     classType_div.addEventListener("click", (e) => {
         
         // const target = e.target.closest("button");
@@ -21,18 +21,25 @@ export function classfilter() {
 
         const filterValue = target.value;       
         
-        // 클릭 시 새로운 버튼 생성
-        const new_btn = document.createElement('div');
-        new_btn.innerHTML = `
-            <div id = "${filterValue}_div" value = ${filterValue} class = "flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
-                <span class = "mr-1">${filterValue}</span>
-                <button value = "${filterValue}" class="text-gray-800 font-medium inline-flex items-center" type="button">
-                    <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
-                </button>                
-            </div>
-            `;              
-                          
-        filterItem_div.append(new_btn);
+        // false->true일 경우 새로운 버튼 생성
+        if (e.target.checked == true) {
+
+            const new_btn = document.createElement('div');
+            new_btn.innerHTML = `
+                <div id = "${filterValue}_div" value = ${filterValue} class = "flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
+                    <span class = "mr-1">${filterValue}</span>
+                    <button value = "${filterValue}" class="text-gray-800 font-medium inline-flex items-center" type="button">
+                        <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
+                    </button>                
+                </div>
+                `;              
+                              
+            filterItem_div.append(new_btn);
+        }
+        else {
+            
+        }
+        
     });  
 
     
@@ -48,6 +55,41 @@ export function classfilter() {
            
     })
 
+    // 체크박스 클릭 시 색상 변화 함수
+    function clickCheckbox(e) {
+
+        // 해당 체크박스의 라벨 가져오기
+        const label = document.getElementById(e.target.value+"_l");
+
+        if (e.target.checked == true) {
+            
+            label.classList.remove('bg-gray-300');
+            label.classList.remove('hover:bg-gray-400');
+            label.classList.remove('text-gray-800');
+            label.classList.add('bg-gray-700');
+            label.classList.add('text-white');
+        }
+        else {
+
+            label.classList.remove('bg-gray-700');
+            label.classList.remove('text-white');
+            label.classList.add('bg-gray-300');
+            label.classList.add('hover:bg-gray-400');
+            label.classList.add('text-gray-800');
+            
+        }
+    }
+
+    const checkboxes = $_all('.filter_checkbox');
+    for (const box of checkboxes) {
+
+        box.addEventListener('click', (e) => {
+
+            clickCheckbox(e);
+        })
+    }
+
+   
 }
 
 let test = {
