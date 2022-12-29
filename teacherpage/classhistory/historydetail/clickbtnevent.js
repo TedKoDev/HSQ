@@ -1,7 +1,7 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
 import { classId, class_register_id, student_id, teacher_id, payment_array} from "./historydetail.js";
-// import {socket} from "./historydetail.js";
+import {socket} from "./historydetail.js";
 
 const acceptModal = $('.acceptModal');
 const acceptModalCloseBtn = $_all('.acceptModalCloseBtn');

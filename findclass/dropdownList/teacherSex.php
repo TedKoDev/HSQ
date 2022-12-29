@@ -6,11 +6,11 @@
         </div> -->
         <div class = "flex mb-1">
             <input type='radio' name='filter_teacher_sex' value='남성'/>
-            <span class = "ml-2 text-xs text-gray-700">남자</span>            
+            <span class = "ml-2 text-xs text-gray-700">남성</span>            
         </div>  
         <div class = "flex mb-1">
             <input type='radio' name='filter_teacher_sex' value='여성'/>            
-            <span class = "ml-2 text-xs text-gray-700">여자</span>                        
+            <span class = "ml-2 text-xs text-gray-700">여성</span>                        
         </div>           
     </div>             
 </div>

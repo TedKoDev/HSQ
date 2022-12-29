@@ -7,8 +7,8 @@ import { getMyId} from "../../../utils/getMyid.js";
 // let {class_id, user_id} = JSON.parse(localStorage.getItem("classId"));
 
 // 소켓 연결
-// export const socket = io.connect("ws://3.39.249.46:8080/webChatting");
-// socket.emit('enter_web_chat', getCookie(cookieName));
+export const socket = io.connect("ws://3.39.249.46:8080/webChatting");
+socket.emit('enter_web_chat', getCookie(cookieName));
 
 // clickbtnevent에서 사용하기 위해 수업id, 수업등록id, 학생id, 강사id, 결제링크 array export
 export let classId;

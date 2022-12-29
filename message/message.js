@@ -3,8 +3,8 @@ import {$, $_all} from "/utils/querySelector.js";
 import { getCookie, cookieName, s3_url} from "/commenJS/cookie_modules.js";
 
 // 소켓 연결
-// const socket = io.connect("ws://3.39.249.46:8080/webChatting");
-// socket.emit('enterWebChat', getCookie(cookieName));
+const socket = io.connect("ws://3.39.249.46:8080/webChatting");
+socket.emit('enterWebChat', getCookie(cookieName));
 
 let my_id;
 let msgResult;
@@ -125,7 +125,7 @@ function init() {
             circle.classList.add('hidden');
     
             // 소켓1 : 채팅방 입장 이벤트 (DB에서 해당 사용자의 lastcheck 업데이트)
-            // socket.emit('enter_chat_room', msgResult[i].chat_id, my_id);            
+            socket.emit('enter_chat_room', msgResult[i].chat_id, my_id);            
     
             // 현재 클릭한 채팅방id와 상대방 id를 전역변수에 각각 대입
             chatId_global = msgResult[i].chat_id;
@@ -584,15 +584,22 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
 // 메세지 수신 시 수신된 메세지가 있는 방에 들어가 있는 경우
 function read_msg_check(chat_room_id, sender_id) {
 
-    // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트
-    socket.emit('read_msg', chat_room_id, sender_id);
-
-    // 소켓서버에서 last_check 업데이트 되었다고 신호 오면 그 때 재 렌더링 해주는 이벤트
-    socket.on('read_msg_check', (chat_room_id, user_id) => {        
     
-        // 재 렌더링
-        init();    
-     });
+    if (sender_id != my_id) {
+
+        // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트 (본인이 보낸게 아닐 경우에만)
+        socket.emit('read_msg', chat_room_id, sender_id);
+
+        // 소켓서버에서 last_check 업데이트 되었다고 신호 오면 그 때 재 렌더링 해주는 이벤트
+        socket.on('read_msg_check', (chat_room_id, user_id) => {        
+        
+            // 재 렌더링
+            init();    
+        });
+    }
+    else {
+        init();
+    }      
 }
 
 
