@@ -7,29 +7,17 @@ import {$, $_all} from '/utils/querySelector.js';
 // 쿠키 값 가져오기   
 let checkCookie = getCookie("user_info");
 
-// 쿠키 가져오는 함수
-// function getCookie(cName) {
-//   cName = cName + '=';
-//   let cookieData = document.cookie;
-//   let start = cookieData.indexOf(cName);
-//   let cValue = '';
-//   if(start != -1){
-//   start += cName.length;
-//   let end = cookieData.indexOf(';', start);
-//   if(end == -1)end = cookieData.length;
-//   cValue = cookieData.substring(start, end);
-//   }
-//   return unescape(cValue);
-// }      
+    
 
 // 화면 모두 로드되면 쿠키 여부에 따라 메뉴바 우측 상단의 뷰 결정
-window.onload = function () {
+window.addEventListener("DOMContentLoaded", async function () {
 
   // 유저 아이콘, 로그인, 회원가입 뷰 초기화
   let userinfo = document.getElementById("id_user_info"); 
   let login = document.getElementById("id_login");
   let signup = document.getElementById("id_signup");
   let myStudy = document.getElementById("myStudy");
+  let msgIcon = document.getElementById("msg_icon");
 
   if (checkCookie) { // 쿠키가 있을 경우 (로그인이 되어 있는 상태일 경우)       
 
@@ -37,6 +25,7 @@ window.onload = function () {
     login.style.display = 'none';
     signup.style.display = 'none';    
     myStudy.style.display = 'block';
+    msgIcon.style.display = 'block';
 
     // 서버에 토큰값 전달
     postToken_nav(checkCookie);
@@ -47,8 +36,9 @@ window.onload = function () {
     login.style.display = 'block';
     signup.style.display = 'block';
     myStudy.style.display = 'none';
+    msgIcon.style.display = 'none';
   }
-}
+})
 
 // 쿠키가 있을 경우 쿠키의 토큰값을 서버로 전달한 뒤 프로필 이미지, 유저 이름, 강사여부 받아오기
 async function postToken_nav(tokenValue) {
@@ -128,6 +118,8 @@ const go_teacher_page = async () => {
 
   // 드롭다운의 값 가져오기 (강사되기 or 강사페이지)
   let dropdownText = teacher_page.innerHTML;
+
+  console.log(dropdownText);
   
   // 강사 신청 안한 계정이면 강사 등록 페이지로 이동
   if (dropdownText == '강사 되기') {

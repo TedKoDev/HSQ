@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Socket Tester</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+    #messages { list-style-type: none; margin: 0; padding: 0; }
+    #messages li { padding: 5px 10px; }
+    #messages li:nth-child(odd) { background: #eee; }
+
+    </style>
+  </head>
+  <body>
+    <div class="row">
+
+      <!-- 대기실 -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            namespace1
+            <button onclick="enterRoom1()">room1</button>
+            <button onclick="enterRoom2()">room2</button>
+            <button id="exit">퇴장</button>
+          </div>
+          <div class="card-body">
+            <form action="">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="m" autocomplete="off" />
+                <div class="input-group-append">
+                  <button id="msg-send" class="btn btn-primary" placeholder="message">Send</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <ul id="messages"></ul>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- 방선택 -->
+      <div class="col-lg-8"></div>
+    </div>
+    
+
+    // socket.io 클라이언트 설치
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+
+    <script>
+        /*
+          @ socket.io 사용방법
+          1. 이벤트를 주고받는(발신/수신) 방식으로 클라이언트와 서버가 통신한다.
+          ex) 클라이언트에서 사용자가 버튼을 클릭하면 click이라는 이벤트를 서버로 발신하는 코드 작성,
+              서버에서는 click이라는 이벤트를 수신할 경우의 코드를 작성.
+              이런 방식으로 서버와 클라이언트가 통신한다.
+
+          2. 이벤트 발신과 수신은 emit()과 on() 메소드를 통해 이뤄진다.
+            이벤트 발신 메소드 = emit()
+            이벤트 수신 메소드 = on()
+
+          3. 이벤트 발신 및 수신  
+          - 이벤트 발신
+            emit("이벤트명", 매개변수1, 매개변수2 ...);
+
+
+          - 이벤트 수신
+            on("이벤트명", , (param1, param2 ...) => {
+            // 해당 이벤트 수신시 수행할 로직
+          })
+
+
+
+          ex) 사용자가 로그인 할 경우의 프로세스
+
+          1. 클라이언트 로그인 이벤트 발신 - 프론트앤드
+          emit("userLogin", "user_id");
+
+          2. 클라이언트 입장 이벤트 수신 - 백앤드
+          on("userLogin", , (user_id) => {
+            
+            3. 회원정보 조회 - 백앤드
+            
+
+            4. 서버에서 user_id로 회원정보 조회 후 클라이언트로 회원정보 발신 - 백앤드
+            emit("loginSuccess", "user_info");
+
+          })
+
+          5. 서버에서 발신한 이벤트 클라이언트에서 수신 - 프론트앤드
+          on("loginSuccess", (user_info) => {
+
+            6. 메인 화면으로 이동 - 프론트앤드
+
+          })
+
+
+
+          프론트앤드/백앤드로 코드를 구분할 경우
+
+          @ 프론트 앤드
+          1. 클라이언트 로그인 이벤트 발신 - 프론트앤드
+          emit("userLogin", "user_id");
+
+          5. 서버에서 발신한 이벤트 클라이언트에서 수신
+          on("loginSuccess", (user_info) => {
+            6. 메인 화면으로 이동
+          })
+
+
+          @ 백앤드
+          2. 클라이언트 입장 이벤트 수신 - 백앤드
+          on("userLogin", , (user_id) => {
+            
+            3. 회원정보 조회
+            
+
+            4. 서버에서 user_id로 회원정보 조회 후 클라이언트로 회원정보 발신
+            emit("loginSuccess", "user_info");
+          })
+          
+        */
+
+
+      var btnEle = document.getElementById("exit");
+
+      // Room1입장 버튼
+      function enterRoom1(){
+
+      // webchatting이라는 namespace로 연결
+      // const socket = io.connect("http://localhost:3000/webChatting");
+      const socket = io.connect("ws://3.39.249.46:8080/webChatting");
+
+      // enter라는 이벤트에 room1이라는 매개변수를 담아 이벤트 발신 
+      socket.emit('enter', "room1");
+      
+      // enter라는 이벤트 수신할 경우 res로 받은 text를 <li> 태그에 담아서 <ul> 태그에 추가
+      socket.on('enter', (res) => {
+        $('#messages').prepend($('<li>').text(res));
+      });
+
+
+        // msg-send 버튼 클릭 시 request_messag라는 이벤트에 입력한 text를 담아서 서버로 이벤트 발신
+        $('#msg-send').click(() => {
+          socket.emit('request_message', $('#m').val());
+          $('#m').val('');
+          return false; 
+        });
+
+
+        // 서버로 부터 response_message라는 이벤트 수신 시 
+        // res로 받은 text를 <li> 태그에 담아서 <ul> 태그에 추가
+        socket.on('response_message', (res) => {
+          $('#messages').prepend($('<li>').text(res));
+        });
+
+
+        exit.addEventListener("click", function() {
+          // 소켓 연결 종료
+          socket.disconnect();
+          console.log("연결 종료");
+        });
+
+        btnEle.addEventListener("click", function() {
+          alert("퇴장하였습니다.");
+          socket.disconnect();
+          console.log("연결 종료");
+        });
+
+    } 
+
+
+    // Room2입장 버튼
+    function enterRoom2(){
+        const socket = io.connect("http://localhost:3000/namespace1");
+        socket.id = 10;
+        console.log("소켓아이디: "+socket.id);
+        socket.emit('enter', "room2");
+
+        socket.on('enter', (res) => {
+          $('#messages').prepend($('<li>').text(res));
+        });
+
+        // 클라이언트에서 reuqest_message 프로토콜로 id='m' 의 input 값을 보낸다.
+        $('#msg-send').click(() => {
+          socket.emit('request_message', $('#m').val());
+          $('#m').val('');
+          return false; 
+        });
+
+        socket.on('response_message', (res) => {
+          $('#messages').prepend($('<li>').text(res));
+        });
+
+        btnEle.addEventListener("click", function() {
+          alert("퇴장하였습니다.");
+          socket.disconnect();
+          console.log("연결 종료");
+        });
+        
+    }
+
+
+    
+        
+        
+        
+
+
+
+
+
+    </script>
+  </body>
+</html>

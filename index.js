@@ -15,7 +15,8 @@ async function sendToken(token) {
 
         const body = {
 
-            key: token,        
+            key: 22,   
+            key2: 11     
         };
         
         const res = await fetch('http://15.164.163.120:8080/', {

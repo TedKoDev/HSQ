@@ -99,8 +99,12 @@ const showClassList = ($container, response) => {
 
             $container.appendChild(a) 
 
-            // 수업 목록 클릭했을 때 수업 상세로 이동할 수 있는 리스너
-            move_history_detail(a, classId, userId);
+            // 수업 목록 클릭했을 때 수업 상세로 이동할 수 있는 리스너            
+            a.addEventListener('click', () => {
+
+                goClassDetail(classId, userId, '/teacherpage/classhistory/historydetail/');
+            })
+            
         }
 
         // 일단 처음에는 20개만 화면에 출력
@@ -131,25 +135,31 @@ const showClassList = ($container, response) => {
     }
 }
 
-// 수업 히스토리 상세로 이동
-function move_history_detail(a, classId, userId) {
+// 수업 상세 화면으로 이동
+function goClassDetail(class_id, user_id, url) {
+        
+    const form = document.createElement('form');
+    form.setAttribute('method', 'get');    
+    form.setAttribute('action', url);
 
-    // console.log(classId);
+    const hiddenField_class = document.createElement('input');
+    hiddenField_class.setAttribute('type', 'hidden');
+    hiddenField_class.setAttribute('name', 'class_id');
+    hiddenField_class.setAttribute('value', class_id);
+    const hiddenField_user = document.createElement('input');
+    hiddenField_user.setAttribute('type', 'hidden');
+    hiddenField_user.setAttribute('name', 'user_id');
+    hiddenField_user.setAttribute('value', user_id);
 
-    // 유저 id localstorage로 전달
-    const class_info = {
-  
-      class_id : classId,
-      user_id : userId,
-    }
+    form.appendChild(hiddenField_class);
+    form.appendChild(hiddenField_user);
+
+    document.body.appendChild(form);
+
+    form.submit();      
     
-    a.addEventListener('click', () => {
-     
-     localStorage.setItem("classId", JSON.stringify(class_info));
+}
 
-     location.assign("/teacherpage/classhistory/historydetail");
-    });    
-  }
 
 // 수업 상태에 따라 텍스트 변경하는 함수
 const statusChange = (status, $classStyle) => {
