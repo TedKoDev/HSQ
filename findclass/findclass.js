@@ -110,7 +110,7 @@ function setClassinfo(response) {
         div.setAttribute("id", class_id);
 
         div.innerHTML = [
-            '<a href = "../classdetail/classdetail.php" class = "hover:bg-gray-200">',            
+            '<a href = "../classdetail/" class = "hover:bg-gray-200">',            
                 '<div class = "hover:shadow-lg-gray-200 flex flex-col bg-gray-50 border border-gray-400 rounded-lg py-2 px-4 mb-2">',
                     '<div class = "mb-3">'+clname+
                     '</div>',

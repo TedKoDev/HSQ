@@ -7,6 +7,7 @@
     </head> 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.1/dist/flowbite.min.css" />
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <!-- <link rel="stylesheet" src = "./seekbar.css"> -->
     <script defer="defer" src = "./seekbar.js"></script>
     <script defer="defer" src="../commenJS/cookie.js"></script> 

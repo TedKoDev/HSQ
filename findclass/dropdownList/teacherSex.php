@@ -5,11 +5,11 @@
             <span class = "ml-2 text-xs text-gray-700">상관 없음</span>
         </div> -->
         <div class = "flex mb-1">
-            <input type='radio' name='teacher_type' value='tutor'/>
+            <input type='radio' name='filter_teacher_sex' value='남성'/>
             <span class = "ml-2 text-xs text-gray-700">남자</span>            
         </div>  
         <div class = "flex mb-1">
-            <input type='radio' name='teacher_type' value='special'/>            
+            <input type='radio' name='filter_teacher_sex' value='여성'/>            
             <span class = "ml-2 text-xs text-gray-700">여자</span>                        
         </div>           
     </div>             
