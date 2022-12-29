@@ -20,7 +20,23 @@
 
 include("../conn.php");
 include("../jwt.php");
+require '../aws/aws-autoloader.php';
 
+
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+use Aws\S3\MultipartUploader;
+use Aws\Exception\MultipartUploadException;
+
+
+$s3Client = new S3Client([
+	'version' => 'latest',
+	'region'  => 'ap-northeast-2',
+	'credentials' => [
+		'key'    => 'AKIAWBRH4IMAJ3QJ45UC', 
+		'secret' => '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',
+	]
+]);
 
 $jwt = new JWT();
 
@@ -162,14 +178,31 @@ if (isset( $_FILES['img'])) {
         }
         $zip->close();
         
+        
+
+        $s3_path = 'Teacher_Request_File/'.$zip_name2 ; // 업로드할 위치와 파일명 입니다.               
+ 
+        $file_data = $zip_name1; // Form 전송을 통해 받은 데이터 입니다.
+        $result = $s3Client->putObject(array(
+          'Bucket' => 'hangle-square',
+          'Key'    => $s3_path,
+          'SourceFile' => $file_data ,
+       
+        ));
+
+        unlink($zip_name1);
+
+
+
         // Create HTML Link option to download zip
         // $success = basename($zip_name1);
     } else {
         $error = '<strong>Error!! </strong> Please select a file.';
     }
 
+        $q ='https://hangle-square.s3.ap-northeast-2.amazonaws.com/'.$s3_path;
     
-    $select = "UPDATE User_Teacher SET teacher_file = '$zip_name2' where user_id = '$User_ID'";
+    $select = "UPDATE User_Teacher SET teacher_file = '$q'  where user_id = '$User_ID'";
     $result8 = mysqli_query($conn, $select);
 
 
