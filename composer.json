@@ -1,6 +1,6 @@
 {
     "require": {
-        "paypal/rest-api-sdk-php": "*"
-   
+        "paypal/rest-api-sdk-php": "*",
+        "wgenial/s3-objects-stream-zip-php": "^4.1"
     }
 }
