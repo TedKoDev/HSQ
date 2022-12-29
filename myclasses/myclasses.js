@@ -24,6 +24,7 @@ getClassList("cancel", responseCanceled);
 // 3. all일 때만 classList 객체 생성
 async function getClassList(type, response) {
 
+  
   const body = {
 
     kind: 'clist',

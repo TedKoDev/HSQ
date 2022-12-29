@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title>Socket.IO chat</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <!-- <form action="chat" method="get">
+        
+        <input type="submit">
+    </form> -->
+    <input id="value" type="text">
+
+    <button onclick="namespace1Btn()">webChatting</button>
+    <button onclick="namespace2Btn()">namespace2</button>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script>
+        
+
+        var val;
+
+        function namespace1Btn() {
+            val = $("#value").val();
+            location.href ='namespace1.html?value='+val;
+        }
+
+        function namespace2Btn() {
+            val = $("#value").val();
+            location.href ='namespace2.html?value='+val;
+        }
+        
+    </script>
+</body>
+
+
+</html>

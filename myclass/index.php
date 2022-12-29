@@ -7,7 +7,8 @@
     </head>
     <script>
         let class_id = "<?php echo $class_id = $_GET['class_id']; ?>";
-        
+        // 강사 id (강사에게 연락하기 할 때 사용할 용도)
+        let U_id;
     </script>
     <script type="module" defer="defer" src="./myclass.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>   
@@ -95,9 +96,12 @@
                     <div
                         class="show-reserve bg-blue-500 hover:bg-blue-600 text-white rounded-lg border-blue-900 px-1 py-1 my-1">다른 수업 예약</div>
                     <div
-                        class=" bg-gray-500 hover:bg-gray-600 text-white rounded-lg border-gray-900 px-1 py-1 my-1">강사에게 연락하기</div>
+                        class="showSendmsgModal_btn bg-gray-500 hover:bg-gray-600 text-white rounded-lg border-gray-900 px-1 py-1 my-1">강사에게 연락하기</div>
                 </div>
             </div>
         </div>
+        <!-- 강사에게 연락하기 모달 -->
+        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+        <?php include '../components/sendmsgModal/sendmsgModal.php'?>
     </body>
 </html>

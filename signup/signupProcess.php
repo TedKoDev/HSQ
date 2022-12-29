@@ -56,8 +56,8 @@ if ($checkresult->num_rows > 0) {
 
 
 
-    $sql = " INSERT INTO User (user_email, user_password, user_name, user_google_key, user_facebook_key, user_character, user_register_date)
- VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null','null', NOW() )";
+    $sql = " INSERT INTO User (user_email, user_password, user_name, user_google_key, user_facebook_key, user_meta_id, user_meta_nickname, user_active, user_register_date)
+ VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null','0','0','0', NOW() )";
     // echo $sql;
     $result = mysqli_query($conn, $sql);
     if ($result === false) {

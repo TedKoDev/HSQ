@@ -28,6 +28,7 @@
 //   "korean": null,
 //   "teacher": null,
 //   "intro": null
+//   "teacher_intro": null
 // }
 
 
@@ -42,8 +43,9 @@ include("../jwt.php");
 $jwt = new JWT();
 
 // 토큰값 전달 받음 
-file_get_contents("php://input") . "<br/>";
+
 $token = json_decode(file_get_contents("php://input"))->{"token"};
+
 
 error_log(" $token\n", "3", "../php.log");
 //토큰 해체 
@@ -57,9 +59,7 @@ $payload = json_decode($parted[1], true);
 
 
 $User_ID =  base64_decode($payload['User_ID']);
-
 $U_Name  = base64_decode($payload['U_Name']);
-
 $U_Email = base64_decode($payload['U_Email']);
 
 // 
@@ -67,7 +67,7 @@ $U_Email = base64_decode($payload['U_Email']);
 // DB 정보 가져오기 
 // $sql = "SELECT User.User_ID, User.U_Name, User.U_Email,  U_D_Img, U_D_Bday, U_D_Sex, U_D_Contact, U_D_Country, U_D_Residence ,U_D_Point, U_D_Timezone, U_D_Language ,U_D_Korean, U_D_T_add , U_D_Intro FROM HANGLE.User left join User_Detail on User.User_ID = User_Detail.User_Id where User.User_ID = '{$User_ID}'";
 
-$sql = "SELECT User.user_id, User.user_name, User.user_email,  User_Detail.user_img,  User_Detail.user_birthday,  User_Detail.user_sex,  User_Detail.user_contact,  User_Detail.user_country,  User_Detail.user_residence,  User_Detail.user_point,  User_Detail.user_timezone,  User_Detail.user_language,  User_Detail.user_korean,  User_Detail.teacher_register_check,  User_Detail.user_intro FROM HANGLE.User left join User_Detail on User.user_id = User_Detail.user_id where User.user_id = '{$User_ID}'";
+$sql = "SELECT User.user_id, User.user_name, User.user_email,  User_Detail.user_img,  User_Detail.user_birthday,  User_Detail.user_sex,  User_Detail.user_contact,  User_Detail.user_country,  User_Detail.user_residence,  User_Detail.user_point,  User_Detail.user_timezone,  User_Detail.user_language,  User_Detail.user_korean,  User_Detail.teacher_register_check,  User_Detail.user_intro, User_Teacher.teacher_intro FROM HANGLE.User left outer join User_Detail on User.user_id = User_Detail.user_id left outer join User_Teacher on  User_Detail.user_id = User_Teacher.User_id where User.user_id = '{$User_ID}'";
 
 
 $result = mysqli_query($conn, $sql);
@@ -93,6 +93,7 @@ $row = mysqli_fetch_array($result);
  $send['user_korean']                    = $row['user_korean'];
  $send['teacher_register_check']                    = $row['teacher_register_check'];
  $send['user_intro']                    = $row['user_intro'];
+ $send['teacher_intro']                    = $row['teacher_intro'];
 
 
 

@@ -17,6 +17,7 @@ async function getClasslist() {
     const classStart = $('.classStart');
     const classEnd = $('.classEnd');
 
+    
     let filterObject = {
 
         token: getCookie(cookieName),
@@ -43,12 +44,13 @@ async function getClasslist() {
        filterObject.filter_class_resister_time_from = dayjs(key_time_from).valueOf();
        classStart.value = key_time_from;
     }
+    
     if (key_time_to != "") {
         filterObject.filter_class_resister_time_to = dayjs(key_time_to).valueOf();
-        classEnd.value = key_time_end;
+        classEnd.value = key_time_to;
     }
 
-
+    console.log(filterObject);
 
     const res = await fetch('/restapi/classinfo.php', {
         method: 'POST',

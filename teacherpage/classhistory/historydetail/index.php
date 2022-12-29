@@ -5,7 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/dist/output.css" rel="stylesheet">
     </head>        
-    <script type = "module" defer = "defer" src="./historydetail.js"></script>      
+    <script>
+        
+        let class_id = "<?php echo $class_id = $_GET['class_id']; ?>";
+        let user_id = "<?php echo $user_id = $_GET['user_id']; ?>";
+        // 학생에게 연락하기 메세지 전송을 위해 선언한 U_id;
+        let U_id = user_id;
+    </script>
+    <script type = "module" defer = "defer" src="./historydetail.js"></script>     
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script> 
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>  
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
@@ -31,7 +39,7 @@
                 <div class = "flex justify-center">
                     <button class = "class_approve_btn px-2 py-1 bg-gray-600 rounded-lg text-white mx-2 my-2 hover:bg-gray-800">수업 일정 확정</button>
                     <button class = "class_cancel_btn px-2 py-1 bg-gray-300 rounded-lg  text-gray-800 mx-2 my-2 hover:bg-gray-400">수업 취소</button> 
-                    <button class = "send_paypal_btn px-2 py-1 bg-blue-500 rounded-lg  text-white mx-2 my-2 hover:bg-blue-600">결제 링크 전송</button>                                   
+                    <button class = "send_link_btn px-2 py-1 bg-blue-500 rounded-lg  text-white mx-2 my-2 hover:bg-blue-600">결제 링크 전송</button>                                   
                 </div>                
                 <hr class="bg-gray-300 border border-1">
                 <div class="flex items-center">
@@ -83,14 +91,19 @@
                         <span class = "user_language"></span>           
                         <span class = "text-xs my-1 mt-2">한국어 레벨 : </span>   
                         <span class = "user_korean text-xs text-gray-500"></span>
-                     </div>            
+                     </div>     
+                     <div class = "showSendmsgModal_btn mt-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg border-gray-900 px-1 py-1 my-1">학생에게 연락하기</div>       
                 </div>
             </div>
         </div>  
         <!-- 예약 승인 모달  -->        
         <?php include './modal/acceptModal.php' ?>  
          <!-- 수업 취소 모달 -->
-        <?php include './modal/cancelModal.php' ?>  
+        <?php include './modal/cancelModal.php' ?>
+         <!-- 결제 링크 전송 모달 -->
+         <?php include './modal/paymentModal.php' ?>   
+         <!-- 학생에게 연락하기 모달 -->        
+        <?php include '../../../components/sendmsgModal/sendmsgModal.php'?>
         <br><br>        
     </body>
 </html>
