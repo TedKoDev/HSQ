@@ -1,0 +1,85 @@
+<!--index.html-->
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>How to Upload File on server using Fetch API with PHP</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+</head>
+<body>
+    <div class="container">
+    	<h2 class="text-center mt-4 mb-4">HoUpload File on server using Fetch API with PHP</h2>
+    	<div class="card">
+    		<div class="card-header">Upload Image</div>
+    		<div class="card-body">
+    			<table class="table">
+    				<tr>
+    					<th width="50%" class="text-right"><b>Select Image</b></th>
+    					<th width="50%">
+          
+    						<input type="file" name="sample_image" />  
+    					</th>
+    				</tr>
+    			</table>
+
+    		</div>
+    	</div>
+    	<div class="text-center" id="uploaded_image"></div>
+    </div>
+</body>
+</html>
+
+<script>
+console.log(1);
+const sample_image = document.getElementsByName('sample_image')[0];
+console.log(2);
+sample_image.addEventListener('change', () => {
+	console.log(3);
+	upload_image(sample_image.files[0]);
+	console.log(4);
+
+	
+});
+console.log(5);
+//파일 업로드 기능 
+const upload_image = (file) => {
+
+	// console.log(token,file);  
+ 
+  //FormData형태에 file을 담아 fetch로 php로  넘기기
+	const form_data = new FormData();
+
+	form_data.append('sample_image', file); // 파일값 
+	
+	console.log(66);
+	console.log(form_data);
+
+
+	fetch("fetchupload2.php", {
+
+		method:"POST",
+
+    	body:form_data
+		
+
+	})
+	
+	.then(function(response){
+
+		return response.json();
+
+	}).then(function(responseData){
+
+		document.getElementById('uploaded_image').innerHTML = '<div class="alert alert-success">Image Uploaded Successfully</div> <img src="'+responseData.image_source+'" class="img-thumbnail" />';
+
+		document.getElementsByName('sample_image')[0].value = '';
+
+	})
+	;
+
+}
+
+
+</script>
