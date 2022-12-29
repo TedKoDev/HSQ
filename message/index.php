@@ -8,6 +8,14 @@
     <script type="module" defer = "defer" src="./message.js"></script>    
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <style>
+        .line_clamp_1 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+    }
+    </style>
     <body class="bg-gray-100">        
         <!-- 네비바 -->
         <?php include '../components/navbar/navbar.php' ?>   
