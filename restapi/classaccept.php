@@ -35,10 +35,9 @@ $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 사용자(학생)토큰 
-$class_register_id      =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 사용자(학생)토큰 
-$class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 사용자(학생)토큰 
-
+$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 
+$class_register_id      =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 
+$class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 
 error_log("$kind ,   $token,  $class_register_id,   $class_register_status, \n", "3", "../php.log");
 
 if($class_register_status == '1'){
@@ -89,7 +88,7 @@ mysqli_close($conn);
   $send["class_register_status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
   $send["class_register_id"]   =  $class_register_id;
-
+  $send["user_name"]   =  $U_Name;
   $send["success"]   =  "yes";
   echo json_encode($send);
 
@@ -97,6 +96,7 @@ mysqli_close($conn);
   $send["status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
   $send["success"]   =  "no22";
+  $send["user_name"]   =  $U_Name;
   echo json_encode($send);
  
 }
@@ -114,12 +114,14 @@ $response = mysqli_query($conn, $select);
    $send["class_register_status"]   =  $status;
    $send["class_register_answer_date"]   =  $class_register_answer_date;
    $send["class_register_id"]   =  $class_register_id;
+   $send["user_name"]   =  $U_Name;
    $send["success"]   =  "yes";
    echo json_encode($send);
  
  } else {
    $send["status"]   =  $status;
    $send["class_register_answer_date"]   =  $class_register_answer_date;
+   $send["user_name"]   =  $U_Name;
    $send["success"]   =  "no";
    echo json_encode($send);
   

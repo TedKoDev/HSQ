@@ -1,6 +1,6 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
-import { classId, class_register_id, student_id, teacher_id, payment_array} from "./historydetail.js";
+import { classId, class_register_id, student_id, teacher_id, teacher_name, payment_array} from "./historydetail.js";
 import {socket} from "./historydetail.js";
 
 const acceptModal = $('.acceptModal');
@@ -51,14 +51,14 @@ async function accept_or_cancel(status) {
 
         if (status == 1) {
             alert("예약 확정되었습니다");
-            socket.emit('acceptance_class', student_id, teacher_id, classId, class_register_id);
+            socket.emit('acceptance_class', student_id, teacher_id, classId, class_register_id, response.user_name+"님이 수강 요청을 수락했습니다.");
         }
         else if (status == 2) {
             alert("수업 취소되었습니다");
-            socket.emit('cancel_class', student_id, teacher_id, classId, class_register_id);
+            socket.emit('cancel_class', student_id, teacher_id, classId, class_register_id, teacher_id, response.user_name+"님이 수업을 취소했습니다.");
         }
     
-        window.location.reload();
+        // window.location.reload();
     }
     else {
         console.log("통신 오류");
@@ -121,7 +121,7 @@ export async function sendPaymentLink() {
     // 링크 전송하기 버튼 클릭하면 소켓서버에서 요청하고 모달창 내리기
     sendLinkBtn.addEventListener('click', () => {
 
-        socket.emit('send_paypal_msg', student_id, teacher_id, classId, class_register_id);
+        socket.emit('send_paypal_msg', student_id, teacher_id, classId, class_register_id, teacher_name+"님이 결제 링크를 보냈습니다.");
         alert("결제 링크가 전송되었습니다.");
 
         linkModal.classList.add('hidden');

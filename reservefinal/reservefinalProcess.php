@@ -136,14 +136,14 @@ if ($response4) { //정상일떄
   
   $data = array(
     'schedule_list'            =>   'Teacher_Schedule 값 업뎃 됨',
-    'success'        	=>	'yes'   
+    'success'           =>   'yes'   
   );
   // echo json_encode($data);
   // mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
     'schedule_list'            =>   'Teacher_Schedule 값 업뎃 안됨',
-    'success'        	=>	'no'
+    'success'           =>   'no'
   );
   // echo json_encode($data);
   // mysqli_close($conn);
@@ -151,15 +151,15 @@ if ($response4) { //정상일떄
   
   $data = array(
     'schedule_list'            =>   'class_add  잘됨',
-    'success'        	=>	'yes',
-    'lastclassregisterid'        	=>	$last_CAID
+    'success'           =>   'yes',
+    'lastclassregisterid'           =>   $last_CAID
   );
   // echo json_encode($data);
   // mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
  
-    'success'        	=>	'no'
+    'success'           =>   'no'
   );
   // echo json_encode($data);
   // mysqli_close($conn);
@@ -260,7 +260,8 @@ $mail->send();
 $data = array(
  
   'success'           => "yes",
-  'class_register_id'        	=>	$last_CAID
+  'class_register_id'           =>   $last_CAID,
+  'user_name'           =>   $U_Name
 );
 echo json_encode($data);
   mysqli_close($conn);
@@ -278,11 +279,3 @@ mysqli_close($conn);
  ;
 }
 
-
-// AGREE(예약승인) : Please click this link to accept reservation for class :'.$clname.''. "<br/>".'
-// http://localhost/reservefinal/reserveApproval.php?email='.$U_Email.'&CAID='.$last_CAID.'&agree='.'1'.'
-// '. "<br/>".'
-// '. "<br/>".'
-
-// REFUSE(예약거절): Please click this link to accept reservation for class :'.$clname.''. "<br/>".'
-// http://localhost/reservefinal/reserveApproval.php?email='.$U_Email.'&CAID='.$last_CAID.'&agree='.'2'.'

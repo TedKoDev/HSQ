@@ -168,6 +168,7 @@ if ($filter_class_price_min == null) {
 
 //테스트용 ! 
 // $User_ID = 320; //학생의 userid
+
 // $kind = 'clist';
 // $clReserveCheck  =  'detail';
 // $filter_class_status_check = 'all'; // 수업 상태 필터 
@@ -176,6 +177,26 @@ if ($filter_class_price_min == null) {
 // $filter_class_resister_time_from =  '2022-12-19 02:21:41';
 // $filter_class_resister_time_to   =  '2022-12-19 02:22:41';
 // $timezone =9; //사용자(학생)의 TimeZone
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -255,16 +276,42 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 
 
 // error_log("$User_ID ,   $kind,  $clReserveCheck,   $filter_class_status_check, \n", "3", "../php.log");
+
+
+
+
+
+
 //수업찾기 필터 테스트용 
 // $kind = 'clist';
 // $clReserveCheck = null; //안해도됨
 // $filter_check      = 'ok(아무값)';
 // $filter_search     = '한국';  
-
 // $filter_date = array("1671517800000","1671521400000","1671517800000","1671521400000");
-
 // $filter_date = array("1671517800000");
 // $filter_class_type = array("발음");
+
+
+//수업찾기 필터 
+// $filter_check      = json_decode(file_get_contents("php://input"))->{"filter_check"};    // 필터사용유무
+// $filter_search      = json_decode(file_get_contents("php://input"))->{"filter_search"};    // 검색어 필터 (수업명, 수업설명부분 필터 )
+// $filter_class_type           = json_decode(file_get_contents("php://input"))->{"filter_class_type"};    //  수업타입 필터  
+// $filter_class_price_min      = json_decode(file_get_contents("php://input"))->{"filter_class_price_min"};    // 최저가격
+// $filter_class_price_max      = json_decode(file_get_contents("php://input"))->{"filter_class_price_max"};    // 최대가격
+// $filter_teacher_special      = json_decode(file_get_contents("php://input"))->{"filter_teacher_special"};    // 강사 전문가 여부
+// $filter_teacher_country      = json_decode(file_get_contents("php://input"))->{"filter_teacher_country"};    // 강사 출신국가 
+// $filter_teacher_sex          = json_decode(file_get_contents("php://input"))->{"filter_teacher_sex"};        // 강사성별
+// $filter_teacher_language     = json_decode(file_get_contents("php://input"))->{"filter_teacher_language"};   // 강사 사용언어 
+
+// $filter_date           = json_decode(file_get_contents("php://input"))->{"filter_date"};   // 수업 일자   
+
+
+
+
+
+
+
+
 
 // $User_ID = 324; //강사의 userid
 // $kind            =   'tclist';         //  
@@ -822,10 +869,10 @@ if ($kind == 'cdetail') {
         //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
         $teacher_Sql = "SELECT 
           *
-       FROM User
-       JOIN User_Detail
+        FROM User
+        JOIN User_Detail
          ON User.user_id = User_Detail.user_id
-       JOIN User_Teacher
+        JOIN User_Teacher
          ON User_Teacher.user_id = User_Detail.user_id  $tsql_where";
 
 
@@ -1384,6 +1431,7 @@ if ($kind == 'cdetail') {
   if ($SRCList_Result1) { //정상적으로 저장되었을때 
 
     $result["success"] = "yes";
+    $result["user_name"] = $U_Name;
     echo json_encode($result);
     mysqli_close($conn);
   } else {
