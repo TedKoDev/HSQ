@@ -531,18 +531,27 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
         // 읽었다고 소켓서버에 다시 보내기
         read_msg_check(chat_room_id, sender_id);
 
+        let showDateCheck;        
+        if (dayjs(msg_date).add(utc, "hour").format('YYYY/MM/DD') == dayjs(parseInt(recent_msg_time_global)).format('YYYY/MM/DD')) {
+            showDateCheck = 'no';
+        }
+        else {
+            showDateCheck = 'yes';
+        }
+
+        console.log("showDataCheck : "+showDateCheck);
 
         const div = document.createElement("div");
 
         if (sender_id == my_id) {
             
-            // setText(div, msg_date, sender_img, chat_msg, 'yes', showDateCheck); 
-            setText(div, msg_date, sender_img, chat_msg, 'yes');          
+            setText(div, msg_date, sender_img, chat_msg, 'yes', showDateCheck); 
+                    
         }
         else {
                                    
-            // setText(div, msg_date, sender_img, chat_msg, 'no', showDateCheck);
-            setText(div, msg_date, sender_img, chat_msg, 'no');
+            setText(div, msg_date, sender_img, chat_msg, 'no', showDateCheck);
+           
         }
         chattingList_div.append(div);          
     }
