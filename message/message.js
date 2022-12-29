@@ -1,6 +1,7 @@
 import { test, test_json } from "./example_json.js";
 import {$, $_all} from "/utils/querySelector.js";
 import { getCookie, cookieName, s3_url} from "/commenJS/cookie_modules.js";
+import { getMyUtc } from "../utils/getMyUtc.js";
 
 // 소켓 연결
 const socket = io.connect("ws://3.39.249.46:8080/webChatting");
@@ -8,14 +9,15 @@ socket.emit('enter_web_chat', getCookie(cookieName));
 
 let my_id;
 let msgResult;
-
+let utc = await getMyUtc(getCookie(cookieName));
 
 // 채팅방 리스트 뿌리는 div
 const chat_room_div = $('.chatroom_list');
 
-// 채팅 메세지 전송할 때 현재 접속한(클릭한) 채팅방 확인을 위해 전역으로 채팅방id, 상대방id 선언;
+// 채팅 메세지 전송할 때 현재 접속한(클릭한) 채팅방 확인을 위해 전역으로 채팅방id, 상대방id 선언, 최근 채팅방 시간 선언;
 let chatId_global = 0;
 let otherId_global;
+let recent_msg_time_global;
 
 
 // 채팅방 리스트 초기 세팅해주는 함수
@@ -144,9 +146,10 @@ async function init() {
             // 소켓1 : 채팅방 입장 이벤트 (DB에서 해당 사용자의 lastcheck 업데이트)
             socket.emit('enter_chat_room', msgResult[i].chat_id, my_id);            
     
-            // 현재 클릭한 채팅방id와 상대방 id를 전역변수에 각각 대입
+            // 현재 클릭한 채팅방id와 상대방 id, 최근 채팅방시간을 전역변수에 각각 대입
             chatId_global = msgResult[i].chat_id;
             otherId_global = other_id;
+            recent_msg_time_global = msgResult[i].recent_msg_time;
 
             // 채팅방에 입장할 경우에는 채팅 상대방의 이름과 전송 버튼이 표시
             checkNameOrInput(chatId_global);
@@ -241,22 +244,33 @@ function getChattingList(msgResult, chat_id) {
         // div 생성
         const div = document.createElement("div");
 
+
+        // 채팅일 경우 이전 채팅과 비교해서 월:일 표시 여부 체크
+        let showDateCheck;
+        if ((j != 0) && (dayjs(parseInt(chattingList[j].msg_time)).format('YYYY/MM/dd') == dayjs(parseInt(chattingList[j-1].msg_time)).format('YYYY/MM/dd'))) {
+            
+            showDateCheck = 'no';
+        }
+        else {
+            showDateCheck = 'yes';
+        }
+
+
         // 일반 채팅일 경우
         if (chattingList[j].msg_type == 'text') {                                        
            
             const date = chattingList[j].msg_time;
             const user_img = chattingList[j].sender_img;        
-            const msg_desc = chattingList[j].msg_desc; 
-
+            const msg_desc = chattingList[j].msg_desc;             
 
             if (chattingList[j].sender_id == my_id) {                   
 
-                setText(div, date, user_img, msg_desc, 'yes');       
+                setText(div, date, user_img, msg_desc, 'yes', showDateCheck);       
                 
             }
             else {               
                
-                setText(div, date, user_img, msg_desc, 'no');     
+                setText(div, date, user_img, msg_desc, 'no', showDateCheck);     
             }     
             
             chattingList_div.append(div);
@@ -310,22 +324,29 @@ function getChattingList(msgResult, chat_id) {
 // 텍스트, paypal, 수업 요청/승인/취소 하는 컴포넌트
 
 // 텍스트일 경우 대입하는 함수
-function setText(div, date, user_img, msg_desc, me) {
+function setText(div, date, user_img, msg_desc, me, showDateCheck) {
+
+    let month_date = dayjs(date).format("MM월 DD일");
+
+    if (showDateCheck == 'no') {
+        month_date = '';
+    }
 
     if (me == 'yes') {
 
         div.innerHTML = `
         <div class = "px-2">
-            <div class = "text-center text-xs text-gray-500 my-2 border-2">${dayjs(date).format("MM월 DD일 hh:mm")}</div>
+            <div class = "text-center text-xs text-gray-500 my-2 border-2">${month_date}</div>
             <div class = "flex flex-row-reverse my-2">
                 <img
                     id="user_image_chat"
                     class="my-auto w-6 h-6 border-gray-900 rounded-full"
                     src="${s3_url}Profile_Image/${user_img}">
                 </img> 
-                <span class = "w-1/2 mr-2 p-2 text-sm bg-gray-50 rounded-lg">
+                <div class = "w-1/2 mr-2 p-2 text-sm bg-blue-200 border-blue-300 rounded-lg">
                     ${msg_desc}
-                </span>
+                </div>
+                <span class = "text-xs text-gray-400 mt-3 mr-1">${dayjs(date).format("hh:mm")}</span>
             </div>
         </div>
         `;
@@ -333,7 +354,7 @@ function setText(div, date, user_img, msg_desc, me) {
     else {
         div.innerHTML = `
         <div class = "px-2">
-            <div class = "text-center text-xs text-gray-500 my-2 border-2">${dayjs(parseInt(date)).format("MM월 DD일 hh:mm")}</div>
+            <div class = "text-center text-xs text-gray-500 my-2 border-2">${month_date}</div>
             <div class = "flex my-2">
                 <img
                     id="user_image_chat"
@@ -342,7 +363,8 @@ function setText(div, date, user_img, msg_desc, me) {
                 </img> 
                 <span class = "w-1/2 ml-2 p-2 text-sm bg-gray-50 rounded-lg">
                     ${msg_desc}
-                </span>                
+                </span>       
+                <span class = "text-xs text-gray-400 mt-3 ml-1">${dayjs(date).format("hh:mm")}</span>         
             </div>
         </div>
         `;
@@ -502,8 +524,7 @@ function sendTextMessage() {
 // 소켓 서버에서 들어오는 요청 받는 곳
 socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date) => {
         
-    console.log("chat_room_id : "+chat_room_id);   
-    console.log("chatId_global : "+chatId_global);
+    
 
     if (chat_room_id == chatId_global) {       
         
@@ -515,10 +536,12 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
 
         if (sender_id == my_id) {
             
-            setText(div, msg_date, sender_img, chat_msg, 'yes');           
+            // setText(div, msg_date, sender_img, chat_msg, 'yes', showDateCheck); 
+            setText(div, msg_date, sender_img, chat_msg, 'yes');          
         }
         else {
                                    
+            // setText(div, msg_date, sender_img, chat_msg, 'no', showDateCheck);
             setText(div, msg_date, sender_img, chat_msg, 'no');
         }
         chattingList_div.append(div);          
@@ -536,13 +559,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
 
 socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, paypal_link, msg_date, student_id, teacher_id, msg_id) => {
 
-    console.log("chat_room_id : "+chat_room_id);
-    console.log("class_register_id : "+class_register_id);
-    console.log("class_name : "+class_name);
-    console.log("teacher_name : "+teacher_name);
-    console.log("teacher_img : "+teacher_img);
-    console.log("paypal_link : "+paypal_link);
-    
+       
 
     if (chat_room_id == chatId_global) {        
 
@@ -563,13 +580,7 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
 
 socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id, msg_id) => {
 
-    console.log("chat_room_id : "+chat_room_id);
-    console.log("class_register_id : "+class_register_id);
-    console.log("class_name : "+class_name);
-    console.log("teacher_name : "+teacher_name);
-    console.log("teacher_img : "+teacher_img);
-
-
+    
     if (chat_room_id == chatId_global) {
 
         // 읽었다고 소켓서버에 다시 보내기
@@ -590,11 +601,6 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, teacher
 
 socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id, msg_id) => {
 
-    console.log("chat_room_id : "+chat_room_id);
-    console.log("class_register_id : "+class_register_id);
-    console.log("class_name : "+class_name);
-    console.log("teacher_name : "+teacher_name);
-    console.log("teacher_img : "+teacher_img);
 
 
     if (chat_room_id == chatId_global) {
@@ -615,13 +621,7 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
 });
 
 socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id, msg_id) => {
-
-    console.log("chat_room_id : "+chat_room_id);
-    console.log("class_register_id : "+class_register_id);
-    console.log("class_name : "+class_name);
-    console.log("teacher_name : "+teacher_name);
-    console.log("teacher_img : "+teacher_img);  
-
+    
 
     if (chat_room_id == chatId_global) {
 
@@ -643,9 +643,7 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
 // 메세지 수신 시 수신된 메세지가 있는 방에 들어가 있는 경우
 function read_msg_check(chat_room_id, sender_id) {
 
-    console.log("sender_id : "+sender_id);
-    console.log("my_id : "+my_id);
-
+   
     if (sender_id != my_id) {
 
         // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트 (본인이 보낸게 아닐 경우에만)
