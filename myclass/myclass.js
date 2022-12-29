@@ -23,7 +23,8 @@ const response = await res.json();
 
 // 서버에서 가져온 데이터 화면에 표시
 const result = response[0];
-
+// 강사 id 대입
+U_id = result.user_id_teacher;
 const class_name = result.class_name;
 const class_price = result.class_price;
 const class_date = result.class_start_time;

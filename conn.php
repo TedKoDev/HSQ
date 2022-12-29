@@ -8,4 +8,17 @@
  
  $conn = mysqli_connect($servername, $username, $password, $db_name);
  
+
+
+ $db = new PDO('mysql:host=hs-api-db.csis3ho8an2b.ap-northeast-2.rds.amazonaws.com;dbname='.$db_name.';charset=utf8',$username,$password);
+
+//set some db attributes;
+
+ $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+ $db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+ define('APP_NAME','PHP REST API TUTORIAL');
+
+
 ?>

@@ -8,6 +8,7 @@
         <!-- 쿠기 생성, 가져오기, 삭제 -->
         <script src="../commenJS/cookie.js"></script>
         <script defer="defer" src="./reservefinal.js"></script>
+        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script> 
         <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>        
     </head>
     <body class="bg-gray-100">

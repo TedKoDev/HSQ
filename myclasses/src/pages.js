@@ -161,10 +161,12 @@ const showClassList = ($container, response) => {
       // 수업시간 int로 변환
       const string_to_int = parseInt(classDate);
 
-      // 월,일, 시 파싱
-      const month = dayjs(string_to_int).format('MM월');
-      const date = dayjs(string_to_int).format('DD');
-      const hourAndMin = dayjs(string_to_int).format('hh:mm');
+      // 수업 시간만큼 빼고 월,일, 시 파싱
+      const classStartTime = dayjs(string_to_int).subtract(parseInt(classList[i].class_time), 'minute');      
+      const month = classStartTime.format('MM월');
+      const date = classStartTime.format('DD');
+      const hourAndMin = classStartTime.format('hh:mm');
+
 
       // 이미지 경로 
       const teacherImgeLink = s3_url+"Profile_Image/"+teacherImage;
