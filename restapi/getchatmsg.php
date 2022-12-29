@@ -24,7 +24,7 @@ $User_ID = base64_decode($payload['User_ID']); //학생의 userid
 
 
 
-// $User_ID = 324;
+$User_ID = 324;
 
 
 
