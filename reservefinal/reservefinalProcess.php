@@ -260,7 +260,8 @@ $mail->send();
 $data = array(
  
   'success'           => "yes",
-  'class_register_id'        	=>	$last_CAID
+  'class_register_id'        	=>	$last_CAID,
+  'user_name'        	=>	$U_Name
 );
 echo json_encode($data);
   mysqli_close($conn);

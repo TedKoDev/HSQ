@@ -88,7 +88,7 @@ while ($row = mysqli_fetch_array($response)) {
 
     $sql3 = "SELECT 
     Chat_Message.*
-    From Chat_Message LEFT OUTER JOIN User ON Chat_Message.sender_id = User.user_id LEFT OUTER JOIN User_Detail ON User_Detail.user_id = Chat_Message.sender_id  where Chat_Message.chat_room_id = $chat_room_id  ";
+    From Chat_Message LEFT OUTER JOIN User ON Chat_Message.sender_id = User.user_id LEFT OUTER JOIN User_Detail ON User_Detail.user_id = Chat_Message.sender_id  where Chat_Message.chat_room_id = $chat_room_id order by chat_message_Id asc ";
 
     $response3 = mysqli_query($conn, $sql3);
 
@@ -101,18 +101,18 @@ while ($row = mysqli_fetch_array($response)) {
         $send1['msg_type'] = $row3['message_type'];
 
 
-        $sender_id = $row3['sender_id'];
+        $msgsender_id = $row3['sender_id'];
 
 
         $sql4 = "SELECT 
    
         User.user_name,
         User_Detail.user_img
-        From User LEFT OUTER JOIN User_Detail ON User.user_id = User_Detail.user_id where User.user_id = $senderid  ";
+        From User LEFT OUTER JOIN User_Detail ON User.user_id = User_Detail.user_id where User.user_id = $msgsender_id  ";
 
         $response4 = mysqli_query($conn, $sql4);
         $row4 = mysqli_fetch_array($response4);
-        $send1['sender_id'] = $senderid;
+        $send1['sender_id'] = $msgsender_id;
         $send1['sender_name'] = $row4['user_name'];
         $send1['sender_img'] = $row4['user_img'];
 
@@ -444,7 +444,7 @@ while ($row = mysqli_fetch_array($response)) {
     $time = $row['recent_msg_date'];
     
     $time2 = strtotime($time);
-    $send1['recent_msg_date'] = $time2 *1000;
+    $send['recent_msg_time'] = $time2 *1000;
 
     
     $send['msg_list'] = $result2['msg_list'];

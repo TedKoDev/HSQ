@@ -129,42 +129,47 @@ if (isset($_POST['teacher_certification'])) {
 
 //첨부파일 
 
-if (isset($_FILES['img'])) {
 
+
+if (isset( $_FILES['img'])) {
+    
     if (!empty($_FILES['img']['name'][0])) {
-
+        
         $zip = new ZipArchive();
         $zip_time = time();
         // $zip_name1 = getcwd() . "/uploads/USER_" . $zip_time . ".zip";
         $zip_name1 = "../uploads/USER_" . $zip_time . ".zip";
         $zip_name2 = "USER_" . $zip_time . ".zip";
-
+        
         // Create a zip target
         if ($zip->open($zip_name1, ZipArchive::CREATE) !== TRUE) {
             $error .= "Sorry ZIP creation is not working currently.<br/>";
         }
-
+        
         $imageCount = count($_FILES['img']['name']);
-        for ($i = 0; $i < $imageCount; $i++) {
-
+        for($i=0;$i<$imageCount;$i++) {
+        
             if ($_FILES['img']['tmp_name'][$i] == '') {
                 continue;
             }
             // $newname = date('YmdHis', time()) . mt_rand() . '.jpg';
-
+            
             // Moving files to zip.
             $zip->addFromString($_FILES['img']['name'][$i], file_get_contents($_FILES['img']['tmp_name'][$i]));
+            
+            // // moving files to the target folder.
+            // move_uploaded_file($_FILES['img']['tmp_name'][$i], './uploads/' . $newname);
         }
         $zip->close();
-
+        
         // Create HTML Link option to download zip
         // $success = basename($zip_name1);
     } else {
         $error = '<strong>Error!! </strong> Please select a file.';
     }
 
-
-    $select = "UPDATE User_Teacher SET U_T_FILE = '$zip_name2' where User_Id = '$User_ID'";
+    
+    $select = "UPDATE User_Teacher SET teacher_file = '$zip_name2' where user_id = '$User_ID'";
     $result8 = mysqli_query($conn, $select);
 
 

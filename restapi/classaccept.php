@@ -88,7 +88,7 @@ mysqli_close($conn);
   $send["class_register_status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
   $send["class_register_id"]   =  $class_register_id;
-
+  $send["user_name"]   =  $U_Name;
   $send["success"]   =  "yes";
   echo json_encode($send);
 
@@ -96,6 +96,7 @@ mysqli_close($conn);
   $send["status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
   $send["success"]   =  "no22";
+  $send["user_name"]   =  $U_Name;
   echo json_encode($send);
  
 }
@@ -113,12 +114,14 @@ $response = mysqli_query($conn, $select);
    $send["class_register_status"]   =  $status;
    $send["class_register_answer_date"]   =  $class_register_answer_date;
    $send["class_register_id"]   =  $class_register_id;
+   $send["user_name"]   =  $U_Name;
    $send["success"]   =  "yes";
    echo json_encode($send);
  
  } else {
    $send["status"]   =  $status;
    $send["class_register_answer_date"]   =  $class_register_answer_date;
+   $send["user_name"]   =  $U_Name;
    $send["success"]   =  "no";
    echo json_encode($send);
   
