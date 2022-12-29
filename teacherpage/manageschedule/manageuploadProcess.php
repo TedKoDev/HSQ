@@ -30,8 +30,8 @@
 // 통일성이 부족하다. 
 
 
-include("../conn.php");
-include("../jwt.php");
+include("../../conn.php");
+include("../../jwt.php");
 
 
 $jwt = new JWT();

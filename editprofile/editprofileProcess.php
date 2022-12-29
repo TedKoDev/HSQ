@@ -24,6 +24,7 @@
 //가능언어   - "language" 
 //한국어수준 -  "korean"
 //자기소개   -  "intro"
+//강사자기소개   -  "teacher_intro"
 
 //시간대 - "utc"
 
@@ -381,6 +382,32 @@ else if ($position === "utc") {
         echo json_encode($send);
         mysqli_close($conn);
     }
+} // 강사 소개 수정 
+//$desc 가 'teacher_intro '인경우 
+else if ($position == "teacher_intro") {
+
+
+
+    $select = "UPDATE User_Teacher SET teacher_intro = '$desc' where user_id = '$user_id' ";
+
+
+    $response = mysqli_query($conn, $select);
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "teacher_intro";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "teacher_intro";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
 }
+
 
 //2022.12.14 대공사 수정완료 db 테이블 칼럼 및  입출 변수 수정완료 .

@@ -35,10 +35,9 @@ $U_Email = base64_decode($payload['U_Email']); //학생의 Email
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 사용자(학생)토큰 
-$class_register_id      =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 사용자(학생)토큰 
-$class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 사용자(학생)토큰 
-
+$kind      =   json_decode(file_get_contents("php://input"))->{"kind"}; // 
+$class_register_id      =   json_decode(file_get_contents("php://input"))->{"class_register_id"}; // 
+$class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 
 error_log("$kind ,   $token,  $class_register_id,   $class_register_status, \n", "3", "../php.log");
 
 if($class_register_status == '1'){
@@ -52,6 +51,9 @@ $Sql3 = "SELECT Class_Add.user_id_teacher, Class_Add.schedule_list FROM Class_Ad
 $SRCList_Result3 = mysqli_query($conn, $Sql3);
 
 $row3 = mysqli_fetch_array($SRCList_Result3);
+
+// $send['class_register_id'] = $row3['class_register_id']; //신청된 수업 번호   
+// $class_register_id = $row3['class_register_id']; //강사의 유저 번호  
 
 $send['user_id_teacher'] = $row3['user_id_teacher']; //강사의 유저 번호  
 $user_id_teacher = $row3['user_id_teacher']; //강사의 유저 번호  
@@ -85,6 +87,8 @@ mysqli_close($conn);
  if ($response2) { //정상적으로 파일 저장되었을때 
   $send["class_register_status"]   =  $status;
   $send["class_register_answer_date"]   =  $class_register_answer_date;
+  $send["class_register_id"]   =  $class_register_id;
+
   $send["success"]   =  "yes";
   echo json_encode($send);
 
@@ -108,6 +112,7 @@ $response = mysqli_query($conn, $select);
   if ($response) { //정상적으로 파일 저장되었을때 
    $send["class_register_status"]   =  $status;
    $send["class_register_answer_date"]   =  $class_register_answer_date;
+   $send["class_register_id"]   =  $class_register_id;
    $send["success"]   =  "yes";
    echo json_encode($send);
  

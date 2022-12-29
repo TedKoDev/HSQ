@@ -18,8 +18,26 @@
 
 
 
+
 include("../conn.php");
 include("../jwt.php");
+require '../aws/aws-autoloader.php';
+
+
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+use Aws\S3\MultipartUploader;
+use Aws\Exception\MultipartUploadException;
+
+
+$s3Client = new S3Client([
+	'version' => 'latest',
+	'region'  => 'ap-northeast-2',
+	'credentials' => [
+		'key'    => 'AKIAWBRH4IMAJ3QJ45UC', 
+		'secret' => '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',
+	]
+]);
 
 
 $jwt = new JWT();
@@ -131,16 +149,65 @@ if (isset($_POST['teacher_certification'])) {
 
 if (isset($_FILES['img'])) {
 
+
+
+
+
     if (!empty($_FILES['img']['name'][0])) {
+
+
+
+
+	$extension = pathinfo($_FILES['img']['name'], PATHINFO_EXTENSION);
+
+	$new_name = 'P_IMG_'.$User_ID.'.' . $extension;
+
+	error_log("'image  ', 	$new_name\n", "3", "./php.log");
+
+
+
+
+	// $select = "UPDATE User_Detail SET U_D_Img = '$new_name' where User_Id = '$User_ID' ";
+	$select = "UPDATE User_Detail SET user_img = '$new_name' where user_id = '$User_ID' ";
+
+	$response = mysqli_query($conn, $select);
+
+
+	
+
+
+
+
+
+
+
+
 
         $zip = new ZipArchive();
         $zip_time = time();
         // $zip_name1 = getcwd() . "/uploads/USER_" . $zip_time . ".zip";
-        $zip_name1 = "../uploads/USER_" . $zip_time . ".zip";
+        // $zip_name1 = "../uploads/USER_" . $zip_time . ".zip";
         $zip_name2 = "USER_" . $zip_time . ".zip";
 
+
+
+
+
+        // Form 전송을 통해 업로드 할 경우에는 아래와 같이 사용됩니다.
+            $s3_path = 'Teacher_Request_File/'.$new_name ; // 업로드할 위치와 파일명 입니다.               
+
+
+            $file_path = $_FILES['img']['tmp_name']; // Form 전송을 통해 받은 데이터 입니다.
+            $result = $s3Client->putObject(array(
+              'Bucket' => 'hangle-square',
+              'Key'    => $s3_path,
+              'SourceFile' => $file_path,
+            
+            ));
+
+
         // Create a zip target
-        if ($zip->open($zip_name1, ZipArchive::CREATE) !== TRUE) {
+        if ($zip->open($s3Client . $s3_path, ZipArchive::CREATE) !== TRUE) {
             $error .= "Sorry ZIP creation is not working currently.<br/>";
         }
 
@@ -156,6 +223,11 @@ if (isset($_FILES['img'])) {
             $zip->addFromString($_FILES['img']['name'][$i], file_get_contents($_FILES['img']['tmp_name'][$i]));
         }
         $zip->close();
+
+
+        
+
+        
 
         // Create HTML Link option to download zip
         // $success = basename($zip_name1);
