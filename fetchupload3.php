@@ -32,17 +32,17 @@ use Aws\S3\Exception\S3Exception;
 
 
 try {
-	http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html#hardcoded-credentials
-	$zipStream = new S3ObjectsStreamZip(array(
-		'version' => 'latest', // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_configuration.html#version
-		'region' => 'ap-northeast-2', // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_configuration.html#region
-		'credentials' => array(
-			'key'    => 'AKIAWBRH4IMAJ3QJ45UC', 
-			'secret' => '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'
-		),
-		// 'endpoint' => '', // https://docs.aws.amazon.com/general/latest/gr/s3.html
-		// 'bucket_endpoint' => '', // https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.S3.S3Client.html#___construct
-	));
+	// http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html#hardcoded-credentials
+	// $zipStream = new S3ObjectsStreamZip(array(
+	// 	'version' => 'latest', // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_configuration.html#version
+	// 	'region' => 'ap-northeast-2', // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_configuration.html#region
+	// 	'credentials' => array(
+	// 		'key'    => 'AKIAWBRH4IMAJ3QJ45UC', 
+	// 		'secret' => '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'
+	// 	),
+	// 	// 'endpoint' => '', // https://docs.aws.amazon.com/general/latest/gr/s3.html
+	// 	// 'bucket_endpoint' => '', // https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.S3.S3Client.html#___construct
+	// ));
 
 
   $bucket = 'hangle-square'; // required
