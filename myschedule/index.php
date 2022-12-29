@@ -40,8 +40,7 @@
                 <?php 
                 $num = 0;
                 for ($i = 0; $i < 6; $i++) {
-
-                    // $num = $num + 1;
+                    
                     ?>
                     <div class = "flex w-full">
                         <?php 

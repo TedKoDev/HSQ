@@ -1,13 +1,46 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
-import {classAccept, classCancel, sendPaypalLink} from "./clickbtnevent.js";
-
+import {classAccept, classCancel, sendPaymentLink} from "./clickbtnevent.js";
+import { getMyId} from "../../../utils/getMyid.js";
 
 // 수업 id랑 수업 신청한 유저 id 가져오기
-let {class_id, user_id} = JSON.parse(localStorage.getItem("classId"));
+// let {class_id, user_id} = JSON.parse(localStorage.getItem("classId"));
 
-// clickbtnevent에서 사용하기 위해 수업id export
-export const classId = class_id;
+// 소켓 연결
+export const socket = io.connect("ws://3.39.249.46:8080/webChatting");
+socket.emit('enter_web_chat', getCookie(cookieName));
+
+// clickbtnevent에서 사용하기 위해 수업id, 수업등록id, 학생id, 강사id, 결제링크 array export
+export let classId;
+export const class_register_id = class_id;
+export const student_id = user_id;
+export const teacher_id = await getMyId(getCookie(cookieName));
+export let payment_array = new Array();
+
+// 내 id 가져와서 대입
+// let my_id;
+// getMyId();
+// async function getMyId() {
+
+//     const body = {
+       
+//         token : getCookie("user_info")
+//     };
+//     const res = await fetch('/utils/utc.php', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json;charset=utf-8'
+//         },
+//         body: JSON.stringify(body)
+//     });
+    
+//     const response = await res.json();  
+    
+//     my_id = response.user_id;
+
+//     console.log(my_id);
+// }
+
 
 // 수업과 관련된 데이터 가져와서 대입
 getClassDetail();
@@ -32,10 +65,15 @@ async function getClassDetail() {
     
     const response = await res.json();    
 
+    console.log(response);
+
     
     if (response.success == "yes") {
 
         const result = response.result[0];
+
+        classId = result.class_id;
+        payment_array = result.payment_link;
 
         const class_name = result.class_name;
         const class_price = result.class_price;
@@ -79,10 +117,11 @@ async function getUserInfo() {
         body: JSON.stringify(body)
     });
     
-    const response = await res.json();    
+    const response = await res.json();  
+    
+    console.log(response);
     
     const result = response.result[0];
-
     const user_name = result.user_name;
     const user_language = result.user_language;
     const user_korean = result.user_korean;
@@ -143,7 +182,7 @@ function setClassRegisterMethod(class_register_method) {
 
 const class_approve_btn = $('.class_approve_btn');
 const class_cancel_btn = $('.class_cancel_btn');
-const send_paypal_btn = $('.send_paypal_btn');
+const send_link_btn = $('.send_link_btn');
 function setClassRegisterStatus(status) {
 
     if (status == "0") {
@@ -154,9 +193,9 @@ function setClassRegisterStatus(status) {
 
         // 예약 승인, 결제 요청 버튼 비활성화
         class_approve_btn.setAttribute("class", "class_approve_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
-        send_paypal_btn.setAttribute("class", "send_paypal_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
+        send_link_btn.setAttribute("class", "send_link_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
         class_approve_btn.disabled = true;    
-        send_paypal_btn.disabled = true;
+        send_link_btn.disabled = true;
 
     } else if (status == "2") {
         status = "취소됨"
@@ -164,10 +203,10 @@ function setClassRegisterStatus(status) {
         // 예약 승인/취소, 결제요청 버튼 비활성화
         class_approve_btn.setAttribute("class", "class_approve_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
         class_cancel_btn.setAttribute("class", "class_cancel_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
-        send_paypal_btn.setAttribute("class", "send_paypal_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
+        send_link_btn.setAttribute("class", "send_link_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
         class_approve_btn.disabled = true;        
         class_cancel_btn.disabled = true;
-        send_paypal_btn.disabled = true;
+        send_link_btn.disabled = true;
 
     } else if (status == "3") {
         status = "완료됨"
@@ -175,10 +214,10 @@ function setClassRegisterStatus(status) {
         // 예약 승인/취소, 결제요청 버튼 비활성화
         class_approve_btn.setAttribute("class", "class_approve_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
         class_cancel_btn.setAttribute("class", "class_cancel_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
-        send_paypal_btn.setAttribute("class", "send_paypal_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
+        send_link_btn.setAttribute("class", "send_link_btn px-2 py-1 bg-gray-100 rounded-lg text-gray-300 mx-2 my-2");
         class_approve_btn.disabled = true;        
         class_cancel_btn.disabled = true;
-        send_paypal_btn.disabled = true;
+        send_link_btn.disabled = true;
     }
     $('.class_status').innerText = status;
 
@@ -195,5 +234,5 @@ class_approve_btn.addEventListener('click', classAccept)
 // // 예약 취소 버튼 클릭
 class_cancel_btn.addEventListener('click', classCancel)
 // // 페이팔 링크 전송 버튼 클릭
-send_paypal_btn.addEventListener('click', sendPaypalLink)
+send_link_btn.addEventListener('click', sendPaymentLink)
 

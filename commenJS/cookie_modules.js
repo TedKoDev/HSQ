@@ -8,6 +8,8 @@ export let cookieName = 'user_info';
 export let s3_url = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/";
 
 
+
+
 // 쿠키 생성 함수
 export function setCookie(cName, cValue, cDay){
     

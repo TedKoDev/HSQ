@@ -1,7 +1,12 @@
+import {$} from '/utils/querySelector.js';
+import { classfilter } from './classfilter.js';
 
 
 // 첫 화면에서는 모든 수업 정보 가져오기
 getClassinfo_all();
+
+// 더보기 버튼
+const see_more_btn = $('#see_more');
 
 // 모든 수업 목록 가져오기 
 async function getClassinfo_all() {
@@ -35,15 +40,18 @@ async function getClassinfo_all() {
         console.log("서버 통신 오류");
       }
 
-    // 더보기 버튼 보이게 처리
-    const see_more = document.getElementById("see_more");
-    see_more.style.display = 'block';
+    // 더보기 버튼 보이게 처리    
+    see_more_btn.style.display = 'block';
 
 }
 
 // 더보기 클릭
 // 처음 화면 출력할 때는 0으로 세팅
 let more_num = 0;
+
+see_more_btn.addEventListener('click', see_more);
+
+
 async function see_more() {
 
     // 클릭할 때마다 1씩 증가
@@ -102,7 +110,7 @@ function setClassinfo(response) {
         div.setAttribute("id", class_id);
 
         div.innerHTML = [
-            '<a href = "../classdetail/classdetail.php" class = "hover:bg-gray-200">',            
+            '<a href = "../classdetail/" class = "hover:bg-gray-200">',            
                 '<div class = "hover:shadow-lg-gray-200 flex flex-col bg-gray-50 border border-gray-400 rounded-lg py-2 px-4 mb-2">',
                     '<div class = "mb-3">'+clname+
                     '</div>',
@@ -175,4 +183,10 @@ function moveClassdetail(div, class_id, teacher_id) {
      localStorage.setItem("c_and_t_id", JSON.stringify(c_and_t_info));     
     });
   }
+
+
+// 필터와 관련된 코드 가져오기
+classfilter();
+
+
 

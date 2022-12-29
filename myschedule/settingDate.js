@@ -192,11 +192,11 @@ export function calendarInit(scheduleInfo) {
             
     }
 
+    // 캘린더 안에 수업 클릭 시 수업 상세로 이동
     function goClassDetail(class_id, url) {
         
         const form = document.createElement('form');
-        form.setAttribute('method', 'get');
-        // form.setAttribute('target', '_blank');
+        form.setAttribute('method', 'get');        
         form.setAttribute('action', url);
 
         const hiddenField = document.createElement('input');
@@ -208,8 +208,6 @@ export function calendarInit(scheduleInfo) {
         document.body.appendChild(form);
 
         form.submit();
-        
-        // location.assign(url+"?class_id="+class_id);
     }
 
     // 이전/다음 버튼 눌러서 캘린더 날짜 변경할 때 다시 재 렌더링하는 함수
