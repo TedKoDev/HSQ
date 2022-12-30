@@ -24,6 +24,7 @@ $User_ID = base64_decode($payload['User_ID']); //학생의 userid
 
 
 
+// $User_ID = 324;
 
 
 
@@ -33,15 +34,17 @@ $result1['result'] = array();
 
 //  
 $sql = "SELECT 
-Chat_Room.chat_room_id,
+* FROM
+(SELECT Chat_Room.chat_room_id,
 Chat_Room.sender_id,
 Chat_Room.sender_last_check,
 Chat_Room.receiver_id, 
 Chat_Room.receiver_last_check, 
 Chat_Room.recent_msg_id,
 Chat_Room.recent_msg,
-Chat_Room.recent_msg_date 
-From Chat_Room where Chat_Room.sender_id = $User_ID or Chat_Room.receiver_id =  $User_ID ";
+Chat_Room.recent_msg_date From Chat_Room where Chat_Room.exit_user_id != $User_ID and Chat_Room.exit_user_id != -1 ) AS new_list
+ where new_list.sender_id = $User_ID or new_list.receiver_id =  $User_ID  order by new_list.recent_msg_date desc
+";
 
 $response = mysqli_query($conn, $sql);
 
@@ -54,11 +57,14 @@ while ($row = mysqli_fetch_array($response)) {
 
 
     $senderid = $row['sender_id'];
+
+
     $sender_last_check = $row['sender_last_check'];
 
 
     $receiverid = $row['receiver_id'];
     $receiver_last_check = $row['receiver_last_check'];
+
 
 
 
@@ -96,7 +102,7 @@ while ($row = mysqli_fetch_array($response)) {
 
      
 
-        $send1['msg_id'] = $row3['chat_room_id'];
+        $send1['msg_id'] = $row3['chat_message_Id'];
         $send1['msg_type'] = $row3['message_type'];
 
 
@@ -412,8 +418,7 @@ while ($row = mysqli_fetch_array($response)) {
     $send['receiver_img'] = $row2['user_img'];
 
     $send['recent_msg_id'] = $row['recent_msg_id'];
-
-
+ 
     $recent_msg_id = $row['recent_msg_id'];
     $sender_last_check = $row['sender_last_check'];
     $receiver_last_check = $row['receiver_last_check'];
@@ -438,7 +443,7 @@ while ($row = mysqli_fetch_array($response)) {
 
     $send['sender_non_read_count'] = $row8;
     $send['receiver_non_read_count'] = $row9;
-    $send['resent_msg_desc'] = $row['recent_msg'];
+    $send['recent_msg_desc'] = $row['recent_msg'];
     // $send['recent_msg_date'] = $row['recent_msg_date'];
     $time = $row['recent_msg_date'];
     
