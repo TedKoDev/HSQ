@@ -1431,6 +1431,7 @@ if ($kind == 'cdetail') {
   if ($SRCList_Result1) { //정상적으로 저장되었을때 
 
     $result["success"] = "yes";
+    $result["user_name"] = $U_Name;
     echo json_encode($result);
     mysqli_close($conn);
   } else {
