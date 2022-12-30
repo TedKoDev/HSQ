@@ -41,7 +41,9 @@ Chat_Room.receiver_id,
 Chat_Room.receiver_last_check, 
 Chat_Room.recent_msg_id,
 Chat_Room.recent_msg,
-Chat_Room.recent_msg_date 
+Chat_Room.recent_msg_date, 
+Chat_Room.sender_enter_date, 
+Chat_Room.receiver_enter_date 
 From Chat_Room where Chat_Room.sender_id = $User_ID or Chat_Room.receiver_id =  $User_ID ";
 
 $response = mysqli_query($conn, $sql);
@@ -55,12 +57,18 @@ while ($row = mysqli_fetch_array($response)) {
 
 
     $senderid = $row['sender_id'];
+
+
     $sender_last_check = $row['sender_last_check'];
 
 
     $receiverid = $row['receiver_id'];
     $receiver_last_check = $row['receiver_last_check'];
 
+
+
+    $sender_enter_date = $row['sender_enter_date'];
+    $receiver_enter_date = $row['receiver_enter_date'];
 
 
     $chat_room_id = $row['chat_room_id'];
@@ -413,7 +421,9 @@ while ($row = mysqli_fetch_array($response)) {
     $send['receiver_img'] = $row2['user_img'];
 
     $send['recent_msg_id'] = $row['recent_msg_id'];
-
+    $send['sender_enter_date'] = $row['sender_enter_date'];
+    $send['receiver_enter_date'] = $row['receiver_enter_date'];
+ 
 
     $recent_msg_id = $row['recent_msg_id'];
     $sender_last_check = $row['sender_last_check'];
