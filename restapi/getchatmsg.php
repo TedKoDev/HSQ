@@ -34,17 +34,17 @@ $result1['result'] = array();
 
 //  
 $sql = "SELECT 
-Chat_Room.chat_room_id,
+* FROM
+(SELECT Chat_Room.chat_room_id,
 Chat_Room.sender_id,
 Chat_Room.sender_last_check,
 Chat_Room.receiver_id, 
 Chat_Room.receiver_last_check, 
 Chat_Room.recent_msg_id,
 Chat_Room.recent_msg,
-Chat_Room.recent_msg_date, 
-Chat_Room.sender_enter_date, 
-Chat_Room.receiver_enter_date 
-From Chat_Room where Chat_Room.sender_id = $User_ID or Chat_Room.receiver_id =  $User_ID ";
+Chat_Room.recent_msg_date From Chat_Room where Chat_Room.exit_user_id != $User_ID and Chat_Room.exit_user_id != -1 ) AS new_list
+ where new_list.sender_id = $User_ID or new_list.receiver_id =  $User_ID 
+";
 
 $response = mysqli_query($conn, $sql);
 
@@ -66,9 +66,6 @@ while ($row = mysqli_fetch_array($response)) {
     $receiver_last_check = $row['receiver_last_check'];
 
 
-
-    $sender_enter_date = $row['sender_enter_date'];
-    $receiver_enter_date = $row['receiver_enter_date'];
 
 
     $chat_room_id = $row['chat_room_id'];
@@ -421,10 +418,7 @@ while ($row = mysqli_fetch_array($response)) {
     $send['receiver_img'] = $row2['user_img'];
 
     $send['recent_msg_id'] = $row['recent_msg_id'];
-    $send['sender_enter_date'] = $row['sender_enter_date'];
-    $send['receiver_enter_date'] = $row['receiver_enter_date'];
  
-
     $recent_msg_id = $row['recent_msg_id'];
     $sender_last_check = $row['sender_last_check'];
     $receiver_last_check = $row['receiver_last_check'];
@@ -449,7 +443,7 @@ while ($row = mysqli_fetch_array($response)) {
 
     $send['sender_non_read_count'] = $row8;
     $send['receiver_non_read_count'] = $row9;
-    $send['resent_msg_desc'] = $row['recent_msg'];
+    $send['recent_msg_desc'] = $row['recent_msg'];
     // $send['recent_msg_date'] = $row['recent_msg_date'];
     $time = $row['recent_msg_date'];
     
