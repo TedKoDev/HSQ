@@ -439,7 +439,7 @@ while ($row = mysqli_fetch_array($response)) {
 
     $send['sender_non_read_count'] = $row8;
     $send['receiver_non_read_count'] = $row9;
-    $send['resent_msg_desc'] = $row['recent_msg'];
+    $send['recent_msg_desc'] = $row['recent_msg'];
     // $send['recent_msg_date'] = $row['recent_msg_date'];
     $time = $row['recent_msg_date'];
     
