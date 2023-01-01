@@ -112,19 +112,70 @@ $plus   =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더�
 
 
 
-// 강사상세 출력인지 목록 출력인지 
-if ($tusid != null) {
-  //해당 tusid에 해당하는 상세정보를 가져옴 
-  //tusid 가 있으면 작동
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"};  //유저의 로컬 타임존 
+// $utc      =   9;  //유저의 로컬 타임존 
+
+
+
+
+
+
+
+
+
+
+if ($token != null) {
 
   //토큰 해체 
   $data = $jwt->dehashing($token);
   $parted = explode('.', base64_decode($token));
   $payload = json_decode($parted[1], true);
   $User_ID =  base64_decode($payload['User_ID']);
+  // $User_ID =  324;
   $U_Name  = base64_decode($payload['U_Name']);
   $U_Email = base64_decode($payload['U_Email']);
+  $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
+  $login = 'yes login';
+  // $timezone      =   8;
+
+} else {
+  // echo 111;
+  $timezone = $utc;
+  // $send['CONNECT_USER_TIMEZONE'] = $utc;
+  $login = 'not login';
+
+  // $User_ID =  324;
+
+}
+
+
+
+// 강사상세 출력인지 목록 출력인지 
+if ($tusid != null) {
+  //해당 tusid에 해당하는 상세정보를 가져옴 
+  //tusid 가 있으면 작동
 
 
   //배열생성 
@@ -132,22 +183,6 @@ if ($tusid != null) {
   $result1['data'] = array();
   $result2['timeprice'] = array();
 
-
-  if ($token != null) {
-
-    //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
-    $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
-    $response1 = mysqli_query($conn, $sql);
-    $row1 = mysqli_fetch_array($response1);
-
-
-    $timezone = $row1['user_timezone'];
-    $send['CONNECT_USER_TIMEZONE'] = $row1['user_timezone'];
-  } else {
-
-    $timezone = $utc;
-    $send['CONNECT_USER_TIMEZONE'] = $utc;
-  }
 
 
   //Class_List에 수업 목록확인  
