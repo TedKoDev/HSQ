@@ -61,11 +61,11 @@ $response1 = mysqli_query($conn, $sql);
 
 $result1['data'] = array();
 while ($row1 = mysqli_fetch_array($response1)) {
-    $usid = $row1['1'];
+    $usid = $row1['user_id'];
 
-    $send['user_id'] = $row1['1'];
-    $send['teacher_intro'] = $row1['2'];
-    $send['teacher_special'] = $row1['4'];
+    $send['user_id'] = $row1['user_id'];
+    $send['teacher_intro'] = $row1['teacher_intro'];
+    $send['teacher_special'] = $row1['teacher_special'];
 
 
     //User_Detail 에서 이미지, 언어 수업 시간, 가격 확인   
@@ -74,9 +74,9 @@ while ($row1 = mysqli_fetch_array($response1)) {
 
     $row2 = mysqli_fetch_array($response2);
 
-    $send['user_img'] = $row2['2'];
-    $send['user_language'] = $row2['8'];
-    $send['user_intro'] = $row2['12'];
+    $send['user_img'] = $row2['user_img'];
+    $send['user_language'] = $row2['user_language'];
+    $send['user_intro'] = $row2['user_intro'];
 
     //User 에서 유저 이름    
     $sql = "SELECT * FROM User WHERE user_id = '$usid'";
@@ -84,7 +84,7 @@ while ($row1 = mysqli_fetch_array($response1)) {
 
     $row3 = mysqli_fetch_array($response3);
 
-    $send['user_name'] = $row3['3'];
+    $send['user_name'] = $row3['user_name'];
 
 
 
@@ -100,8 +100,8 @@ while ($row1 = mysqli_fetch_array($response1)) {
     $response4 = mysqli_query($conn, $sql);
 
     $row4 = mysqli_fetch_array($response4);
-    $clid = $row4['0'];
-    $send['class_id'] = $row4['0'];
+    $clid = $row4['class_id'];
+    $send['class_id'] = $row4['class_id'];
 
 
     //Class_List_Time_Price 수업 시간, 가격 확인   
@@ -113,8 +113,8 @@ On Class_List.class_id = Class_List_Time_Price.class_id where Class_List.user_id
     $response5 = mysqli_query($conn, $sql);
 
     $row5 = mysqli_fetch_array($response5);
-    $send['class_time'] = $row5['1'];
-    $send['class_price'] = $row5['2'];
+    $send['class_time'] = $row5['class_time'];
+    $send['class_price'] = $row5['class_price'];
 
     if ($send['class_id'] != null) {
         array_push($result1['data'], $send);

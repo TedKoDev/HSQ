@@ -43,7 +43,7 @@ Chat_Room.receiver_last_check,
 Chat_Room.recent_msg_id,
 Chat_Room.recent_msg,
 Chat_Room.recent_msg_date From Chat_Room where Chat_Room.exit_user_id != $User_ID and Chat_Room.exit_user_id != -1 ) AS new_list
- where new_list.sender_id = $User_ID or new_list.receiver_id =  $User_ID 
+ where new_list.sender_id = $User_ID or new_list.receiver_id =  $User_ID  order by new_list.recent_msg_date desc
 ";
 
 $response = mysqli_query($conn, $sql);
@@ -102,7 +102,7 @@ while ($row = mysqli_fetch_array($response)) {
 
      
 
-        $send1['msg_id'] = $row3['chat_room_id'];
+        $send1['msg_id'] = $row3['chat_message_Id'];
         $send1['msg_type'] = $row3['message_type'];
 
 

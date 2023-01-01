@@ -60,47 +60,17 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 사용자(학생)토큰 
 
-
-$utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"};  //유저의 로컬 타임존 
-// $utc      =   9;  //유저의 로컬 타임존 
-
-
-
-
+//사용자(학생)토큰 해체 
+$data = $jwt->dehashing($token);
+$parted = explode('.', base64_decode($token));
+$payload = json_decode($parted[1], true);
+$User_ID = base64_decode($payload['User_ID']); //학생의 userid
 
 
 
-
-
-
-if ($token != null) {
-
-  //토큰 해체 
-  $data = $jwt->dehashing($token);
-  $parted = explode('.', base64_decode($token));
-  $payload = json_decode($parted[1], true);
-  $User_ID =  base64_decode($payload['User_ID']);
-  // $User_ID =  324;
-  $U_Name  = base64_decode($payload['U_Name']);
-  $U_Email = base64_decode($payload['U_Email']);
-  $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
-  $login = 'yes login';
-  // $timezone      =   8;
-
-} else {
-  // echo 111;
-  $timezone = $utc;
-  // $send['CONNECT_USER_TIMEZONE'] = $utc;
-  $login = 'not login';
-
-  // $User_ID =  324;
-
-}
-
-
-
-
-
+$U_Name  = base64_decode($payload['U_Name']);  //학생의 이름
+$U_Email = base64_decode($payload['U_Email']); //학생의 Email
+$timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
 
@@ -152,7 +122,6 @@ $filter_teacher_sex          = json_decode(file_get_contents("php://input"))->{"
 $filter_teacher_language     = json_decode(file_get_contents("php://input"))->{"filter_teacher_language"};   // 강사 사용언어 
 
 $filter_date           = json_decode(file_get_contents("php://input"))->{"filter_date"};   // 수업 일자   
-$filter_time           = json_decode(file_get_contents("php://input"))->{"filter_time"};   // 시간   {0,1,2,3,4,5,6~23} array 형태 
 
 
 
@@ -208,6 +177,25 @@ if ($filter_class_price_min == null) {
 // $filter_class_resister_time_from =  '2022-12-19 02:21:41';
 // $filter_class_resister_time_to   =  '2022-12-19 02:22:41';
 // $timezone =9; //사용자(학생)의 TimeZone
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -294,13 +282,13 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 
 
 
-// 수업찾기 필터 테스트용 
+//수업찾기 필터 테스트용 
 // $kind = 'clist';
 // $clReserveCheck = null; //안해도됨
 // $filter_check      = 'ok(아무값)';
-// $filter_search     = '한국';
-// $filter_time = array("0", "1", "2", "3", "4", "5", "6", "7", "10");
-// $filter_date = "1671517800000";
+// $filter_search     = '한국';  
+// $filter_date = array("1671517800000","1671521400000","1671517800000","1671521400000");
+// $filter_date = array("1671517800000");
 // $filter_class_type = array("발음");
 
 
@@ -584,16 +572,22 @@ if ($kind == 'cdetail') {
     } else if ($filter_check  != null) {
 
 
-      // 전체
+      //가격범위(최저) 가격범위(최대)  수업종류  done
+      //Class_List에 수업 목록확인  
 
+
+
+
+      // 전체
+      // $Clist_Sql = "SELECT * FROM Class_List order by class_id DESC LIMIT $start, $till";
       $Clist_Sql = "SELECT * FROM Class_List JOIN Teacher_Schedule 
          ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher
          order by class_id DESC LIMIT $start, $till";
 
 
 
-      //시간필터관련 
-      if ($filter_date != null || $filter_time != null) {
+
+      if ($filter_date != null) {
 
         // $filter_date =  1671667200000;
         $hour = 3600000;
@@ -602,79 +596,66 @@ if ($kind == 'cdetail') {
 
         $day = 86400000;
 
-        $filter_hour_array1 = array(); // 배열 설정.
+        $filter_hour_array1 = array(); // 
 
-        //날짜만 있을때 
-        if ($filter_date != null && $filter_time == null) {
+        $count_filter_date = count($filter_date);
 
-          //전달받은 $filter_date 에 timezone을 채크해서 hour을 적용해 utc 0 기준으로 바꾼다.
+        // if ($filter_hour_check == null) {
+        if ($count_filter_date == '1') {
 
-          $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
-          $filter_date_utc_zero2 = $filter_date_utc_zero1 + $day - 1; // user의 timezone을 적용해서 utc 0 기준으로 변경한 값의 24시간을 더한 값
+          //값 1개일때 
+          foreach ($filter_date as $val) {
+            //  $filter_date_i = $val ; // user의 timezone을 적용한 값을  $save 저장 
+            $filter_date_i = $val +  $day; // user의 timezone을 적용한 값을  $save 저장 
+            array_push($filter_date, $filter_date_i); // user의 timezone을 적용한 값을  $save 저장 
 
+          }
 
-          $filter_hour_add3  = 'schedule_list between ' . $filter_date_utc_zero1 . ' and ' . $filter_date_utc_zero2;
-
-          //시간대만 있을때 
-        } else if ($filter_date == null && $filter_time != null) {
-
-          echo 3;
-          // utc 0 기준 당일날짜값 timestamp 가져온뒤 프론트에 맞춰 1000 곱해주기 
-          $today = strtotime(date("Y-m-d")) * 1000;
+          $filter_hour_add = implode(" and ", $filter_date); // 담긴 배열을 _기준으로 스트링으로 저장 
 
 
-          $explode_filter_time = $filter_time;
+          $filter_hour_array2 = array(); // 
 
 
-          $filter_hour_array1 = array(); //검사 해야할 시간 기준 
+          foreach ($filter_date as $val) {
+            $filter_date_i = '   ' . '"' . $val . '"'; // user의 timezone을 적용한 값을  $save 저장 
+            array_push($filter_hour_array2, $filter_date_i);
+          }
+
+          $filter_hour_add2 = implode(" and ", $filter_hour_array2); // 담긴 배열을 _기준으로 스트링으로 저장 
+          $filter_hour_add3  = 'schedule_list between ' . $filter_hour_add2;
+        } else if ($count_filter_date >= '2') {
+
+          // 값 2개이상 
+          $explode_filter_date = $filter_date;
+
+          unset($explode_filter_date[0]);
+
+          $explode_filter_date;
+          $filter_hour_array = array(); //
 
 
+          //값 2개이상 일때 
+          foreach ($explode_filter_date as $val) {
 
-          foreach ($explode_filter_time as $val) {
+            $filter_date_i = $val +  ($hour / 2); // 
+            array_push($explode_filter_date, $filter_date_i); // user의 timezone을 적용한 값을  $save 저장 
 
+          }
 
-
-            $오늘날짜더하기시간값 = $today + $val * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
-            $오늘날짜더하기시간값더하기한시간 = $오늘날짜더하기시간값 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌 
-
-            $filter_date_i = '(schedule_list between ' . '"' . $오늘날짜더하기시간값  . '"' . ' and ' . '"' . $오늘날짜더하기시간값더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
-            array_push($filter_hour_array1, $filter_date_i);
+          foreach ($explode_filter_date as $val) {
+            $val;
+            $filter_date_i = '  schedule_list like ' . '"' . $val . '"'; // user의 timezone을 적용한 값을  $save 저장 
+            array_push($filter_hour_array, $filter_date_i);
           }
 
 
 
-          $filter_hour_add2 = implode(" or ", $filter_hour_array1); // 담긴 배열을 _기준으로 스트링으로 저장 
 
-          $filter_hour_add3  =  $filter_hour_add2;
-
-
-
-          //날짜와 시간이 모두 있을 때 
-        } else if ($filter_date != null && $filter_time != null) {
-
-
-
-          $explode_filter_time = $filter_time;
-
-          $filter_hour_array1 = array(); //검사 해야할 시간 기준 
-
-
-
-          foreach ($explode_filter_time as $val) {
-
-
-            $날짜에시간을더함 = $filter_date + $val * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로
-            $날짜에시간을더함더하기한시간 = $날짜에시간을더함 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌
-
-            $filter_date_i = '(schedule_list between ' . '"' . $날짜에시간을더함  . '"' . ' and ' . '"' . $날짜에시간을더함더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
-            array_push($filter_hour_array1, $filter_date_i);
-          }
-
-
-
-          $filter_hour_add2 = implode(" or ", $filter_hour_array1); // 담긴 배열을 _기준으로 스트링으로 저장 
+          $filter_hour_add2 = implode(" or ", $filter_hour_array); // 담긴 배열을 _기준으로 스트링으로 저장 
           $filter_hour_add3  =  $filter_hour_add2;
         }
+
 
         if ($filter_search != null) {
 
@@ -748,7 +729,7 @@ if ($kind == 'cdetail') {
                 ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher  WHERE $filter_hour_add3) AS new_class_list $filter_class_type_val and $filter_hour_add3 order by class_id DESC LIMIT $start, $till";
           }
         }
-      } else if ($filter_date == null && $filter_time == null) {
+      } else if ($filter_date == null) {
 
         if ($filter_search != null) {
 
@@ -943,7 +924,7 @@ if ($kind == 'cdetail') {
         $result2['timeprice'] = array();
       }
 
-      if ($response1) { //정상적으로 저장되었을때 
+      if ($response3) { //정상적으로 저장되었을때 
 
         $result1["success"] = "yes";
         echo json_encode($result1);
@@ -951,7 +932,7 @@ if ($kind == 'cdetail') {
       } else {
 
         $result["success"]   =  "no 값없음";
-        echo json_encode($result1);
+        echo json_encode($result);
         mysqli_close($conn);
       }
     }
