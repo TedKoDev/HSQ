@@ -111,29 +111,6 @@ $plus   =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더�
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"};  //유저의 로컬 타임존 
 // $utc      =   9;  //유저의 로컬 타임존 
 
