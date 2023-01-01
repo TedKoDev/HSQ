@@ -535,16 +535,16 @@ if ($kind == 'cdetail') {
 
         //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
         $teacher_Sql = "SELECT 
-      User.user_name, 
-      User_Teacher.teacher_special,  
-      User_Detail.user_img
+         User.user_name, 
+         User_Teacher.teacher_special,  
+         User_Detail.user_img
 
-      FROM User
-      JOIN User_Detail
-        ON User.user_id = User_Detail.user_id
-      JOIN User_Teacher
-        ON User_Teacher.user_id = User_Detail.user_id 
-      where User.user_id = '$usid'";
+         FROM User
+         JOIN User_Detail
+           ON User.user_id = User_Detail.user_id
+         JOIN User_Teacher
+           ON User_Teacher.user_id = User_Detail.user_id 
+         where User.user_id = '$usid'";
         $response2 = mysqli_query($conn, $teacher_Sql);
         $row2 = mysqli_fetch_array($response2);
         $send1['user_name'] = $row2['user_name'];
