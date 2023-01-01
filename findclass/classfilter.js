@@ -74,6 +74,7 @@ export function classfilter() {
         // 해당 체크박스의 라벨 가져오기
         const label = document.getElementById(e.target.value+"_l");
 
+
         if (e.target.checked == true) {
             
             label.classList.remove('bg-gray-300');

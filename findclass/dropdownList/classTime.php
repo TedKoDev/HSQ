@@ -9,9 +9,9 @@
                 </button>
             </div>
             <div class = "text-sm text-gray-800">
-                <span>2022년 12월 22일</span>
+                <span class = "date_start">2022년 12월 22일</span>
                 <span> - </span>
-                <span>2022년 12월 28일</span>
+                <span class = "date_end">2022년 12월 28일</span>
             </div>
             <div class = "next_btn">
                 <button>
@@ -20,14 +20,14 @@
             </div>
         </div>                
         <div class = "flex justify-center">
-            <?php for ($i = 0; $i < 7; $i++) 
+            <?php for ($j = 1; $j <= 7; $j++) 
             
             {?>
-            <input type="checkbox" id = "dateBtn_<?php echo $i + 1; ?>" name = "filter_date" value="" class="hidden filter_checkbox" />
-            <label for="dateBtn_<?php echo $i + 1; ?>" class="hover:bg-gray-300 rounded-lg">
+            <input type="checkbox" id = "dateBtn_<?php echo $j; ?>" name = "filter_date" value="" class="hidden filter_checkbox" />
+            <label id = "dateBtn_<?php echo $j; ?>_label" for="dateBtn_<?php echo $j; ?>" class="hover:bg-gray-300 rounded-lg">
                 <div class = "flex flex-col px-2 py-1 mx-2">
-                    <span id = "day_<?php echo $i + 1; ?>" class = "small_text text-center">월</span>
-                    <span id = "date_<?php echo $i + 1; ?>" class = "text-sm text-center">1</span>
+                    <span id = "day_<?php echo $j; ?>" class = "small_text text-center">월</span>
+                    <span id = "date_<?php echo $j; ?>" class = "text-sm text-center">1</span>
                 </div>
             </label>  
             <?php } ?>              

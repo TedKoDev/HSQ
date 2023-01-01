@@ -489,8 +489,7 @@ function setClassState(div, msg_id, date, sender_name, class_id, student_id, tea
 
 // 수업 클릭시 수업 상세 화면으로 이동
 function goClassDetail(class_id, user_id, url) {
-        
-    console.log("pass");
+            
     const form = document.createElement('form');
     form.setAttribute('method', 'get');    
     form.setAttribute('action', url);

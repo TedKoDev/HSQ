@@ -32,13 +32,17 @@ let time;
 // 이전 날짜로 이동하는 버튼 초기화(이번주에서는 이전 버튼 비활성화 되는 것 처리하기 위해)
 let beforeDate_btn = document.getElementById("beforeDate_btn");
 
+
 async function get_utc(tokenValue) {
    
+    const date = new Date();    
+    const utc = -(date.getTimezoneOffset() / 60);
 
     const body = {
     
         token: tokenValue,
-        
+        user_timezone : utc
+
       };
     
       const res = await fetch('../utils/utc.php', {
@@ -166,6 +170,10 @@ async function setschedule(type, for_modal) {
       // 서버에서 받아온 일정의 상태 배열로 변환
       const statusList = schedule_string_status.split('_');
       
+      // console.log("schedule_string : "+schedule_string);
+      // console.log("schedule_string_status : "+schedule_string_status);
+      // console.log(scheduleList);
+      // console.log(statusList);
 
       // 현재 모달창에서 체크하고 있는 배열 가져오기
       let check_array = new Array();
@@ -391,6 +399,7 @@ async function getTeacherdatail(tokenValue, usid) {
      // 로컬 타임존도 보내기
      const date = new Date();    
      const utc = -(date.getTimezoneOffset() / 60);
+    
    
     const body = {
     

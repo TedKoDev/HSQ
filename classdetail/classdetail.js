@@ -60,7 +60,7 @@ async function getSchedule(teacher_id, tokenvalue) {
   // 로컬 타임존도 보내기
   const date = new Date();    
   const utc = -(date.getTimezoneOffset() / 60);  
-
+  
   const body = {
     
     user_id_teacher : teacher_id,

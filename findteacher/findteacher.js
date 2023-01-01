@@ -41,7 +41,8 @@ async function postToken(tokenValue) {
 
   // 받아온 json 파싱하고 array 추출
   const response = await res.json();  
-
+  
+  console.log(response);
   // array에 있는 데이터 세팅
   setData(response);
   
