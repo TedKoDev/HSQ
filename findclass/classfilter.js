@@ -232,29 +232,7 @@ export async function classfilter() {
             }
 
             // json 값 삭제
-            changeJson(target.name, target.value, 'delete');
-
-            // 해당 버튼의 체크박스 해지하고 색상 원래대로 돌리기
-            // const checkboxes = $_all('.filter_checkbox');
-            // for (const box of checkboxes) {
-
-            //     if (box.value = target.value) {
-
-            //         box.checked = false;
-                                        
-            //         if (box.type == 'checkbox') {
-
-            //             const label = document.getElementById(box.value+"_l");
-            //             label.classList.remove('bg-gray-700');
-            //             label.classList.remove('text-white');
-            //             label.classList.add('bg-gray-300');
-            //             label.classList.add('hover:bg-gray-400');
-            //             label.classList.add('text-gray-800');   
-            //         }                    
-                    
-            //         break;
-            //     }
-            // }
+            changeJson(target.name, target.value, 'delete');            
         }            
     })
 
@@ -433,22 +411,3 @@ export function changeJson(key, value, type) {
         }
     }    
 }
-
-// let test = {
-
-//     kind: "clist",
-//     clReserveCheck: null,
-//     filter_check: "ok",
-//     filter_search: null,    
-//     filter_hour_check: "ok",
-//     filter_class_price_min : null,
-//     filter_class_price_max : null,
-//     filter_teacher_special : null,
-//     filter_date : null,
-//     filter_time : [],
-//     filter_class_type : [],
-//     filter_teacher_sex : null,
-//     filter_teacher_country : [],
-//     filter_teacher_language : [],
-//     user_timezone : 9,
-//   }
