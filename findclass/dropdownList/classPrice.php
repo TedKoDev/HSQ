@@ -1,5 +1,5 @@
+<script type="module" defer = "defer" src="/findclass/dropdownList/classPrice.js"></script> 
 <div id="classPrice" class="hidden z-10 w-48 bg-white rounded-xl shadow">
-
     <div class="px-4 py-2 flex flex-col justify-center">
         <div class="values text-xs">
             <span class = "">$</span><span class = "mx-1" id="range1">

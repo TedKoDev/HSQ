@@ -23,13 +23,9 @@ async function getClassinfo_all() {
           },
         body: JSON.stringify(body)          
       });  
-
-      console.log("ss");
     
       // 받아온 json 파싱하고 array 추출
       const response = await res.json();  
-      
-      console.log(response);
 
       // 요청 성공했을 때만 수업 목록 화면에 표시
       if (response.success == "yes") {
@@ -82,7 +78,6 @@ function setClassinfo(response) {
 
     let res_array = response.result;
 
-    console.log(res_array);
     let class_list = document.getElementById("class_list");
 
     // 수업 개수만큼 반복문 돌린 후 태그 생성하여 화면에 표시

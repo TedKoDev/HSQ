@@ -1,7 +1,13 @@
 import {$, $_all} from '/utils/querySelector.js';
+import { getMyUtc } from '../utils/getMyUtc.js';
+import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
 
+export async function classfilter() {
 
-export function classfilter() {
+    // 서버 전송 용도의 json에 timezone 넣기
+    const user_timezone = await getMyUtc(getCookie(cookieName));
+    request_to_server.user_timezone = user_timezone;
+    
 
     // 선택한 필터가 표시되는 div
     const filterItem_div = $('.filterItemList');
@@ -12,6 +18,10 @@ export function classfilter() {
     const teacherCountry_div = $('.teacherCountryList');
     const teacherLanguage_div = $('.teacherLanguageList');
     const classTime_div = $('.classTimeList');
+
+    // 검색창 및 검색 버튼
+    const search_input = $('.search_input');
+    const search_btn = $('.search_btn');
 
        
     // 모달창 안에 있는 checkbox 클릭 시 필터 추가/삭제 이벤트
@@ -187,26 +197,30 @@ export function classfilter() {
                 label.classList.add('text-gray-800');
                 
             }
-        }
-        
+        }       
     }           
 }
 
-let test = {
+// 이벤트에 따라 서버에 보낼 json 변경
+export function changeJson() {
 
-    kind: "clist",
-    clReserveCheck: null,
-    filter_check: "ok",
-    filter_search: null,    
-    filter_hour_check: "ok",
-    filter_class_price_min : null,
-    filter_class_price_max : null,
-    filter_teacher_special : null,
-    filter_date : null,
-    filter_time : [],
-    filter_class_type : [],
-    filter_teacher_sex : null,
-    filter_teacher_country : [],
-    filter_teacher_language : [],
-    user_timezone : 9,
-  }
+}
+
+// let test = {
+
+//     kind: "clist",
+//     clReserveCheck: null,
+//     filter_check: "ok",
+//     filter_search: null,    
+//     filter_hour_check: "ok",
+//     filter_class_price_min : null,
+//     filter_class_price_max : null,
+//     filter_teacher_special : null,
+//     filter_date : null,
+//     filter_time : [],
+//     filter_class_type : [],
+//     filter_teacher_sex : null,
+//     filter_teacher_country : [],
+//     filter_teacher_language : [],
+//     user_timezone : 9,
+//   }
