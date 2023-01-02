@@ -5,12 +5,14 @@
             <span class = "ml-2 text-xs text-gray-700">상관 없음</span>
         </div> -->
         <div class = "flex mb-1">
-            <input type='radio' name='filter_teacher_sex' value='남성'/>
-            <span class = "ml-2 text-xs text-gray-700">남성</span>            
+            <input type='radio' name='filter_teacher_sex' value='남성' class = "filter_checkbox"/>
+            <span class = "ml-2 text-xs text-gray-700">남성</span>       
+            <label id = "남성_l" class = "hidden"></label>     
         </div>  
         <div class = "flex mb-1">
-            <input type='radio' name='filter_teacher_sex' value='여성'/>            
-            <span class = "ml-2 text-xs text-gray-700">여성</span>                        
+            <input type='radio' name='filter_teacher_sex' value='여성' class = "filter_checkbox"/>            
+            <span class = "ml-2 text-xs text-gray-700">여성</span>    
+            <label id = "여성_l" class = "hidden"></label>                     
         </div>           
     </div>             
 </div>

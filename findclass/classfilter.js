@@ -7,7 +7,57 @@ export async function classfilter() {
     // 서버 전송 용도의 json에 timezone 넣기
     const user_timezone = await getMyUtc(getCookie(cookieName));
     request_to_server.user_timezone = user_timezone;
-    
+
+    // // checkbox 형태가 들어가 있는 필터 버튼 (수업 유형, 구사 가능 언어, 출신지)
+    // const classTypeModalBtn = $('#classType_btn');
+    // const teacherLanguageModalBtn = $('#teacherLanguage_btn');
+    // const teacherCountryModalBtn = $('#teacherCountry_btn');
+
+    // // checkbox 있는 모달 클릭했을때 json에 존재하는 array만 체크표시하고 색상 변하게 처리해놓기 (나머지는 디폴트로)
+    // clickBtn_checkbox(classTypeModalBtn, "filter_class_type");
+    // clickBtn_checkbox(teacherLanguageModalBtn, "filter_class_type");
+    // clickBtn_checkbox(teacherCountryModalBtn, "filter_class_type");
+
+    // function clickBtn_checkbox(btn, type) {
+
+    //     btn.addEventListener('click', () =>{
+
+    //         const allRadioBtn = document.getElementsByName(type);
+
+    //         if (request_to_server[type] == null) {
+        
+    //             for (const radioBtn of allRadioBtn) {
+
+    //                 radioBtn.checked = false;
+    //             }
+    //         }
+    //     })
+    // }
+
+    // radio 형태가 들어가 있는 필터 버튼 (강사 유형, 강사 성별)
+    const teacherTypeModalBtn = $('#teacherType_btn');
+    const teacherSexModalBtn = $('#teacherSex_btn');
+
+    // radio 있는 모달 클릭했을 때 json에 null 이면 디폴트로 처리해놓기
+    clickBtn_radio(teacherTypeModalBtn, 'filter_teacher_special');
+    clickBtn_radio(teacherSexModalBtn, 'filter_teacher_sex');
+
+    function clickBtn_radio(btn, type) {
+
+        btn.addEventListener('click', () =>{
+
+            const allRadioBtn = document.getElementsByName(type);
+
+            if (request_to_server[type] == null) {
+        
+                for (const radioBtn of allRadioBtn) {
+
+                    radioBtn.checked = false;
+                }
+            }
+        })
+    }    
+
     
     // 선택한 필터가 표시되는 div
     const filterItem_div = $('.filterItemList');
@@ -30,7 +80,7 @@ export async function classfilter() {
     clickFilter_in_Modal_checkbox(teacherLanguage_div);
     clickFilter_in_Modal_checkbox(classTime_div);
 
-    // radio 형태
+    // radio 형태의 버튼들
     const teacherSex_div = $('.teacherSexList');
     const teacherType_div = $('.teacherTypeList');
 
@@ -90,7 +140,6 @@ export async function classfilter() {
             }
                         
             clickCheckbox(e);
-
             
         });
     }
@@ -119,9 +168,11 @@ export async function classfilter() {
             if (class_name == "teacherType_item") {
                 
                 if (filterValue == 'default') {
+
                     text = '커뮤니티 튜터';
                 } 
                 else {
+
                     text = '전문 강사';
                 }                                
             }
@@ -147,7 +198,6 @@ export async function classfilter() {
         })
     }
 
-
     
     // filterItem_div X 아이콘 클릭 시 발생하는 이벤트
     filterItem_div.addEventListener('click', (e) => {
@@ -166,8 +216,29 @@ export async function classfilter() {
 
             // json 값 삭제
             changeJson(target.name, target.value, 'delete');
-        } 
-           
+
+            // 해당 버튼의 체크박스 해지하고 색상 원래대로 돌리기
+            const checkboxes = $_all('.filter_checkbox');
+            for (const box of checkboxes) {
+
+                if (box.value = target.value) {
+
+                    box.checked = false;
+                                        
+                    if (box.type == 'checkbox') {
+
+                        const label = document.getElementById(box.value+"_l");
+                        label.classList.remove('bg-gray-700');
+                        label.classList.remove('text-white');
+                        label.classList.add('bg-gray-300');
+                        label.classList.add('hover:bg-gray-400');
+                        label.classList.add('text-gray-800');   
+                    }                    
+                    
+                    break;
+                }
+            }
+        }            
     })
 
     // 체크박스 클릭 시 색상 변화 함수
@@ -214,8 +285,7 @@ export async function classfilter() {
                 label.classList.remove('text-white');
                 label.classList.add('bg-gray-300');
                 label.classList.add('hover:bg-gray-400');
-                label.classList.add('text-gray-800');
-                
+                label.classList.add('text-gray-800');                
             }
         }       
     }     
@@ -344,9 +414,7 @@ export function changeJson(key, value, type) {
             request_to_server.filter_class_price_min = null;
             request_to_server.filter_class_price_max = null;
         }
-    }
-
-    console.log(request_to_server);
+    }    
 }
 
 // let test = {

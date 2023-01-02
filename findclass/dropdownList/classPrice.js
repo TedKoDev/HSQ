@@ -9,6 +9,21 @@ const max_range = $('#slider-2');
 // 선택한 필터가 표시되는 div
 const filterItem_div = $('.filterItemList');
 
+// 수강료 모달;
+const classPriceModal = $('#classPrice_btn');
+
+// 모달 클릭했을 때 json에 값 없으면 수강료 range 디폴트값으로 놓기
+classPriceModal.addEventListener('click', () => {
+
+    if (request_to_server.filter_class_price_min == null && request_to_server.filter_class_price_max == null) {
+        
+        min_range.value = 0;
+        max_range.value = 1000;
+        min_price.innerHTML = 0;
+        max_price.innerHTML = 1000;
+    }
+})
+
 min_range.addEventListener('mouseup', (e) => {
     
     addPriceFileterItem();
