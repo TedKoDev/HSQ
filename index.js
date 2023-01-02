@@ -3,7 +3,6 @@ import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
 
 const tokenValue = getCookie(cookieName);
 
-
 async function sendToken(token) {
 
     if (token == "") {        
@@ -13,32 +12,48 @@ async function sendToken(token) {
     }
     else {
 
-        const body = {
+        // const body = {
 
-            key: 22,   
-            key2: 11     
-        };
+        //     key: 22,   
+        //     key2: 11     
+        // };
         
-        const res = await fetch('http://15.164.163.120:8080/', {
-            method: 'POST',   
-            headers: {
-                'Content-Type': 'application/json;'
-              },
-            body: JSON.stringify(body)    
-        }); 
+        // const res = await fetch('http://15.164.163.120:8080/', {
+        //     method: 'POST',   
+        //     headers: {
+        //         'Content-Type': 'application/json;'
+        //       },
+        //     body: JSON.stringify(body)    
+        // }); 
         
         
-        const response = await res.json();  
+        // const response = await res.json();  
                 
-        console.log(token);
-        if (response.state = 'success') {
+        // if (response.state = 'success') {
             
-            console.log("ss");
-            location.assign('http://15.164.163.120:8080/');
+        //     location.assign('http://15.164.163.120:8080/');
+        // }
+        // else {
+        //     console.log("전송 안됨");
+        // }
+
+        let obj = {
+            key: token
         }
-        else {
-            console.log("전송 안됨");
-        }
+        
+        fetch("http://15.164.163.120:8080/",{
+            method: "POST",
+            headers : {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj),
+        })
+        .then((response)=>response.json())
+        .then((data)=>{console.log(data.key);})
+        .catch((error)=>{
+            console.log(`전송 실패 : ${error}`);
+        });
+    
     }
     
 }
@@ -48,4 +63,3 @@ metaBtn.addEventListener('click', () => {
 
     sendToken(tokenValue);
 })
-
