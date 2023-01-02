@@ -12,18 +12,25 @@ export function classfilter() {
     const teacherCountry_div = $('.teacherCountryList');
     const teacherLanguage_div = $('.teacherLanguageList');
     const classTime_div = $('.classTimeList');
-    
+
+       
     // 모달창 안에 있는 checkbox 클릭 시 필터 추가/삭제 이벤트
-    clickFilter_in_Modal(classType_div);
-    clickFilter_in_Modal(teacherCountry_div);
-    clickFilter_in_Modal(teacherLanguage_div);
-    clickFilter_in_Modal(classTime_div);
+    clickFilter_in_Modal_checkbox(classType_div);
+    clickFilter_in_Modal_checkbox(teacherCountry_div);
+    clickFilter_in_Modal_checkbox(teacherLanguage_div);
+    clickFilter_in_Modal_checkbox(classTime_div);
 
     // radio 형태
-    
+    const teacherSex_div = $('.teacherSexList');
+    const teacherType_div = $('.teacherTypeList');
+
+    // 모달창 안에 있는 radio 클릭 시 필터 추가/삭제 이벤트
+    clickFilter_in_Modal_radio(teacherSex_div, "sex_item");
+    clickFilter_in_Modal_radio(teacherType_div, "teacherType_item");
+
 
     // 체크박스로 구성된 모달에서 클릭 시 이벤트
-    async function clickFilter_in_Modal(type_div) {
+    async function clickFilter_in_Modal_checkbox(type_div) {
 
         type_div.addEventListener("click", (e) => {                
 
@@ -69,6 +76,57 @@ export function classfilter() {
             clickCheckbox(e);
         });
     }
+    
+    // radio 버튼으로 구성된 모달에서 클릭 이벤트
+    async function clickFilter_in_Modal_radio(type_div, type_item) {
+
+        const class_name = type_item;
+
+        type_div.addEventListener("click", (e) => {
+
+            const target = e.target.closest("input");
+            if (!(target instanceof HTMLInputElement)) return;
+    
+            // 필터 아이템 리스트에서 해당 필터 종류 모두 초기화
+            const date_div_list = $_all('.'+class_name);    
+            for (const date_item of date_div_list) {
+
+                date_item.remove();
+            }   
+
+            const filterValue = target.value;    
+
+            let text;
+            // 강사 유형 선택일 경우
+            if (class_name == "teacherType_item") {
+                
+                if (filterValue == 'default') {
+                    text = '커뮤니티 튜터';
+                } 
+                else {
+                    text = '전문 강사';
+                }                                
+            }
+            // 그 이외일 경우
+            else {
+                text = filterValue;                
+            }            
+            
+            const new_btn = document.createElement('div');
+            new_btn.innerHTML = `
+                <div id = "${filterValue}_div" value = ${filterValue} class = "${class_name} flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
+                    <span class = "mr-1">${text}</span>
+                    <button value = "${filterValue}" class="text-gray-800 font-medium inline-flex items-center" type="button">
+                        <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
+                    </button>                
+                </div>
+                `;              
+                                
+            filterItem_div.append(new_btn);
+        })
+    }
+
+
     
     // filterItem_div X 아이콘 클릭 시 발생하는 이벤트
     filterItem_div.addEventListener('click', (e) => {
@@ -131,18 +189,7 @@ export function classfilter() {
             }
         }
         
-    }
-    
-
-    // const checkboxes = $_all('.filter_checkbox');
-    // for (const box of checkboxes) {
-
-    //     box.addEventListener('click', (e) => {
-
-    //         // clickCheckbox(e);
-    //     })
-    // }    
-   
+    }           
 }
 
 let test = {

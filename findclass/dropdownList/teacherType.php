@@ -1,5 +1,5 @@
 <div id="teacherType" class="hidden z-10 w-48 bg-white rounded-xl shadow">
-    <div class = "my-2 justify-center px-2">
+    <div class = "teacherTypeList my-2 justify-center px-2">
         <!-- <div class = "flex mb-1">
             <input type='radio' name='teacher_type' value='both'/>
             <span class = "ml-2 text-xs text-gray-700">둘다</span>

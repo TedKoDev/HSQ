@@ -207,7 +207,6 @@ function updateFilterItem(e) {
         // 날짜 저장하는 변수에 대입
         now_click_date = filterValue;
 
-        console.log(document.getElementById(filterValue+"_div"));
     }
     else {
 
@@ -215,9 +214,7 @@ function updateFilterItem(e) {
         // console.log("delete_div : "+delete_div);
         // const delete_div = document.getElementById(filterValue+"_div");
         // delete_div.remove();
-    }
-    
-     
+    }   
 }
 
 // x 아이콘 클릭 시 만일 수업 시간일 경우에는 날짜 저장하는 변수 초기화 처리
