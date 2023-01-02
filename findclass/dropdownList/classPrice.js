@@ -1,4 +1,5 @@
 import { $, $_all } from "/utils/querySelector.js";
+import { changeJson } from "../classfilter.js";
 
 const min_price = $('#range1');
 const max_price = $('#range2');
@@ -27,20 +28,24 @@ async function addPriceFileterItem() {
         price_item.remove();
     }  
 
-    const price_min = "$ "+min_price.innerHTML+" USD";
-    const price_max = "$ "+max_price.innerHTML+" USD";
+    const price_min = min_price.innerHTML;
+    const price_max = max_price.innerHTML;
 
     const filterValue = price_min+" - "+price_max;
+    const text = "$ "+price_min+" USD - $ "+price_max+" USD";
 
     const new_btn = document.createElement('div');
     new_btn.innerHTML = `
         <div id = "${filterValue}_div" value = ${filterValue} class = "classPrice_item flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
-            <span class = "mr-1">${filterValue}</span>
-            <button value = "${filterValue}" class="text-gray-800 font-medium inline-flex items-center" type="button">
+            <span class = "mr-1">${text}</span>
+            <button value = "${filterValue}" name = "filter_class_price" class="text-gray-800 font-medium inline-flex items-center" type="button">
                 <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
             </button>                
         </div>
         `;              
                         
     filterItem_div.append(new_btn);
+
+    // json 값 변경
+    changeJson('filter_class_price', filterValue, 'update');
 }
