@@ -14,26 +14,23 @@ if (filter_json != null) {
 const user_timezone = await getMyUtc(getCookie(cookieName));
 request_to_server.user_timezone = user_timezone;
 
-
-// 필터와 관련된 코드 가져오기
-classfilter();
+// 더보기 버튼
+const see_more_btn = $('#see_more');
 
 // 수업 정보 가져오기
 getClassinfo(request_to_server);
 
-// 더보기 버튼
-const see_more_btn = $('#see_more');
-
 // 모든 수업 목록 가져오기 
 export async function getClassinfo(json) {    
-
-    console.log(request_to_server);
-
+   
     // 기존 수업 목록 초기화
     const class_list = document.getElementById("class_list");    
     while(class_list.firstChild) {
       class_list.removeChild(class_list.firstChild);  
     }
+
+    // 더보기 버튼 안 보이게 처리    
+    see_more_btn.style.display = 'none';
      
       const res = await fetch('../restapi/classinfo.php', {
         method: 'POST',   
@@ -48,16 +45,21 @@ export async function getClassinfo(json) {
 
       // 요청 성공했을 때만 수업 목록 화면에 표시
       if (response.success == "yes") {
-
-        // console.log(response);
+       
         setClassinfo(response);
+        
+        if (response.result.length != 0) {
+
+          // 더보기 버튼 보이게 처리    
+          see_more_btn.style.display = 'block';
+        }
+        
       }
       else {
         console.log("서버 통신 오류");
       }
 
-    // 더보기 버튼 보이게 처리    
-    see_more_btn.style.display = 'block';
+    
 
 }
 
@@ -112,6 +114,7 @@ function setClassinfo(response) {
         let cllevel = res_array[i].class_level;
         let user_name = res_array[i].user_name;
         let user_img = res_array[i].user_img;
+        let price_30 = res_array[i].tp[0].class_price;
 
         // 유저 이미지 값이 없으면 디폴트 이미지로 표시 표시
         if (user_img == 'default' || user_img == null) {
@@ -134,12 +137,17 @@ function setClassinfo(response) {
                         +cldisc+'</p>',
                     '<div id = '+class_id+'_t_l'+' class = "items-center">',                                              
                     '</div>',
-                    '<div class = "mr-auto mt-3">',
-                        '<div class = "flex items-center">',
-                            '<img id = "profile_image" class = "w-9 h-9 border-3 border-gray-900 rounded-full "', 
-                                'src = '+user_img+'>',
-                            '</img>',
-                            '<div class = "text-xs text-gray-700 ml-3"><span>'+user_name+'</span>님의 수업</div>',
+                    '<div class = "mr-auto mt-3 w-full">',                        
+                        '<div class = "flex items-center justify-between">',
+                            '<div class = "flex items-center">',
+                              '<img id = "profile_image" class = "w-9 h-9 border-3 border-gray-900 rounded-full "', 
+                                  'src = '+user_img+'>',
+                              '</img>',
+                              '<div class = "text-xs text-gray-700 ml-3"><span>'+user_name+'</span>님의 수업</div>',
+                            '</div>',
+                            '<div>',
+                              '<span class = "text-base ">$ '+price_30+' USD</span>',
+                            '</div>',
                         '</div>',                    
                     '</div>',
                 '</div>', 
@@ -200,7 +208,8 @@ function moveClassdetail(div, class_id, teacher_id) {
     });
   }
 
-
+// 필터와 관련된 코드 가져오기
+classfilter();
 
 
 

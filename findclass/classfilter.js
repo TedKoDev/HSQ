@@ -322,7 +322,7 @@ function setFilterItem($filterItem_div, json) {
         addFilterItem($filterItem_div, json.filter_search, json.filter_search, "filter_search", "search_item");       
     }
     // 강사 유형 (전문강사, 커뮤니티 튜터)
-    else if (json.filter_teacher_special != null) {
+    if (json.filter_teacher_special != null) {
 
         let text;
 
@@ -335,17 +335,17 @@ function setFilterItem($filterItem_div, json) {
 
         addFilterItem($filterItem_div, json.filter_teacher_special, text, "filter_teacher_special", "teacherType_item");
     }
-    else if (json.filter_date != null) {
+    if (json.filter_date != null) {
 
         const text = dayjs(parseInt(json.filter_date)).format('MM월 DD일');
 
         addFilterItem($filterItem_div, filterValue, text, "filter_date", "date_item");
     }
-    else if (json.filter_teacher_sex != null) {
+    if (json.filter_teacher_sex != null) {
 
         addFilterItem($filterItem_div, json.filter_teacher_sex, json.filter_teacher_sex, "filter_teacher_sex", "sex_item");
     }
-    else if (json.filter_class_price_min != null || json.filter_class_price_max != null) {
+    if (json.filter_class_price_min != null || json.filter_class_price_max != null) {
 
         let price_min = json.filter_class_price_min;
         let price_max = json.filter_class_price_max;
@@ -364,7 +364,7 @@ function setFilterItem($filterItem_div, json) {
 
         addFilterItem($filterItem_div, filterValue, text, "filter_class_price", "classPrice_item");
     }
-    else if (json.filter_time.length != 0) {
+    if (json.filter_time.length != 0) {
 
         const array = json.filter_time;
         for (const item of array) {
@@ -374,7 +374,7 @@ function setFilterItem($filterItem_div, json) {
             addFilterItem($filterItem_div, item, text, "filter_time", "");
         }
     }
-    else if (json.filter_class_type.length != 0) {
+    if (json.filter_class_type.length != 0) {
 
         const array = json.filter_class_type;
         for (const item of array) {
@@ -382,7 +382,7 @@ function setFilterItem($filterItem_div, json) {
             addFilterItem($filterItem_div, item, item, "filter_class_type", "");
         }
     }
-    else if (json.filter_teacher_country.length != 0) {
+    if (json.filter_teacher_country.length != 0) {
 
         const array = json.filter_teacher_country;
         for (const item of array) {
@@ -390,7 +390,7 @@ function setFilterItem($filterItem_div, json) {
             addFilterItem($filterItem_div, item, item, "filter_teacher_country", "");
         }
     }
-    else if (json.filter_teacher_language.length != 0) {
+    if (json.filter_teacher_language.length != 0) {
 
         const array = json.filter_teacher_language;
         for (const item of array) {
