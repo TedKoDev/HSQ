@@ -94,97 +94,155 @@ async function init() {
         recent_chat_date = dayjs(parseInt(msgResult[i].recent_msg_time)).format("MM월 DD일");
         recent_msg_desc = msgResult[i].recent_msg_desc;
        
-                
-        const button = document.createElement("button");
-        button.setAttribute("class", "chat_room_btn w-full hover:bg-gray-200 px-2 border-b-2");
-
-        // 만약 현재 본인이 들어가 있는 채팅방이면 회색처리
-        if (msgResult[i].chat_id == chatId_global) {
-            button.classList.add('bg-gray-200');
-        }
-        else {
-            button.classList.remove('bg-gray-200');
-        }
-        button.setAttribute("id", msgResult[i].chat_id);
-        button.innerHTML = `
-                <div class = "flex w-full my-2">                
-                    <div class = "w-1/5 flex">
-                    <img
-                        id="user_image_room"
-                        class="my-auto w-6 h-6 border-gray-900 rounded-full"
-                        src="${s3_url}Profile_Image/${user_img}">
-                    </img>  
-                    </div>
-                    <div class = "w-4/5 flex flex-col">
-                        <div class = "flex justify-between">
-                            <span class = "text-sm">${user_name}</span>
-                            <span class = "small_text text-xs text-center mb-1">${recent_chat_date}</span>
-                        </div>
-                        <div class = "flex justify-between">
-                            <div class = "line_clamp_1 text-xs w-20 text-left">${recent_msg_desc}</div>
-                            <div id = ${msgResult[i].chat_id}_count class = "w-5 h-5 rounded-full bg-red-500 shadow text-sm text-white">${user_non_read_count}</div>
-                        </div>
-                    </div>
-                            
-                </div>`
-                ;
-            
-        chat_room_div.append(button);
-
-        // 안 읽은 메세지 갯수 0이면 빨간 원 안보이게 처리
-        const circle = document.getElementById(msgResult[i].chat_id+"_count");
-        if (user_non_read_count == 0) {
-            circle.classList.add('hidden');
-        }
-        else {
-            circle.classList.remove('hidden');
-        }
-    
-        // 채팅방 클릭 시 이벤트 리스너
-        button.addEventListener('click', () => {
-
-            // 클릭한 채팅방은 안 읽은 메세지 갯수 표시된 원 없애기
-            circle.classList.add('hidden');
-    
-            // 소켓1 : 채팅방 입장 이벤트 (DB에서 해당 사용자의 lastcheck 업데이트)
-            socket.emit('enter_chat_room', msgResult[i].chat_id, my_id);            
-    
-            // 현재 클릭한 채팅방id와 상대방 id, 최근 채팅방시간을 전역변수에 각각 대입
-            chatId_global = msgResult[i].chat_id;
-            otherId_global = other_id;
-            recent_msg_time_global = msgResult[i].recent_msg_time;
-
-            // 채팅방에 입장할 경우에는 채팅 상대방의 이름과 전송 버튼이 표시
-            checkNameOrInput(chatId_global);
-    
-            // 채팅방 위에 해당 유저 이름 표시하기
-            $('.chatting_user_name').innerText = user_name;
-    
-            // 클릭한 채팅방 버튼 색깔 칠하기
-            setBtnGray(msgResult[i].chat_id);
-    
-            // 해당 채팅방의 채팅 내역 뿌려주기
-            getChattingList(msgResult, msgResult[i].chat_id);
-
-            if (chatId_global == 0) {
-
-                $('.user_name').classList.add('hidden');
-                $('.user_name').classList.remove('flex');
-                $('.send_group').classList.add('hidden');
-                $('.send_group').classList.remove('flex');
-            }
-            else {
-                $('.user_name').classList.remove('hidden');
-                $('.user_name').classList.add('flex');
-                $('.send_group').classList.remove('hidden');
-                $('.send_group').classList.add('flex');
-            }
-
-        })        
+        // 채팅방 추가           
+        const src = s3_url+"Profile_Image/"+user_img;
+        // 채팅방id, 채팅방 src, 상대방 이름, 최근 날짜, 최근 메세지, 안 읽은 메세지 수, 위에 추가인지/아래 추가인지
+        addChatRoom(msgResult[i].chat_id, src, user_name, recent_chat_date, recent_msg_desc, user_non_read_count, "last");            
+             
     }    
 
-    // 채팅방 입장 안 되어 있을 경우에는 상대 이름이랑 전송버튼 안 보이도록 처리
+    // nowChatRoom 값이 null이 아닐 경우에는 nowChatRoom에 있는 채팅방 id를 클릭했을 때의 이벤트 리스너에서 작동하는 함수를 실행시켜주기
+    const nowChatRoom_id = localStorage.getItem('nowChatRoom'); 
+    if (nowChatRoom_id != null) {
+        
+        // clickChatRoom에 들어갈 매개변수 가져오는 과정
+
+        // 원 가져오기
+        const circle = document.getElementById(msgResult[i].chat_id+"_count");   
+        
+        // recent_msg_time 가져오기
+        // 해당 채팅방 id의 인덱스 가져오기
+        const index = msgResult.findIndex(i => i.chat_id == parseInt(nowChatRoom_id));
+        const recent_msg_time = msgResult[index].recent_msg_time;
+
+        // other_id 가져오기
+        const receiver_id = msgResult[index].receiver_id;
+        const sender_id = msgResult[index].sender_id;
+        let other_id;
+
+        if (receiver_id == my_id) {
+            other_id = sender_id;
+        }
+        else if (receiver_id != my_id) {
+            other_id = receiver_id;
+        }
+
+        clickChatRoom(circle, nowChatRoom_id, other_id, recent_msg_time)
+    }   
+}
+
+// 채팅방 추가 (+클릭 시 이벤트 리스너)
+function addChatRoom(chat_id, src, user_name, recent_chat_date, recent_msg_desc, non_read_count, location) {    
+    
+    const button = document.createElement("button");    
+    button.setAttribute("class", "chat_room_btn w-full hover:bg-gray-200 px-2 border-b-2");
+
+    // 만약 현재 본인이 들어가 있는 채팅방이면 회색처리
+    if (chat_id == chatId_global) {
+        button.classList.add('bg-gray-200');
+    }
+    else {
+        button.classList.remove('bg-gray-200');
+    }
+    button.setAttribute("id", chat_id);
+    button.innerHTML = `
+            <div class = "flex w-full my-2">                
+                <div class = "w-1/5 flex">
+                <img
+                    id = ${chat_id}_img
+                    class="my-auto w-6 h-6 border-gray-900 rounded-full"
+                    src=${src}>
+                </img>  
+                </div>
+                <div class = "w-4/5 flex flex-col">
+                    <div class = "flex justify-between">
+                        <span id = ${chat_id}_name class = "text-sm">${user_name}</span>
+                        <span id = ${chat_id}_date class = "small_text text-xs text-center mb-1">${recent_chat_date}</span>
+                    </div>
+                    <div class = "flex justify-between">
+                        <div id = ${chat_id}_desc class = "line_clamp_1 text-xs w-20 text-left">${recent_msg_desc}</div>
+                        <div id = ${chat_id}_count class = "w-5 h-5 rounded-full bg-red-500 shadow text-sm text-white">${non_read_count}</div>
+                    </div>
+                </div>                            
+            </div>`
+            ;
+        
+    // 채팅방 마지막에 추가인지, 맨 위에 추가인지 여부
+    if (location == "last") {
+        chat_room_div.append(button);
+    }
+    else if (location == "first") {
+        chat_room_div.prepend(button);
+    }    
+
+    // 안 읽은 메세지 갯수 0이면 빨간 원 안보이게 처리
+    const circle = document.getElementById(chat_id+"_count");
+    if (non_read_count == 0) {
+        circle.classList.add('hidden');
+    }
+    else {
+        circle.classList.remove('hidden');
+    }   
+
+    // other_id 구하기
+    let other_id;
+    const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_id));
+    if (msgResult[index].sender_id == my_id) {
+        other_id = msgResult[index].receiver_id;
+    }
+    else if (msgResult[index].sender_id != my_id) {
+        other_id = msgResult[index].sender_id;
+    }
+
+    // 채팅방 클릭 시 이벤트 리스너
+    button.addEventListener('click', () => {
+            
+        // 원, 채팅방id, 상대방id, 최근 날짜, 상대방 이름
+        clickChatRoom(circle, chat_id, other_id, recent_chat_date, user_name);
+
+    })     
+}
+
+// 채팅방 클릭했을 때 이벤트
+function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
+
+    // 클릭한 채팅방은 안 읽은 메세지 갯수 표시된 원 없애기
+    circle.classList.add('hidden');
+    
+    // 소켓1 : 채팅방 입장 이벤트 (DB에서 해당 사용자의 lastcheck 업데이트)
+    socket.emit('enter_chat_room', chat_id, my_id);            
+
+    // 현재 클릭한 채팅방id와 상대방 id, 최근 채팅방시간을 전역변수에 각각 대입
+    chatId_global = chat_id;
+    otherId_global = other_id;
+    recent_msg_time_global = recent_msg_time;
+
+    // 채팅방에 입장할 경우에는 채팅 상대방의 이름과 전송 버튼이 표시
     checkNameOrInput(chatId_global);
+
+    // 채팅방 위에 해당 유저 이름 표시하기
+    $('.chatting_user_name').innerText = user_name;
+
+    // 클릭한 채팅방 버튼 색깔 칠하기
+    setBtnGray(chat_id);
+
+    // 해당 채팅방의 채팅 내역 뿌려주기
+    getChattingList(msgResult, chat_id);
+
+    if (chatId_global == 0) {
+        
+        $('.user_name').classList.add('hidden');
+        $('.user_name').classList.remove('flex');
+        $('.send_group').classList.add('hidden');
+        $('.send_group').classList.remove('flex');
+    }
+    else {                
+
+        $('.user_name').classList.remove('hidden');
+        $('.user_name').classList.add('flex');
+        $('.send_group').classList.remove('hidden');
+        $('.send_group').classList.add('flex');
+    }
 }
 
 function checkNameOrInput(chatId_global) {
@@ -407,7 +465,7 @@ function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, cla
 
     // 결제 링크 리스트도 표시해주기
     const linkList = document.getElementById("linkList_"+msg_id);
-    console.log(payment_link);
+    
     
     for (let i = 0; i < payment_link.length; i++) {
 
@@ -419,7 +477,7 @@ function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, cla
         linkList.append(a);
     }
 
-    console.log(linkList);
+    
     
     // 버튼 클릭 이벤트 (클릭 시 해당 수업 상세로 이동)
     const btn = document.getElementById(msg_id+"_class");    
@@ -442,7 +500,7 @@ function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, cla
 // 수업 예약/승인/취소일 때 대입하는 함수
 function setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, text) {
 
-    console.log("msg_id : "+msg_id);    
+    
     div.innerHTML = `
     <div class = "px-2">
         <div class = "text-center text-xs text-gray-500 my-2 border-2">
@@ -530,11 +588,57 @@ function sendTextMessage() {
     
 }
 
+// 소켓 서버로부터 메세지 받을 때 채팅방에 가장 최근 메세지랑 날짜 업데이트 시키기
+function updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg) {
+
+    // 해당 채팅방의 recent_msg_time 업데이트 하고 웹 브라우저에도 표시되게 처리    
+    msgResult[index].recent_msg_time = msg_date;    
+    $('#'+chat_room_id+"_date").innerHTML = dayjs(parseInt(msg_date)).format("MM월 DD일");
+
+    // 해당 채팅방의 recent_msg_desc 업데이트 하고 웹 브라우저에도 표시되게 처리    
+    msgResult[index].recent_msg_desc = chat_msg;    
+    $('#'+chat_room_id+"_desc").innerHTML = chat_msg;
+
+    // 해당 채팅방이 맨 위가 아닐 경우 (index != 0일 경우) 해당 채팅방 삭제하고 그 채팅방 맨 위에 추가 (array는 건들지 않음)
+    if (index != 0) {
+        
+        $('#'+chat_room_id)
+        // 해당 채팅방의 유저 이미지(src), 유저 이름, 최근 날짜, 최근 메세지 내용, 안 읽은 메세지 수 추출
+        const user_img = $('#'+chat_room_id+"_img").src;
+        const user_name = $('#'+chat_room_id+"_name").innerHTML;
+        const recent_date = $('#'+chat_room_id+"_date").innerHTML;
+        const recent_desc = $('#'+chat_room_id+"_desc").innerHTML;
+        const non_read_count = $('#'+chat_room_id+"_count").innerHTML;
+        // 해당 메세지 삭제
+        $('#'+chat_room_id).remove();
+
+        // 맨 위에 해당 채팅방 추가        
+        addChatRoom(chat_room_id, user_img, user_name, recent_date, recent_desc, non_read_count, "first")
+
+        
+    }
+}
+
 // 소켓서버에서 받는 로직
 // 소켓 서버에서 들어오는 요청 받는 곳
-socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date) => {
-        
+socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id) => {  
     
+    // 해당 채팅방의 인덱스 가져오기
+    const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
+
+    // 받은 메세지 해당 채팅방의 array에 추가    
+    const msg_json = {
+        msg_id : msg_id, 
+        msg_type : 'text', 
+        sender_id : sender_id, 
+        sender_name : sender_name, 
+        sender_img : sender_img, 
+        msg_desc : chat_msg, 
+        msg_time : msg_date
+    };
+    msgResult[index].msg_list.push(msg_json);
+
+    updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
     if (chat_room_id == chatId_global) {       
         
@@ -568,17 +672,41 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
     else {
 
         init();
-    } 
+    }     
     
-    
-    chattingList_div.scrollTop = chattingList_div.scrollHeight;
-        
+    chattingList_div.scrollTop = chattingList_div.scrollHeight;        
    
 });
 
-socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, paypal_link, msg_date, student_id, teacher_id, msg_id) => {
-
+socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, 
+    teacher_img, paypal_link, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
        
+    // 해당 채팅방의 인덱스 가져오기
+    const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
+
+    const link_array = JSON.parse(paypal_link);
+    // 받은 메세지 해당 채팅방의 array에 추가    
+    const msg_json = {
+        msg_id : msg_id, 
+        msg_type : 'payment_link', 
+        sender_id : sender_id, 
+        sender_name : teacher_name, 
+        sender_img : teacher_img, 
+        msg_desc : 
+            {
+                class_register_id : class_register_id,
+                class_name : class_name,
+                student_id : student_id,
+                teacher_id : teacher_id,
+                teacher_name : teacher_name,
+                teacher_img : teacher_img,
+                payment_link : link_array,
+            }, 
+        msg_time : msg_date
+    };
+    msgResult[index].msg_list.push(msg_json);
+
+    updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
     if (chat_room_id == chatId_global) {        
 
@@ -594,15 +722,40 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
     } 
     else {
 
-        init();
+        // init();
     }    
 
     
 });
 
-socket.on('request_class', (chat_room_id, class_register_id, class_name, student_name, teacher_img, msg_date, student_id, teacher_id, msg_id) => {
+socket.on('request_class', (chat_room_id, class_register_id, class_name, student_name, 
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
 
-    console.log("request_class_date : "+msg_date);
+    // 해당 채팅방의 인덱스 가져오기
+    const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
+    
+    // 받은 메세지 해당 채팅방의 array에 추가    
+    const msg_json = {
+        msg_id : msg_id, 
+        msg_type : 'request_class', 
+        sender_id : student_id, 
+        sender_name : student_name, 
+        sender_img : teacher_img, 
+        msg_desc : 
+            {
+                class_register_id : class_register_id,
+                class_name : class_name,
+                student_id : student_id,
+                teacher_id : teacher_id,
+                teacher_name : null,
+                teacher_img : teacher_img                
+            }, 
+        msg_time : msg_date
+    };
+    msgResult[index].msg_list.push(msg_json);
+
+    updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
+
     if (chat_room_id == chatId_global) {
         
         // 읽었다고 소켓서버에 다시 보내기
@@ -622,9 +775,33 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, student
     
 });
 
-socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id, msg_id) => {
+socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, 
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
 
+    // 해당 채팅방의 인덱스 가져오기
+    const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
+    
+    // 받은 메세지 해당 채팅방의 array에 추가    
+    const msg_json = {
+        msg_id : msg_id, 
+        msg_type : 'acceptance_class', 
+        sender_id : teacher_id, 
+        sender_name : teacher_name, 
+        sender_img : teacher_img, 
+        msg_desc : 
+            {
+                class_register_id : class_register_id,
+                class_name : class_name,
+                student_id : student_id,
+                teacher_id : teacher_id,
+                teacher_name : teacher_name,
+                teacher_img : teacher_img                
+            }, 
+        msg_time : msg_date
+    };
+    msgResult[index].msg_list.push(msg_json);
 
+    updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
     if (chat_room_id == chatId_global) {
 
@@ -645,8 +822,33 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
    
 });
 
-socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, teacher_img, msg_date, student_id, teacher_id, msg_id) => {
+socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, 
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
     
+    // 해당 채팅방의 인덱스 가져오기
+    const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
+        
+    // 받은 메세지 해당 채팅방의 array에 추가    
+    const msg_json = {
+        msg_id : msg_id, 
+        msg_type : 'cancel_class', 
+        sender_id : teacher_id, 
+        sender_name : teacher_name, 
+        sender_img : teacher_img, 
+        msg_desc : 
+            {
+                class_register_id : class_register_id,
+                class_name : class_name,
+                student_id : student_id,
+                teacher_id : teacher_id,
+                teacher_name : teacher_name,
+                teacher_img : teacher_img                
+            }, 
+        msg_time : msg_date
+    };
+    msgResult[index].msg_list.push(msg_json);
+
+    updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
     if (chat_room_id == chatId_global) {
 

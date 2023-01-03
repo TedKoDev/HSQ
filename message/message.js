@@ -46,7 +46,7 @@ async function init() {
     if (response.success == 'yes') {
 
         my_id = response.my_id;
-        msgResult = response.result;
+        msgResult = response.result;        
         
         console.log(msgResult);
     }    
@@ -407,7 +407,7 @@ function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, cla
 
     // 결제 링크 리스트도 표시해주기
     const linkList = document.getElementById("linkList_"+msg_id);
-    console.log(payment_link);
+    
     
     for (let i = 0; i < payment_link.length; i++) {
 
@@ -419,7 +419,7 @@ function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, cla
         linkList.append(a);
     }
 
-    console.log(linkList);
+    
     
     // 버튼 클릭 이벤트 (클릭 시 해당 수업 상세로 이동)
     const btn = document.getElementById(msg_id+"_class");    
@@ -442,7 +442,7 @@ function setPayment(div, msg_id, date, student_id, teacher_id, teacher_name, cla
 // 수업 예약/승인/취소일 때 대입하는 함수
 function setClassState(div, msg_id, date, sender_name, class_id, student_id, teacher_id, teacher_img, class_name, text) {
 
-    console.log("msg_id : "+msg_id);    
+    
     div.innerHTML = `
     <div class = "px-2">
         <div class = "text-center text-xs text-gray-500 my-2 border-2">
