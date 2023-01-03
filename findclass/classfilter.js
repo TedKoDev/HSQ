@@ -4,6 +4,11 @@ import { getClassinfo } from './findclass.js';
 
 export async function classfilter() {    
 
+    // 선택한 필터가 표시되는 div
+    const filterItem_div = $('.filterItemList');
+    // 화면 켜지면서 렌더링 될 때 request_to_server에서 필터에 해당하는 값이 있을 경우에는 필터 아이템 리스트에 해당 아이템 추가
+    setFilterItem(filterItem_div, request_to_server);
+
     // checkbox 형태가 들어가 있는 필터 버튼 (수업 유형, 구사 가능 언어, 출신지)
     const classTypeModalBtn = $('#classType_btn');
     const teacherLanguageModalBtn = $('#teacherLanguage_btn');
@@ -54,7 +59,7 @@ export async function classfilter() {
     const teacherTypeModalBtn = $('#teacherType_btn');
     const teacherSexModalBtn = $('#teacherSex_btn');
 
-    // radio 있는 모달 클릭했을 때 json에 null 이면 디폴트로 처리해놓기
+    // radio 있는 모달 클릭했을 때 json에 null 이면 디폴트로 false 처리해놓고 request_to_server에 있는 값만 true로 체크해놓기
     clickBtn_radio(teacherTypeModalBtn, 'filter_teacher_special');
     clickBtn_radio(teacherSexModalBtn, 'filter_teacher_sex');
 
@@ -68,13 +73,18 @@ export async function classfilter() {
 
                 radioBtn.checked = false;
             }            
+
+            for (const radioBtn of allRadioBtn) {
+
+                if (radioBtn == request_to_server[type]) {
+
+                    radioBtn == true;
+                }                              
+            }       
+
         })
     }    
-
-    
-    // 선택한 필터가 표시되는 div
-    const filterItem_div = $('.filterItemList');
-
+       
     // 모달창 안에 있는 뷰들
     // checkbox 형태    
     const classType_div = $('.classTypeList');
@@ -118,7 +128,7 @@ export async function classfilter() {
                 let text;
                 // 수업 시간 선택일 경우
                 if (e.target.name == "filter_time") {
-                    console.log("pass");
+                    
                     text = ('00' + filterValue).slice(-2)+":00 - "+('00' + (parseInt(filterValue)+1)).slice(-2)+":00";
                                   
                 }
@@ -127,18 +137,9 @@ export async function classfilter() {
                     text = filterValue;
                     
                 }
-                    
-                const new_btn = document.createElement('div');
-                new_btn.innerHTML = `
-                    <div id = "${filterValue}_div" value = ${filterValue} class = "flex items-center text-xs px-1 py-2 text-center bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
-                        <span class = "mr-1">${text}</span>
-                        <button value = "${filterValue}" name = ${target.name} class="text-gray-800 font-medium inline-flex items-center" type="button">
-                            <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
-                        </button>                
-                    </div>
-                    `;              
-                                  
-                filterItem_div.append(new_btn);
+
+                // 필터 아이템 화면에 표시
+                addFilterItem(filterItem_div, filterValue, text, target.name, "");         
 
                 // json 값 추가              
                 changeJson(target.name, filterValue, 'add');
@@ -194,17 +195,8 @@ export async function classfilter() {
                 text = filterValue;                
             }            
             
-            const new_btn = document.createElement('div');
-            new_btn.innerHTML = `
-                <div id = "${filterValue}_div" value = ${filterValue} class = "${class_name} flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
-                    <span class = "mr-1">${text}</span>
-                    <button value = "${filterValue}" name = ${target.name} class="text-gray-800 font-medium inline-flex items-center" type="button">
-                        <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
-                    </button>                
-                </div>
-                `;              
-                                
-            filterItem_div.append(new_btn);
+            // 필터 아이템 화면에 표시
+            addFilterItem(filterItem_div, filterValue, text, target.name, class_name);
 
             // json 값 변경
             changeJson(target.name, filterValue, 'update');
@@ -292,17 +284,8 @@ export async function classfilter() {
 
         const filterValue = search_input.value;
 
-        const new_btn = document.createElement('div');
-        new_btn.innerHTML = `
-            <div id = "${filterValue}_div" value = ${filterValue} class = "search_item flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
-                <span class = "mr-1">${filterValue}</span>
-                <button value = "${filterValue}" name = "filter_search" id = "search_item_btn" class="text-gray-800 font-medium inline-flex items-center" type="button">
-                    <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
-                </button>                
-            </div>
-            `;              
-                            
-        filterItem_div.append(new_btn);
+        // 필터 아이템 화면에 표시
+        addFilterItem(filterItem_div, filterValue, filterValue, "filter_search", "search_item");       
 
         // json 값 변경        
         changeJson("filter_search", filterValue, 'update');
@@ -312,6 +295,110 @@ export async function classfilter() {
 
         clickInputBtn(search_input, e);
     })
+}
+
+// 필터 선택 시 아이템 추가하는 함수
+export function addFilterItem($filterItem_div, filterValue, text, button_name, class_name) {
+
+    const new_btn = document.createElement('div');
+    new_btn.innerHTML = `
+        <div id = "${filterValue}_div" value = ${filterValue} class = "${class_name} flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
+            <span class = "mr-1">${text}</span>
+            <button value = "${filterValue}" name = ${button_name} id = "search_item_btn" class="text-gray-800 font-medium inline-flex items-center" type="button">
+                <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
+            </button>                
+        </div>
+        `;              
+                        
+    $filterItem_div.append(new_btn);
+}
+
+// 화면 켜지면서 렌더링 될 때 (수업찾기 메뉴 클릭 or 새로고침) request_to_server에서 필터에 해당하는 값이 있을 경우 필터 아이템 리스트에 해당 값 추가
+function setFilterItem($filterItem_div, json) {
+
+    // 검색
+    if (json.filter_search != null) {
+
+        addFilterItem($filterItem_div, json.filter_search, json.filter_search, "filter_search", "search_item");       
+    }
+    // 강사 유형 (전문강사, 커뮤니티 튜터)
+    else if (json.filter_teacher_special != null) {
+
+        let text;
+
+        if (json.filter_teacher_special == "default") {
+            text = '커뮤니티 튜터';
+        }
+        else if (json.filter_teacher_special == "nondefault"){
+            text = '전문 강사';
+        }
+
+        addFilterItem($filterItem_div, json.filter_teacher_special, text, "filter_teacher_special", "teacherType_item");
+    }
+    else if (json.filter_date != null) {
+
+        const text = dayjs(parseInt(json.filter_date)).format('MM월 DD일');
+
+        addFilterItem($filterItem_div, filterValue, text, "filter_date", "date_item");
+    }
+    else if (json.filter_teacher_sex != null) {
+
+        addFilterItem($filterItem_div, json.filter_teacher_sex, json.filter_teacher_sex, "filter_teacher_sex", "sex_item");
+    }
+    else if (json.filter_class_price_min != null || json.filter_class_price_max != null) {
+
+        let price_min = json.filter_class_price_min;
+        let price_max = json.filter_class_price_max;
+
+        if (json.filter_class_price_min == null) {
+
+            price_min = 0;
+        }  
+        if (json.filter_class_price_max == null) {
+
+            price_max = 1000;
+        }         
+
+        const filterValue = price_min+" - "+price_max;
+        const text = "$ "+price_min+" USD - $ "+price_max+" USD";
+
+        addFilterItem($filterItem_div, filterValue, text, "filter_class_price", "classPrice_item");
+    }
+    else if (json.filter_time.length != 0) {
+
+        const array = json.filter_time;
+        for (const item of array) {
+
+            const text = ('00' + item).slice(-2)+":00 - "+('00' + (parseInt(item)+1)).slice(-2)+":00";
+
+            addFilterItem($filterItem_div, item, text, "filter_time", "");
+        }
+    }
+    else if (json.filter_class_type.length != 0) {
+
+        const array = json.filter_class_type;
+        for (const item of array) {
+           
+            addFilterItem($filterItem_div, item, item, "filter_class_type", "");
+        }
+    }
+    else if (json.filter_teacher_country.length != 0) {
+
+        const array = json.filter_teacher_country;
+        for (const item of array) {
+           
+            addFilterItem($filterItem_div, item, item, "filter_teacher_country", "");
+        }
+    }
+    else if (json.filter_teacher_language.length != 0) {
+
+        const array = json.filter_teacher_language;
+        for (const item of array) {
+           
+            addFilterItem($filterItem_div, item, item, "filter_teacher_language", "");
+        }
+    }
+
 }
 
 // 이벤트에 따라 서버에 보낼 json 변경
@@ -411,6 +498,7 @@ export function changeJson(key, value, type) {
     saveFilterJson(request_to_server);
 }
 
+// 변경된 json 로컬 스토리지에 저장
 export function saveFilterJson(json) {
 
     // filter_json이라는 이름으로 로컬 스토리지에 저장

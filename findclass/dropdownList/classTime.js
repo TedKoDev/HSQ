@@ -3,6 +3,7 @@ import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
 import { getMyUtc } from "../../utils/getMyUtc.js";
 import { changeJson } from "../classfilter.js";
 import { getClassinfo } from "../findclass.js";
+import { addFilterItem } from "../classfilter.js";
 
 // 요일 표시용 array
 const week = new Array('일', '월', '화', '수', '목', '금', '토');
@@ -194,18 +195,9 @@ function updateFilterItem(e) {
        
         const text = dayjs(parseInt(filterValue)).format('MM월 DD일');
         
-        const new_btn = document.createElement('div');
-        new_btn.innerHTML = `
-            <div id = "${filterValue}_div" value = ${filterValue} class = "date_item flex items-center text-xs px-1 py-2 text-center  bg-gray-300 hover:bg-gray-400 rounded-2xl mx-1">
-                <span class = "mr-1">${text}</span>
-                <button value = "${filterValue}" name = ${e.target.name}  class="filter_time_btn text-gray-800 font-medium inline-flex items-center" type="button">
-                    <svg name = "deleteIcon" class= "deleteIcon w-4 h-4 bg-gray-500 rounded-full text-white border-white" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 10.93 5.719-5.72c.146-.146.339-.219.531-.219.404 0 .75.324.75.749 0 .193-.073.385-.219.532l-5.72 5.719 5.719 5.719c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.385-.073-.531-.219l-5.719-5.719-5.719 5.719c-.146.146-.339.219-.531.219-.401 0-.75-.323-.75-.75 0-.192.073-.384.22-.531l5.719-5.719-5.72-5.719c-.146-.147-.219-.339-.219-.532 0-.425.346-.749.75-.749.192 0 .385.073.531.219z"/></svg>
-                </button>                
-            </div>
-            `;              
-                            
-        filterItem_div.append(new_btn);  
-    
+        // 필터 아이템 화면에 표시
+        addFilterItem(filterItem_div, filterValue, text, e.target.name, "date_item");
+
         // 날짜 저장하는 변수에 대입
         now_click_date = filterValue;
 

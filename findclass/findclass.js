@@ -10,10 +10,13 @@ if (filter_json != null) {
   request_to_server = JSON.parse(filter_json);
 }
 
-console.log(request_to_server);
 // 서버 전송 용도의 json에 timezone 넣기
 const user_timezone = await getMyUtc(getCookie(cookieName));
 request_to_server.user_timezone = user_timezone;
+
+
+// 필터와 관련된 코드 가져오기
+classfilter();
 
 // 수업 정보 가져오기
 getClassinfo(request_to_server);
@@ -23,6 +26,8 @@ const see_more_btn = $('#see_more');
 
 // 모든 수업 목록 가져오기 
 export async function getClassinfo(json) {    
+
+    console.log(request_to_server);
 
     // 기존 수업 목록 초기화
     const class_list = document.getElementById("class_list");    
@@ -44,7 +49,7 @@ export async function getClassinfo(json) {
       // 요청 성공했을 때만 수업 목록 화면에 표시
       if (response.success == "yes") {
 
-        console.log(response);
+        // console.log(response);
         setClassinfo(response);
       }
       else {
@@ -196,8 +201,8 @@ function moveClassdetail(div, class_id, teacher_id) {
   }
 
 
-// 필터와 관련된 코드 가져오기
-classfilter();
+
+
 
 
 
