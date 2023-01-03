@@ -206,6 +206,17 @@ function addChatRoom(chat_id, src, user_name, recent_chat_date, recent_msg_desc,
 // 채팅방 클릭했을 때 이벤트
 function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
 
+    // 클릭한 채팅방에서 본인의 non_read_count 0으로 만들기    
+    if (msgResult[index].sender_id == my_id) {
+        msgResult[index].sender_non_read_count = 0;
+    }
+    else if (msgResult[index].sender_id != my_id) {
+        msgResult[index].receiver_non_read_count = 0;
+    }
+
+    // circle에 0 적용
+    circle.innerHTML = 0;
+
     // 클릭한 채팅방은 안 읽은 메세지 갯수 표시된 원 없애기
     circle.classList.add('hidden');
     
@@ -228,6 +239,9 @@ function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
 
     // 해당 채팅방의 채팅 내역 뿌려주기
     getChattingList(msgResult, chat_id);
+
+    // 로컬 스토리지에 채팅방 id 저장
+    localStorage.setItem('nowChatRoom', chat_id); 
 
     if (chatId_global == 0) {
         
@@ -619,6 +633,29 @@ function updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg) {
     }
 }
 
+// 채팅방 안에 없을 때 메세지 받으면 안 읽은 갯수 증가시키기
+function adaptNonReadCount(index) {
+
+    const circle = $('#'+msgResult[index].chat_id+"_count");
+
+    // 본인 id에 해당하는 non_read_count 1증가
+    if (msgResult[index].sender_id == my_id) {
+        msgResult[index].sender_non_read_count = parseInt(msgResult[index].sender_non_read_count)+1;
+        // circle에 non_read_count 적용
+        circle.innerHTML = msgResult[index].sender_non_read_count;
+    }
+    else if (msgResult[index].sender_id != my_id) {
+        msgResult[index].receiver_non_read_count = parseInt(msgResult[index].receiver_non_read_count)+1;
+        // circle에 non_read_count 적용
+        circle.innerHTML = msgResult[index].receiver_non_read_count;
+    }
+    
+    // 해당 채팅방에 circle 보이게 처리
+    circle.classList.remove('hidden');
+
+    
+}
+
 // 소켓서버에서 받는 로직
 // 소켓 서버에서 들어오는 요청 받는 곳
 socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id) => {  
@@ -667,14 +704,15 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
             setText(div, dayjs(msg_date).add(utc, "hour"), sender_img, chat_msg, 'no', showDateCheck);
            
         }
-        chattingList_div.append(div);          
+        chattingList_div.append(div);     
+        
+        chattingList_div.scrollTop = chattingList_div.scrollHeight;     
     }
     else {
 
-        init();
-    }     
-    
-    chattingList_div.scrollTop = chattingList_div.scrollHeight;        
+        // 채팅방 안에 없을 때 메세지 받으면 안 읽은 갯수 증가시키기
+        adaptNonReadCount(index);
+    }  
    
 });
 
@@ -722,7 +760,8 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
     } 
     else {
 
-        // init();
+        // 채팅방 안에 없을 때 메세지 받으면 안 읽은 갯수 증가시키기
+        adaptNonReadCount(index);
     }    
 
     
@@ -769,7 +808,8 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, student
     }
     else {
 
-        init();
+       // 채팅방 안에 없을 때 메세지 받으면 안 읽은 갯수 증가시키기
+       adaptNonReadCount(index);
     }    
 
     
@@ -816,7 +856,8 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
     }
     else {
 
-        init();
+       // 채팅방 안에 없을 때 메세지 받으면 안 읽은 갯수 증가시키기
+       adaptNonReadCount(index);
     }    
 
    
@@ -863,7 +904,8 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
     }
     else {
 
-        init();
+       // 채팅방 안에 없을 때 메세지 받으면 안 읽은 갯수 증가시키기
+       adaptNonReadCount(index);
     }    
     
 });
@@ -886,9 +928,9 @@ function read_msg_check(chat_room_id, sender_id) {
             // init();   
             
         });
-        init();
+        // init();
 
-        chattingList_div.scrollTop = chattingList_div.scrollHeight;
+        // chattingList_div.scrollTop = chattingList_div.scrollHeight;
     // }
     // else {
     //     init();
