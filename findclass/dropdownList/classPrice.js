@@ -1,5 +1,6 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { changeJson } from "../classfilter.js";
+import { getClassinfo } from "../findclass.js";
 
 const min_price = $('#range1');
 const max_price = $('#range2');

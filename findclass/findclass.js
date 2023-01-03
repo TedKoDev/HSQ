@@ -1,27 +1,41 @@
 import {$} from '/utils/querySelector.js';
+import { getMyUtc } from '../utils/getMyUtc.js';
 import { classfilter } from './classfilter.js';
 
+// 로컬스토리지 가져와서 값이 있을 경우 request_to_server에 대입해주기
+const filter_json = localStorage.getItem("filter_json");
 
-// 첫 화면에서는 모든 수업 정보 가져오기
-getClassinfo_all();
+if (filter_json != null) {
+
+  request_to_server = JSON.parse(filter_json);
+}
+
+console.log(request_to_server);
+// 서버 전송 용도의 json에 timezone 넣기
+const user_timezone = await getMyUtc(getCookie(cookieName));
+request_to_server.user_timezone = user_timezone;
+
+// 수업 정보 가져오기
+getClassinfo(request_to_server);
 
 // 더보기 버튼
 const see_more_btn = $('#see_more');
 
 // 모든 수업 목록 가져오기 
-async function getClassinfo_all() {
+export async function getClassinfo(json) {    
 
-    const body = {
-        kind: 'clist'
-
-      };
+    // 기존 수업 목록 초기화
+    const class_list = document.getElementById("class_list");    
+    while(class_list.firstChild) {
+      class_list.removeChild(class_list.firstChild);  
+    }
      
       const res = await fetch('../restapi/classinfo.php', {
         method: 'POST',   
         headers: {
             'Content-Type': 'application/json;'
           },
-        body: JSON.stringify(body)          
+        body: JSON.stringify(json)          
       });  
     
       // 받아온 json 파싱하고 array 추출
@@ -30,6 +44,7 @@ async function getClassinfo_all() {
       // 요청 성공했을 때만 수업 목록 화면에 표시
       if (response.success == "yes") {
 
+        console.log(response);
         setClassinfo(response);
       }
       else {
@@ -74,11 +89,12 @@ async function see_more() {
 }
 
 // 서버에서 받아온 수업 목록 표시;
+
 function setClassinfo(response) {
+  
+    const class_list = document.getElementById("class_list");        
 
-    let res_array = response.result;
-
-    let class_list = document.getElementById("class_list");
+    let res_array = response.result;    
 
     // 수업 개수만큼 반복문 돌린 후 태그 생성하여 화면에 표시
     for (let i = 0; i < res_array.length; i++) {
@@ -182,6 +198,8 @@ function moveClassdetail(div, class_id, teacher_id) {
 
 // 필터와 관련된 코드 가져오기
 classfilter();
+
+
 
 
 

@@ -172,6 +172,9 @@ const clickLogout = async () => {
   // 쿠기 삭제
   deleteCookie("user_info");
 
+  // 로컬 스토리지 모두 삭제
+  localStorage.clear();
+
   // 메인화면으로 이동
   location.replace("/");
 }

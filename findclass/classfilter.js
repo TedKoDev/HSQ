@@ -1,14 +1,10 @@
 import {$, $_all} from '/utils/querySelector.js';
-import { getMyUtc } from '../utils/getMyUtc.js';
 import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
+import { getClassinfo } from './findclass.js';
 
-export async function classfilter() {
+export async function classfilter() {    
 
-    // 서버 전송 용도의 json에 timezone 넣기
-    const user_timezone = await getMyUtc(getCookie(cookieName));
-    request_to_server.user_timezone = user_timezone;
-
-    // // checkbox 형태가 들어가 있는 필터 버튼 (수업 유형, 구사 가능 언어, 출신지)
+    // checkbox 형태가 들어가 있는 필터 버튼 (수업 유형, 구사 가능 언어, 출신지)
     const classTypeModalBtn = $('#classType_btn');
     const teacherLanguageModalBtn = $('#teacherLanguage_btn');
     const teacherCountryModalBtn = $('#teacherCountry_btn');
@@ -410,4 +406,16 @@ export function changeJson(key, value, type) {
             request_to_server.filter_class_price_max = null;
         }
     }    
+
+    // 변경된 json 로컬 스토리지에 저장
+    saveFilterJson(request_to_server);
+}
+
+export function saveFilterJson(json) {
+
+    // filter_json이라는 이름으로 로컬 스토리지에 저장
+    localStorage.setItem("filter_json", JSON.stringify(json));
+
+    // 서버에 json 보내서 재 렌더링
+    getClassinfo(json);
 }

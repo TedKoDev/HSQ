@@ -2,6 +2,7 @@ import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie} from "/commenJS/cookie_modules.js";
 import { getMyUtc } from "../../utils/getMyUtc.js";
 import { changeJson } from "../classfilter.js";
+import { getClassinfo } from "../findclass.js";
 
 // 요일 표시용 array
 const week = new Array('일', '월', '화', '수', '목', '금', '토');
