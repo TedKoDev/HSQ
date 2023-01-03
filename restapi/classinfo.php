@@ -276,6 +276,7 @@ $teacher_name      =   json_decode(file_get_contents("php://input"))->{"teacher_
 
 // 더보기 (페이징)처리 용 
 $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
+// $plus       =   0;     // 더보기 
 
 
 
@@ -298,10 +299,10 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 // $kind = 'clist';
 // $clReserveCheck = null; //안해도됨
 // $filter_check      = 'ok(아무값)';
-// $filter_search     = '한국';
-// $filter_time = array("0", "1", "2", "3", "4", "5", "6", "7", "10");
+// $filter_search     = '팀';
+// // $filter_time = array("0", "1", "2", "3", "4", "5", "6", "7", "10");
 // $filter_date = "1671517800000";
-// $filter_class_type = array("발음");
+// $filter_class_type = array("듣기");
 
 
 //수업찾기 필터 
@@ -586,7 +587,7 @@ if ($kind == 'cdetail') {
 
       // 전체
 
-      $Clist_Sql = "SELECT * FROM Class_List JOIN Teacher_Schedule 
+      $Clist_Sql = "SELECT distinct class_id, Teacher_Schedule.user_id_teacher, class_name, class_description, class_type, class_level , class_people FROM Class_List JOIN Teacher_Schedule 
          ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher
          order by class_id DESC LIMIT $start, $till";
 
@@ -618,7 +619,7 @@ if ($kind == 'cdetail') {
           //시간대만 있을때 
         } else if ($filter_date == null && $filter_time != null) {
 
-          echo 3;
+          // echo 3;
           // utc 0 기준 당일날짜값 timestamp 가져온뒤 프론트에 맞춰 1000 곱해주기 
           $today = strtotime(date("Y-m-d")) * 1000;
 
@@ -680,19 +681,11 @@ if ($kind == 'cdetail') {
 
           //Class_List에 수업 목록확인  
           // 전체
-          $filter_search_sql_part = " class_name LIKE '%$filter_search%' 
-                or class_description LIKE '%$filter_search%'";
+          $filter_search_sql_part = " (class_name LIKE '%$filter_search%' 
+                or class_description LIKE '%$filter_search%')";
 
 
-          // $Clist_Sql = "SELECT * FROM Class_List JOIN Teacher_Schedule 
-          // ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher where  $filter_search_sql_part  and   $filter_hour_add3  order by class_id DESC LIMIT $start, $till";
-
-          //  echo $Clist_Sql = "SELECT * FROM (SELECT User.*,User_Detail.*,User_Teacher.*, Class_List.*, Teacher_Schedule.schedule_list,Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review,
-          //                               Teacher_Schedule.teacher_schedule_date
-          //                               FROM Class_List JOIN Teacher_Schedule
-          //                               ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher  WHERE $filter_hour_add3) AS new_class_list where  $filter_search_sql_part   order by class_id DESC LIMIT $start, $till";
-
-          $Clist_Sql = "SELECT * FROM (SELECT Class_List.*, Teacher_Schedule.schedule_list,Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review,
+          $Clist_Sql = "SELECT distinct class_id, Teacher_Schedule.user_id_teacher, class_name, class_description, class_type, class_level , class_people  FROM (SELECT Class_List.*, Teacher_Schedule.schedule_list,Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review,
                                   Teacher_Schedule.teacher_schedule_date
                                   FROM Class_List JOIN Teacher_Schedule
                                   ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher  WHERE $filter_hour_add3) AS new_class_list where  $filter_search_sql_part   order by class_id DESC LIMIT $start, $till";
@@ -714,7 +707,7 @@ if ($kind == 'cdetail') {
 
             $filter_class_type_val =  $filter_class_type_add;
 
-            $Clist_Sql = "SELECT * FROM (SELECT Class_List.*, Teacher_Schedule.schedule_list,Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review,
+            $Clist_Sql = "SELECT distinct class_id, user_id_teacher, class_name, class_description, class_type, class_level, class_people  FROM (SELECT Class_List.*, Teacher_Schedule.schedule_list,Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review,
                 Teacher_Schedule.teacher_schedule_date
                 FROM Class_List JOIN Teacher_Schedule
                 ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher  WHERE $filter_hour_add3) AS new_class_list where $filter_class_type_val  and $filter_search_sql_part  and   $filter_hour_add3  order by class_id DESC LIMIT $start, $till";
@@ -722,7 +715,7 @@ if ($kind == 'cdetail') {
         } else if ($filter_search == null) {
 
 
-          $Clist_Sql = "SELECT * FROM  Class_List JOIN Teacher_Schedule 
+          $Clist_Sql = "SELECT distinct class_id, Teacher_Schedule.user_id_teacher, class_name, class_description, class_type, class_level , class_people FROM  Class_List JOIN Teacher_Schedule 
                   ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher where $filter_hour_add3 order by class_id DESC LIMIT $start, $till";
 
           // 수업타입 
@@ -742,7 +735,7 @@ if ($kind == 'cdetail') {
 
             $filter_class_type_val = 'where ' . $filter_class_type_add;
 
-            $Clist_Sql = "SELECT * FROM (SELECT Class_List.*, Teacher_Schedule.schedule_list,Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review,
+            $Clist_Sql = "SELECT distinct class_id, user_id_teacher, class_name, class_description, class_type, class_level , class_people  FROM (SELECT Class_List.*, Teacher_Schedule.schedule_list,Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review,
                 Teacher_Schedule.teacher_schedule_date
                 FROM Class_List JOIN Teacher_Schedule
                 ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher  WHERE $filter_hour_add3) AS new_class_list $filter_class_type_val and $filter_hour_add3 order by class_id DESC LIMIT $start, $till";
@@ -757,7 +750,7 @@ if ($kind == 'cdetail') {
           $filter_search_sql_part = " class_name LIKE '%$filter_search%' 
           or class_description LIKE '%$filter_search%'";
 
-          $Clist_Sql = "SELECT * FROM Class_List JOIN Teacher_Schedule 
+          $Clist_Sql = "SELECT  distinct class_id, Teacher_Schedule.user_id_teacher, class_name, class_description, class_type, class_level , class_people FROM Class_List JOIN Teacher_Schedule 
           ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher where $filter_search_sql_part order by class_id DESC LIMIT $start, $till";
 
           if ($filter_class_type != null) {
@@ -776,7 +769,7 @@ if ($kind == 'cdetail') {
 
             $filter_class_type_val = 'where ' . $filter_class_type_add;
 
-            $Clist_Sql = "SELECT * FROM Class_List JOIN Teacher_Schedule 
+            $Clist_Sql = "SELECT distinct class_id, Teacher_Schedule.user_id_teacher, class_name, class_description, class_type, class_level, class_people  FROM Class_List JOIN Teacher_Schedule 
            ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher $filter_class_type_val  and $filter_search_sql_part order by class_id DESC LIMIT $start, $till";
           }
         } else if ($filter_search == null) {
@@ -798,7 +791,7 @@ if ($kind == 'cdetail') {
 
             $filter_class_type_val = 'where ' . $filter_class_type_add;
 
-            $Clist_Sql = "SELECT * FROM  Class_List JOIN Teacher_Schedule 
+            $Clist_Sql = "SELECT distinct class_id, Teacher_Schedule.user_id_teacher, class_name, class_description, class_type, class_level, class_people  FROM  Class_List JOIN Teacher_Schedule 
               ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher $filter_class_type_val order by class_id DESC LIMIT $start, $till";
           }
         }

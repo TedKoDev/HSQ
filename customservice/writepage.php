@@ -14,7 +14,7 @@
 
 
 </head>
-<!--   Noticeboard HTML -->
+<!-- Noticeboard HTML -->
 
 
 
@@ -26,7 +26,7 @@
   <!-- 로그인 블록 -->
 
 
-  <body class="bg-gray-300">
+  <body class="bg-gray-200">
 
     <div class="flex-col justify-between mx-auto max-w-5xl items-center bg-white rounded-lg shadow-xl m-9 py-5  px-10">
       <h1 class=" text-3xl font-bold text-black-500 mb-6">고객센터/문의게시판</h1>
@@ -44,9 +44,7 @@
       <!-- Post content -->
       <div id="posts">
       </div>
-
-      <a class="button  bg-slate-300 rounded-lg shadow-xl  mt-5 py-2  px-2 " id="write">글쓰기</a>
-
+      <h2 id="write" class=" text-3xl font-bold text-black-500 mb-6"> 글쓰기</h2>
     </div>
     </div>
   </body>
