@@ -281,8 +281,6 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 
 // $kind = 'tcdetail';
 
-// $User_ID = 324; //학생의 userid
-// $class_register_id       =  272; // 예약한 수업 번호 
 // $timezone = 9; //사용자(학생)의 TimeZone
 
 // $User_ID = 324; //학생의 userid
@@ -300,7 +298,7 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 // $timezone      =   9;  //유저의 로컬 타임존 
 // $clReserveCheck = null; //안해도됨
 // $filter_search     = '팀';
-// $filter_time = array("2", "7", "8");
+// $filter_time = array("11");
 // $filter_date = "1672930800000";  //2023-01-05 15:00 기준 = 2023-01-06 00:00 (utc +9:00) 기준
 // $filter_class_type = array("철자");
 // $filter_teacher_country      = array("스페인");   // 강사 출신국가 
@@ -322,7 +320,10 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 
 
 
-
+// $kind = 'cdetail';
+// $clReserveCheck = 'detail'; //안해도됨
+// $User_ID = 320; //학생의 userid
+// $class_register_id       =  258; // 예약한 수업 번호 
 
 
 
@@ -501,11 +502,16 @@ if ($kind == 'cdetail') {
     $timezero = '"' . "+00:00" . '"'; //수업이 신청된 시간에 timezone을 적용하여 출력함. 
 
 
-    $teacherStudentReviewSql = "SELECT Class_Teacher_Review.teacher_review, (CONVERT_TZ (Class_Teacher_Review.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,
-   Class_Student_Review.student_review,Class_Student_Review.student_review_star,(CONVERT_TZ (Class_Student_Review.student_review_date, $timezero ,$timezone2))as student_review_date
-    FROM Class_Teacher_Review LEFT OUTER JOIN Class_Student_Review 
-    ON Class_Teacher_Review.class_register_id = Class_Student_Review.class_register_id
-        where Class_Teacher_Review.class_register_id  = '$class_register_id'";
+
+    //union 사용
+    $teacherStudentReviewSql = "SELECT A.class_teacher_review_id, A.class_register_id, A.teacher_review, (CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2))as student_review_date FROM HANGLE.Class_Teacher_Review A left join Class_Student_Review B ON A.class_register_id = B.class_register_id where A.class_register_id ='$class_register_id'
+     union 
+    SELECT  A.class_teacher_review_id, A.class_register_id, A.teacher_review,(CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2)) as student_review_date FROM HANGLE.Class_Student_Review B left join Class_Teacher_Review A ON B.class_register_id = A.class_register_id where B.class_register_id = '$class_register_id'";
+
+
+
+
+
     $response2 = mysqli_query($conn, $teacherStudentReviewSql);
 
     $row3 = mysqli_fetch_array($response2);
@@ -576,8 +582,6 @@ if ($kind == 'cdetail') {
         // echo '  3-2. 시간만 있는경우 진입';
         // echo 3;
         // utc 0 기준 당일날짜값 timestamp 가져온뒤 프론트에 맞춰 1000 곱해주기 
-        $today = strtotime(date("Y-m-d")) * 1000;
-
 
         $explode_filter_time = $filter_time;
 
@@ -589,12 +593,18 @@ if ($kind == 'cdetail') {
         foreach ($explode_filter_time as $val) {
 
 
+          $results = array();
 
-          $오늘날짜더하기시간값 = $today + $val * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
-          $오늘날짜더하기시간값더하기한시간 = $오늘날짜더하기시간값 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌 
+          for ($i = 0; $i < 14; $i++) {
+            $today2 = strtotime(date("Y-m-d", strtotime("+$i days"))) * 1000;
 
-          $filter_date_i = '(schedule_list between ' . '"' . $오늘날짜더하기시간값  . '"' . ' and ' . '"' . $오늘날짜더하기시간값더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
-          array_push($filter_hour_array1, $filter_date_i);
+
+            $오늘날짜더하기시간값 = $today2 + ($val + $timezone + 1) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
+            $오늘날짜더하기시간값더하기한시간 = $오늘날짜더하기시간값 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌 
+
+            $filter_date_i = '(schedule_list between ' . '"' . $오늘날짜더하기시간값  . '"' . ' and ' . '"' . $오늘날짜더하기시간값더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
+            array_push($filter_hour_array1, $filter_date_i);
+          }
         }
 
 

@@ -40,7 +40,7 @@ $repeat      =   json_decode(file_get_contents("php://input"))->{"repeat"}; // �
 $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; // 
 $plan      =   json_decode(file_get_contents("php://input"))->{"schedule_list"};  // 일정 
 
-
+// unset($plan[0]);
 
 
 
@@ -62,70 +62,75 @@ $payload = json_decode($parted[1], true);
 $User_ID =  base64_decode($payload['User_ID']);
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
-$timezone1 = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
+$timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-//U_D_Timeze 값을 가져옴   
-$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'].'</br>';
+// //U_D_Timeze 값을 가져옴   
+// $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
+// $response1 = mysqli_query($conn, $sql);
+// $row1 = mysqli_fetch_array($response1); 
+// $timezone = $row1['0'].'</br>';
 
-error_log("$plan , $utc,$timezone1,$timezone \n", "3", "../php.log");
+// error_log("$plan , $utc,$timezone1,$timezone \n", "3", "../php.log");
+
+// //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_s = '32' ";
+// $resultsql = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
+// $response = mysqli_query($conn, $resultsql);
 
 
-
-  
 // $check = "SELECT * FROM Teacher_Schedule where user_id_teacher = '$User_ID'";
 // $checkresult = mysqli_query($conn, $check);
 
+
+
+// if ($result != null) {
 
 // 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
 $result = (explode("_", $plan));
 
 
-$resultarray= array();
-foreach($result as $val){
+$resultarray = array();
+foreach ($result as $val) {
 
- $val;
+  $val;
+  if ($val != 0) {
+    $save = $val - $timezone * $hour;
+  }
 
- $save = $val - $timezone* $hour;
 
-array_push($resultarray,$save);
-
-
+  array_push($resultarray, $save);
 }
 
 json_encode($resultarray);
 
 
 
-    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_s = '32' ";
-    $result = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
-     $response = mysqli_query($conn, $result);
-
- foreach($resultarray as $val){
+foreach ($resultarray as $val) {
 
   $val;
 
-  $result = "INSERT INTO Teacher_Schedule (user_id_teacher, schedule_list) VALUES ('$User_ID', '$val') ";
-  $response = mysqli_query($conn, $result);
+  if ($val != null) {
+    $result = "INSERT INTO Teacher_Schedule (user_id_teacher, schedule_list) VALUES ('$User_ID', '$val') ";
+    $response = mysqli_query($conn, $result);
+  } else if ($val == null) {
 
-
+    $resultsql = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
+    $response = mysqli_query($conn, $resultsql);
+  }
 }
 
-     
- if ($response) { //정상일떄  
+
+if ($response) { //정상일떄  
   $data = array(
     'schedule_list'            =>   $resultarray,
-    'success'        	=>	'yes'
+    'success'          =>  'yes'
   );
   echo json_encode($data);
   mysqli_close($conn);
-} else {//비정상일떄 
+} else { //비정상일떄 
   $data = array(
- 
-    'success'        	=>	'no'
+
+    'success'          =>  'no'
   );
   echo json_encode($data);
   mysqli_close($conn);
