@@ -127,20 +127,20 @@ while ($row1 = mysqli_fetch_array($response2)) {
  if ($response3) { //정상일떄  
   $data = array(
     'user_timezone'  => $timezone,
-    'teacher_schedule_list'	=>	$string,
-    'teacher_schedule_list_status'	=>	$string_status,
-    'teacher_schedule_list_review'	=>	$string_review,
-    'user_reserved_schedule_list'	=>	$string2,
+    'teacher_schedule_list'   =>   $string,
+    'teacher_schedule_list_status'   =>   $string_status,
+    'teacher_schedule_list_review'   =>   $string_review,
+    'user_reserved_schedule_list'   =>   $string2,
  
-    'success'        	=>	'yes'
+    'success'           =>   'yes'
   );
   echo json_encode($data);
   mysqli_close($conn);
 } else {//비정상일떄 
   $data = array(
     'user_timezone'  => 'no',
-    'schedule_list'	=>	'no',
-    'success'        	=>	'no'
+    'schedule_list'   =>   'no',
+    'success'           =>   'no'
   );
   echo json_encode($data);
   mysqli_close($conn);

@@ -37,6 +37,7 @@ async function get_utc(tokenValue) {
       }
 }
 
+
 // 해당 유저의 수업 목록 불러오기
 const body = {
 

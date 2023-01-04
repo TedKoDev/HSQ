@@ -167,7 +167,7 @@ export function calendarInit(scheduleInfo) {
                     }
                     // 완료된 수업일 경우
                     else if (status == 3) {
-                        schedule_item.classList.add('bg-violet-600');
+                        schedule_item.classList.add('bg-gray-600');
                     }
 
                     // 해당 수업 클릭 시 수업 id post로 전송하고 수업 상세 화면으로 이동

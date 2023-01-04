@@ -10,11 +10,18 @@ import { getMyId} from "../../../utils/getMyid.js";
 export const socket = io.connect("ws://3.39.249.46:8080/webChatting");
 socket.emit('enter_web_chat', getCookie(cookieName));
 
-// clickbtnevent에서 사용하기 위해 수업id, 수업등록id, 학생id, 강사id, 결제링크 array export
+socket.on('receive_text_msg', (res) => {
+    
+    console.log("ssss");
+   
+});
+
+// clickbtnevent에서 사용하기 위해 수업id, 수업등록id, 학생id, 강사id, 강사이름(내이름) 결제링크 array export
 export let classId;
 export const class_register_id = class_id;
 export const student_id = user_id;
 export const teacher_id = await getMyId(getCookie(cookieName));
+export let teacher_name;
 export let payment_array = new Array();
 
 // 내 id 가져와서 대입
@@ -70,9 +77,11 @@ async function getClassDetail() {
     
     if (response.success == "yes") {
 
+        
         const result = response.result[0];
 
         classId = result.class_id;
+        teacher_name = response.user_name;
         payment_array = result.payment_link;
 
         const class_name = result.class_name;
