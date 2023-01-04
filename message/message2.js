@@ -115,19 +115,21 @@ async function init() {
         const index = msgResult.findIndex(i => i.chat_id == parseInt(nowChatRoom_id));
         const recent_msg_time = msgResult[index].recent_msg_time;
 
-        // other_id 가져오기
+        // other_id, other_name 가져오기
         const receiver_id = msgResult[index].receiver_id;
         const sender_id = msgResult[index].sender_id;
         let other_id;
-
+        let other_name;
         if (receiver_id == my_id) {
             other_id = sender_id;
+            other_name = msgResult[index].sender_name;
         }
         else if (receiver_id != my_id) {
             other_id = receiver_id;
+            other_name = msgResult[index].receiver_name;
         }
 
-        clickChatRoom(circle, nowChatRoom_id, other_id, recent_msg_time)
+        clickChatRoom(circle, nowChatRoom_id, other_id, recent_msg_time, other_name);
     }   
 }
 
@@ -370,10 +372,10 @@ function getChattingList(msgResult, chat_id) {
         }
         // 수업 예약/승인/취소일 경우
         else {
-
+                        
             const msg_id = chattingList[j].msg_id;
             const msg_desc = chattingList[j].msg_desc[0];
-            const sender_name = chattingList[j].sender_name;    
+            const sender_name = chattingList[j].sender_name;               
             const student_id = msg_desc.student_id;
             const teacher_id = msg_desc.teacher_id;        
             const teacher_img = msg_desc.teacher_img;
@@ -549,7 +551,8 @@ function setClassState(div, msg_id, date, sender_name, class_id, student_id, tea
         // 내가 강사인 경우 historydetail로 이동
         if (teacher_id == my_id) {
 
-            goClassDetail(class_id, teacher_id, '/teacherpage/classhistory/historydetail/');
+            // goClassDetail(class_id, teacher_id, '/teacherpage/classhistory/historydetail/');
+            goClassDetail(class_id, student_id, '/teacherpage/classhistory/historydetail/');
         }
         // 학생인 경우 myclass로 이동
         else {
@@ -561,7 +564,7 @@ function setClassState(div, msg_id, date, sender_name, class_id, student_id, tea
 } 
 
 // 수업 클릭시 수업 상세 화면으로 이동
-function goClassDetail(class_id, user_id, url) {
+function goClassDetail(class_id, student_id, url) {
             
     const form = document.createElement('form');
     form.setAttribute('method', 'get');    
@@ -574,7 +577,7 @@ function goClassDetail(class_id, user_id, url) {
     const hiddenField_user = document.createElement('input');
     hiddenField_user.setAttribute('type', 'hidden');
     hiddenField_user.setAttribute('name', 'user_id');
-    hiddenField_user.setAttribute('value', user_id);
+    hiddenField_user.setAttribute('value', student_id);
 
     form.appendChild(hiddenField_class);
     form.appendChild(hiddenField_user);
@@ -608,24 +611,26 @@ function updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg) {
 
     // 해당 채팅방의 recent_msg_time 업데이트 하고 웹 브라우저에도 표시되게 처리    
     msgResult[index].recent_msg_time = msg_date;        
+    console.log(dayjs(parseInt(msg_date)).format("MM월 DD일"));
     document.getElementById(chat_room_id+"_date").innerHTML = dayjs(parseInt(msg_date)).format("MM월 DD일");
 
     // 해당 채팅방의 recent_msg_desc 업데이트 하고 웹 브라우저에도 표시되게 처리    
-    msgResult[index].recent_msg_desc = chat_msg;        
+    msgResult[index].recent_msg_desc = chat_msg;     
+    document.getElementById(chat_room_id+"_desc").innerHTML = '';   
     document.getElementById(chat_room_id+"_desc").innerHTML = chat_msg;
 
     // 해당 채팅방이 맨 위가 아닐 경우 (index != 0일 경우) 해당 채팅방 삭제하고 그 채팅방 맨 위에 추가 (array는 건들지 않음)
     if (index != 0) {
         
-        $('#'+chat_room_id)
-        // 해당 채팅방의 유저 이미지(src), 유저 이름, 최근 날짜, 최근 메세지 내용, 안 읽은 메세지 수 추출
-        const user_img = $('#'+chat_room_id+"_img").src;
-        const user_name = $('#'+chat_room_id+"_name").innerHTML;
-        const recent_date = $('#'+chat_room_id+"_date").innerHTML;
-        const recent_desc = $('#'+chat_room_id+"_desc").innerHTML;
-        const non_read_count = $('#'+chat_room_id+"_count").innerHTML;
+        
+        // 해당 채팅방의 유저 이미지(src), 유저 이름, 최근 날짜, 최근 메세지 내용, 안 읽은 메세지 수 추출        
+        const user_img = document.getElementById(chat_room_id+"_img").src;
+        const user_name = document.getElementById(chat_room_id+"_name").innerHTML;
+        const recent_date = document.getElementById(chat_room_id+"_date").innerHTML;
+        const recent_desc = document.getElementById(chat_room_id+"_desc").innerHTML;
+        const non_read_count = document.getElementById(chat_room_id+"_count").innerHTML;
         // 해당 메세지 삭제
-        $('#'+chat_room_id).remove();
+        document.getElementById(chat_room_id).remove();
 
         // 맨 위에 해당 채팅방 추가        
         addChatRoom(chat_room_id, user_img, user_name, recent_date, recent_desc, non_read_count, "first")
@@ -637,7 +642,7 @@ function updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg) {
 // 채팅방 안에 없을 때 메세지 받으면 안 읽은 갯수 증가시키기
 function adaptNonReadCount(index) {
 
-    const circle = $('#'+msgResult[index].chat_id+"_count");
+    const circle = document.getElementById(msgResult[index].chat_id+"_count");    
 
     // 본인 id에 해당하는 non_read_count 1증가
     if (msgResult[index].sender_id == my_id) {
@@ -660,6 +665,9 @@ function adaptNonReadCount(index) {
 // 소켓서버에서 받는 로직
 // 소켓 서버에서 들어오는 요청 받는 곳
 socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id) => {  
+
+
+    console.log("pass");
     
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -675,6 +683,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
         msg_time : msg_date
     };
     msgResult[index].msg_list.push(msg_json);
+   
 
     updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
@@ -728,7 +737,7 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
     const msg_json = {
         msg_id : msg_id, 
         msg_type : 'payment_link', 
-        sender_id : sender_id, 
+        sender_id : teacher_id, 
         sender_name : teacher_name, 
         sender_img : teacher_img, 
         msg_desc : 
@@ -755,7 +764,7 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
         const div = document.createElement("div");
 
         console.log("paypal_link : "+paypal_link);
-        setPayment(div, msg_id, dayjs(msg_date).add(utc, "hour"), student_id, teacher_id, teacher_name, class_register_id, teacher_img, class_name, paypal_link)
+        setPayment(div, msg_id, dayjs(msg_date).add(utc, "hour"), student_id, teacher_id, teacher_name, class_register_id, teacher_img, class_name, link_array)
     
         chattingList_div.scrollTop = chattingList_div.scrollHeight;
     } 
@@ -782,17 +791,19 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, student
         sender_name : student_name, 
         sender_img : teacher_img, 
         msg_desc : 
-            {
+            [{
                 class_register_id : class_register_id,
                 class_name : class_name,
                 student_id : student_id,
                 teacher_id : teacher_id,
                 teacher_name : null,
                 teacher_img : teacher_img                
-            }, 
+            }], 
         msg_time : msg_date
     };
     msgResult[index].msg_list.push(msg_json);
+
+    console.log(dayjs(parseInt(msg_date)).format("MM월 DD일"));
 
     updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
@@ -801,8 +812,7 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, student
         // 읽었다고 소켓서버에 다시 보내기
         read_msg_check(chat_room_id, student_id);
 
-        const div = document.createElement("div");
-
+        const div = document.createElement("div");        
         setClassState(div, msg_id, dayjs(msg_date).add(utc, "hour"), student_name, class_register_id, student_id, teacher_id, teacher_img, class_name, '님이 수강 신청했습니다.')
 
         chattingList_div.scrollTop = chattingList_div.scrollHeight;        
@@ -830,14 +840,14 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
         sender_name : teacher_name, 
         sender_img : teacher_img, 
         msg_desc : 
-            {
+            [{
                 class_register_id : class_register_id,
                 class_name : class_name,
                 student_id : student_id,
                 teacher_id : teacher_id,
                 teacher_name : teacher_name,
                 teacher_img : teacher_img                
-            }, 
+            }], 
         msg_time : msg_date
     };
     msgResult[index].msg_list.push(msg_json);
@@ -878,14 +888,14 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
         sender_name : teacher_name, 
         sender_img : teacher_img, 
         msg_desc : 
-            {
+            [{
                 class_register_id : class_register_id,
                 class_name : class_name,
                 student_id : student_id,
                 teacher_id : teacher_id,
                 teacher_name : teacher_name,
                 teacher_img : teacher_img                
-            }, 
+            }], 
         msg_time : msg_date
     };
     msgResult[index].msg_list.push(msg_json);

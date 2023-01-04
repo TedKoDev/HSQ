@@ -98,6 +98,11 @@ export async function sendPaymentLink() {
     // 결제링크 모달창 띄우기
     linkModal.classList.remove('hidden');
 
+    // div 초기화
+    while(paymentList.firstChild)  {
+        paymentList.removeChild(paymentList.firstChild);
+    }
+
     // 결제 링크 목록 표시하기
     for (let i = 0; i < payment_array.length; i++) {
 
@@ -119,12 +124,18 @@ export async function sendPaymentLink() {
     }
 
     // 링크 전송하기 버튼 클릭하면 소켓서버에서 요청하고 모달창 내리기
-    sendLinkBtn.addEventListener('click', () => {
-        
+
+    function sendLink() {
+
         socket.emit('send_paypal_msg', student_id, teacher_id, classId, class_register_id, teacher_name+"님이 결제 링크를 보냈습니다.");
         alert("결제 링크가 전송되었습니다.");
 
         linkModal.classList.add('hidden');
-    })
+
+        // 해당 이벤트 리스너 다시 삭제
+        sendLinkBtn.removeEventListener('click', sendLink);
+    }
+    sendLinkBtn.addEventListener('click', sendLink);
+    
 }
 
