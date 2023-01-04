@@ -4,9 +4,9 @@
     <div class="bg-gray-50 w-1/2 py-2 px-3 rounded shadow-xl text-gray-800 mx-auto my-24">
         <div class = "flex flex-col">
             <div class = "flex justify-between border-b-2 border-gray-200">
-                <div class = "mx-auto">수업 일정 확정</div>
+                <div class = "mx-auto">수업 후기 등록</div>
                 <svg                        
-                    class="acceptModalCloseBtn h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
+                    class="reviewModalCloseBtn h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                     id="close-modal"
                     fill="currentColor"
                     viewbox="0 0 20 20"
@@ -17,12 +17,14 @@
                         clip-rule="evenodd"></path>
                 </svg>
             </div><br>
-            <div class = "font-semibold" id = "clname_m">수업을 확정 하시겠습니까?</div>
+            <div class = "font-base" id = "clname_m">수업에 대한 후기를 남겨주세요</div>
             <br>
-            <div class = "text-sm text-gray-500" >확정 시 신청한 학생에게 수업 승인 여부 및 수업 정보가 포함된 메세지가 전달됩니다.</div>
+            <textarea rows = "5" class = "review_text w-full mx-auto text-sm px-1 py-1 rounded border border-gray-200"
+                placeholder = "(수업/강사에 대한 후기)"></textarea>
+            <!-- <div class = "text-sm text-gray-500" >확정 시 신청한 학생에게 수업 승인 여부 및 수업 정보가 포함된 메세지가 전달됩니다.</div> -->
             <div class = "flex-row-reverse mr-0">
-                <a class = "acceptBtn text-right mt-2 mx-1 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">확정하기</a>   
-                <a class = "acceptModalCloseBtn text-right mt-2 mx-1 px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-500 rounded float-right">취소</a>                             
+                <a class = "sendReviewBtn text-right mt-2 mx-1 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">등록하기</a>   
+                <a class = "reviewModalCloseBtn text-right mt-2 mx-1 px-2 py-1 bg-gray-300 hover:bg-gray-400 text-gray-500 rounded float-right">취소</a>                             
             </div>                          
         </div>                       
     </div>               

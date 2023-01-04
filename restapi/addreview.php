@@ -10,6 +10,8 @@
 //  student_review (학생일경우     -  선생님에 대해 작성한 리뷰)
 //  student_review_star  (학생일 경우 - 선생님에 대해 작성한 별점)
 
+
+
 include("../conn.php");
 include("../jwt.php");
 

@@ -687,7 +687,9 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
 
     updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
-    if (chat_room_id == chatId_global) {       
+    if (chat_room_id == chatId_global) { 
+        
+        console.log("in_chattingroom");
         
         // 읽었다고 소켓서버에 다시 보내기
         read_msg_check(chat_room_id, sender_id);
@@ -908,6 +910,8 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
         read_msg_check(chat_room_id, teacher_id);
 
         const div = document.createElement("div");
+
+        console.log("msg_id : "+msg_id);
 
         setClassState(div, msg_id, dayjs(msg_date).add(utc, "hour"), teacher_name, class_register_id, student_id, teacher_id, teacher_img, class_name, '님이 수업을 취소했습니다.')
 

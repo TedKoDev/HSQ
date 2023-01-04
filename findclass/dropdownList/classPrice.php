@@ -7,7 +7,7 @@
             </span><span class = "">USD</span>
             <span> &dash; </span>
             <span class = "">$</span><span class = "mx-1" id="range2">
-                1000
+                50
             </span><span class = "">USD</span>
         </div>
         <br>
