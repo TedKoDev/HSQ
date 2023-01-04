@@ -1,6 +1,7 @@
-import { $ } from "/utils/querySelector.js";
+import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url} from "/commenJS/cookie_modules.js";
 
+let class_register_id;
 
 const body = {
 
@@ -27,6 +28,7 @@ const result = response[0];
 console.log(result);
 // 강사 id 대입
 U_id = result.user_id_teacher;
+class_register_id = result.class_register_id;
 const class_name = result.class_name;
 const class_price = result.class_price;
 const class_date = result.class_start_time;
@@ -91,9 +93,61 @@ function checkSpecial(teacher_special) {
     return special_string;
 }
 
+// 수업 후기 등록 관련 코드
 // 수업 후기 등록 버튼 클릭 시 이벤트 (모달창 띄워서 후기 작성)
 const addReviewBtn = $('.review_btn');
+const ReviewModal = $('.addReviewModal');
+const closeBtn = $_all('.reviewModalCloseBtn');
+const sendBtn = $('.sendReviewBtn');
+const reviewTest = $('.review_text');
 
+function showModal() {
+
+    // 수업 확정 모달창 띄우기
+    ReviewModal.classList.remove('hidden');
+}
+
+// 취소 버튼 클릭할 때 모달창 내리기
+const closeModel = () => {
+
+    ReviewModal.classList.add('hidden');
+}
+for (const cancel of closeBtn) {
+
+    cancel.addEventListener('click', closeModel)
+}
+
+// 리뷰 전송 함수
+async function sendReview() {
+
+    const body = {
+
+        token: getCookie(cookieName),
+        kind: "student",
+        class_register_id: class_register_id, 
+        teacher_review : null,
+        student_review : "22",
+        student_review_start : 5
+    };
+    
+    const res = await fetch('/restapi/addreview.php', {
+        method: 'POST',   
+        headers: {
+            'Content-Type': 'application/json;'
+          },
+        body: JSON.stringify(body)    
+    }); 
+    
+    // 받아온 json 파싱하고 array 추출
+    const response = await res.json();  
+}
+sendBtn.addEventListener('click', () => {
+    
+    sendReview()
+})
+
+
+// 모달창 띄우기
 addReviewBtn.addEventListener('click', () => {
-
+    showModal();
 })

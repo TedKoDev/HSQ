@@ -89,7 +89,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span></span>
-                        <span></span>
+                        <span class = "text-sm">좋아요</span>
                     </div>
                 </div>
                 <span class="text-sm py-4">강사 피드백</span>
@@ -107,6 +107,6 @@
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
         <?php include '../components/sendmsgModal/sendmsgModal.php'?>
         <!-- 수업 후기 등록 모달 -->
-        <?php include './addReview_student.php'?>
+        <?php include './addReview_studentModal.php'?>
     </body>
 </html>

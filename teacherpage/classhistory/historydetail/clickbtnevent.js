@@ -55,7 +55,7 @@ async function accept_or_cancel(status) {
         }
         else if (status == 2) {
             alert("수업 취소되었습니다");
-            socket.emit('cancel_class', student_id, teacher_id, classId, class_register_id, response.user_name+"님이 수업을 취소했습니다.");
+            socket.emit('cancel_class', student_id, teacher_id, classId, class_register_id, teacher_id, response.user_name+"님이 수업을 취소했습니다.");
         }
     
         window.location.reload();

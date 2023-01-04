@@ -1,19 +1,14 @@
 <?php
 
 
-// 대기중 !  
-// 특이사항 Class_Add  학생용 리뷰 유무, 선생용 리뷰 유무  table 추가해야함 
 // == add_review 프로세스==
 //   #요구되는 파라미터 
 //  token 
-//  kind
-//  class_register_id
-//  class_register_status
-
-// 반환되는 값 
-// {"class_register_status":"approved",
-// "class_register_answer_date":1671338833000,
-// "success":"yes"}
+//  kind (teacher 또는 student) 작성자가 선생님인지 학생인지  확인하는 파라미터
+//  class_register_id  (수업등록번호)
+//  teacher_review  (선생님일 경우 - 학생에 대해 작성한 리뷰)
+//  student_review (학생일경우     -  선생님에 대해 작성한 리뷰)
+//  student_review_star  (학생일 경우 - 선생님에 대해 작성한 별점)
 
 
 
