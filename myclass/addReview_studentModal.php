@@ -17,8 +17,14 @@
                         clip-rule="evenodd"></path>
                 </svg>
             </div><br>
-            <div class = "font-base" id = "clname_m">수업에 대한 후기를 남겨주세요</div>
-            <br>
+            <div class = "font-base" id = "clname_m">수업에 대한 후기를 남겨주세요</div>      
+            <div class = "my-2">      
+                <span class="relative text-gray-400 text-xl">
+                    ★★★★★
+                    <span class = "addStar_modal text-xl w-0 absolute left-0 text-orange-500 overflow-hidden pointer-events-none">★★★★★</span>
+                    <input class = "addStar_modal_value w-full h-full absolute left-0 opacity-0 cursor-pointer" type="range" oninput="drawStar(this)" value="1" step="1" min="0" max="10">
+                </span>
+            </div>
             <textarea rows = "5" class = "review_text w-full mx-auto text-sm px-1 py-1 rounded border border-gray-200"
                 placeholder = "(수업/강사에 대한 후기)"></textarea>
             <!-- <div class = "text-sm text-gray-500" >확정 시 신청한 학생에게 수업 승인 여부 및 수업 정보가 포함된 메세지가 전달됩니다.</div> -->

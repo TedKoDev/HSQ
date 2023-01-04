@@ -5,12 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="../dist/output.css" rel="stylesheet">
     </head>
+    <script defer="defer" src = "./reviewStar.js"></script>
     <script>
         let class_id = "<?php echo $class_id = $_GET['class_id']; ?>";
         // 강사 id (강사에게 연락하기 할 때 사용할 용도)
         let U_id;
     </script>
-    <script type="module" defer="defer" src="./myclass.js"></script>
+    <script type="module" defer="defer" src="./myclass.js"></script>    
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>   
         <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
@@ -74,24 +75,26 @@
                 <hr class="bg-gray-300 border border-1">
                 <div class = "flex py-4 justify-between w-full items-center">
                     <span class="text-sm">강의 평가</span>
-                    <button class = "review_btn text-sm bg-violet-500 hover:bg-violet-600 rounded-lg px-2 py-1 text-white">수업 후기 등록</button>
-                </div>                
-                <div class="flex">
-                    <div class="flex items-center">
-                        <img class="tool_image w-5 h-5" src="/images_forHS/userImage_default.png"></img>
-                        <div class="flex flex-col ml-2">
-                            <span class="user_name text-xs text-gray-800">안해인</span>
-                            <span class="review_date text-xs text-gray-500">2022년 12월 2일</span>
-                            <div></div>
-                            <div class="flex flex-col"></div>
+                    <button class = "review_btn hidden text-sm bg-violet-500 hover:bg-violet-600 rounded-lg px-2 py-1 text-white">수업 후기 등록</button>
+                </div>        
+                <div class = "review_div">
+                    <!-- <div class="flex w-full bg-gray-100 rounded-lg py-2">
+                        <div class="flex items-center">
+                            <img class="tool_image w-5 h-5" src="/images_forHS/userImage_default.png"></img>
+                            <div class="flex flex-col ml-2">
+                                <span class="user_name text-xs text-gray-800">안해인</span>
+                                <span class="review_date text-xs text-gray-500">2022년 12월 2일</span>
+                                <div></div>
+                                <div class="flex flex-col"></div>
+                            </div>
+                            <hr class="bg-gray-300 border border-1">
                         </div>
-                        <hr class="bg-gray-300 border border-1">
-                    </div>
-                    <div class="flex flex-col">
-                        <span></span>
-                        <span class = "text-sm">좋아요</span>
-                    </div>
-                </div>
+                        <div class="flex flex-col ml-4 px-1">                        
+                            <span class = "text-xs">좋아요</span>
+                        </div>
+                    </div> -->
+                    
+                </div>       
                 <span class="text-sm py-4">강사 피드백</span>
             </div>
             <div class="flex flex-col w-1/5">

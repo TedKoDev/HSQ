@@ -610,9 +610,8 @@ function sendTextMessage() {
 function updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg) {
 
     // 해당 채팅방의 recent_msg_time 업데이트 하고 웹 브라우저에도 표시되게 처리    
-    msgResult[index].recent_msg_time = msg_date;        
-    console.log(dayjs(parseInt(msg_date)).format("MM월 DD일"));
-    document.getElementById(chat_room_id+"_date").innerHTML = dayjs(parseInt(msg_date)).format("MM월 DD일");
+    msgResult[index].recent_msg_time = msg_date;            
+    document.getElementById(chat_room_id+"_date").innerHTML = dayjs(msg_date).format("MM월 DD일");
 
     // 해당 채팅방의 recent_msg_desc 업데이트 하고 웹 브라우저에도 표시되게 처리    
     msgResult[index].recent_msg_desc = chat_msg;     
@@ -666,8 +665,8 @@ function adaptNonReadCount(index) {
 // 소켓 서버에서 들어오는 요청 받는 곳
 socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id) => {  
 
-
-    console.log("pass");
+    console.log(msg_date);
+    console.log(dayjs(msg_date).format("MM월 DD일"));
     
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
