@@ -296,36 +296,37 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 
 
 // 수업찾기 필터 테스트용 
-$kind = 'clist';
-
-
+// $kind = 'clist';
+// $timezone      =   9;  //유저의 로컬 타임존 
 // $clReserveCheck = null; //안해도됨
-// $filter_search     = '한';
-
+// $filter_search     = '팀';
 // $filter_time = array("2", "7", "8");
 // $filter_date = "1672930800000";  //2023-01-05 15:00 기준 = 2023-01-06 00:00 (utc +9:00) 기준
 // $filter_class_type = array("철자");
+// $filter_teacher_country      = array("스페인");   // 강사 출신국가 
+// $filter_teacher_sex  = '남성'; // 강사성별
+// $filter_class_price_min = 0 ;
+// $filter_class_price_max = 100000;
+// $filter_teacher_special = 'default'; // 커뮤니티 강사 
+// $filter_teacher_special = 'nondefault'; // 전문 강사 
 
-// $filter_teacher_special      = ;   // 강사 전문가 여부
-// $filter_teacher_country      = array("중국");   // 강사 출신국가 
-// $filter_teacher_sex          = ;   // 강사성별
-// $filter_teacher_language     = ;   // 강사 사용언어 
-// $filter_class_price_min      = ;   // 최저가격
-// $filter_class_price_max      = ;   // 최대가격
-$timezone      =   9;  //유저의 로컬 타임존 
+// $filter_class_type = array("듣기", "철자");
+// $filter_teacher_sex  = '여성';
+// $filter_teacher_country = array("중국");
+// $filter_teacher_language = array("러시아어", "스페인어"); // 강사 사용언어 
 
-// $User_ID = 320; //강사의 userid
-// $class_register_id       = 258; // 예약한 수업 번호 
+
+// cdetail 확인 
 // $kind = 'cdetail';
-// $clReserveCheck = 'detail'; //안해도됨
 
 
 
-// $kind            =   'tclist';         //  
-// $clReserveCheck  =  'all';
-// $filter_class_status_check = 'cancel'; // 수업 상태 필터 
-// $filter_class_resister_time_from =  '2022-12-18';
-// $filter_class_resister_time_to   =  '2022-12-30';
+
+
+
+
+
+
 
 
 // 수업상세 출력인지 목록 출력인지 
@@ -707,8 +708,8 @@ if ($kind == 'cdetail') {
         // echo '  7. 날짜, 시간 필터 없고 검색 있음 진입';
         //Class_List에 수업 목록확인  
         // 전체
-        $filter_search_sql_part = " class_name LIKE '%$filter_search%' 
-          or class_description LIKE '%$filter_search%'";
+        $filter_search_sql_part = " (class_name LIKE '%$filter_search%' 
+          or class_description LIKE '%$filter_search%')";
 
         $Clist_Sql = "SELECT  distinct class_id, Teacher_Schedule.user_id_teacher, class_name, class_description, class_type, class_level , class_people FROM Class_List JOIN Teacher_Schedule 
           ON Class_List.user_id_teacher = Teacher_Schedule.user_id_teacher where $filter_search_sql_part order by class_id DESC LIMIT $start, $till";
@@ -721,7 +722,7 @@ if ($kind == 'cdetail') {
           $class_type_array = array(); // utc 적용한 값 담을 배열 
           foreach ($explode_filter_class_type as $val) {
 
-            $filter_class_type_i = '  class_type like ' . '"%' . $val . '%"'; // user의 timezone을 적용한 값을  $save 저장 
+            $filter_class_type_i = ' ( class_type like ' . '"%' . $val . '%")'; // user의 timezone을 적용한 값을  $save 저장 
 
 
             array_push($class_type_array, $filter_class_type_i);
@@ -833,18 +834,7 @@ if ($kind == 'cdetail') {
 
         $filter_user_country_i_add_val = $filter_user_country_i_add;
 
-        $tsql_where = "$tsql_where and $filter_user_country_i_add_val ";
-
-
-
-
-
-
-
-
-
-
-        // $tsql_where = " where User.user_id = '$tusid' and user_sex like  $filter_teacher_sex_val and teacher_special like  $filter_teacher_special_val and user_country = '$filter_teacher_country'";
+        $tsql_where = "$tsql_where and ($filter_user_country_i_add_val) ";
       }
 
 
@@ -868,10 +858,8 @@ if ($kind == 'cdetail') {
 
         $filter_teacher_language_i_val = $filter_teacher_language_i_add;
 
-        $tsql_where = "$tsql_where and $filter_teacher_language_i_val ";
+        $tsql_where = "$tsql_where and ($filter_teacher_language_i_val) ";
       }
-      //  $tsql_where= " where User.user_id = '$tusid' and user_sex like  $filter_teacher_sex_val and user_country = '$filter_teacher_country' and user_language LIKE '$filter_teacher_language'";
-
 
 
       //해당 Class를 개설한 강사의 이미지와 이름(User_Detail TB)    
