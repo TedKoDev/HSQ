@@ -23,6 +23,8 @@ const response = await res.json();
 
 // 서버에서 가져온 데이터 화면에 표시
 const result = response[0];
+
+console.log(result);
 // 강사 id 대입
 U_id = result.user_id_teacher;
 const class_name = result.class_name;
@@ -88,3 +90,10 @@ function checkSpecial(teacher_special) {
 
     return special_string;
 }
+
+// 수업 후기 등록 버튼 클릭 시 이벤트 (모달창 띄워서 후기 작성)
+const addReviewBtn = $('.review_btn');
+
+addReviewBtn.addEventListener('click', () => {
+
+})

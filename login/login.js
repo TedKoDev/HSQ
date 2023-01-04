@@ -5,6 +5,9 @@ async function postData() {
     const email = document.getElementById("email").value;
     const password = document.getElementById('pw').value;
 
+    console.log(email);
+    console.log(password);
+
     const body = {      
     user_email: email,
     password: password,

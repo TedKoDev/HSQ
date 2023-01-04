@@ -1870,6 +1870,11 @@ video {
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-violet-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(124 58 237 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-opacity-50:hover {
   --tw-bg-opacity: 0.5;
 }

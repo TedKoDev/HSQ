@@ -108,7 +108,7 @@ async function init() {
         // clickChatRoom에 들어갈 매개변수 가져오는 과정
 
         // 원 가져오기
-        const circle = document.getElementById(msgResult[i].chat_id+"_count");   
+        const circle = document.getElementById(nowChatRoom_id+"_count");   
         
         // recent_msg_time 가져오기
         // 해당 채팅방 id의 인덱스 가져오기
@@ -207,6 +207,7 @@ function addChatRoom(chat_id, src, user_name, recent_chat_date, recent_msg_desc,
 function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
 
     // 클릭한 채팅방에서 본인의 non_read_count 0으로 만들기    
+    const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_id));
     if (msgResult[index].sender_id == my_id) {
         msgResult[index].sender_non_read_count = 0;
     }
@@ -606,12 +607,12 @@ function sendTextMessage() {
 function updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg) {
 
     // 해당 채팅방의 recent_msg_time 업데이트 하고 웹 브라우저에도 표시되게 처리    
-    msgResult[index].recent_msg_time = msg_date;    
-    $('#'+chat_room_id+"_date").innerHTML = dayjs(parseInt(msg_date)).format("MM월 DD일");
+    msgResult[index].recent_msg_time = msg_date;        
+    document.getElementById(chat_room_id+"_date").innerHTML = dayjs(parseInt(msg_date)).format("MM월 DD일");
 
     // 해당 채팅방의 recent_msg_desc 업데이트 하고 웹 브라우저에도 표시되게 처리    
-    msgResult[index].recent_msg_desc = chat_msg;    
-    $('#'+chat_room_id+"_desc").innerHTML = chat_msg;
+    msgResult[index].recent_msg_desc = chat_msg;        
+    document.getElementById(chat_room_id+"_desc").innerHTML = chat_msg;
 
     // 해당 채팅방이 맨 위가 아닐 경우 (index != 0일 경우) 해당 채팅방 삭제하고 그 채팅방 맨 위에 추가 (array는 건들지 않음)
     if (index != 0) {

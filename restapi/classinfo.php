@@ -449,7 +449,8 @@ if ($kind == 'cdetail') {
 
     $send['class_register_memo'] = $row1['class_register_memo']; // 수업메모
     $send['class_register_status'] = $row1['class_register_status'];   //  신청한 수업 상태   
-    $send['class_register_review'] = $row1['class_register_review'];   //  신청한 수업 review   
+    $send['class_register_review'] = $row1['class_register_review'];   //  신청한 수업 강사 피드백 작성 여부 
+    $send['class_register_review_student'] = $row1['class_register_review_student'];   //  신청한 수업 학생 review 작성 여부
     $send['class_register_method'] = $row1['class_register_method']; // 신청한 수업 진행 방식
 
     $answerdate = $row1['class_register_answer_date']; //응답한 시간 
