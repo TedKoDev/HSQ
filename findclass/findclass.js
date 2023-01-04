@@ -24,7 +24,7 @@ async function getClassinfo_all() {
         body: JSON.stringify(body)          
       });  
 
-      console.log("ss");
+   
     
       // 받아온 json 파싱하고 array 추출
       const response = await res.json();  
