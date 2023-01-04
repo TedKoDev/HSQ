@@ -13,32 +13,28 @@ async function sendToken(token) {
     }
     else {
 
-        const body = {
+        let obj = {
+            key: token
+        }
+        
+        const request = fetch("http://15.164.163.120:8080/",{
+            method: "POST",
+            headers : {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj),
+        })        
+        .then((response)=>response.json())        
 
-            key: 22,   
-            key2: 11     
-        };
-        
-        const res = await fetch('http://15.164.163.120:8080/', {
-            method: 'POST',   
-            headers: {
-                'Content-Type': 'application/json;'
-              },
-            body: JSON.stringify(body)    
-        }); 
-        
-        
-        const response = await res.json();  
-                
-        console.log(token);
-        if (response.state = 'success') {
+        const check = await request;        
+        if (check.state == 'success') {
             
             console.log("ss");
             location.assign('http://15.164.163.120:8080/');
         }
         else {
             console.log("전송 안됨");
-        }
+        }    
     }
     
 }
@@ -48,4 +44,3 @@ metaBtn.addEventListener('click', () => {
 
     sendToken(tokenValue);
 })
-

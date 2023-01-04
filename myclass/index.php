@@ -72,7 +72,10 @@
                     </div>
                 </div>
                 <hr class="bg-gray-300 border border-1">
-                <span class="text-sm py-4">강의 평가</span>
+                <div class = "flex py-4 justify-between w-full items-center">
+                    <span class="text-sm">강의 평가</span>
+                    <button class = "review_btn text-sm bg-violet-500 hover:bg-violet-600 rounded-lg px-2 py-1 text-white">수업 후기 등록</button>
+                </div>                
                 <div class="flex">
                     <div class="flex items-center">
                         <img class="tool_image w-5 h-5" src="/images_forHS/userImage_default.png"></img>
@@ -103,5 +106,7 @@
         <!-- 강사에게 연락하기 모달 -->
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
         <?php include '../components/sendmsgModal/sendmsgModal.php'?>
+        <!-- 수업 후기 등록 모달 -->
+        <?php include './addReview_student.php'?>
     </body>
 </html>

@@ -1,47 +1,65 @@
 import {$} from '/utils/querySelector.js';
+import { getMyUtc } from '../utils/getMyUtc.js';
 import { classfilter } from './classfilter.js';
 
+// 로컬스토리지 가져와서 값이 있을 경우 request_to_server에 대입해주기
+const filter_json = localStorage.getItem("filter_json");
 
-// 첫 화면에서는 모든 수업 정보 가져오기
-getClassinfo_all();
+if (filter_json != null) {
+
+  request_to_server = JSON.parse(filter_json);
+}
+
+// 서버 전송 용도의 json에 timezone 넣기
+const user_timezone = await getMyUtc(getCookie(cookieName));
+request_to_server.user_timezone = user_timezone;
 
 // 더보기 버튼
 const see_more_btn = $('#see_more');
 
+// 수업 정보 가져오기
+getClassinfo(request_to_server);
+
 // 모든 수업 목록 가져오기 
-async function getClassinfo_all() {
+export async function getClassinfo(json) {    
+   
+    // 기존 수업 목록 초기화
+    const class_list = document.getElementById("class_list");    
+    while(class_list.firstChild) {
+      class_list.removeChild(class_list.firstChild);  
+    }
 
-    const body = {
-        kind: 'clist'
-
-      };
+    // 더보기 버튼 안 보이게 처리    
+    see_more_btn.style.display = 'none';
      
       const res = await fetch('../restapi/classinfo.php', {
         method: 'POST',   
         headers: {
             'Content-Type': 'application/json;'
           },
-        body: JSON.stringify(body)          
+        body: JSON.stringify(json)          
       });  
-
-      console.log("ss");
     
       // 받아온 json 파싱하고 array 추출
       const response = await res.json();  
-      
-      console.log(response);
 
       // 요청 성공했을 때만 수업 목록 화면에 표시
       if (response.success == "yes") {
-
+       
         setClassinfo(response);
+        
+        if (response.result.length != 0) {
+
+          // 더보기 버튼 보이게 처리    
+          see_more_btn.style.display = 'block';
+        }
+        
       }
       else {
         console.log("서버 통신 오류");
       }
 
-    // 더보기 버튼 보이게 처리    
-    see_more_btn.style.display = 'block';
+    
 
 }
 
@@ -78,12 +96,12 @@ async function see_more() {
 }
 
 // 서버에서 받아온 수업 목록 표시;
+
 function setClassinfo(response) {
+  
+    const class_list = document.getElementById("class_list");        
 
-    let res_array = response.result;
-
-    console.log(res_array);
-    let class_list = document.getElementById("class_list");
+    let res_array = response.result;    
 
     // 수업 개수만큼 반복문 돌린 후 태그 생성하여 화면에 표시
     for (let i = 0; i < res_array.length; i++) {
@@ -96,6 +114,7 @@ function setClassinfo(response) {
         let cllevel = res_array[i].class_level;
         let user_name = res_array[i].user_name;
         let user_img = res_array[i].user_img;
+        let price_30 = res_array[i].tp[0].class_price;
 
         // 유저 이미지 값이 없으면 디폴트 이미지로 표시 표시
         if (user_img == 'default' || user_img == null) {
@@ -118,12 +137,17 @@ function setClassinfo(response) {
                         +cldisc+'</p>',
                     '<div id = '+class_id+'_t_l'+' class = "items-center">',                                              
                     '</div>',
-                    '<div class = "mr-auto mt-3">',
-                        '<div class = "flex items-center">',
-                            '<img id = "profile_image" class = "w-9 h-9 border-3 border-gray-900 rounded-full "', 
-                                'src = '+user_img+'>',
-                            '</img>',
-                            '<div class = "text-xs text-gray-700 ml-3"><span>'+user_name+'</span>님의 수업</div>',
+                    '<div class = "mr-auto mt-3 w-full">',                        
+                        '<div class = "flex items-center justify-between">',
+                            '<div class = "flex items-center">',
+                              '<img id = "profile_image" class = "w-9 h-9 border-3 border-gray-900 rounded-full "', 
+                                  'src = '+user_img+'>',
+                              '</img>',
+                              '<div class = "text-xs text-gray-700 ml-3"><span>'+user_name+'</span>님의 수업</div>',
+                            '</div>',
+                            '<div>',
+                              '<span class = "text-base ">$ '+price_30+' USD</span>',
+                            '</div>',
                         '</div>',                    
                     '</div>',
                 '</div>', 
@@ -184,9 +208,12 @@ function moveClassdetail(div, class_id, teacher_id) {
     });
   }
 
-
 // 필터와 관련된 코드 가져오기
 classfilter();
+
+
+
+
 
 
 
