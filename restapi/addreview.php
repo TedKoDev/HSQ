@@ -1,21 +1,14 @@
 <?php
 
 
-// 대기중 !  
-// 특이사항 Class_Add  학생용 리뷰 유무, 선생용 리뷰 유무  table 추가해야함 
 // == add_review 프로세스==
 //   #요구되는 파라미터 
 //  token 
-//  kind
-//  class_register_id
-//  class_register_status
-
-// 반환되는 값 
-// {"class_register_status":"approved",
-// "class_register_answer_date":1671338833000,
-// "success":"yes"}
-
-
+//  kind (teacher 또는 student) 작성자가 선생님인지 학생인지  확인하는 파라미터
+//  class_register_id  (수업등록번호)
+//  teacher_review  (선생님일 경우 - 학생에 대해 작성한 리뷰)
+//  student_review (학생일경우     -  선생님에 대해 작성한 리뷰)
+//  student_review_star  (학생일 경우 - 선생님에 대해 작성한 별점)
 
 include("../conn.php");
 include("../jwt.php");
@@ -40,7 +33,6 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 $kind = json_decode(file_get_contents("php://input"))->{"kind"}; //kind
 $class_register_id = json_decode(file_get_contents("php://input"))->{"class_register_id"}; //class_register_id
-
 $teacher_review = json_decode(file_get_contents("php://input"))->{"teacher_review"}; //teacher_review 선생리뷰 
 $student_review = json_decode(file_get_contents("php://input"))->{"student_review"}; //student_review 학생 리뷰 
 $student_review_star = json_decode(file_get_contents("php://input"))->{"student_review_star"}; //student_review_star 별점 
