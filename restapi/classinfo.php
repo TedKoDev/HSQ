@@ -1346,7 +1346,12 @@ if ($kind == 'cdetail') {
 
 
 
-  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_register_review, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list,  Class_Add.class_register_memo   FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
+
+
+
+
+
+  $Sql1 = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_register_review, Class_Add.class_register_review_student,Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list,  Class_Add.class_register_memo   FROM Class_Add where Class_Add.user_id_teacher = '$User_ID' and Class_Add.class_register_id ='$class_register_id'";
 
   $SRCList_Result1 = mysqli_query($conn, $Sql1);
   $row1 = mysqli_fetch_array($SRCList_Result1);
@@ -1360,7 +1365,10 @@ if ($kind == 'cdetail') {
   $send['class_register_method'] = $row1['class_register_method']; //수업도구
   $send['class_register_memo'] = $row1['class_register_memo']; //수업도구
   $send['class_register_status'] = $row1['class_register_status']; //수업상태
-  $send['class_register_review'] = $row1['class_register_review']; //수업리뷰 상태 
+  $send['class_register_review'] = $row1['class_register_review']; //강사의 수업리뷰  작성여부 
+  $send['class_register_review_student'] = $row1['class_register_review_student']; //학생의 수업리뷰  작성여부
+
+
   $send['class_id'] = $row1['class_id']; //강의 자체 id
   $send['class_time'] = $row1['class_time']; //수업 30분  60분  시간  
 
@@ -1425,6 +1433,53 @@ if ($kind == 'cdetail') {
     array_push($result1['payment_link'], $send1);
   }
   $send['payment_link'] = $result1['payment_link'];
+
+
+
+
+
+  if ($timezone >= 0) {
+    $plus_minus = '+' . $timezone . ':00';
+  } else {
+    $plus_minus = '' . $timezone . ':00';
+  }
+
+
+  $timezone2 = '"' . "$plus_minus" . '"'; //수업이 신청된 시간에 timezone을 적용하여 출력함. 
+  $timezero = '"' . "+00:00" . '"'; //수업이 신청된 시간에 timezone을 적용하여 출력함. 
+
+
+
+  //union 사용
+  $teacherStudentReviewSql = "SELECT A.class_teacher_review_id, A.class_register_id, A.teacher_review, (CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2))as student_review_date FROM HANGLE.Class_Teacher_Review A left join Class_Student_Review B ON A.class_register_id = B.class_register_id where A.class_register_id ='$class_register_id'
+     union 
+    SELECT  A.class_teacher_review_id, A.class_register_id, A.teacher_review,(CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2)) as student_review_date FROM HANGLE.Class_Student_Review B left join Class_Teacher_Review A ON B.class_register_id = A.class_register_id where B.class_register_id = '$class_register_id'";
+
+
+  $response0 = mysqli_query($conn, $teacherStudentReviewSql);
+
+  $row = mysqli_fetch_array($response0);
+
+  $send['teacher_review'] = $row['teacher_review']; //
+  $send['teacher_review_date'] = $row['teacher_review_date']; //
+  $send['student_review'] = $row['student_review']; //
+  $send['student_review_star'] = $row['student_review_star']; //
+  $send['student_review_date'] = $row['student_review_date']; //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
