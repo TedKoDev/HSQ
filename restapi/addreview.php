@@ -115,7 +115,7 @@ if ($kind == 'teacher') {
 
 
 
-    $select1 = "INSERT INTO Class_Teacher_Review (class_register_id, teacher_review, teacher_review_date) VALUES ('$class_register_id', '$teacher_review', '$teacher_review_date') ";
+    $select1 = "INSERT INTO Class_Teacher_Review (class_register_id, teacher_review, teacher_review_date) VALUES ('$class_register_id', '$teacher_review' ,'$teacher_review_date') ";
     $response1 = mysqli_query($conn, $select1);
     mysqli_close($conn);
 
@@ -179,7 +179,7 @@ if ($kind == 'teacher') {
     // echo  $student_review_date3 = date("Y-m-d H:i:s ", $timezone적용2);
 
 
-    $select1 = "INSERT INTO Class_Student_Review (class_register_id, student_review, student_review_star, student_review_date) VALUES ('$class_register_id', '$student_review','$student_review_star', '$student_review_date' )";
+    $select1 = "INSERT INTO Class_Student_Review (class_register_id, user_id_teacher, student_review, student_review_star, student_review_date) VALUES ('$class_register_id','$user_id_teacher', '$student_review','$student_review_star', '$student_review_date' )";
     $response1 = mysqli_query($conn, $select1);
     mysqli_close($conn);
 

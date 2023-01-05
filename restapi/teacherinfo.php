@@ -82,7 +82,7 @@ if ($filter_class_price_min == null) {
 //강사 찾기 필터 테스트용 
 // $filter_check      = 'ok(아무값)';
 // $clReserveCheck = null;
-// $filter_search      = '홍';    // 검색어 필터 (강사명, 강사소개 필터 )
+// $filter_search      = '김';    // 검색어 필터 (강사명, 강사소개 필터 )
 // $filter_class_price_min = 0 ;
 // $filter_class_price_max = 100;
 // $filter_teacher_special = 'default'; // 커뮤니티 강사 
@@ -297,11 +297,28 @@ if ($tusid != null) {
 
       $result1["success"] = "1";
       echo json_encode($result1);
-
       mysqli_close($conn);
     } else if ($filter_check != null) {
       //Class_List에 수업 목록확인  
       // echo '필터체크 진입 ';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       if ($filter_date != null || $filter_time != null) {
 
@@ -391,14 +408,6 @@ if ($tusid != null) {
 
         $filter_hour_add3;
 
-        //  $sql = "SELECT DISTINCT * FROM (select DISTINCT User.user_id, User.user_name, User_Teacher.teacher_intro, User_Teacher.teacher_special from User
-        // JOIN User_Detail
-        // ON User.user_id = User_Detail.user_id
-        // JOIN User_Teacher
-        // ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
-        //    ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id JOIN Class_List ON Class_List.user_id_teacher = User_Teacher.user_id   WHERE $filter_hour_add3) AS new_userlist  order by  user_id  DESC           LIMIT $start, $till";
-
-
 
 
 
@@ -413,14 +422,6 @@ if ($tusid != null) {
 
 
 
-        // 강사 전문여부 
-        //   $sql = "SELECT * FROM User
-        //  JOIN User_Detail
-        //    ON User.user_id = User_Detail.user_id
-        //  JOIN User_Teacher
-        //    ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
-        //       ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where order by  user_teacher_id DESC LIMIT $start, $till ";
-        //   $response1 = mysqli_query($conn, $sql);
 
 
         $sql = "SELECT DISTINCT * FROM (select DISTINCT User.user_id, User.user_name, User_Teacher.teacher_intro, User_Teacher.teacher_special from User
@@ -451,13 +452,6 @@ if ($tusid != null) {
                       ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
                          ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id JOIN Class_List ON Class_List.user_id_teacher = User_Teacher.user_id   WHERE $filter_hour_add3) AS new_userlist where $tsql_where           order by  user_id  DESC LIMIT $start, $till";
 
-          //   $sql = "SELECT * FROM User
-          // JOIN User_Detail
-          //   ON User.user_id = User_Detail.user_id
-          // JOIN User_Teacher
-          //   ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
-          //      ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where" ;
-
 
 
           $response1 = mysqli_query($conn, $sql);
@@ -474,33 +468,33 @@ if ($tusid != null) {
         $tsql_where = " teacher_special like  $filter_teacher_special_val ";
 
 
-        // 강사 전문여부 
-        $sql = "SELECT * FROM User
-       JOIN User_Detail
-         ON User.user_id = User_Detail.user_id
-       JOIN User_Teacher
-         ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
-            ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where order by  user_teacher_id DESC LIMIT $start, $till ";
+
+        $sql = "SELECT DISTINCT * FROM (select DISTINCT User.user_id, User.user_name, User_Teacher.teacher_intro, User_Teacher.teacher_special from User
+        JOIN User_Detail
+        ON User.user_id = User_Detail.user_id
+        JOIN User_Teacher
+        ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+           ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id JOIN Class_List ON Class_List.user_id_teacher = User_Teacher.user_id ) AS new_userlist where $tsql_where           order by  user_id  DESC LIMIT $start, $till";
         $response1 = mysqli_query($conn, $sql);
 
 
         if ($filter_search != null) {
 
           //Class_List에 수업 목록확인  
-          $sql =  "SELECT * FROM User
+          $sql =  "SELECT DISTINCT * FROM (select DISTINCT User.user_id, User.user_name, User_Teacher.teacher_intro, User_Teacher.teacher_special from User
           JOIN User_Detail
-            ON User.user_id = User_Detail.user_id
+          ON User.user_id = User_Detail.user_id
           JOIN User_Teacher
-            ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
-               ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id where $tsql_where  and user_name LIKE '%$filter_search%' 
-          or teacher_intro LIKE '%$filter_search%' order by  user_teacher_id DESC LIMIT $start, $till ";
+          ON User_Teacher.user_id = User_Detail.user_id   JOIN Teacher_Schedule 
+             ON Teacher_Schedule.user_id_teacher = User_Teacher.user_id JOIN Class_List ON Class_List.user_id_teacher = User_Teacher.user_id ) AS new_userlist where $tsql_where   and user_name LIKE '%$filter_search%' 
+          or teacher_intro LIKE '%$filter_search%'  order by  user_id  DESC LIMIT $start, $till ";
           $response1 = mysqli_query($conn, $sql);
         }
       }
 
       //       echo "결말";
 
-      //  echo $sql;
+      // echo $sql;
 
 
       $result1['data'] = array();

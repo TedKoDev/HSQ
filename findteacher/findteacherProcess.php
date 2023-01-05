@@ -1,4 +1,4 @@
-<?php 
+<?php
 // == 강사 찾기 페이지  프로세스==  추후 출력항목 추가될 예정 
 //   #요구되는 파라미터 (fetch형태 json 구조로 전달) 
 
@@ -33,28 +33,56 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
 $plus       =   json_decode(file_get_contents("php://input"))->{"plus"}; // 더보기 
-
-//토큰 해체 
-$data = $jwt->dehashing($token);
-$parted = explode('.', base64_decode($token));
-$payload = json_decode($parted[1], true);
-$User_ID =  base64_decode($payload['User_ID']);
-$U_Name  = base64_decode($payload['U_Name']);
-$U_Email = base64_decode($payload['U_Email']);
-
-
-
-$i= 0 ;
+$utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"};  //유저의 로컬 타임존 
 
 
 
 
-$start =  $i + (20* $plus);
+
+
+
+
+
+
+if ($token != null) {
+
+    //토큰 해체 
+    $data = $jwt->dehashing($token);
+    $parted = explode('.', base64_decode($token));
+    $payload = json_decode($parted[1], true);
+    $User_ID =  base64_decode($payload['User_ID']);
+    // $User_ID =  324;
+    $U_Name  = base64_decode($payload['U_Name']);
+    $U_Email = base64_decode($payload['U_Email']);
+    $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
+    $login = 'yes login';
+    // $timezone      =   8;
+
+} else {
+    // echo 111;
+    $timezone = $utc;
+    // $send['CONNECT_USER_TIMEZONE'] = $utc;
+    $login = 'not login';
+
+    // $User_ID =  324;
+
+}
+
+
+
+
+
+$i = 0;
+
+
+
+
+$start =  $i + (20 * $plus);
 $till = 20;
 
 
 
-//Class_List에 수업 목록확인  
+
 $sql = "SELECT * FROM User_Teacher order by  user_teacher_id DESC LIMIT $start, $till ";
 $response1 = mysqli_query($conn, $sql);
 
