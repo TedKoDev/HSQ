@@ -234,7 +234,8 @@ function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
     // 채팅방에 입장할 경우에는 채팅 상대방의 이름과 전송 버튼이 표시
     checkNameOrInput(chatId_global);
 
-    // 채팅방 위에 해당 유저 이름 표시하기
+    // 채팅방 위에 해당 유저 이름 표시하기    
+    $('.user_name').classList.remove('hidden');
     $('.chatting_user_name').innerText = user_name;
 
     // 클릭한 채팅방 버튼 색깔 칠하기
@@ -245,21 +246,7 @@ function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
 
     // 로컬 스토리지에 채팅방 id 저장
     localStorage.setItem('nowChatRoom', chat_id); 
-
-    if (chatId_global == 0) {
-        
-        $('.user_name').classList.add('hidden');
-        $('.user_name').classList.remove('flex');
-        $('.send_group').classList.add('hidden');
-        $('.send_group').classList.remove('flex');
-    }
-    else {                
-
-        $('.user_name').classList.remove('hidden');
-        $('.user_name').classList.add('flex');
-        $('.send_group').classList.remove('hidden');
-        $('.send_group').classList.add('flex');
-    }
+    
 }
 
 function checkNameOrInput(chatId_global) {
@@ -597,13 +584,36 @@ $('.send_btn').addEventListener('click', () => {
     sendTextMessage();
 })
 
+// 채팅방 나가기 버튼 클릭
+$('.exit_btn').addEventListener('click', () => {
+    
+    exitChatRoom();
+})
+
 function sendTextMessage() {
     
     // 소켓서버에 메세지 전송 (채팅방 id, 채팅 메세지, 보내는 사람id, 받는 사람id)
     socket.emit('send_text_msg', chatId_global, $('.input_message').value, my_id, otherId_global);
     
-    $('.input_message').value = "";
+    $('.input_message').value = "";    
+}
+
+function exitChatRoom() {
+
+    socket.emit("exit_chat_room", chatId_global, my_id);
     
+    // 현재 들어가 있는 채팅방 id 관련 기록 초기화
+    chatId_global = 0;
+    localStorage.removeItem('nowChatRoom');
+
+    // 채팅 내역 뷰 초기화
+    // 기존 채팅 내역 초기화
+    while(chattingList_div.firstChild)  {
+        chattingList_div.firstChild.remove();     
+    }
+    // 유저 이름 안보이게 처리
+    $('.user_name').classList.add('hidden');
+
 }
 
 // 소켓 서버로부터 메세지 받을 때 채팅방에 가장 최근 메세지랑 날짜 업데이트 시키기
@@ -924,31 +934,32 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
     
 });
 
+// 채팅방 나가기일 경우
+socket.on('exit_chat_room', (response, chat_room_id, sender_id) => {
+    
+    console.log("pass1");
+    // 내가 보낸 요청일 경우 채팅방 목록에서 없애기
+    if (response == 'success') {
+        console.log("pass2");
+        if (sender_id == my_id) {
+            console.log("pass3");
+            // 해당 메세지 삭제
+            document.getElementById(chat_room_id).remove();
+        }
+    }   
+    
+});
+
 // 메세지 수신 시 수신된 메세지가 있는 방에 들어가 있는 경우
-function read_msg_check(chat_room_id, sender_id) {
+function read_msg_check(chat_room_id, sender_id) {      
 
-   
-    // if (sender_id != my_id) {
-
-        // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트 (본인이 보낸게 아닐 경우에만)
-        socket.emit('read_msg', chat_room_id, sender_id);
-        console.log("pass");
-        // 소켓서버에서 last_check 업데이트 되었다고 신호 오면 그 때 재 렌더링 해주는 이벤트
-        socket.on('read_msg_check', (chat_room_id, sender_id) => {        
+    // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트 (본인이 보낸게 아닐 경우에만)
+    socket.emit('read_msg', chat_room_id, sender_id);   
+    socket.on('read_msg_check', (chat_room_id, sender_id) => {        
+                
+        console.log("read_msg_check");          
         
-            // chattingList_div.scrollTop = chattingList_div.scrollHeight;
-            console.log("read_msg_check");
-            // 재 렌더링
-            // init();   
-            
-        });
-        // init();
-
-        // chattingList_div.scrollTop = chattingList_div.scrollHeight;
-    // }
-    // else {
-    //     init();
-    // }      
+    });      
 }
 
 

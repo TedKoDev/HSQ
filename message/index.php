@@ -35,11 +35,12 @@
                             <input type="search" id="chat_search" class=" py-2 block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search">                    
                         </div>      
                     </div>           
-                    <div class = "w-3/4">      
+                    <div class = "w-3/4 flex justify-between">      
                         <button class = "user_name hidden items-center ml-4 w-3/4">
                             <span class = "chatting_user_name">유저 이름 </span>
                             <svg class="ml-1 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>  
+                        <button id = "" class = "exit_btn mr-3 px-2 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-xl w-14">나가기</button>
                     </div>
                 </div>
                 <!-- 두번째 블럭 (채팅방 리스트, 채팅내역) -->
