@@ -11,7 +11,9 @@ import { setFeedback, setNonFeedback } from "../../../components/reviewAndFeedba
 
 // 소켓 연결
 export const socket = io.connect("ws://3.39.249.46:8080/webChatting");
-socket.emit('enter_web_chat', getCookie(cookieName));
+socket.on("connect", () => {
+    socket.emit('enter_web_chat', getCookie(cookieName));
+ });
 
 socket.on('receive_text_msg', (res) => {
   
@@ -19,7 +21,7 @@ socket.on('receive_text_msg', (res) => {
 
 // clickbtnevent에서 사용하기 위해 수업id, 수업등록id, 학생id, 강사id, 강사이름(내이름) 결제링크 array export
 export let classId;
-export const class_register_id = class_id;
+export let class_register_id = class_id;
 export const student_id = user_id;
 export const teacher_id = await getMyId(getCookie(cookieName));
 export let teacher_name;
@@ -149,6 +151,7 @@ async function getClassDetail() {
         classId = result.class_id;
         teacher_name = response.user_name;
         payment_array = result.payment_link;
+        class_register_id = result.class_register_id;
 
         const class_name = result.class_name;
         const class_price = result.class_price;
@@ -207,6 +210,76 @@ async function getClassDetail() {
         console.log("통신 실패")
     }    
 }
+
+// 피드백 전송 함수 (서버에 등록 완료되면 화면에 표시되는 것까지)
+async function sendFeedback() {
+
+    const body = {
+
+        token: getCookie(cookieName),
+        kind: "teacher",
+        class_register_id: class_register_id, 
+        teacher_review : $('.feedback_text').value,
+        student_review : null,
+        student_review_star : null
+    };
+    
+    const res = await fetch('/restapi/addreview.php', {
+        method: 'POST',   
+        headers: {
+            'Content-Type': 'application/json;'
+          },
+        body: JSON.stringify(body)    
+    }); 
+    
+    // 받아온 json 파싱하고 array 추출
+    const response = await res.json();  
+
+    if (response.success = 'yes') {
+
+        console.log(response);
+
+        alert("피드백이 등록되었습니다.");
+
+        // 모달창 내리기
+        $('.addFedbackModal').classList.add('hidden');
+
+        // 수업 후기 표시
+        const review_text = response.teacher_review;        
+        const review_date = response.teacher_review_date;             
+       
+        const feedback_div = $('.feedback_div');
+        setFeedback(feedback_div, my_name, my_img, review_text, review_date);
+
+        $('.feedback_btn').classList.add('hidden');
+    }
+    
+}
+$('.sendFedbackBtn').addEventListener('click', () => {
+    
+    sendFeedback()
+})
+
+function showModal() {
+    // 수업 확정 모달창 띄우기
+    $('.addFedbackModal').classList.remove('hidden');
+}
+
+// 취소 버튼 클릭할 때 모달창 내리기
+const closeModel = () => {
+
+    $('.addFedbackModal').classList.add('hidden');
+}
+for (const cancel of $_all('.feedbackModalCloseBtn')) {
+
+    cancel.addEventListener('click', closeModel)
+    $('.feedback_text').value = '';
+}
+
+// 피드백 등록 모달창 띄우기
+$('.feedback_btn').addEventListener('click', () => {
+    showModal();
+})
 
 const week = new Array('일', '월', '화', '수', '목', '금', '토');
 function setClassTimeAndDate(class_time, class_date) {

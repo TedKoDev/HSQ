@@ -64,7 +64,7 @@
                 </div>
                 <hr class="bg-gray-300 border border-1">
                 <div class = "flex py-4 justify-between w-full items-center">
-                    <span class="text-sm py-4">강의 피드백</span>
+                    <span class="text-sm pt-4">강의 피드백</span>
                     <button class = "feedback_btn text-sm hidden bg-violet-500 hover:bg-violet-600 rounded-lg px-2 py-1 text-white">피드백 등록</button>
                 </div>                
                 <div class="feedback_div flex mb-4 w-full bg-gray-100 items-center rounded-lg">
@@ -106,6 +106,8 @@
         <?php include './modal/paymentModal.php' ?>
         <!-- 학생에게 연락하기 모달 -->
         <?php include '../../../components/sendmsgModal/sendmsgModal.php'?>
+        <!-- 피드백 등록 모달 -->
+        <?php include './modal/addFeedbackModal.php' ?>
         <br><br>
     </body>
 </html>

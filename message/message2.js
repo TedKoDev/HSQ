@@ -5,7 +5,9 @@ import { getMyUtc } from "../utils/getMyUtc.js";
 
 // 소켓 연결
 const socket = io.connect("ws://3.39.249.46:8080/webChatting");
-socket.emit('enter_web_chat', getCookie(cookieName));
+socket.on("connect", () => {
+    socket.emit('enter_web_chat', getCookie(cookieName));
+ });
 
 let my_id;
 let msgResult;
