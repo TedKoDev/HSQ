@@ -3,6 +3,7 @@ import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {classAccept, classCancel, sendPaymentLink} from "./clickbtnevent.js";
 import { getMyId} from "../../../utils/getMyid.js";
 import {setReview, setNonReview} from "/components/reviewAndFeedback/review.js";
+import { setFeedback, setNonFeedback } from "../../../components/reviewAndFeedback/feedback.js";
 
 
 // 수업 id랑 수업 신청한 유저 id 가져오기
@@ -182,10 +183,24 @@ async function getClassDetail() {
         // 학생의 수업 리뷰가 있을 경우에만 표시
         const review_div = $('.review_div');
         if (reviewCheck_student != 0) {            
-            setReview(review_div, my_name, my_img, reviewText_student, reviewStar_student, reviewDate_student);
+            setReview(review_div, student_name, student_img, reviewText_student, reviewStar_student, reviewDate_student);
         }
         else {
-            setNonReview(review_div);
+            setNonReview(review_div, 'teacher');
+        }
+        // 강사 피드백이 있을 경우에만 표시
+        const feedback_div = $('.feedback_div');
+        if (reviewCheck_teacher != 0) {
+            setFeedback(feedback_div, my_name, my_img, reviewText_teacher, reviewDate_teacher);
+        }
+        else {
+
+            setNonFeedback(feedback_div, 'teacher');
+        }
+        // 강사 후기가 없으면서 완료된 수업일 때만 수업 피드백 버튼 보이게 처리
+        if (class_status == 3 && reviewCheck_teacher == 0) {
+
+            $('.feedback_btn').classList.remove('hidden');
         }
     }
     else {

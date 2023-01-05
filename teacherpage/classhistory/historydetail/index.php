@@ -63,25 +63,12 @@
                     <span class="class_memo text-xs test-gray-700 pb-4">잘 부탁 드립니다.</span>
                 </div>
                 <hr class="bg-gray-300 border border-1">
-                <span class="text-sm py-4">피드백</span>
-                <div class="feedback_div flex mb-4 w-full bg-gray-100 items-center">
-                    <div class="flex w-40 rounded-lg py-2">
-                        <div class="flex items-center pl-2">
-                            <img
-                                class="tool_image w-5 h-5 rounded-full"
-                                src="${s3_url}Profile_Image/${img}"></img>
-                            <div class="flex flex-col ml-2">
-                                <span class="user_name text-xs text-gray-800">안해인</span>
-                                <span class="review_date text-xs text-gray-500">2022년 12월 1일</span>
-                                <div></div>
-                                <div class="flex flex-col"></div>
-                            </div>
-                            <hr class="bg-gray-300 border border-1">
-                        </div>                        
-                    </div>
-                    <div class="flex flex-col ml-2 px-1 w-4/5">                            
-                        <span class="text-xs bg-gray-300 rounded-lg px-2 py-2 my-2">ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ</span>
-                    </div>
+                <div class = "flex py-4 justify-between w-full items-center">
+                    <span class="text-sm py-4">강의 피드백</span>
+                    <button class = "feedback_btn text-sm hidden bg-violet-500 hover:bg-violet-600 rounded-lg px-2 py-1 text-white">피드백 등록</button>
+                </div>                
+                <div class="feedback_div flex mb-4 w-full bg-gray-100 items-center rounded-lg">
+                    
                 </div>
                 <span class="text-sm py-4">강의 평가</span>
                 <div class="review_div flex mb-4"></div>

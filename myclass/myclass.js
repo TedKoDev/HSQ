@@ -99,7 +99,7 @@ if (response.length != 0) {
         }
         // 없을 경우 등록된 리뷰가 없을 때 뷰 표시
         else {
-            setNonReview(review_div);
+            setNonReview(review_div, 'student');
         }
     }   
 
