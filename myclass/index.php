@@ -96,6 +96,8 @@
                     
                 </div>       
                 <span class="text-sm py-4">강사 피드백</span>
+                <div class="feedback_div flex mb-4 w-full bg-gray-100 items-center">
+                </div>
             </div>
             <div class="flex flex-col w-1/5">
                 <div class="rounded-lg bg-gray-50 shadow px-4 py-2 text-center">

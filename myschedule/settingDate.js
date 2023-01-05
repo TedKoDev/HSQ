@@ -39,6 +39,8 @@ export function calendarInit(scheduleInfo) {
 
     async function renderCalender(thisMonth) {
 
+        console.log(dayjs(thisMonth).format('YYYY/MM/DD HH:mm:ss'));
+
         // 해당 array의 class_start_time 타임스탬프의 월을 가져온 뒤 currentMonth와 일치하는 array만 추출해서 새로운 array 만들기
         let monthSchedule = new Array();
         
@@ -46,7 +48,7 @@ export function calendarInit(scheduleInfo) {
         for (const schedule of allScheduleList) {            
 
             if (dayjs(parseInt(schedule.class_start_time)).get('month') == dayjs(thisMonth).get('month')) {
-                console.log("pas");
+                console.log(dayjs(parseInt(schedule.class_start_time)).format('YYYY/MM/DD HH:mm:ss'))
                 monthSchedule.push(schedule);
             }
         } 
@@ -135,6 +137,8 @@ export function calendarInit(scheduleInfo) {
             for (const schedule of monthSchedule) {
 
                 if (dayjs(parseInt(schedule.class_start_time)).format('YYYY-MM-DD') == date_block.value) {
+
+                    console.log("pass");
 
                     const classId = schedule.class_register_id;                    
                     const teacherNmae = schedule.user_name;

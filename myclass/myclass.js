@@ -1,6 +1,7 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {getMyId} from "/utils/getMyid.js"
+import {setReview, setNonReview} from "/components/reviewAndFeedback/review.js";
 
 let class_register_id;
 
@@ -12,7 +13,6 @@ const reviewText = $('.review_text');
 
 const addStar_span = document.querySelector('.addStar_modal');
 const addStar_value = document.querySelector('.addStar_modal_value');
-
 
 
 const body = {
@@ -241,45 +241,4 @@ addReviewBtn.addEventListener('click', () => {
     showModal();
 })
 
-// 수업 리뷰 컴포넌트
-function setReview($div, name, img, review_text, review_star, review_date) {
 
-    $div.innerHTML = `
-    <div class="flex w-full bg-gray-100 rounded-lg py-2">
-        <div class="flex items-center pl-2">
-            <img class="tool_image w-5 h-5 rounded-full" src="${s3_url}Profile_Image/${img}"></img>
-            <div class="flex flex-col ml-2">
-                <span class="user_name text-xs text-gray-800">${name}</span>
-                <span class="review_date text-xs text-gray-500">${dayjs(review_date).format('YYYY년 MM월 DD일')}</span>
-                <div></div>
-                <div class="flex flex-col"></div>
-            </div>
-            <hr class="bg-gray-300 border border-1">
-        </div>
-        <div class="flex flex-col ml-4 px-1">   
-            <div class = "">      
-                <span class="relative text-gray-400 text-xl">
-                    ★★★★★
-                    <span class = "addStar text-xl w-0 absolute left-0 text-orange-500 overflow-hidden pointer-events-none">★★★★★</span>
-                    <input class = "addStar_value w-full h-full absolute left-0 opacity-0 cursor-pointer" type="range" value="${review_star}" step="1" min="0" max="10">
-                </span>
-            </div>                     
-            <span class = "text-xs">${review_text}</span>
-        </div>
-    </div>`;
-
-    $('.addStar').style.width = `${$('.addStar_value').value * 10}%`;
-    
-}
-
-function setNonReview($div) {
-
-    $div.innerHTML = `
-        <div class="flex flex-col justify-center w-full bg-gray-100 rounded-lg py-2 mx-auto">
-            <span class = "mx-auto text-sm text-gray-800 mb-1">등록된 후기가 없습니다</span>   
-            <span class = "mx-auto text-xs text-gray-700">수강이 완료된 강의만 후기 작성이 가능합니다.</span>                 
-        </div>`;
-}
-
-
-// 수업 리뷰 없을 때 컴포넌트

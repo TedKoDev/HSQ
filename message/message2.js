@@ -593,6 +593,8 @@ $('.exit_btn').addEventListener('click', () => {
 function sendTextMessage() {
     
     // 소켓서버에 메세지 전송 (채팅방 id, 채팅 메세지, 보내는 사람id, 받는 사람id)
+    console.log(my_id);
+    console.log(otherId_global);
     socket.emit('send_text_msg', chatId_global, $('.input_message').value, my_id, otherId_global);
     
     $('.input_message').value = "";    
@@ -673,15 +675,13 @@ function adaptNonReadCount(index) {
 
 // 소켓서버에서 받는 로직
 // 소켓 서버에서 들어오는 요청 받는 곳
-socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id) => {  
-
-    console.log(msg_date);
-    console.log(dayjs(msg_date).format("MM월 DD일"));
+socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id, msg_type) => {  
+    
+    console.log(msg_type);
     
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
-
-    console.log("index : "+index);
+  
 
     // 받은 메세지 해당 채팅방의 array에 추가    
     const msg_json = {
@@ -699,8 +699,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
     updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
     if (chat_room_id == chatId_global) { 
-        
-        console.log("in_chattingroom");
+               
         
         // 읽었다고 소켓서버에 다시 보내기
         read_msg_check(chat_room_id, sender_id);
@@ -712,9 +711,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
         else {
             showDateCheck = 'yes';
         }
-
-        console.log("showDataCheck : "+showDateCheck);
-
+       
         const div = document.createElement("div");
 
         if (sender_id == my_id) {
@@ -740,7 +737,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
 });
 
 socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, 
-    teacher_img, paypal_link, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, paypal_link, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type) => {
        
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -791,7 +788,7 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
 });
 
 socket.on('request_class', (chat_room_id, class_register_id, class_name, student_name, 
-    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type) => {
 
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -840,7 +837,7 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, student
 });
 
 socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, 
-    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type) => {
 
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -888,7 +885,7 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
 });
 
 socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, 
-    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type, sender_id) => {
     
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
