@@ -2,6 +2,7 @@ import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {getMyId} from "/utils/getMyid.js"
 import {setReview, setNonReview} from "/components/reviewAndFeedback/review.js";
+import {setFeedback, setNonFeedback } from "../../../components/reviewAndFeedback/feedback.js";
 
 let class_register_id;
 
@@ -14,6 +15,8 @@ const reviewText = $('.review_text');
 const addStar_span = document.querySelector('.addStar_modal');
 const addStar_value = document.querySelector('.addStar_modal_value');
 
+let teacher_name;
+let teacher_img;
 
 const body = {
 
@@ -52,8 +55,8 @@ if (response.length != 0) {
     const class_status = result.class_register_status;
     const class_type = result.class_type;
     
-    const teacher_name = result.teacher_name;
-    const teacher_img = result.teacher_img;
+    teacher_name = result.teacher_name;
+    teacher_img = result.teacher_img;
     const teacher_special = result.teacher_special;
     // 후기/피드백 관련 변수
     const reviewCheck_teacher = result.class_register_review;
@@ -100,6 +103,15 @@ if (response.length != 0) {
         // 없을 경우 등록된 리뷰가 없을 때 뷰 표시
         else {
             setNonReview(review_div, 'student');
+        }
+        // 강사 피드백이 있을 경우에만 표시
+        const feedback_div = $('.feedback_div');
+        if (reviewCheck_teacher != 0) {
+            setFeedback(feedback_div, teacher_name, teacher_img, reviewText_teacher, reviewDate_teacher);
+        }
+        else {
+
+            setNonFeedback(feedback_div, 'student');
         }
     }   
 

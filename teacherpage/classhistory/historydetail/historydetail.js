@@ -3,7 +3,7 @@ import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {classAccept, classCancel, sendPaymentLink} from "./clickbtnevent.js";
 import { getMyId} from "../../../utils/getMyid.js";
 import {setReview, setNonReview} from "/components/reviewAndFeedback/review.js";
-import { setFeedback, setNonFeedback } from "../../../components/reviewAndFeedback/feedback.js";
+import {setFeedback, setNonFeedback } from "../../../components/reviewAndFeedback/feedback.js";
 
 
 // 수업 id랑 수업 신청한 유저 id 가져오기
@@ -197,7 +197,6 @@ async function getClassDetail() {
             setFeedback(feedback_div, my_name, my_img, reviewText_teacher, reviewDate_teacher);
         }
         else {
-
             setNonFeedback(feedback_div, 'teacher');
         }
         // 강사 후기가 없으면서 완료된 수업일 때만 수업 피드백 버튼 보이게 처리
