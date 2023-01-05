@@ -681,6 +681,8 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
 
+    console.log("index : "+index);
+
     // 받은 메세지 해당 채팅방의 array에 추가    
     const msg_json = {
         msg_id : msg_id, 

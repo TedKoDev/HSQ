@@ -7,6 +7,7 @@
     </head>            
     <script type="module" defer = "defer" src="./message2.js"></script>    
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.1/dist/flowbite.min.css" />
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
         .line_clamp_1 {
@@ -36,11 +37,19 @@
                         </div>      
                     </div>           
                     <div class = "w-3/4 flex justify-between">      
-                        <button class = "user_name hidden items-center ml-4 w-3/4">
+                        <button data-dropdown-toggle="dropdown" class = "user_name hidden items-center ml-4">
                             <span class = "chatting_user_name">유저 이름 </span>
                             <svg class="ml-1 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>  
-                        <button id = "" class = "exit_btn mr-3 px-2 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-xl w-14">나가기</button>
+                        </button>                          
+                    </div>  
+                    <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-24 dark:bg-gray-700">
+                        <!-- <ul class="text-center py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton"> -->
+                        <div class = "flex justify-center hover:bg-gray-100 py-1">
+                            <button class="text-center text-xs block px-1 py-1">다른 수업 예약</button>
+                        </div>
+                        <div class = "flex justify-center hover:bg-gray-100 py-1">
+                            <button class="exit_btn text-center text-xs block px-1 py-1">채팅방 나가기</button>
+                        </div>                        
                     </div>
                 </div>
                 <!-- 두번째 블럭 (채팅방 리스트, 채팅내역) -->
@@ -60,5 +69,6 @@
                 </div>           
             </div>
         </div>    
+        <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
     </body>
 </html>
