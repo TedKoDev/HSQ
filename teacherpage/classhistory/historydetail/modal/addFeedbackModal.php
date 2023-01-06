@@ -4,7 +4,7 @@
     <div class="bg-gray-50 w-1/2 py-2 px-3 rounded shadow-xl text-gray-800 mx-auto my-24">
         <div class = "flex flex-col">
             <div class = "flex justify-between border-b-2 border-gray-200">
-                <div class = "mx-auto">피드백 등록 등록</div>
+                <div class = "mx-auto">피드백 등록</div>
                 <svg                        
                     class="feedbackModalCloseBtn h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
                     id="close-modal"

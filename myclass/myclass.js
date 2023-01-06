@@ -17,6 +17,8 @@ const addStar_value = document.querySelector('.addStar_modal_value');
 
 let teacher_name;
 let teacher_img;
+let my_name;
+let my_img;
 
 const body = {
 
@@ -67,9 +69,7 @@ if (response.length != 0) {
     const reviewText_teacher = result.teacher_review;
     const reviewDate_teacher = result.teacher_review_date;
 
-    // 내 이름이랑 이미지 가져오기 (리뷰 작성용)
-    let my_name;
-    let my_img;
+    // 내 이름이랑 이미지 가져오기 (리뷰 작성용)    
     const my_id = await getMyId(getCookie(cookieName));
     getmyInfo();
     async function getmyInfo() {
@@ -231,14 +231,14 @@ async function sendReview() {
 
         // 수업 후기 표시
 
-        review_text = response.student_review;
-        review_star = response.student_review_star;
-        review_date = response.student_review_date;       
+        const review_text = response.student_review;
+        const review_star = response.student_review_star;
+        const review_date = response.student_review_date;       
 
         const review_div = $('.review_div');
         setReview(review_div, my_name, my_img, review_text, review_star, review_date);
 
-
+        $('.review_btn').classList.add('hidden');
     }
     
 }
