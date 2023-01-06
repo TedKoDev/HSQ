@@ -87,9 +87,7 @@ async function getSchedule(teacher_id, tokenvalue) {
     // 일정의 상태 대입
     schedule_string_status = response.teacher_schedule_list_status;  
     // 전역으로 선언한 timezone 값 대입
-    timezone = response.user_timezone;
-
-    console.log("STRING : "+schedule_string);
+    timezone = response.user_timezone;   
 
     // 세팅
     // header_s : (모달창이 아닌)웹페이지에 있는 날짜
@@ -459,7 +457,7 @@ async function getClassinfo(C_id) {
 
     const result = response.result[0];
 
-    // console.log(result);
+    console.log(result);
 
     const clname = result.class_name;
     const cldisc = result.class_description;

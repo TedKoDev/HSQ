@@ -119,7 +119,7 @@ export function calendarInit(scheduleInfo) {
 
             // 이번달의 경우 schedule_block의 value값에 날짜 세팅 (ex : 2022-12-05)
             let date_block = document.getElementById(num+"_block");
-            date_block.value = currentYear+"-"+(currentMonth+1)+"-"+('00'+i).slice(-2);
+            date_block.value = currentYear+"-"+('00'+(currentMonth+1)).slice(-2)+"-"+('00'+i).slice(-2);
 
             // 스케줄 리스트 넣을 div 선언
             let schedule_list_div = document.getElementById(num+"_list");

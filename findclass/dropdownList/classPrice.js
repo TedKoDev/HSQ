@@ -20,9 +20,9 @@ classPriceModal.addEventListener('click', () => {
     if (request_to_server.filter_class_price_min == null && request_to_server.filter_class_price_max == null) {
         
         min_range.value = 0;
-        max_range.value = 1000;
+        max_range.value = 50;
         min_price.innerHTML = 0;
-        max_price.innerHTML = 1000;
+        max_price.innerHTML = 50;
     }
 })
 

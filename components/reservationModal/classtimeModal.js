@@ -45,7 +45,7 @@ async function getclassPrice_tm() {
     const body = {
 
         kind: 'cdetail',
-        class_id: classid,          
+        class_id: C_id,          
         class_price: 1
     };
     const res = await fetch('../restapi/classinfo.php', {
@@ -54,12 +54,14 @@ async function getclassPrice_tm() {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
-    });
+    });   
 
     const response = await res.json();
     const result = response.result[0];
     const price30 = result.tp[0];
     const price60 = result.tp[1];
+
+    console.log(result);
 
     // 가격 대입
     price30_1.innerHTML = price30+" $";

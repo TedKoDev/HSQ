@@ -165,6 +165,7 @@ async function reserveDone() {
         class_id: classid,
         tp: tp,
         schedule_list: plan,
+        // schedule_time : 30,
         class_register_method: cmethod,
         class_register_memo: memo,
     };
