@@ -130,10 +130,10 @@ $hour = 3600000;
 
 
 if ($filter_class_resister_time_from1 != null) {
-  $filter_class_resister_time_from =  $filter_class_resister_time_from1 - ($hour * $timezone);
+  $filter_class_resister_time_from =  $filter_class_resister_time_from1;
 }
 if ($filter_class_resister_time_to1 != null) {
-  $filter_class_resister_time_to   = $filter_class_resister_time_to1 - ($hour * $timezone);
+  $filter_class_resister_time_to   = $filter_class_resister_time_to1;
 }
 
 
@@ -1252,7 +1252,8 @@ if ($kind == 'cdetail') {
       $schedule_list = $row1['schedule_list']; //수업상태 
 
       $hour = 3600000; // 시간의 밀리초     
-      $save = $schedule_list + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+      // $save = $schedule_list + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+      $save = $schedule_list; // user의 timezone을 적용한 값을  $save 저장 
 
 
 
