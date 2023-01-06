@@ -41,7 +41,7 @@ $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; 
 $plan      =   json_decode(file_get_contents("php://input"))->{"schedule_list"};  // 일정 
 
 // unset($plan[0]);
-
+// error_log("$plan , $utc \n", "3", "../php.log");
 
 
 // $plan      =  '1669894200_1669896000_1669897800';
@@ -65,22 +65,6 @@ $U_Email = base64_decode($payload['U_Email']);
 $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
-// //U_D_Timeze 값을 가져옴   
-// $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
-// $response1 = mysqli_query($conn, $sql);
-// $row1 = mysqli_fetch_array($response1); 
-// $timezone = $row1['0'].'</br>';
-
-// error_log("$plan , $utc,$timezone1,$timezone \n", "3", "../php.log");
-
-// //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_s = '32' ";
-// $resultsql = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
-// $response = mysqli_query($conn, $resultsql);
-
-
-// $check = "SELECT * FROM Teacher_Schedule where user_id_teacher = '$User_ID'";
-// $checkresult = mysqli_query($conn, $check);
-
 
 
 // if ($result != null) {
@@ -94,7 +78,8 @@ foreach ($result as $val) {
 
   $val;
   if ($val != 0) {
-    $save = $val - $timezone * $hour;
+    // $save = $val - $timezone * $hour;
+    $save = $val;
   }
 
 
@@ -103,6 +88,8 @@ foreach ($result as $val) {
 
 json_encode($resultarray);
 
+$resultsql = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
+$response = mysqli_query($conn, $resultsql);
 
 
 foreach ($resultarray as $val) {

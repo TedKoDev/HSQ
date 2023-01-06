@@ -83,8 +83,8 @@ function getDate(header_date, timezone, for_modal) {
     now.setHours(now.getHours() + offset);
     
     // 날짜 표시하기 전에 받아온 타임존 적용 
-    const string_to_int = parseInt(timezone);
-    now.setHours(now.getHours() + string_to_int);
+    // const string_to_int = parseInt(timezone);
+    // now.setHours(now.getHours() + string_to_int);
     
     // 현재 타임스탬프 전역 변수에 대입
     time = now.getTime();

@@ -337,7 +337,8 @@ if ($tusid != null) {
           // echo '날짜만있음';
           //전달받은 $filter_date 에 timezone을 채크해서 hour을 적용해 utc 0 기준으로 바꾼다.
 
-          $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+          // $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+          $filter_date_utc_zero1 = $filter_date; // user의 timezone을 적용해서 utc 0 기준으로 변경 
           $filter_date_utc_zero2 = $filter_date_utc_zero1 + $day - 1; // user의 timezone을 적용해서 utc 0 기준으로 변경한 값의 24시간을 더한 값
 
 

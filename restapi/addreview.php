@@ -105,7 +105,8 @@ if ($kind == 'teacher') {
 
     $teacher_review_date = date("Y-m-d H:i:s ", $time);
     // echo  $timezone적용 = strtotime($tz);
-    $timezone적용 =  strtotime(" $teacher_review_date  $tz ");
+    // $timezone적용 =  strtotime(" $teacher_review_date  $tz ");
+    $timezone적용 =  strtotime(" $teacher_review_date  ");
 
     $teacher_review_date2 = date("Y-m-d H:i:s ", $timezone적용);
     // echo  $student_review_date3 = date("Y-m-d H:i:s ", $timezone적용2);
@@ -173,7 +174,8 @@ if ($kind == 'teacher') {
 
     $student_review_date = date("Y-m-d H:i:s ", $time);
     // echo  $timezone적용 = strtotime($tz);
-    $timezone적용 =  strtotime(" $student_review_date  $tz ");
+    // $timezone적용 =  strtotime(" $student_review_date  $tz ");
+    $timezone적용 =  strtotime(" $student_review_date  ");
 
     $student_review_date2 = date("Y-m-d H:i:s ", $timezone적용);
     // echo  $student_review_date3 = date("Y-m-d H:i:s ", $timezone적용2);

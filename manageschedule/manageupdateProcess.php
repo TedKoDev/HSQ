@@ -66,16 +66,16 @@ $timezone1 = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZon
 
 
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'].'</br>';
+// $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
+// $response1 = mysqli_query($conn, $sql);
+// $row1 = mysqli_fetch_array($response1); 
+// $timezone = $row1['0'].'</br>';
 
-error_log("$plan , $utc,$timezone1,$timezone \n", "3", "../php.log");
+// error_log("$plan , $utc,$timezone1,$timezone \n", "3", "../php.log");
 
 
 
-  
+
 // $check = "SELECT * FROM Teacher_Schedule where user_id_teacher = '$User_ID'";
 // $checkresult = mysqli_query($conn, $check);
 
@@ -84,48 +84,45 @@ error_log("$plan , $utc,$timezone1,$timezone \n", "3", "../php.log");
 $result = (explode("_", $plan));
 
 
-$resultarray= array();
-foreach($result as $val){
+$resultarray = array();
+foreach ($result as $val) {
 
- $val;
+  $val;
 
- $save = $val - $timezone* $hour;
+  //  $save = $val - $timezone* $hour;
+  $save = $val;
 
-array_push($resultarray,$save);
-
-
+  array_push($resultarray, $save);
 }
 
 json_encode($resultarray);
 
 
 
-    //  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_s = '32' ";
-     $result = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
-     $response = mysqli_query($conn, $result);
+//  $result = "DELETE FROM Teacher_Schedule   WHERE User_Id_s = '32' ";
+$result = "DELETE FROM Teacher_Schedule   WHERE user_id_teacher = '$User_ID' and teacher_schedule_status = '9'";
+$response = mysqli_query($conn, $result);
 
- foreach($resultarray as $val){
+foreach ($resultarray as $val) {
 
   $val;
 
   $result = "INSERT INTO Teacher_Schedule (user_id_teacher, schedule_list) VALUES ('$User_ID', '$val') ";
   $response = mysqli_query($conn, $result);
-
-
 }
 
-     
- if ($response) { //정상일떄  
+
+if ($response) { //정상일떄  
   $data = array(
     'schedule_list'            =>   $resultarray,
-    'success'        	=>	'yes'
+    'success'          =>  'yes'
   );
   echo json_encode($data);
   mysqli_close($conn);
-} else {//비정상일떄 
+} else { //비정상일떄 
   $data = array(
- 
-    'success'        	=>	'no'
+
+    'success'          =>  'no'
   );
   echo json_encode($data);
   mysqli_close($conn);

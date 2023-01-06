@@ -96,11 +96,11 @@ if ($token != null) {
 // $filter_check      = 'ok(아무값)';
 
 
-$timezone      =   9;  //유저의 로컬 타임존 
+// $timezone      =   9;  //유저의 로컬 타임존 
 // $clReserveCheck = null; //안해도됨
-// $filter_search     = 'ss';
-$filter_time = array("20");
-// $filter_date = "1672930800000";  //2023-01-05 15:00 기준 = 2023-01-06 00:00 (utc +9:00) 기준
+// $filter_search     = '강';
+// $filter_time = array("10");
+// $filter_date = "1673395200000";  //2023-01-05 15:00 기준 = 2023-01-06 00:00 (utc +9:00) 기준
 // $filter_class_type = array("철자");
 // $filter_teacher_country      = array("스페인");   // 강사 출신국가 
 // $filter_teacher_sex  = '남성'; // 강사성별
@@ -146,7 +146,8 @@ if ($filter_date != null || $filter_time != null) {
         // echo '  3-1. 날짜만 있는경우 진입';
         //전달받은 $filter_date 에 timezone을 채크해서 hour을 적용해 utc 0 기준으로 바꾼다.
 
-        $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        // $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        $filter_date_utc_zero1 = $filter_date; // user의 timezone을 적용해서 utc 0 기준으로 변경 
         $filter_date_utc_zero2 = $filter_date_utc_zero1 + $day - 1; // user의 timezone을 적용해서 utc 0 기준으로 변경한 값의 24시간을 더한 값
 
 
@@ -174,7 +175,8 @@ if ($filter_date != null || $filter_time != null) {
                 $today2 = strtotime(date("Y-m-d", strtotime("+$i days"))) * 1000;
 
 
-                $오늘날짜더하기시간값 = $today2 + ($val + $timezone + 1) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
+                // $오늘날짜더하기시간값 = $today2 + ($val - $timezone + 1) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
+                $오늘날짜더하기시간값 = $today2 + ($val - $timezone) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
                 $오늘날짜더하기시간값더하기한시간 = $오늘날짜더하기시간값 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌 
 
                 $filter_date_i = '(schedule_list between ' . '"' . $오늘날짜더하기시간값  . '"' . ' and ' . '"' . $오늘날짜더하기시간값더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
@@ -199,13 +201,15 @@ if ($filter_date != null || $filter_time != null) {
 
         $filter_hour_array1 = array(); //검사 해야할 시간 기준 
 
-        $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        // $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        echo $filter_date_utc_zero1 = $filter_date; // user의 timezone을 적용해서 utc 0 기준으로 변경 
 
         foreach ($explode_filter_time as $val) {
 
 
-            $날짜에시간을더함 = $filter_date_utc_zero1 + $val * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로
-            $날짜에시간을더함더하기한시간 = $날짜에시간을더함 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌
+            echo '날짠에시간더함' .    $날짜에시간을더함 = $filter_date_utc_zero1 + ($val - $timezone) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로
+            // echo '날짠에시간더함' .    $날짜에시간을더함 = $filter_date_utc_zero1 + ($val) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로
+            $날짜에시간을더함더하기한시간 = $날짜에시간을더함 + $hour; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌
 
             $filter_date_i = '(schedule_list between ' . '"' . $날짜에시간을더함  . '"' . ' and ' . '"' . $날짜에시간을더함더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
             array_push($filter_hour_array1, $filter_date_i);
@@ -216,6 +220,7 @@ if ($filter_date != null || $filter_time != null) {
         $filter_hour_add2 = implode(" or ", $filter_hour_array1); // 담긴 배열을 _기준으로 스트링으로 저장 
         $filter_hour_add3  =  $filter_hour_add2;
     }
+
 
 
 

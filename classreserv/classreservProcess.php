@@ -14,7 +14,7 @@ classreservProcess.php
 4. 수업일정
 5. 수업방식(한글스퀘어 = 0, zoom = 1 )
 6. 강사메모
-*/
+ */
 
 include("../conn.php");
 include("../jwt.php");
@@ -57,12 +57,13 @@ $hour   = 3600000;
 // 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
 $explan = (explode("_", $plan));
 $tzplan = array(); //Timezone 적용을 위한 배열 생성
-foreach($explan as $val){ 
-$save = $val - $timezone* $hour;
-$date = date('Y-m-d H:i:s',  $save);
-array_push($tzplan,$save);
+foreach ($explan as $val) {
+  // $save = $val - $timezone* $hour;
+  $save = $valr;
+  $date = date('Y-m-d H:i:s',  $save);
+  array_push($tzplan, $save);
 }
-$tzplanresult = implode("_",$tzplan); // 다시 합체 
+$tzplanresult = implode("_", $tzplan); // 다시 합체 
 
 
 
@@ -72,7 +73,7 @@ $sqlClassAdd = "INSERT INTO Class_Add (User_Id, CLass_Id, CTP_idx, C_A_Schedule,
 $insert = mysqli_query($conn, $sqlClassAdd);
 
 if ($sqlClassAdd)
-$last_uid = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
+  $last_uid = mysqli_insert_id($conn); // 마지막으로 insert 된 값의 idx 값 가져오기 용도: 메일 전송후 수업 예약 승낙 여부를 Class_ADD tb내 C_A_Status 상태 변경용. 
 
 
 
@@ -109,40 +110,41 @@ $tTimezone = $row1['2'];
 
 // 신청한 수업 일정(plan) 값을 강사에게 보내주기 위한 코드 이며 강사의 TIMEZONE 기준으로 변환 되어 $sendtimeresult 에 저장됨 . 
 $sendtime = array();
-foreach($explan as $val){
-  $i =1;
-$save = $val + $tTimezone* $hour/1000;
-$date = date('Y-m-d H:i:s',  $save);
+foreach ($explan as $val) {
+  $i = 1;
+  // $save = $val + $tTimezone * $hour / 1000;
+  $save = $val + $tTimezone * $hour / 1000;
+  $date = date('Y-m-d H:i:s',  $save);
 
-$i =$i +1;
-array_push($sendtime,$date);
+  $i = $i + 1;
+  array_push($sendtime, $date);
 }
-$sendtimeresult = implode(",",$sendtime);
+$sendtimeresult = implode(",", $sendtime);
 
 
 //메일 전송 
-$subject = 'Hangle Square : '.$U_Name.' want register your class';
+$subject = 'Hangle Square : ' . $U_Name . ' want register your class';
 $message = '
-'.$U_Name.' want to make a reservation your class!'. "<br/>".'
-Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.'. "<br/>".'
+' . $U_Name . ' want to make a reservation your class!' . "<br/>" . '
+Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.' . "<br/>" . '
  
-------------------------'. "<br/>".'
-Student-Email: '.$U_Email.''. "<br/>".'  
-Student-Name: '.$U_Name.''. "<br/>".'
-Class-Name: '.$clname.''. "<br/>".'
-Class-Type: '.$cltype.''. "<br/>".'
-Class-Level: '.$cllevel.''. "<br/>".'
-Class-TIME: '.$tp.' min'. "<br/>".'
-schedule:'.$i.'time(s)'. "<br/>".''.$sendtimeresult.''. "<br/>".'
-------------------------'. "<br/>".'
+------------------------' . "<br/>" . '
+Student-Email: ' . $U_Email . '' . "<br/>" . '  
+Student-Name: ' . $U_Name . '' . "<br/>" . '
+Class-Name: ' . $clname . '' . "<br/>" . '
+Class-Type: ' . $cltype . '' . "<br/>" . '
+Class-Level: ' . $cllevel . '' . "<br/>" . '
+Class-TIME: ' . $tp . ' min' . "<br/>" . '
+schedule:' . $i . 'time(s)' . "<br/>" . '' . $sendtimeresult . '' . "<br/>" . '
+------------------------' . "<br/>" . '
  
-AGREE(예약승인) : Please click this link to accept reservation for class :'.$clname.''. "<br/>".'
-http://localhost/approvalreserv.php?email='.$U_Email.'&CAID='.$last_uid.'&agree='.'0'.'
-'. "<br/>".'
-'. "<br/>".'
+AGREE(예약승인) : Please click this link to accept reservation for class :' . $clname . '' . "<br/>" . '
+http://localhost/approvalreserv.php?email=' . $U_Email . '&CAID=' . $last_uid . '&agree=' . '0' . '
+' . "<br/>" . '
+' . "<br/>" . '
 
-REFUSE(예약거절): Please click this link to accept reservation for class :'.$clname.''. "<br/>".'
-http://localhost/approvalreserv.php?email='.$U_Email.'&CAID='.$last_uid.'&agree='.'1'.'
+REFUSE(예약거절): Please click this link to accept reservation for class :' . $clname . '' . "<br/>" . '
+http://localhost/approvalreserv.php?email=' . $U_Email . '&CAID=' . $last_uid . '&agree=' . '1' . '
 
 
 '; // Our message above including the link;
@@ -165,5 +167,3 @@ $mail->Subject = $subject;
 $mail->Body = $message;
 
 $mail->send();
-
-

@@ -67,11 +67,11 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
-//U_D_Timeze 값을 가져옴   
-$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1);
-$timezone = $row1['0'] . '</br>';
+// //U_D_Timeze 값을 가져옴   
+// $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
+// $response1 = mysqli_query($conn, $sql);
+// $row1 = mysqli_fetch_array($response1);
+// $timezone = $row1['0'] . '</br>';
 
 
 // $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
@@ -85,7 +85,8 @@ $result = (explode("_", $plan));
 $resultarray = array();
 foreach ($result as $val) {
 
-  'utc00: 변환  ' . $save = $val - $timezone * $hour;
+  // 'utc00: 변환  ' . $save = $val - $timezone * $hour;
+  'utc00: 변환  ' . $save = $val;
 
   array_push($resultarray, $save);
 

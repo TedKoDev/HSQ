@@ -57,8 +57,8 @@ $token = json_decode(file_get_contents("php://input"))->{"token"}; // 토큰
 
 
 
-date_default_timezone_set('Asia/Seoul');
-$time_now = date("Y-m-d H:i:s");
+// date_default_timezone_set('Asia/Seoul');
+// $time_now = date("Y-m-d H:i:s");
 
 // error_log("$time_now, $position, $desc\n", "3", "../php.log");
 
@@ -90,23 +90,22 @@ $U_Email = base64_decode($payload['U_Email']);
 $check = "SELECT * FROM User_Teacher where user_id = '$User_ID'";
 $checkresult = mysqli_query($conn, $check);
 
-// error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");
+// error_log("$time_now,'ddd', $User_ID, $U_Name, $U_Email \n", "3", "/php.log");E
 
 
 
 // U_T에 해당 user _ID로 등록된것이 있는지  확인
-if ($checkresult->num_rows <1) {
-    date_default_timezone_set('Asia/Seoul');
-    $time_now = date("Y-m-d H:i:s");
-    
-    error_log("$time_now, 's'\n", "3", "../php.log");
-    
-    // 중복값이 없을때 때 실행할 내용
-    // 없으면 insert로  data 만들고  
-    // 아래의 update로 data 삽입 
-    $result = "INSERT INTO User_Teacher (user_id) VALUES ('$User_ID') ";
-    $insert = mysqli_query($conn, $result);
+if ($checkresult->num_rows < 1) {
+  // date_default_timezone_set('Asia/Seoul');
+  // $time_now = date("Y-m-d H:i:s");
 
+  // error_log("$time_now, 's'\n", "3", "../php.log");
+
+  // 중복값이 없을때 때 실행할 내용
+  // 없으면 insert로  data 만들고  
+  // 아래의 update로 data 삽입 
+  $result = "INSERT INTO User_Teacher (user_id) VALUES ('$User_ID') ";
+  $insert = mysqli_query($conn, $result);
 }
 
 // 있으면 시작 
@@ -136,28 +135,22 @@ $row = mysqli_fetch_array($result);
 
 
 // 값 변수 설정 
- $send   ['user_id']                     = $row['user_id'];
- $send   ['user_name']                   = $row['user_name'];
- $send   ['user_img']                    = $row['user_img'];
- $send   ['user_birthday']               = $row['user_birthday'];
- $send   ['user_sex']                    = $row['user_sex'];
- $send   ['user_country']                = $row['user_country'];
- $send   ['user_residence']              = $row['user_residence'];
- $send   ['user_language']               = $row['user_language'];
- $send   ['teacher_intro']               = $row['teacher_intro'];
- $send   ['teacher_certification']       = $row['teacher_certification'];
- $send   ['teacher_file']                = $row['teacher_file'];
- 
-
-
-
-
-
- echo json_encode($send);
- mysqli_close($conn);
+$send['user_id']                     = $row['user_id'];
+$send['user_name']                   = $row['user_name'];
+$send['user_img']                    = $row['user_img'];
+$send['user_birthday']               = $row['user_birthday'];
+$send['user_sex']                    = $row['user_sex'];
+$send['user_country']                = $row['user_country'];
+$send['user_residence']              = $row['user_residence'];
+$send['user_language']               = $row['user_language'];
+$send['teacher_intro']               = $row['teacher_intro'];
+$send['teacher_certification']       = $row['teacher_certification'];
+$send['teacher_file']                = $row['teacher_file'];
 
 
 
 
 
 
+echo json_encode($send);
+mysqli_close($conn);

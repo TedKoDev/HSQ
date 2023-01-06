@@ -91,7 +91,8 @@ $cllevel = $row['5'];
 $explan = (explode("_", $plan));
 $tzplan = array(); //Timezone 적용을 위한 배열 생성
 foreach ($explan as $val) {
-  $save = $val - $timezone * $hour;
+  // $save = $val - $timezone * $hour;
+  $save = $val;
   $date = date('Y-m-d H:i:s',  $save);
 
 
@@ -105,7 +106,8 @@ foreach ($explan as $val) {
 
   $tzschedule = array(); //Timezone 적용을 위한 배열 생성
   foreach ($exschedule as $val) {
-    $save = $val - $timezone * $hour;
+    // $save = $val - $timezone * $hour;
+    $save = $val;
     // $date = date('Y-m-d H:i:s',  $save);
 
     // echo $save;
@@ -201,6 +203,7 @@ $sendtime = array();
 $i = 0;
 foreach ($exschedule as $val) {
 
+  // $save1 = ($val + $tTimezone * $hour) / 1000;
   $save1 = ($val + $tTimezone * $hour) / 1000;
   // echo $save2 = $save1/1000;
 

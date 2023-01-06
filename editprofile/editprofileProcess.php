@@ -51,10 +51,10 @@ $desc = json_decode(file_get_contents("php://input"))->{"class_description"};  /
 // $desc = array("1671667200000", "1671753600000");  //내용
 // $filter_date       =  ;
 
-date_default_timezone_set('Asia/Seoul');
-$time_now = date("Y-m-d H:i:s");
+// date_default_timezone_set('Asia/Seoul');
+// $time_now = date("Y-m-d H:i:s");
 
-error_log("$time_now, $position, $desc\n", "3", "/php.log");
+// error_log("$time_now, $position, $desc\n", "3", "/php.log");
 
 
 
@@ -77,7 +77,7 @@ $user_name  = base64_decode($payload['U_Name']);
 
 $U_Email    =  base64_decode($payload['U_Email']);
 
-error_log("$time_now, $user_id, $user_name, $U_Email \n", "3", "/php.log");
+// error_log("$time_now, $user_id, $user_name, $U_Email \n", "3", "/php.log");
 
 
 
@@ -92,10 +92,6 @@ $checkresult = mysqli_query($conn, $check);
 
 // U_D에 해당 user _ID로 등록된것이 있는지  확인
 if ($checkresult->num_rows < 1) {
-    date_default_timezone_set('Asia/Seoul');
-    $time_now = date("Y-m-d H:i:s");
-    error_log("$time_now,'???', $user_id, $user_name, $U_Email \n", "3", "../php.log");
-    // error_log("$time_now, 's'\n", "3", "../php.log");
 
     // 중복값이 없을때 때 실행할 내용
     // 없으면 insert로  data 만들고  

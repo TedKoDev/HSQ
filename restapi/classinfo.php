@@ -298,7 +298,7 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 // $timezone      =   9;  //유저의 로컬 타임존 
 // $clReserveCheck = null; //안해도됨
 // $filter_search     = '팀';
-// $filter_time = array("11");
+// $filter_time = array("9");
 // $filter_date = "1672930800000";  //2023-01-05 15:00 기준 = 2023-01-06 00:00 (utc +9:00) 기준
 // $filter_class_type = array("철자");
 // $filter_teacher_country      = array("스페인");   // 강사 출신국가 
@@ -434,7 +434,8 @@ if ($kind == 'cdetail') {
     $splanArray = array(); // utc 적용한 값 담을 배열 
 
     foreach ($explodePlan as $val) {
-      'User utc 기준 : 변환  ' . $save = $val + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+      'User utc 기준 : 변환  ' . $save = $val; // user의 timezone을 적용한 값을  $save 저장 
+      // 'User utc 기준 : 변환  ' . $save = $val + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
       array_push($splanArray, $save);
     }
 
@@ -504,9 +505,9 @@ if ($kind == 'cdetail') {
 
 
     //union 사용
-    $teacherStudentReviewSql = "SELECT A.class_teacher_review_id, A.class_register_id, A.teacher_review, (CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2))as student_review_date FROM HANGLE.Class_Teacher_Review A left join Class_Student_Review B ON A.class_register_id = B.class_register_id where A.class_register_id ='$class_register_id'
+    $teacherStudentReviewSql = "SELECT A.class_teacher_review_id, A.class_register_id, A.teacher_review, A.teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,B.student_review_date FROM HANGLE.Class_Teacher_Review A left join Class_Student_Review B ON A.class_register_id = B.class_register_id where A.class_register_id ='$class_register_id'
      union 
-    SELECT  A.class_teacher_review_id, A.class_register_id, A.teacher_review,(CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2)) as student_review_date FROM HANGLE.Class_Student_Review B left join Class_Teacher_Review A ON B.class_register_id = A.class_register_id where B.class_register_id = '$class_register_id'";
+    SELECT  A.class_teacher_review_id, A.class_register_id, A.teacher_review,A.teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,B.student_review_date FROM HANGLE.Class_Student_Review B left join Class_Teacher_Review A ON B.class_register_id = A.class_register_id where B.class_register_id = '$class_register_id'";
 
 
 
@@ -571,7 +572,8 @@ if ($kind == 'cdetail') {
         // echo '  3-1. 날짜만 있는경우 진입';
         //전달받은 $filter_date 에 timezone을 채크해서 hour을 적용해 utc 0 기준으로 바꾼다.
 
-        $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        // $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        $filter_date_utc_zero1 = $filter_date; // user의 timezone을 적용해서 utc 0 기준으로 변경 
         $filter_date_utc_zero2 = $filter_date_utc_zero1 + $day - 1; // user의 timezone을 적용해서 utc 0 기준으로 변경한 값의 24시간을 더한 값
 
 
@@ -599,7 +601,8 @@ if ($kind == 'cdetail') {
             $today2 = strtotime(date("Y-m-d", strtotime("+$i days"))) * 1000;
 
 
-            $오늘날짜더하기시간값 = $today2 + ($val + $timezone + 1) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
+            // $오늘날짜더하기시간값 = $today2 + ($val - $timezone + 1) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
+            $오늘날짜더하기시간값 = $today2 + ($val - $timezone) * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로   
             $오늘날짜더하기시간값더하기한시간 = $오늘날짜더하기시간값 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌 
 
             $filter_date_i = '(schedule_list between ' . '"' . $오늘날짜더하기시간값  . '"' . ' and ' . '"' . $오늘날짜더하기시간값더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
@@ -624,13 +627,14 @@ if ($kind == 'cdetail') {
 
         $filter_hour_array1 = array(); //검사 해야할 시간 기준 
 
-        $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        // $filter_date_utc_zero1 = $filter_date - ($hour * $timezone); // user의 timezone을 적용해서 utc 0 기준으로 변경 
+        $filter_date_utc_zero1 = $filter_date; // user의 timezone을 적용해서 utc 0 기준으로 변경 
 
         foreach ($explode_filter_time as $val) {
 
 
-          $날짜에시간을더함 = $filter_date_utc_zero1 + $val * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로
-          $날짜에시간을더함더하기한시간 = $날짜에시간을더함 + $hour - 1; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌
+          $날짜에시간을더함 = $filter_date_utc_zero1 + ($val - $timezone) * $hour * $hour; // 타임존 적용 필요없음 왜냐면 서버 로컬시간 utc 0기준임으로
+          $날짜에시간을더함더하기한시간 = $날짜에시간을더함 + $hour; // 3을 선택한경우 3시부터 4시 사이의 값이 필요하기때문에 한시간을 더해줌
 
           $filter_date_i = '(schedule_list between ' . '"' . $날짜에시간을더함  . '"' . ' and ' . '"' . $날짜에시간을더함더하기한시간  . '")'; // user의 timezone을 적용한 값을  $save 저장 
           array_push($filter_hour_array1, $filter_date_i);
@@ -999,7 +1003,8 @@ if ($kind == 'cdetail') {
       $splanArray = array(); // utc 적용한 값 담을 배열 
 
       foreach ($explodePlan as $val) {
-        'User utc 기준 : 변환  ' . $save = $val + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+        // 'User utc 기준 : 변환  ' . $save = $val + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+        'User utc 기준 : 변환  ' . $save = $val; // user의 timezone을 적용한 값을  $save 저장 
         array_push($splanArray, $save);
       }
 
@@ -1232,7 +1237,7 @@ if ($kind == 'cdetail') {
 
 
 
-    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , CONVERT_TZ (Class_Add.class_register_date, $timezero ,$timezone2), Class_Add.class_register_review, Class_Add.class_register_memo FROM Class_Add  $sqlWhere   order by class_register_id desc ";
+    $Student_ReserveClassList_Sql = "SELECT Class_Add.class_register_id, Class_Add.user_id_student, Class_Add.class_register_method, Class_Add.class_register_status, Class_Add.class_id, Class_Add.class_time, Class_Add.schedule_list , Class_Add.class_register_date, Class_Add.class_register_review, Class_Add.class_register_memo FROM Class_Add  $sqlWhere   order by class_register_id desc ";
 
 
     $SRCList_Result = mysqli_query($conn, $Student_ReserveClassList_Sql);
@@ -1384,6 +1389,7 @@ if ($kind == 'cdetail') {
   $schedule_list = $row1['schedule_list']; //수업상태
   $hour = 3600000; // 시간의 밀리초 
   $save = $schedule_list + $timezone * $hour; // user의 timezone을 적용한 값을  $save 저장 
+  // $save = $schedule_list; // user의 timezone을 적용한 값을  $save 저장 
   $send['teacher_schedule_list']  = $save; //수업 일정  
   $send['teacher_timezone']  = $timezone; //수업 일정  
 
@@ -1451,6 +1457,10 @@ if ($kind == 'cdetail') {
 
 
   //union 사용
+  // $teacherStudentReviewSql = "SELECT A.class_teacher_review_id, A.class_register_id, A.teacher_review,A.teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,B.student_review_date FROM HANGLE.Class_Teacher_Review A left join Class_Student_Review B ON A.class_register_id = B.class_register_id where A.class_register_id ='$class_register_id'
+  //    union 
+  //   SELECT  A.class_teacher_review_id, A.class_register_id, A.teacher_review,A.teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,B.student_review_date FROM HANGLE.Class_Student_Review B left join Class_Teacher_Review A ON B.class_register_id = A.class_register_id where B.class_register_id = '$class_register_id'";
+  // //union 사용
   $teacherStudentReviewSql = "SELECT A.class_teacher_review_id, A.class_register_id, A.teacher_review, (CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2))as student_review_date FROM HANGLE.Class_Teacher_Review A left join Class_Student_Review B ON A.class_register_id = B.class_register_id where A.class_register_id ='$class_register_id'
      union 
     SELECT  A.class_teacher_review_id, A.class_register_id, A.teacher_review,(CONVERT_TZ (A.teacher_review_date, $timezero ,$timezone2))as teacher_review_date,B.class_student_review_id, B.class_register_id, B.student_review, B.student_review_star,(CONVERT_TZ (B.student_review_date, $timezero ,$timezone2)) as student_review_date FROM HANGLE.Class_Student_Review B left join Class_Teacher_Review A ON B.class_register_id = A.class_register_id where B.class_register_id = '$class_register_id'";
