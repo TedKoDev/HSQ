@@ -2,57 +2,125 @@ import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {classAccept, classCancel, sendPaymentLink} from "./clickbtnevent.js";
 import { getMyId} from "../../../utils/getMyid.js";
+import {setReview, setNonReview} from "/components/reviewAndFeedback/review.js";
+import {setFeedback, setNonFeedback } from "../../../components/reviewAndFeedback/feedback.js";
+
 
 // 수업 id랑 수업 신청한 유저 id 가져오기
 // let {class_id, user_id} = JSON.parse(localStorage.getItem("classId"));
 
 // 소켓 연결
 export const socket = io.connect("ws://3.39.249.46:8080/webChatting");
-socket.emit('enter_web_chat', getCookie(cookieName));
+socket.on("connect", () => {
+    socket.emit('enter_web_chat', getCookie(cookieName));
+ });
 
 socket.on('receive_text_msg', (res) => {
-    
-    console.log("ssss");
-   
+  
 });
 
 // clickbtnevent에서 사용하기 위해 수업id, 수업등록id, 학생id, 강사id, 강사이름(내이름) 결제링크 array export
 export let classId;
-export const class_register_id = class_id;
+export let class_register_id = class_id;
 export const student_id = user_id;
 export const teacher_id = await getMyId(getCookie(cookieName));
 export let teacher_name;
 export let payment_array = new Array();
 
-// 내 id 가져와서 대입
-// let my_id;
-// getMyId();
-// async function getMyId() {
 
-//     const body = {
-       
-//         token : getCookie("user_info")
-//     };
-//     const res = await fetch('/utils/utc.php', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json;charset=utf-8'
-//         },
-//         body: JSON.stringify(body)
-//     });
-    
-//     const response = await res.json();  
-    
-//     my_id = response.user_id;
+// 후기/피드백 관련 변수
+let student_name;
+let student_img;
+let my_name;
+let my_img;
+let reviewCheck_teacher;
+let reviewCheck_student;
+let reviewText_student;
+let reviewDate_student;
+let reviewStar_student;
+let reviewDate_teacher;
+let reviewText_teacher;
 
-//     console.log(my_id);
-// }
-
-
-// 수업과 관련된 데이터 가져와서 대입
-getClassDetail();
 // 수업 신청한 학생과 관련된 데이터 가져와서 대입
 getUserInfo();
+
+async function getUserInfo() {
+
+    const body = {
+        
+        kind: "udetail",
+        user_id: user_id
+    };
+    const res = await fetch('/restapi/userinfo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    });
+    
+    const response = await res.json();  
+    
+    console.log(response);   
+    
+    const result = response.result[0];
+
+    student_name = result.user_name;
+    student_img = result.user_img;    
+
+    const user_name = result.user_name;
+    const user_language = result.user_language;
+    const user_korean = result.user_korean;
+    const user_residence = result.user_residence;
+    const user_img = result.user_img;
+
+    $('.user_name').innerText = user_name;
+    $('.user_residence').innerText = user_residence;
+    $('.user_korean').innerText = user_korean;
+    $('.user_img').src = s3_url + "Profile_Image/" + user_img;
+    setUserLanguage(user_language, $('.user_language'));
+
+    // 내 정보 가져오기
+    const my_id = await getMyId(getCookie(cookieName));
+    getMyInfo(my_id);
+}
+
+function setUserLanguage(value, $user_language) {
+
+    value = JSON.parse(value);        
+               
+        for (let key in value) {
+
+          let language_list = document.createElement('span');          
+          language_list.innerHTML = ['<span class = "mr-2 text-xs text-gray-500">'+key+' : '+value[key]+'</span>'].join("");
+          $user_language.appendChild(language_list);              
+        }               
+}
+
+async function getMyInfo(my_id) {
+
+    const body = {
+        
+        kind: "udetail",
+        user_id: my_id
+    };
+    const res = await fetch('/restapi/userinfo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    });
+    
+    const response = await res.json();  
+      
+    const result = response.result[0];
+    my_name = result.user_name;
+    my_img = result.user_img;       
+
+    // 수업과 관련된 데이터 가져와서 대입
+    getClassDetail();
+}
 
 async function getClassDetail() {
 
@@ -83,6 +151,7 @@ async function getClassDetail() {
         classId = result.class_id;
         teacher_name = response.user_name;
         payment_array = result.payment_link;
+        class_register_id = result.class_register_id;
 
         const class_name = result.class_name;
         const class_price = result.class_price;
@@ -103,58 +172,113 @@ async function getClassDetail() {
         setClassRegisterMethod(class_register_method);
         setClassTimeAndDate(class_time, class_date);
         setClassRegisterStatus(class_status);
-        setClassReview(class_review);
+        
+
+        // 후기/피드백 관련 변수
+        reviewCheck_teacher = result.class_register_review;
+        reviewCheck_student = result.class_register_review_student;
+        reviewText_student = result.student_review;
+        reviewDate_student = result.student_review_date;
+        reviewStar_student = result.student_review_star;
+        reviewText_teacher = result.teacher_review;
+        reviewDate_teacher = result.teacher_review_date;
+
+        // 학생의 수업 리뷰가 있을 경우에만 표시
+        const review_div = $('.review_div');
+        if (reviewCheck_student != 0) {            
+            setReview(review_div, student_name, student_img, reviewText_student, reviewStar_student, reviewDate_student);
+        }
+        else {
+            setNonReview(review_div, 'teacher');
+        }
+        // 강사 피드백이 있을 경우에만 표시
+        const feedback_div = $('.feedback_div');
+        if (reviewCheck_teacher != 0) {
+            setFeedback(feedback_div, my_name, my_img, reviewText_teacher, reviewDate_teacher);
+        }
+        else {
+            setNonFeedback(feedback_div, 'teacher');
+        }
+        // 강사 후기가 없으면서 완료된 수업일 때만 수업 피드백 버튼 보이게 처리
+        if (class_status == 3 && reviewCheck_teacher == 0) {
+
+            $('.feedback_btn').classList.remove('hidden');
+        }
     }
     else {
         console.log("통신 실패")
     }    
 }
 
-
-async function getUserInfo() {
+// 피드백 전송 함수 (서버에 등록 완료되면 화면에 표시되는 것까지)
+async function sendFeedback() {
 
     const body = {
-        
-        kind: "udetail",
-        user_id: user_id
+
+        token: getCookie(cookieName),
+        kind: "teacher",
+        class_register_id: class_register_id, 
+        teacher_review : $('.feedback_text').value,
+        student_review : null,
+        student_review_star : null
     };
-    const res = await fetch('/restapi/userinfo.php', {
-        method: 'POST',
+    
+    const res = await fetch('/restapi/addreview.php', {
+        method: 'POST',   
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(body)
-    });
+            'Content-Type': 'application/json;'
+          },
+        body: JSON.stringify(body)    
+    }); 
     
+    // 받아온 json 파싱하고 array 추출
     const response = await res.json();  
-    
-    console.log(response);
-    
-    const result = response.result[0];
-    const user_name = result.user_name;
-    const user_language = result.user_language;
-    const user_korean = result.user_korean;
-    const user_residence = result.user_residence;
-    const user_img = result.user_img;
 
-    $('.user_name').innerText = user_name;
-    $('.user_residence').innerText = user_residence;
-    $('.user_korean').innerText = user_korean;
-    $('.user_img').src = s3_url + "Profile_Image/" + user_img;
-    setUserLanguage(user_language, $('.user_language'));
+    if (response.success = 'yes') {
+
+        console.log(response);
+
+        alert("피드백이 등록되었습니다.");
+
+        // 모달창 내리기
+        $('.addFedbackModal').classList.add('hidden');
+
+        // 수업 후기 표시
+        const review_text = response.teacher_review;        
+        const review_date = response.teacher_review_date;             
+       
+        const feedback_div = $('.feedback_div');
+        setFeedback(feedback_div, my_name, my_img, review_text, review_date);
+
+        $('.feedback_btn').classList.add('hidden');
+    }
+    
+}
+$('.sendFedbackBtn').addEventListener('click', () => {
+    
+    sendFeedback()
+})
+
+function showModal() {
+    // 수업 확정 모달창 띄우기
+    $('.addFedbackModal').classList.remove('hidden');
 }
 
-function setUserLanguage(value, $user_language) {
+// 취소 버튼 클릭할 때 모달창 내리기
+const closeModel = () => {
 
-    value = JSON.parse(value);        
-               
-        for (let key in value) {
-
-          let language_list = document.createElement('span');          
-          language_list.innerHTML = ['<span class = "mr-2 text-xs text-gray-500">'+key+' : '+value[key]+'</span>'].join("");
-          $user_language.appendChild(language_list);              
-        }               
+    $('.addFedbackModal').classList.add('hidden');
 }
+for (const cancel of $_all('.feedbackModalCloseBtn')) {
+
+    cancel.addEventListener('click', closeModel)
+    $('.feedback_text').value = '';
+}
+
+// 피드백 등록 모달창 띄우기
+$('.feedback_btn').addEventListener('click', () => {
+    showModal();
+})
 
 const week = new Array('일', '월', '화', '수', '목', '금', '토');
 function setClassTimeAndDate(class_time, class_date) {
@@ -230,10 +354,6 @@ function setClassRegisterStatus(status) {
     }
     $('.class_status').innerText = status;
 
-
-}
-
-function setClassReview(class_review) {
 
 }
 

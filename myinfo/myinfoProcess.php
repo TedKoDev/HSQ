@@ -59,7 +59,7 @@ $payload = json_decode($parted[1], true);
 
 
 $User_ID =  base64_decode($payload['User_ID']);
-$User_ID =  324;
+// $User_ID =  324;
 $U_Name  = base64_decode($payload['U_Name']);
 $U_Email = base64_decode($payload['U_Email']);
 
@@ -88,6 +88,8 @@ foreach ($result as $row) {
 
 
 
+
+
 $sql = "SELECT User.user_id, User.user_name, User.user_email,  User_Detail.user_img,  User_Detail.user_birthday,  User_Detail.user_sex,  User_Detail.user_contact,  User_Detail.user_country,  User_Detail.user_residence,  User_Detail.user_point,  User_Detail.user_timezone,  User_Detail.user_language,  User_Detail.user_korean,  User_Detail.teacher_register_check,  User_Detail.user_intro, User_Teacher.teacher_intro FROM HANGLE.User left outer join User_Detail on User.user_id = User_Detail.user_id left outer join User_Teacher on  User_Detail.user_id = User_Teacher.User_id where User.user_id = '{$User_ID}'";
 
 
@@ -96,16 +98,14 @@ $row = mysqli_fetch_array($result);
 
 
 
+
+
+
+
 //평점
 $sql = "SELECT AVG(student_review_star) as review_score FROM Class_Student_Review where user_id_teacher = '{$User_ID}'";
 $response2 = mysqli_query($conn, $sql);
 $row2 = mysqli_fetch_array($response2);
-
-
-
-
-
-
 
 
 
