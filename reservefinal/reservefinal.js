@@ -163,9 +163,8 @@ async function reserveDone() {
 
         token: tokenvalue,
         class_id: classid,
-        tp: tp,
+        class_time: select_class_time,
         schedule_list: plan,
-        schedule_time : select_class_time,
         class_register_method: cmethod,
         class_register_memo: memo,
     };

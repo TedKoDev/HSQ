@@ -25,6 +25,7 @@
 //한국어수준 -  "korean"
 //자기소개   -  "intro"
 //강사자기소개   -  "teacher_intro"
+//강사자기소개   -  "payment_link"
 
 //시간대 - "utc"
 

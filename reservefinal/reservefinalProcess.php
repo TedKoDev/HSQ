@@ -36,7 +36,7 @@ file_get_contents("php://input");
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 사용자(학생)토큰 
 $class_id    =   json_decode(file_get_contents("php://input"))->{"class_id"}; // 수업id 
 // $class_id    =   167; // 수업id 
-$tp         =   json_decode(file_get_contents("php://input"))->{"tp"}; // 수업시간 
+$tp         =   json_decode(file_get_contents("php://input"))->{"class_time"}; // 수업시간 
 // $tp         =  30 ; // 수업시간 
 $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
 // // $schedule       =   json_decode(file_get_contents("php://input"))->{"schedule_list"}; // 수업일정 
