@@ -93,7 +93,7 @@
                                                 <input                                                    
                                                     type="checkbox"
                                                     id="<?php echo $num; ?>_sm"
-                                                    name=""
+                                                    name="uncheck"
                                                     value="<?php echo $num; ?>"
                                                     class="hidden"  
                                                     onclick = "scheduleClick(this);"                                                  
