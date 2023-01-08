@@ -42,7 +42,7 @@ $token      =   json_decode(file_get_contents("php://input"))->{"token"};
 $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"};
 // $utc      =   9; 
 $tusid      =   json_decode(file_get_contents("php://input"))->{"user_id_teacher"};  // 강사의 userid 
-// $tusid      =   320;  // 강사의 userid 
+// $tusid      =   324;  // 강사의 userid 
 
 
 
@@ -90,6 +90,7 @@ $hour = 3600000;
 $resultarray = array();
 $status_resultarray = array();
 $review_resultarray = array();
+$time_resultarray = array();
 while ($row1 = mysqli_fetch_array($response2)) {
   $schedule = $row1['schedule_list'];
   $schedule_status = $row1['teacher_schedule_status'];
@@ -99,6 +100,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
   array_push($resultarray, $schedule2);
   array_push($status_resultarray, $schedule_status);
   array_push($review_resultarray, $schedule_review);
+  array_push($time_resultarray, $schedule_time);
 }
 $string = implode("_", $resultarray);
 $string_status = implode("_", $status_resultarray);
@@ -132,6 +134,7 @@ if ($response3) { //정상일떄
     'teacher_schedule_list'   =>   $string,
     'teacher_schedule_list_status'   =>   $string_status,
     'teacher_schedule_list_review'   =>   $string_review,
+    'schedule_time'   =>   $string_time,
     'user_reserved_schedule_list'   =>   $string2,
 
     'success'           =>   'yes'
