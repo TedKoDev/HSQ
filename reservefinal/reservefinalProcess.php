@@ -132,6 +132,10 @@ foreach ($explan as $val) {
 
       $response4 = mysqli_query($conn, $select);
 
+      $select = "UPDATE Teacher_Schedule  SET class_time = '$tp' where user_id_teacher = '$tusid' and schedule_list = '$save'";
+
+      $response5 = mysqli_query($conn, $select);
+
 
       if ($response4) { //정상일떄
 
