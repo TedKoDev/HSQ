@@ -78,13 +78,17 @@ function getDate(header_date, timezone, for_modal) {
     now.setMinutes(0);
     now.setSeconds(0);
 
+    console.log(dayjs(now).format('YYYY/MM/DD HH:mm:ss'));
+
     // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
     const offset = (now.getTimezoneOffset()/60);
     now.setHours(now.getHours() + offset);
     
     // 날짜 표시하기 전에 받아온 타임존 적용 
-    // const string_to_int = parseInt(timezone);
-    // now.setHours(now.getHours() + string_to_int);
+    const string_to_int = parseInt(timezone);
+    now.setHours(now.getHours() + string_to_int);
+
+    console.log(dayjs(now).format('YYYY/MM/DD HH:mm:ss'));
     
     // 현재 타임스탬프 전역 변수에 대입
     time = now.getTime();
@@ -201,6 +205,8 @@ function setDate_Value(header_s, for_modal) {
                     let add_dayjs = test_dayjs.set("m", 30*j);
                     // 체크박스의 value에 더한 값의 타임스탬프를 넣어주기
                     checkbox.setAttribute("value", add_dayjs.valueOf());
+
+                    // console.log(dayjs(add_dayjs).format('YYYY/MM/DD HH:mm:ss'));
                                                           
                     if (for_modal == "_m") {
 
@@ -237,7 +243,7 @@ async function setschedule(type, for_modal) {
     
     const response = await res.json();   
 
-    console.log(response);
+    // console.log(response);
     const check = response.success; 
     schedule_string = response.teacher_schedule_list;  
     schedule_string_status = response.teacher_schedule_list_status;
@@ -331,6 +337,9 @@ function test_click(event) {
     
     let result = event.target.value;
 
+    console.log(dayjs(parseInt(result)).valueOf());
+    // console.log(dayjs(parseInt(result)).format('YYYY/MM/DD HH:mm:ss'));
+
     // 일정 편집일 경우
     if (event.target.name == "edit") {
 
@@ -343,7 +352,7 @@ function test_click(event) {
             // 일정 저장을 위한 array에 해당 value 추가
             array_for_edit.push(result);    
 
-            console.log(array_for_edit);
+            // console.log(array_for_edit);
                 
         } 
         // 체크 풀를 경우 해당 인덱스 배열에서 제외
@@ -355,7 +364,7 @@ function test_click(event) {
                 
             array_for_edit.splice(delete_index, 1);
 
-            console.log(array_for_edit);
+            // console.log(array_for_edit);
             
         }
     }

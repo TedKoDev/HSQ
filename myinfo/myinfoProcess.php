@@ -72,6 +72,8 @@ $U_Email = base64_decode($payload['U_Email']);
 
 // sql Payment 테이블에서 user_id로 검색해서 값 가져오기
 $sql = "SELECT * FROM HANGLE.Payment_Link where user_id_payment = '{$User_ID}'";
+// sql Payment 테이블에서 user_id로 검색해서 값 가져오기
+$sql = "SELECT * FROM HANGLE.Payment_Link where user_id_payment = '{$User_ID}'";
 
 $result = mysqli_query($conn, $sql);
 
@@ -92,7 +94,32 @@ $sql = "SELECT User.user_id, User.user_name, User.user_email,  User_Detail.user_
 
 
 $result = mysqli_query($conn, $sql);
+
+$result1['payment_linkarray'] = array();
+//배열생성
+foreach ($result as $row) {
+  $send1['payment_link'] = $row['payment_link'];
+
+  array_push($result1['payment_linkarray'], $send1);
+}
+
+
+
+$sql = "SELECT User.user_id, User.user_name, User.user_email,  User_Detail.user_img,  User_Detail.user_birthday,  User_Detail.user_sex,  User_Detail.user_contact,  User_Detail.user_country,  User_Detail.user_residence,  User_Detail.user_point,  User_Detail.user_timezone,  User_Detail.user_language,  User_Detail.user_korean,  User_Detail.teacher_register_check,  User_Detail.user_intro, User_Teacher.teacher_intro FROM HANGLE.User left outer join User_Detail on User.user_id = User_Detail.user_id left outer join User_Teacher on  User_Detail.user_id = User_Teacher.User_id where User.user_id = '{$User_ID}'";
+
+
+$result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($result);
+
+
+
+
+
+
+
+
+
+
 
 
 

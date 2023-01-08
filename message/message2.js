@@ -5,7 +5,9 @@ import { getMyUtc } from "../utils/getMyUtc.js";
 
 // 소켓 연결
 const socket = io.connect("ws://3.39.249.46:8080/webChatting");
-socket.emit('enter_web_chat', getCookie(cookieName));
+socket.on("connect", () => {
+    socket.emit('enter_web_chat', getCookie(cookieName));
+ });
 
 let my_id;
 let msgResult;
@@ -234,7 +236,8 @@ function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
     // 채팅방에 입장할 경우에는 채팅 상대방의 이름과 전송 버튼이 표시
     checkNameOrInput(chatId_global);
 
-    // 채팅방 위에 해당 유저 이름 표시하기
+    // 채팅방 위에 해당 유저 이름 표시하기    
+    $('.user_name').classList.remove('hidden');
     $('.chatting_user_name').innerText = user_name;
 
     // 클릭한 채팅방 버튼 색깔 칠하기
@@ -245,21 +248,7 @@ function clickChatRoom(circle, chat_id, other_id, recent_msg_time, user_name) {
 
     // 로컬 스토리지에 채팅방 id 저장
     localStorage.setItem('nowChatRoom', chat_id); 
-
-    if (chatId_global == 0) {
-        
-        $('.user_name').classList.add('hidden');
-        $('.user_name').classList.remove('flex');
-        $('.send_group').classList.add('hidden');
-        $('.send_group').classList.remove('flex');
-    }
-    else {                
-
-        $('.user_name').classList.remove('hidden');
-        $('.user_name').classList.add('flex');
-        $('.send_group').classList.remove('hidden');
-        $('.send_group').classList.add('flex');
-    }
+    
 }
 
 function checkNameOrInput(chatId_global) {
@@ -315,7 +304,7 @@ function getChattingList(msgResult, chat_id) {
         }
    }
    
-   
+   console.log(chattingList);
    // 채팅 뿌려주기
    for (let j = 0; j < chattingList.length; j++) {
             
@@ -597,22 +586,46 @@ $('.send_btn').addEventListener('click', () => {
     sendTextMessage();
 })
 
+// 채팅방 나가기 버튼 클릭
+$('.exit_btn').addEventListener('click', () => {
+    
+    exitChatRoom();
+})
+
 function sendTextMessage() {
     
     // 소켓서버에 메세지 전송 (채팅방 id, 채팅 메세지, 보내는 사람id, 받는 사람id)
+    console.log(my_id);
+    console.log(otherId_global);
     socket.emit('send_text_msg', chatId_global, $('.input_message').value, my_id, otherId_global);
     
-    $('.input_message').value = "";
+    $('.input_message').value = "";    
+}
+
+function exitChatRoom() {
+
+    socket.emit("exit_chat_room", chatId_global, my_id);
     
+    // 현재 들어가 있는 채팅방 id 관련 기록 초기화
+    chatId_global = 0;
+    localStorage.removeItem('nowChatRoom');
+
+    // 채팅 내역 뷰 초기화
+    // 기존 채팅 내역 초기화
+    while(chattingList_div.firstChild)  {
+        chattingList_div.firstChild.remove();     
+    }
+    // 유저 이름 안보이게 처리
+    $('.user_name').classList.add('hidden');
+
 }
 
 // 소켓 서버로부터 메세지 받을 때 채팅방에 가장 최근 메세지랑 날짜 업데이트 시키기
 function updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg) {
 
     // 해당 채팅방의 recent_msg_time 업데이트 하고 웹 브라우저에도 표시되게 처리    
-    msgResult[index].recent_msg_time = msg_date;        
-    console.log(dayjs(parseInt(msg_date)).format("MM월 DD일"));
-    document.getElementById(chat_room_id+"_date").innerHTML = dayjs(parseInt(msg_date)).format("MM월 DD일");
+    msgResult[index].recent_msg_time = msg_date;            
+    document.getElementById(chat_room_id+"_date").innerHTML = dayjs(msg_date).format("MM월 DD일");
 
     // 해당 채팅방의 recent_msg_desc 업데이트 하고 웹 브라우저에도 표시되게 처리    
     msgResult[index].recent_msg_desc = chat_msg;     
@@ -664,13 +677,13 @@ function adaptNonReadCount(index) {
 
 // 소켓서버에서 받는 로직
 // 소켓 서버에서 들어오는 요청 받는 곳
-socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id) => {  
-
-
-    console.log("pass");
+socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, sender_img, msg_date, msg_id, msg_type) => {  
+    
+    console.log(msg_type);
     
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
+  
 
     // 받은 메세지 해당 채팅방의 array에 추가    
     const msg_json = {
@@ -688,8 +701,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
     updateRecentMsg_and_Date(index, chat_room_id, msg_date, chat_msg);
 
     if (chat_room_id == chatId_global) { 
-        
-        console.log("in_chattingroom");
+               
         
         // 읽었다고 소켓서버에 다시 보내기
         read_msg_check(chat_room_id, sender_id);
@@ -701,9 +713,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
         else {
             showDateCheck = 'yes';
         }
-
-        console.log("showDataCheck : "+showDateCheck);
-
+       
         const div = document.createElement("div");
 
         if (sender_id == my_id) {
@@ -729,7 +739,7 @@ socket.on('receive_text_msg', (chat_room_id, chat_msg, sender_id, sender_name, s
 });
 
 socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, teacher_name, 
-    teacher_img, paypal_link, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, paypal_link, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type) => {
        
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -780,7 +790,7 @@ socket.on('receive_paypal_msg', (chat_room_id, class_register_id, class_name, te
 });
 
 socket.on('request_class', (chat_room_id, class_register_id, class_name, student_name, 
-    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type) => {
 
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -829,7 +839,7 @@ socket.on('request_class', (chat_room_id, class_register_id, class_name, student
 });
 
 socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teacher_name, 
-    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type) => {
 
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -877,7 +887,7 @@ socket.on('acceptance_class', (chat_room_id, class_register_id, class_name, teac
 });
 
 socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_name, 
-    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg) => {
+    teacher_img, msg_date, student_id, teacher_id, msg_id, chat_msg, msg_type, sender_id) => {
     
     // 해당 채팅방의 인덱스 가져오기
     const index = msgResult.findIndex(i => i.chat_id == parseInt(chat_room_id));
@@ -925,31 +935,32 @@ socket.on('cancel_class', (chat_room_id, class_register_id, class_name, teacher_
     
 });
 
+// 채팅방 나가기일 경우
+socket.on('exit_chat_room', (response, chat_room_id, sender_id) => {
+    
+    console.log("pass1");
+    // 내가 보낸 요청일 경우 채팅방 목록에서 없애기
+    if (response == 'success') {
+        console.log("pass2");
+        if (sender_id == my_id) {
+            console.log("pass3");
+            // 해당 메세지 삭제
+            document.getElementById(chat_room_id).remove();
+        }
+    }   
+    
+});
+
 // 메세지 수신 시 수신된 메세지가 있는 방에 들어가 있는 경우
-function read_msg_check(chat_room_id, sender_id) {
+function read_msg_check(chat_room_id, sender_id) {      
 
-   
-    // if (sender_id != my_id) {
-
-        // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트 (본인이 보낸게 아닐 경우에만)
-        socket.emit('read_msg', chat_room_id, sender_id);
-        console.log("pass");
-        // 소켓서버에서 last_check 업데이트 되었다고 신호 오면 그 때 재 렌더링 해주는 이벤트
-        socket.on('read_msg_check', (chat_room_id, sender_id) => {        
+    // 채팅 메세지 수신 시 해당 채팅방 안에 있을 경우 읽었다고 재 요청하는 이벤트 (본인이 보낸게 아닐 경우에만)
+    socket.emit('read_msg', chat_room_id, sender_id);   
+    socket.on('read_msg_check', (chat_room_id, sender_id) => {        
+                
+        console.log("read_msg_check");          
         
-            // chattingList_div.scrollTop = chattingList_div.scrollHeight;
-            console.log("read_msg_check");
-            // 재 렌더링
-            // init();   
-            
-        });
-        // init();
-
-        // chattingList_div.scrollTop = chattingList_div.scrollHeight;
-    // }
-    // else {
-    //     init();
-    // }      
+    });      
 }
 
 

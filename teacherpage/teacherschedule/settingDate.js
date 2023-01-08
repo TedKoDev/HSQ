@@ -31,10 +31,9 @@ export function calendarInit(scheduleInfo) {
     let currentYear = thisMonth.getFullYear(); // 달력에서 표기하는 연
     let currentMonth = thisMonth.getMonth(); // 달력에서 표기하는 월
     let currentDate = thisMonth.getDate(); // 달력에서 표기하는 일
-
-        
+       
     
-    renderCalender(now);
+    renderCalender(thisMonth);
 
 
     async function renderCalender(thisMonth) {
@@ -50,6 +49,7 @@ export function calendarInit(scheduleInfo) {
                 monthSchedule.push(schedule);
             }
         } 
+        
         // schedule_list을 기준으로 가장 이른 수업부터 먼저 배치되도록 정렬 순서 변경
         monthSchedule.sort(function (a,b) {
             return parseInt(a.schedule_list) - parseInt(b.schedule_list);
@@ -115,8 +115,8 @@ export function calendarInit(scheduleInfo) {
             date.innerText = i;
 
             // 이번달의 경우 schedule_block의 value값에 날짜 세팅 (ex : 2022-12-05)
-            let date_block = document.getElementById(num+"_block");
-            date_block.value = currentYear+"-"+(currentMonth+1)+"-"+('00'+i).slice(-2);
+            let date_block = document.getElementById(num+"_block");            
+            date_block.value = currentYear+"-"+('00'+(currentMonth+1)).slice(-2)+"-"+('00'+i).slice(-2);
 
             // 스케줄 리스트 넣을 div 선언
             let schedule_list_div = document.getElementById(num+"_list");
@@ -133,9 +133,9 @@ export function calendarInit(scheduleInfo) {
 
             // 해당 날짜에 스케줄 있을 경우 스케줄 넣기
             for (const schedule of monthSchedule) {
-
+                
                 if (dayjs(parseInt(schedule.schedule_list)).format('YYYY-MM-DD') == date_block.value) {
-                  
+                                      
                     const classId = schedule.class_register_id;    
                     const userId = schedule.user_id;                
                     const teacherNmae = schedule.user_name;
@@ -143,7 +143,7 @@ export function calendarInit(scheduleInfo) {
                     const startTime = dayjs(parseInt(schedule.schedule_list)).subtract(parseInt(classTime), 'minute').format('hh:mm');
                     const endTime = dayjs(parseInt(schedule.schedule_list)).format('hh:mm');
                     const time = startTime+" - "+endTime;
-                    const button = document.createElement("button");                                        
+                    const button = document.createElement("button");                                          
                     button.innerHTML = `<div class = "flex flex-col px-2 mt-1 rounded-lg py-1" id = ${classId}_schedule>
                                         <span class = "text-xs mb-1 text-white text-left">${time}</span>
                                         <span class = "text-xs text-white text-left">${teacherNmae}</span>
