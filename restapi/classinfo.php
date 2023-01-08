@@ -167,7 +167,7 @@ if ($filter_class_price_min == null) {
 
 //수업찾기 필터 테스트용 
 // $kind = 'clist';
-// $clReserveCheck = 'all'; //안해도됨
+// $clReserveCheck = null; //안해도됨
 // $filter_check      = 'ok(아무값)';
 // $filter_search     = '기초';  
 // $filter_date       =  array("1671667200000", "1671753600000");
@@ -334,7 +334,27 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 if ($kind == 'cdetail') {
   //해당 classid에 해당하는 상세정보를 가져옴 
   //class_id 가 있으면 작동
+  $list = array();
+  if ($class_name != null) {
+    array_push($list, 'class_name');
+  }
+  if ($class_description != null) {
+    array_push($list, 'class_description');
+  }
+  if ($class_people != null) {
+    array_push($list, 'class_people');
+  }
+  if ($class_type != null) {
+    array_push($list, 'class_type');
+  }
+  if ($class_level != null) {
+    array_push($list, 'class_level');
+  }
+  if ($class_price != null) {
+    array_push($list, 'class_price');
+  }
 
+  $string = implode(",", $list);
 
   if ($clReserveCheck  == null) {
 
@@ -349,6 +369,28 @@ if ($kind == 'cdetail') {
 
     $row1 = mysqli_fetch_array($response1);
 
+
+    $clid = $row1['0'];
+    $user_id_teacher = $row1['1'];
+
+    $send['class_id'] = $row1['0'];
+
+    $send['user_id'] = $row1['1'];
+    if ($class_name != null) {
+      $send['class_name'] = $row1['2'];
+    }
+    if ($class_description != null) {
+      $send['class_description'] = $row1['3'];
+    }
+    if ($class_people != null) {
+      $send['class_people'] = $row1['4'];
+    }
+    if ($class_type != null) {
+      $send['class_type'] = $row1['5'];
+    }
+    if ($class_level != null) {
+      $send['class_level'] = $row1['6'];
+    }
 
 
 
