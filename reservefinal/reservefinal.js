@@ -1,5 +1,5 @@
 // 로컬 스토리지에서 예약 관련 정보 가져오기
-const {clId, clName, clTime, clSchedule, clTool, clPrice, tusid} = JSON.parse(localStorage.getItem("reserveInfoAll"));
+const {clId, clName, clTime, clSchedule, clTool, clPrice, tusid, select_class_time} = JSON.parse(localStorage.getItem("reserveInfoAll"));
 
 // 소켓 연결
 const socket = io.connect("ws://3.39.249.46:8080/webChatting");
@@ -150,7 +150,6 @@ function setSchedule(clSchedule) {
     }
 }
 
-
 // 예약 버튼 클릭 이벤트
 async function reserveDone() {
     
@@ -163,9 +162,8 @@ async function reserveDone() {
 
         token: tokenvalue,
         class_id: classid,
-        tp: tp,
-        schedule_list: plan,
-        schedule_time : select_class_time,
+        class_time: select_class_time,
+        schedule_list: plan,        
         class_register_method: cmethod,
         class_register_memo: memo,
     };
@@ -181,13 +179,13 @@ async function reserveDone() {
     
     console.log(response);
 
-    if (response.success == 'yes') {
+    // if (response.success == 'yes') {
 
-        console.log("my_id : "+my_id);
+    //     console.log("my_id : "+my_id);
 
-        alert("예약 완료되었습니다.");
-        socket.emit('request_class', my_id, tusid, clId, response.class_register_id, response.user_name+"님이 수강 신청했습니다.");
+    //     alert("예약 완료되었습니다.");
+    //     socket.emit('request_class', my_id, tusid, clId, response.class_register_id, response.user_name+"님이 수강 신청했습니다.");
 
-        location.replace("../myinfo/");
-    }        
+    //     location.replace("../myinfo/");
+    // }        
 }

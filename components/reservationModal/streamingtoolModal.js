@@ -124,6 +124,7 @@ nextBtn_cct.addEventListener('click', function() {
         clTool : ctTool_final,
         clPrice : clPrice_final,
         tusid: U_id,
+        select_class_time : select_class_time
     }       
     
     localStorage.setItem("reserveInfoAll", JSON.stringify(reserveInfoAll));
