@@ -6,8 +6,23 @@
     <link rel = "stylesheet" type = "text/css" href = "./index.css"/>
     <script defer = "defer" src = "./index.js"></script>
   </head>        
+  <style>
+    select:invalid { color: gray; }
+    option {color: black;}
+  </style>
   <body>       
-    <input type="checkbox" id = "custom_button" name = "" value="custom_value" class = "checkbox_class"/>
-    <label for="custom_button" id = "custom_button_label" class = "checkbox_label">커스텀 버튼</label>       
+    <select
+      required>
+      <option                              
+          value=""
+          disabled="disabled"
+          selected="selected"
+          hidden="hidden">과일 종류</option>
+      <option class="" value="사과">사과</option>
+      <option class="" value="귤">귤</option>
+      <option class="" value="복숭아">복숭아</option>
+      <option class="" value="메론">메론</option>
+      <option class="" value="수박">수박</option>
+    </select>    
   </body>
 </html>

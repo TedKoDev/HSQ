@@ -304,7 +304,7 @@ function getChattingList(msgResult, chat_id) {
         }
    }
    
-   
+   console.log(chattingList);
    // 채팅 뿌려주기
    for (let j = 0; j < chattingList.length; j++) {
             

@@ -53,8 +53,6 @@ async function getclassSchedule_sm() {
 
     const response = await res.json();   
 
-    console.log(response);
-
     if (response.success == 'yes') {
 
         schedule_string_sm = response.teacher_schedule_list;
@@ -172,9 +170,7 @@ function setDate_Value_sm(header_s, for_modal) {
             const test_day = year_s + "-" + month_s + "-" + day_s;
 
             // day.js 써서 타임스탬프로 변환
-            let test_dayjs = dayjs(test_day);
-            // test_dayjs.format();
-
+            let test_dayjs = dayjs(test_day);          
 
             // 00:00 ~ 24:00에 해당하는 48개 체크박스에 해당 타임스탬프+시간대의 조합으로 value값 부여
             for (let j = 1; j <= 48; j++) {
@@ -210,7 +206,7 @@ async function setschedule_sm(type, for_modal, schedule) {
     // 디폴트로 일단 회색으로 칠해놓기
     let default_label = document.querySelectorAll(".label_sm");
     for (label of default_label) {
-        label.style.backgroundColor = '#9CA3AF';
+        label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");        
     }
     
 
@@ -225,27 +221,25 @@ async function setschedule_sm(type, for_modal, schedule) {
         for (let j = 0; j < classList.length; j++) {
             
             // 수업 가능한 시간일 경우 파란색으로 표시하고 checkbox 활성화            
-            if (input_i == classList[j]) {    
-                                                               
-                                
-                label.style.backgroundColor = '#2563EB';
-                                    
+            if (input_i == classList[j]) {                                        
+                
+                label.classList.replace("bg-gray-400", "bg-blue-600");                             
+                                                    
                 input.disabled = false;      
                 
                 // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하고 checkbox 비활성화
                 // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
                 if (!(statusList[j] == 9 || statusList[j] == 2)) {
                                                                     
-                    label.style.backgroundColor = '#6B7280';      
+                    label.classList.replace("bg-blue-600", "bg-gray-600");                         
                     input.disabled = true;             
                 }
             }      
                      
         }  
-        // 현재 시간 이전 날짜일 경우에는 디폴트 색인 회색으로 두고 체크박스 비활성화
+        // 현재 시간 이전 날짜일 경우에는 디폴트 색 유지하고 체크박스 비활성화
         if(checkNow_forSchedule_cs(input_i)) {
-        
-        label.style.backgroundColor = '#9CA3AF';
+                
         input.disabled = true;
         }        
 
@@ -254,9 +248,9 @@ async function setschedule_sm(type, for_modal, schedule) {
             
             if (input_i == scheduleReserve_array_sm[z]) {
 
-                const label = document.getElementById(i + type);                   
-                label.style.backgroundColor = '#1E40AF';
-
+                const label = document.getElementById(i + type);     
+                label.classList.replace('bg-blue-600', 'bg-blue-700');             
+                
                 input.checked = true;
 
                 // 해당 체크박스의 name에 check로 표시
@@ -272,7 +266,7 @@ async function setschedule_sm(type, for_modal, schedule) {
 // 2. true일 경우 색깔 변하게
 // 3. false일 경우 색깔 원래대로
 function scheduleClick(test) {
-
+    
     const input = document.getElementById(test.id);
     const label = document.getElementById(test.id+"_l");
 
@@ -288,7 +282,8 @@ function scheduleClick(test) {
             scheduleReserve_array_sm.push(input.getAttribute("value"));          
             
             // 색깔 변화
-            label.style.backgroundColor = '#1E40AF';
+            label.classList.replace("bg-blue-600", "bg-blue-800");
+            console.log(label.className);
 
             // 해당 체크박스의 name에 check로 표시
             input.setAttribute("name", "check");
@@ -299,8 +294,9 @@ function scheduleClick(test) {
             // 전역 array에서 해당 input 값이 포함된 인덱스를 제거
             const delete_index = scheduleReserve_array_sm.indexOf(input.getAttribute("value"));                
             scheduleReserve_array_sm.splice(delete_index, 1);
-            
-            label.style.backgroundColor = '#2563EB';
+                        
+            label.classList.replace("bg-blue-800", "bg-blue-600");
+            console.log(label.className);
 
             // 해당 체크박스의 name에 uncheck로 표시
             input.setAttribute("name", "uncheck");
@@ -317,18 +313,16 @@ function scheduleClick(test) {
         // 2. 해당 값의 색깔 원래 색깔로 바꾸기 (연한 파랑)
         // 3. 해당 값의 check를 false로 다시 바꾸기
         if (input.getAttribute("name") == "check") {
-
-            console.log("check_pass");
-            
+                      
             // 1. 전역 array에서 해당 input 값이 포함된 인덱스를 제거
             const delete_index = scheduleReserve_array_sm.indexOf(input.getAttribute("value"));                
             scheduleReserve_array_sm.splice(delete_index, 1);
 
             // 2. 해당 값의 색깔 원래대로 바꾸기
-            label.style.backgroundColor = '#2563EB';
+            label.classList.replace("bg-blue-800", "bg-blue-600");            
 
             // 3. 해당 값의 check를 false로 바꾸기
-            // input.checked = false;            
+            input.checked = false;            
         }             
     }
 
@@ -337,6 +331,71 @@ function scheduleClick(test) {
 
     // 모달창 하단에 현재 선택한 수업 갯수 표시
     showClassnumber();
+}
+
+// 체크박스에 마우스 커서 갔다댔을 때 수업 가능한 시간대일 경우에는 해당 체크박스를 불투명하게, 커서 나가면 원래대로 처리해놓기
+for (const checkbox of document.querySelectorAll('.label_sm')) {
+
+    checkbox.addEventListener('mouseover', function (event) {
+        // 30분 수업 선택했을 때
+        if (select_class_time == 30) {
+
+            // 수업 가능한 시간 or 내가 수업 예약하려고 선택한 시간일 경우에만 hover되도록 처리
+            if (event.target.classList.contains("bg-blue-600") || event.target.classList.contains("bg-blue-800")) {
+
+                event.target.classList.add('hover:bg-opacity-70');
+            }      
+        }
+        // 60분 수업 선택했을 때 
+        else if (select_class_time == 60) {
+
+            const label_b = getLabel_b(event.target.id);       
+
+            // 두 label이 모두 수업 선택 가능할 경우에 두 label에 모두 hover처리
+            if ((event.target.classList.contains("bg-blue-600") || event.target.classList.contains("bg-blue-800")) &&
+            (label_b.classList.contains("bg-blue-600") || label_b.classList.contains("bg-blue-800"))) {
+
+                event.target.classList.add('hover:bg-opacity-70');
+                label_b.classList.add('bg-opacity-70');
+            }
+        }
+    })
+
+    checkbox.addEventListener('mouseout', function (event) {
+
+        // 30분 수업 선택했을 때
+        if (select_class_time == 30) {
+
+            // 수업 가능한 시간 or 내가 수업 예약하려고 선택한 시간일 경우에만 hover 지우기
+            if (event.target.classList.contains("bg-blue-600") || event.target.classList.contains("bg-blue-800")) {
+
+                event.target.classList.remove('hover:bg-opacity-70');
+            }      
+        }
+        // 60분 수업 선택했을 때 
+        else if (select_class_time == 60) {             
+
+            const label_b = getLabel_b(event.target.id);
+
+            // 두 label이 모두 수업 선택 가능할 경우에 두 label에 모두 hover처리
+            if ((event.target.classList.contains("bg-blue-600") || event.target.classList.contains("bg-blue-800")) &&
+            (label_b.classList.contains("bg-blue-600") || label_b.classList.contains("bg-blue-800"))) {
+
+                event.target.classList.remove('bg-opacity-70');
+                label_b.classList.remove('bg-opacity-70');
+            }
+        }
+    })
+}
+// 커서가 위치한 체크박스의 바로 아래 label 구하는 함수
+function getLabel_b(label_id) {
+    
+    const input_seq = label_id.replace("_sm_l", "");
+    const input_b_seq = parseInt(input_seq)+1;
+    // 커서 아래의 체크박스 label (label_b)
+    const label_b = document.getElementById(input_b_seq+"_sm_l");    
+    
+    return label_b;
 }
 
  
@@ -463,7 +522,6 @@ function checkNextbtn_cs() {
  // 이번주에서 이전 날짜 버튼 클릭할 수 없게 처리
  function checkBeforebtn_cs(beforeDate_btn_cs, timezone_cs) {
 
-    console.log("timezone_cs : "+timezone_cs);
     // 현재 날짜 객체 생성
     const now = new Date();
 
@@ -484,9 +542,6 @@ function checkNextbtn_cs() {
 
     const checkTime = now.getTime();
     const time_sm_check = time_sm + (1000 * 60 * 60 * 24); 
-
-    console.log("checkTime : "+dayjs(checkTime).format('YYYY/MM/DD'));
-    console.log("time_sm : "+dayjs(time_sm_check).format('YYYY/MM/DD'));
 
     // 가공한 날짜가 전역 time_sm과 같을 경우 이전 버튼 비활성화
     if (dayjs(checkTime).format('YYYY/MM/DD') == dayjs(time_sm_check).format('YYYY/MM/DD')) {

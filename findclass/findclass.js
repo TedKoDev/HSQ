@@ -75,6 +75,7 @@ async function see_more() {
     // 클릭할 때마다 1씩 증가
     more_num = more_num + 1;
         
+    console.log(more_num);
     const body = {
       kind: 'clist',
       plus : more_num,
@@ -90,6 +91,8 @@ async function see_more() {
   
     // 받아온 json 파싱하고 array 추출
     const response = await res.json();  
+
+    
   
     // array에 있는 데이터 세팅
     setClassinfo(response);

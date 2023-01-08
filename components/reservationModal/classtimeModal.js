@@ -120,19 +120,23 @@ function classtimeClick(price_and_number, price) {
             
             if (price_and_number.getAttribute("name") == "30_1") {
                 string = "30분 - 1회";      
-                localStorage.setItem("class_times", 1);          
+                localStorage.setItem("class_times", 1);        
+                select_class_time = 30;                
             }
             else if (price_and_number.getAttribute("name") == "30_5") {
                 string = "30분 - 5회";    
                 localStorage.setItem("class_times", 5);      
+                select_class_time = 30;     
             }
             else if (price_and_number.getAttribute("name") == "60_1") {
                 string = "60분 - 1회";    
-                localStorage.setItem("class_times", 1);      
+                localStorage.setItem("class_times", 1);     
+                select_class_time = 60;      
             }
             else if (price_and_number.getAttribute("name") == "60_5") {
                 string = "60분 - 5회"; 
-                localStorage.setItem("class_times", 5);        
+                localStorage.setItem("class_times", 5);       
+                select_class_time = 60;      
             }
 
             name.innerHTML = string;

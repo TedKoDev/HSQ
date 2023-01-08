@@ -77,8 +77,6 @@ async function getSchedule(teacher_id, tokenvalue) {
   });  
 
   const response = await res.json(); 
-  
-  console.log(response);
 
   if (response.success == "yes") {
 
@@ -250,9 +248,6 @@ function setDate_Value(header_s, for_modal) {
 // 일정 등록에 세팅하는 함수
 async function setschedule(type, for_modal, schedule_string) {      
 
-    console.log("yes");
-    // let test_string = "54_62_88";
-
     // 서버에서 받아온 string 배열로 변환
     const scheduleList = schedule_string.split('_');
     // 일정의 상태 배열로 변환
@@ -266,6 +261,7 @@ async function setschedule(type, for_modal, schedule_string) {
     // 디폴트로 일단 회색으로 칠해놓기
     let default_label = document.getElementsByName("schedule_label");
     for (label of default_label) {
+        
         label.style.backgroundColor = '#9CA3AF';
     }
     
@@ -427,9 +423,7 @@ function checkNow_forSchedule(value) {
   }
 }
 
-async function getClassinfo(C_id) {
-
-    console.log("class_id : "+C_id);
+async function getClassinfo(C_id) {    
 
     const body = {
     
@@ -456,8 +450,6 @@ async function getClassinfo(C_id) {
     // console.log(response.result);
 
     const result = response.result[0];
-
-    console.log(result);
 
     const clname = result.class_name;
     const cldisc = result.class_description;

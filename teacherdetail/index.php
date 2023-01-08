@@ -18,6 +18,10 @@
             overflow: hidden;
         }
     </style>
+     <script>
+        // 30분, 60분 여부 체크용
+        let select_class_time;
+    </script>
     <body class="bg-gray-100">
         <!-- 네비바 -->
         <?php include '../components/navbar/navbar.php' ?>
