@@ -78,6 +78,8 @@ async function getSchedule(teacher_id, tokenvalue) {
 
   const response = await res.json(); 
 
+  console.log(response);
+
   if (response.success == "yes") {
 
     // 전역으로 선언한 일정에 가져온 값 대입
