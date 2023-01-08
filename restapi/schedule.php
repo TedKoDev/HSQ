@@ -42,7 +42,7 @@ $token      =   json_decode(file_get_contents("php://input"))->{"token"};
 $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"};
 // $utc      =   9; 
 $tusid      =   json_decode(file_get_contents("php://input"))->{"user_id_teacher"};  // 강사의 userid 
-// $tusid      =   320;  // 강사의 userid 
+// $tusid      =   324;  // 강사의 userid 
 
 
 
@@ -80,7 +80,8 @@ if ($token != null) {
 
 
 
-$sql = "SELECT schedule_list, teacher_schedule_status, teacher_schedule_review FROM Teacher_Schedule WHERE user_id_teacher = '$tusid'";
+$sql = "SELECT Teacher_Schedule.schedule_list, Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review, (Class_Add.class_time) as schedule_time FROM Teacher_Schedule
+LEFT outer join Class_Add ON Teacher_Schedule.user_id_teacher =  Class_Add.user_id_teacher WHERE Teacher_Schedule.user_id_teacher = '$tusid'";
 
 
 $response2 = mysqli_query($conn, $sql);
@@ -90,19 +91,23 @@ $hour = 3600000;
 $resultarray = array();
 $status_resultarray = array();
 $review_resultarray = array();
+$time_resultarray = array();
 while ($row1 = mysqli_fetch_array($response2)) {
   $schedule = $row1['schedule_list'];
   $schedule_status = $row1['teacher_schedule_status'];
   $schedule_review = $row1['teacher_schedule_review'];
+  $schedule_time = $row1['schedule_time'];
   // $schedule2 = $schedule + $hour * $timezone;
   $schedule2 = $schedule;
   array_push($resultarray, $schedule2);
   array_push($status_resultarray, $schedule_status);
   array_push($review_resultarray, $schedule_review);
+  array_push($time_resultarray, $schedule_time);
 }
 $string = implode("_", $resultarray);
 $string_status = implode("_", $status_resultarray);
 $string_review = implode("_", $review_resultarray);
+$string_time = implode("_", $time_resultarray);
 
 
 
@@ -132,6 +137,7 @@ if ($response3) { //정상일떄
     'teacher_schedule_list'   =>   $string,
     'teacher_schedule_list_status'   =>   $string_status,
     'teacher_schedule_list_review'   =>   $string_review,
+    'schedule_time'   =>   $string_time,
     'user_reserved_schedule_list'   =>   $string2,
 
     'success'           =>   'yes'
