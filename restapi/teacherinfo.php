@@ -43,11 +43,13 @@ file_get_contents("php://input") . "<br/>";
 
 //강사 상세출력시 필요 
 $token      =   json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
+
 $tusid      =   json_decode(file_get_contents("php://input"))->{"user_id_teacher"}; // 선택된 강사의 userid 
 $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; // utc 
 $kind =   json_decode(file_get_contents("php://input"))->{"kind"}; // 강사의 detail 정보를 얻기위함 
 // $tusid = 324;
 // $kind  = 'detail';
+// $token      =  '11'; // 토큰 
 
 
 $timg           =   json_decode(file_get_contents("php://input"))->{"teacher_img"};     // 강사이미지
@@ -121,8 +123,6 @@ if ($tusid != null) {
         where User.user_id = '$tusid' ";
     $response1 = mysqli_query($conn, $sql);
 
-
-
     $row1 = mysqli_fetch_array($response1);
 
     $send['user_name'] = $row1['0'];
@@ -141,7 +141,6 @@ if ($tusid != null) {
     // $result1["success"] = "1";
     $result3["success"] = "1";
     echo json_encode($result3);
-
     mysqli_close($conn);
   } else if ($kind == "detail") {
     // 강사의 user_id로 검색해서 강사의 평점,  수업수, 학생수 정보 가져오기
@@ -168,10 +167,11 @@ if ($tusid != null) {
     $send['class_register_status_1_cnt']    = $row2['b'] / 2;
     $send['class_register_status_2_cnt']    = $row2['c'] / 2;
     $send['class_register_status_3_cnt']    = $row2['d'] / 2;
-  }
 
-  echo json_encode($send);
-  mysqli_close($conn);
+
+    echo json_encode($send);
+    mysqli_close($conn);
+  }
 } else {
   //tusid 가 없으면 작동 전체 목록 
 
