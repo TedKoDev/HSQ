@@ -22,6 +22,8 @@ let timezone;
 let schedule_string;
 // 서버에서 받은 일정의 상태 (승인대기/미완료/완료/취소된 수업)
 let schedule_string_status;
+// 서버에서 받은 수업 시간의 상태 (0 : 없음, 30분 : 30분짜리 수업, 60분 : 60분짜리 수업)
+let schedule_class_time;
 
 // 모달창에서 수정할 때 일정 담긴 string을 배열로 변환하는 변수 선언
 let array_for_edit = new Array();
@@ -161,6 +163,7 @@ async function setschedule(type, for_modal) {
   console.log(response);
   schedule_string = response.teacher_schedule_list;
   schedule_string_status = response.teacher_schedule_list_status;  
+  schedule_class_time = response.schedule_time;
 
   // 값이 있을 경우에만 추출해서 대입
   if (check == "yes") {     
@@ -168,12 +171,8 @@ async function setschedule(type, for_modal) {
       // 서버에서 받아온 string 배열로 변환
       const scheduleList = schedule_string.split('_');
       // 서버에서 받아온 일정의 상태 배열로 변환
-      const statusList = schedule_string_status.split('_');
-      
-      // console.log("schedule_string : "+schedule_string);
-      // console.log("schedule_string_status : "+schedule_string_status);
-      // console.log(scheduleList);
-      // console.log(statusList);
+      const statusList = schedule_string_status.split('_');     
+      const classTimeList = schedule_class_time.split('_'); 
 
       // 현재 모달창에서 체크하고 있는 배열 가져오기
       let check_array = new Array();
@@ -182,7 +181,7 @@ async function setschedule(type, for_modal) {
       // 디폴트로 일단 회색으로 칠해놓기
       const default_label = document.getElementsByName("schedule_label");
       for (label of default_label) {
-          label.style.backgroundColor = '#9CA3AF';
+        label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");
       }
       
 
@@ -192,55 +191,37 @@ async function setschedule(type, for_modal) {
           // 체크박스의 value값 가져오기
           let input_i = document.getElementById(i+for_modal).value;   
           let label = document.getElementById(i + type);                 
-
-          // 모달창 아닐 때만 서버에서 받아온 값 뿌려주기
-          // if (for_modal == "") {
+          
               // 서버에서 받아온 값 뿌려주기
               for (let j = 0; j < scheduleList.length; j++) {
                                   
                   // 체크박스의 값과 서버에서 받아온 array값 중 일치하는 것이 있을 경우 색깔 칠하기
-                  if (input_i == scheduleList[j]) {       
-                                                      
-                      
-                      label.style.backgroundColor = '#2563EB';
-
+                  if (input_i == scheduleList[j]) {      
+                                                     
+                      label.classList.replace("bg-gray-400", "bg-blue-600");
                       // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하기
                       // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함
-                      if (!(statusList[j] == 9 || statusList[j] == 2)) {
-                                                   
-                        console.log("pass");
-                        label.style.backgroundColor = '#6B7280';                   
+                      if (!(statusList[j] == 9 || statusList[j] == 2)) {                                                  
+                        
+                        if (classTimeList[j] == 60) {                        
+                          label.classList.replace("bg-blue-600", "bg-gray-600");
+                          const label_b_seq = parseInt(label.id.replace("_l", ""))+1;
+                          const label_b = document.getElementById(label_b_seq+"_l");     
+                              
+                          label_b.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-600 text-white rounded border");                   
+                        }
+                        else {                         
+                          label.classList.replace("bg-blue-600", "bg-gray-600");                        
+                        }                    
                       }
                   }               
               }
               // 현재 시간 이전 날짜일 경우에는 디폴트 색인 회색으로 두기
               if(checkNow_forSchedule(input_i)) {
                 
-                label.style.backgroundColor = '#9CA3AF';
-              }              
-              
-          // }
-          // 모달창이면 서버에서 받아온거 바로 뿌려주지 말고 모달창 켰을 때 담은 배열에 있는값들 뿌려주기
-          // else {
-          //   // 현재 체크하고 있는 array 개수만큼 반복문 돌려서 체크 (현재 편집중인 사항 표시하기 위해)
-          //   for (let z = 0; z < check_array.length; z++) {
-                                            
-          //       if (input_i == check_array[z]) {
-                    
-          //           // console.log("input_i : "+input_i);
-          //           // console.log("test_array[j] : "+test_array[j]);
-                    
-          //           let label = document.getElementById(i + type);
-          //           // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-          //           let input = document.getElementById(i+"_m");
-
-          //           input.checked = true;
-          //           label.style.backgroundColor = '#2563EB';
-          //       }
-                            
-          //   }
-          // }            
-      }
+                label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");
+              }            
+        }
   }
 }
 
@@ -820,180 +801,3 @@ for (const close of closeModal) {
 
 
 
-
-// function login_check() {
-
-//   console.log("click");
-
-//   // 토큰 값 있을 때만 예약창 뜨도록
-//   if (checkCookie == "") {
-
-//     alert("로그인이 필요합니다.");
-//     location.assign("../login/login.php"); 
-//   }
-//   else {    
-//     console.log("click2");             
-//     // const overlay_reserve = document.querySelector('.overlay_reserve') 
-    
-//   }
-// }
-
-
-// (옛날 코드인데 혹시 몰라서 남겨 놓은 것들)
-// 일정 등록에 세팅하는 함수 
-// async function setschedule(schedule_string, type) {    
-       
-//   // 값이 있을 경우에만 추출해서 대입  
-    
-//     let test_array = schedule_string.split('_');
-
-//     // 디폴트로 일단 회색으로 칠해놓기
-//     let default_label = document.getElementsByName("schedule_label");
-//     for (label of default_label) {
-//         label.style.backgroundColor = '#9CA3AF';
-//     }    
-
-//     // 일정 체크박스 개수만큼 반복문 돌리기
-//     for (let i = 1; i <= 336; i++ ) {
-
-//         // 변환한 array의 개수만큼 반복문 돌리기
-//         for (let j = 0; j < test_array.length; j++) {
-            
-//             if (i == test_array[j]) {
-
-//                 let label = document.getElementById(i + "_l");
-//                 // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-//                 let input = document.getElementById(i+ type);
-
-//                 input.checked = true;
-//                 label.style.backgroundColor = 'blue';
-//             }               
-//         }
-//     }  
-// }
-
-// 날짜 세팅 
-// function getDate(header_date, timezone) {
-
-//     let header_s = document.getElementById(header_date);
-
-//     // 세팅하기 전에 일단 초기화
-//     while(header_s.firstChild)  {
-//         header_s.removeChild(header_s.firstChild);
-//       }
-
-//     let now = new Date();
-    
-//     const string_to_int = parseInt(timezone);
-//     now.setHours(now.getHours() + string_to_int);
-    
-//     let time = now.getTime();
-//     let todayDate = now.getDate();
-
-//     let week = new Array('일', '월', '화', '수', '목', '금', '토');
-
-//     time = time - (1000 * 60 * 60 * 24)
-//     for (let i = 0; i < 8; i++) {
-
-//         if (i == 0) {
-
-//             let utc_show = document.createElement("div");
-//             utc_show.innerHTML = [
-//                 '<div class = "flex flex-col w-20">', '<div class = "mx-auto"></div>',            
-//                 '</div>'
-//             ].join("");
-
-//             header_s.appendChild(utc_show);
-
-//         } else {
-
-//             time = time + (1000 * 60 * 60 * 24);
-
-//             let new_Date = new Date(time);
-
-//             let date = new_Date.getDate();
-
-//             let day_array = new_Date.getDay();
-//             let day = week[day_array];
-//             // console.log(date);
-//             // console.log(day);
-
-//             let date_day = document.createElement("div");
-//             date_day.innerHTML = [
-//                 '<div class = "flex flex-col w-20">', '<div class = "mx-auto">' + day +
-//                         '</div>',
-//                 '<div class = "mx-auto">' + date + '</div>',
-//                 '</div>'
-//             ].join("");
-
-//             header_s.appendChild(date_day);        
-//         }
-//     }
-// }
-
-// 일정 등록에 세팅하는 함수
-// async function setschedule(type, for_modal) {    
-
-//   console.log("pass2");
-
-//   const body = {
-
-//       token: checkCookie,       
-  
-//       };
-//   const res = await fetch('../manageschedule/managescheduleProcess.php', {
-//   method: 'POST',
-//   headers: {
-//       'Content-Type': 'application/json;charset=utf-8'
-//   },
-//   body: JSON.stringify(body)
-//   });
-  
-//   const response = await res.json();   
-//   const check = response.success; 
-//   schedule_string = response.schedule;  
-  
-//   console.log('schedule_string : '+schedule_string);
-
-//   // 값이 있을 경우에만 추출해서 대입
-//   if (check == "yes") {
-
-//       console.log("yes");
-//       // let test_string = "54_62_88";
-
-//       let test_array = schedule_string.split('_');
-
-//       // 디폴트로 일단 회색으로 칠해놓기
-//       let default_label = document.getElementsByName("schedule_label");
-//       for (label of default_label) {
-//           label.style.backgroundColor = '#9CA3AF';
-//       }
-      
-
-//       // 일정 체크박스 개수만큼 반복문 돌리기
-//       for (let i = 1; i <= 336; i++ ) {
-
-//           // 체크박스의 value값 가져오기
-//           let input_i = document.getElementById(i+for_modal).value;
-
-//           // console.log(input_i);
-//           // 변환한 array의 개수만큼 반복문 돌리기
-//           for (let j = 0; j < test_array.length; j++) {
-                              
-//               if (input_i == test_array[j]) {
-                  
-//                   // console.log("input_i : "+input_i);
-//                   // console.log("test_array[j] : "+test_array[j]);
-                  
-//                   let label = document.getElementById(i + type);
-//                   // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-//                   // 지금 모달창 관련해서 주석처리 해놓은 부분은 나중에 수업 등록하고 일정 선택할 때 필요함
-//                   // let input = document.getElementById(i+"_m");
-
-//                   // input.checked = true;
-//                   label.style.backgroundColor = 'blue';
-//               }               
-//           }
-//       }
-//   }
-// }

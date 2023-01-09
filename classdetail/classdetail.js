@@ -271,8 +271,8 @@ async function setschedule(type, for_modal, schedule_string) {
     // 디폴트로 일단 회색으로 칠해놓기
     let default_label = document.getElementsByName("schedule_label");
     for (label of default_label) {
-        
-        label.style.backgroundColor = '#9CA3AF';
+      label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");
+      
     }
     
 
@@ -288,26 +288,23 @@ async function setschedule(type, for_modal, schedule_string) {
 
             for (let j = 0; j < scheduleList.length; j++) {
                             
-                if (input_i == scheduleList[j]) {                                      
-                                                                         
-                    label.style.backgroundColor = '#2563EB';
+                if (input_i == scheduleList[j]) {                                   
+                                                                      
+                    label.classList.replace("bg-gray-400", "bg-blue-600"); 
 
                     // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하기
                     // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
                     if (!(statusList[j] == 9 || statusList[j] == 2)) {
                                
-                      if (classTimeList[j] == 60) {
-                        label.style.backgroundColor = '#6B7280';
+                      if (classTimeList[j] == 60) {                        
+                        label.classList.replace("bg-blue-600", "bg-gray-600");
                         const label_b_seq = parseInt(label.id.replace("_l", ""))+1;
-                        const label_b = document.getElementById(label_b_seq+"_l");
-                        console.log(label);
-                        console.log(label_b);
-                        label_b.style.backgroundColor = '#6B7280';
-                        console.log("60");
+                        const label_b = document.getElementById(label_b_seq+"_l");     
+                            
+                        label_b.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-600 text-white rounded border");                   
                       }
-                      else {
-                        label.style.backgroundColor = '#6B7280';   
-                        console.log("30");
+                      else {                         
+                        label.classList.replace("bg-blue-600", "bg-gray-600");                        
                       }                                      
                     }
                 }               
@@ -315,7 +312,7 @@ async function setschedule(type, for_modal, schedule_string) {
             // 현재 시간 이전 날짜일 경우에는 디폴트 색인 회색으로 두기
             if(checkNow_forSchedule(input_i)) {
                 
-              label.style.backgroundColor = '#9CA3AF';
+              label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");
             } 
         }
         // 모달창이면 서버에서 받아온거 바로 뿌려주지 말고 모달창 켰을 때 담은 배열에 있는값들 뿌려주기
@@ -323,17 +320,14 @@ async function setschedule(type, for_modal, schedule_string) {
             // 현재 체크하고 있는 array 개수만큼 반복문 돌려서 체크 (현재 편집중인 사항 표시하기 위해)
             for (let z = 0; z < check_array.length; z++) {
                                             
-                if (input_i == check_array[z]) {
+                if (input_i == check_array[z]) {                                       
                     
-                    // console.log("input_i : "+input_i);
-                    // console.log("test_array[j] : "+test_array[j]);
-                    
-                    let label = document.getElementById(i + type);
-                    // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-                    let input = document.getElementById(i+"_m");
+                    // let label = document.getElementById(i + type);
+                    // // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
+                    // let input = document.getElementById(i+"_m");
 
-                    input.checked = true;
-                    label.style.backgroundColor = '#2563EB';
+                    // input.checked = true;
+                    // label.style.backgroundColor = '#2563EB';
                 }
                             
             }

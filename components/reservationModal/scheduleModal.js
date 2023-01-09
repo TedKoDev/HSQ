@@ -243,11 +243,10 @@ async function setschedule_sm(type, for_modal, schedule) {
                     if (classTimeList[j] == 60) {
                         // label.style.backgroundColor = '#6B7280';     
                         label.classList.replace("bg-blue-600", "bg-gray-600");                     
-                        const label_b = getLabel_b(label.id);      
-                        // console.log(label_b);                  
-                        // label_b.classList.replace("bg-blue-600", "bg-gray-600");       
-                        const test = document.getElementById("134_sm_l");
-                        // test.classList.replace("bg-blue-600", "bg-gray-600");   
+                        const label_b = getLabel_b(label.id);     
+                        label_b.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-600 text-white rounded border");  
+                        const input_b = getInput_b(input.id);
+                        input_b.disabled = true;                                                 
                     }
                     else {
                         label.classList.replace("bg-blue-600", "bg-gray-600");                         
