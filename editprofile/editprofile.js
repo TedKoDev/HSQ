@@ -1219,7 +1219,10 @@
     // 링크 추가하는 함수
     function add_select_link() {
 
-
+      input_link_div.classList.remove('hidden');
+      save_link_btn.classList.remove('hidden');
+      cancel_link_btn.classList.remove('hidden');
+      add_link_btn.classList.add('invisible');
     }
 
 

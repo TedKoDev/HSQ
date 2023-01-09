@@ -317,7 +317,7 @@
               <!-- 결제링크 수정 클릭했을 때 -->                             
               <div id = "paymentdiv_click_edit" class = "hidden flex-col">                               
                 <div id = "now_link_div" class = "flex flex-col"></div>
-                <div id = "input_link_div"></div>
+                <input id = "input_link_div" class = "hidden text-sm text-gray-500 border shadow rounded-lg px-1 w-3/4"/>
                 <div class = "flex justify-between">
                   <span id = "add_link" class = "text-sm" onclick="add_select_link()">+ 더 추가</span>
                   <span id = "link_return_btn" onclick = "link_return()" class = "px-3 my-2 font-semibold bg-gray-500 text-xs text-white
