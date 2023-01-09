@@ -40,7 +40,7 @@ file_get_contents("php://input") . "<br/>";
 $token      =   json_decode(file_get_contents("php://input"))->{"token"};
 // $token      =   11; 
 $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"};
-// $utc      =   9; 
+// $utc      =   9;
 $tusid      =   json_decode(file_get_contents("php://input"))->{"user_id_teacher"};  // 강사의 userid 
 // $tusid      =   324;  // 강사의 userid 
 
@@ -80,7 +80,7 @@ if ($token != null) {
 
 
 
-$sql = "SELECT Teacher_Schedule.schedule_list, Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review, (Class_Add.class_time) as schedule_time FROM Teacher_Schedule
+$sql = "SELECT Teacher_Schedule.schedule_list, Teacher_Schedule.teacher_schedule_status, Teacher_Schedule.teacher_schedule_review, Teacher_Schedule.class_time FROM Teacher_Schedule
 LEFT outer join Class_Add ON Teacher_Schedule.user_id_teacher =  Class_Add.user_id_teacher WHERE Teacher_Schedule.user_id_teacher = '$tusid'";
 
 
@@ -96,7 +96,7 @@ while ($row1 = mysqli_fetch_array($response2)) {
   $schedule = $row1['schedule_list'];
   $schedule_status = $row1['teacher_schedule_status'];
   $schedule_review = $row1['teacher_schedule_review'];
-  $schedule_time = $row1['schedule_time'];
+  $schedule_time = $row1['class_time'];
   // $schedule2 = $schedule + $hour * $timezone;
   $schedule2 = $schedule;
   array_push($resultarray, $schedule2);

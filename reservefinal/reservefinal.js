@@ -179,13 +179,11 @@ async function reserveDone() {
     
     console.log(response);
 
-    // if (response.success == 'yes') {
+    if (response.success == 'yes') {      
 
-    //     console.log("my_id : "+my_id);
+        alert("예약 완료되었습니다.");
+        socket.emit('request_class', my_id, tusid, clId, response.class_register_id, response.user_name+"님이 수강 신청했습니다.");
 
-    //     alert("예약 완료되었습니다.");
-    //     socket.emit('request_class', my_id, tusid, clId, response.class_register_id, response.user_name+"님이 수강 신청했습니다.");
-
-    //     location.replace("../myinfo/");
-    // }        
+        location.replace("../myinfo/");
+    }        
 }

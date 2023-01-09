@@ -35,6 +35,9 @@ let timezone;
 let schedule_string;
 // 서버에서 받은 일정의 상태 (승인대기/미완료/완료/취소된 수업)
 let schedule_string_status;
+// 서버에서 받은 수업 시간의 상태 (0 : 없음, 30분 : 30분짜리 수업, 60분 : 60분짜리 수업)
+let schedule_class_time;
+
 // 모달창에서 수업 신청할 때 일정 담긴 string을 배열로 변환하는 변수 선언
 let array_for_edit = new Array();
 // 타임스탬프 담을 전역 변수 선언
@@ -86,9 +89,12 @@ async function getSchedule(teacher_id, tokenvalue) {
     schedule_string = response.teacher_schedule_list;
     // 일정의 상태 대입
     schedule_string_status = response.teacher_schedule_list_status;  
+    // 수업 시간의 상태 대입
+    schedule_class_time = response.schedule_time;
     // 전역으로 선언한 timezone 값 대입
     timezone = response.user_timezone;   
 
+    console.log(schedule_class_time)
     // 세팅
     // header_s : (모달창이 아닌)웹페이지에 있는 날짜
     // timezone : 받아온 시간대 or 로컬 시간대
@@ -254,7 +260,9 @@ async function setschedule(type, for_modal, schedule_string) {
     const scheduleList = schedule_string.split('_');
     // 일정의 상태 배열로 변환
     const statusList = schedule_string_status.split('_');
-    
+    // 수업 시간 배열로 전환
+    const classTimeList = schedule_class_time.split('_');
+
 
     // 현재 모달창에서 체크하고 있는 배열 가져오기
     let check_array = new Array();
@@ -287,8 +295,20 @@ async function setschedule(type, for_modal, schedule_string) {
                     // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하기
                     // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
                     if (!(statusList[j] == 9 || statusList[j] == 2)) {
-                                                                      
-                      label.style.backgroundColor = '#6B7280';                   
+                               
+                      if (classTimeList[j] == 60) {
+                        label.style.backgroundColor = '#6B7280';
+                        const label_b_seq = parseInt(label.id.replace("_l", ""))+1;
+                        const label_b = document.getElementById(label_b_seq+"_l");
+                        console.log(label);
+                        console.log(label_b);
+                        label_b.style.backgroundColor = '#6B7280';
+                        console.log("60");
+                      }
+                      else {
+                        label.style.backgroundColor = '#6B7280';   
+                        console.log("30");
+                      }                                      
                     }
                 }               
             }
