@@ -37,11 +37,11 @@
              hover:text-black rounded border border-">프로필 편집</a>          
           </div><br>    
           <div id = "intro" class = "text-sm">
-          </div><br><br>
+          </div><br>
             <a class = "text-sm mb-2">구사 가능 언어 : </a> <a id = "language" class = "text-sm ml-4"></a>
             <br>
             <a class = "text-sm mb-2 ">한국어 구사 능력 : </a> <a id = "korean" class = "text-sm ml-4"></a>           
-        </div><br>        
+        </div>        
       </div>                        
     </div>
     <!-- 수업 내역 -->
@@ -67,6 +67,23 @@
           </div><br>                       
         </div><br>        
       </div>           
-    </div>        
+    </div>       
+    <!-- 강사(해당 유저가 강사일 경우에만 표시)  -->
+    <div id = "teacherInfo_div" class = "flex max-w-5xl justify-end mx-auto">      
+      <div class = "flex flex-col w-1/3">          
+      </div>
+      <div class = "flex flex-col w-2/3 ml-5">
+        <div class = "bg-gray-50 px-6 py-4 shadow rounded-lg">
+          <div class = "flex justify-between">
+            <span class = " text-xl">강사 정보</span>         
+          </div><br>     
+          <div id = "t_intro" class = "text-sm">강사입니다
+          </div>         
+          <br>
+          <a class = "text-sm mb-2 pt-1">결제 링크 : </a> 
+          <div id = "payment_div" class = "flex flex-col text-sm"></div>         
+        </div><br>        
+      </div>           
+    </div>       
     </body><br><br><br><br><br><br>
 </html>

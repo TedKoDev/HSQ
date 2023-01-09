@@ -88,6 +88,8 @@ foreach ($result as $row) {
 
 
 
+
+
 $sql = "SELECT User.user_id, User.user_name, User.user_email,  User_Detail.user_img,  User_Detail.user_birthday,  User_Detail.user_sex,  User_Detail.user_contact,  User_Detail.user_country,  User_Detail.user_residence,  User_Detail.user_point,  User_Detail.user_timezone,  User_Detail.user_language,  User_Detail.user_korean,  User_Detail.teacher_register_check,  User_Detail.user_intro, User_Teacher.teacher_intro FROM HANGLE.User left outer join User_Detail on User.user_id = User_Detail.user_id left outer join User_Teacher on  User_Detail.user_id = User_Teacher.User_id where User.user_id = '{$User_ID}'";
 
 
@@ -100,8 +102,44 @@ $row = mysqli_fetch_array($result);
 
 
 
+//평점
+$sql = "SELECT AVG(student_review_star) as review_score FROM Class_Student_Review where user_id_teacher = '{$User_ID}'";
+$response2 = mysqli_query($conn, $sql);
+$row2 = mysqli_fetch_array($response2);
 
 
+
+
+
+//수업횟수
+$sql = "SELECT class_register_status, COUNT(*) AS cnt FROM Class_Add where user_id_teacher = '{$User_ID}' GROUP BY class_register_status;";
+$response3 = mysqli_query($conn, $sql);
+
+$result2['class_countArray'] = array();
+//배열생성
+foreach ($response3 as $row3) {
+  $send2['class_register_status'] = $row3['class_register_status'];
+
+  $send2['cnt'] = $row3['cnt'];
+
+  array_push($result2['class_countArray'], $send2);
+}
+
+
+
+//수업횟수
+$sql = "SELECT class_register_status, COUNT(*) AS cnt FROM Class_Add where user_id_student = '{$User_ID}' GROUP BY class_register_status";
+$response4 = mysqli_query($conn, $sql);
+
+$result3['class_countArray_as_student'] = array();
+//배열생성
+foreach ($response4 as $row4) {
+  $send3['class_register_status'] = $row4['class_register_status'];
+
+  $send3['cnt'] = $row4['cnt'];
+
+  array_push($result3['class_countArray_as_student'], $send3);
+}
 
 
 
@@ -122,25 +160,16 @@ $send['user_korean']                    = $row['user_korean'];
 $send['teacher_register_check']                    = $row['teacher_register_check'];
 $send['user_intro']                    = $row['user_intro'];
 $send['teacher_intro']                    = $row['teacher_intro'];
+
 $send['payment_link']                 = $result1['payment_linkarray'];
+$send['review_score']    = $row2['review_score'];
+$send['class_register_status_count_as_teacher']    = $result2['class_countArray'];
+$send['class_register_status_count_as_student']    = $result3['class_countArray_as_student'];
 
 
 
-//  $send["userid"]             =  $userid   ;
-//  $send["name"]                 =  $name     ;
-//  $send["email"]                   =  $email    ;
-//  $send["p_img"]             =  $p_img    ;
-//  $send["bday"]                 =  $bday     ;
-//  $send["sex"]               =  $sex      ;
-//  $send["contact"]            =  $contact  ;
-//  $send["country"]        =  $country  ;
-//  $send["residence"]                    =  $residence  ;
-//  $send["point"]                    =                 $point    ;
-//  $send["timezone"]                    =  $timezone    ;
-//  $send["language"]                  =  $language ;
-//  $send["korean"]                 =  $korean ;
-//  $send["teacher"]                  =  $teacher  ;
-//  $send["intro"]             =  $intro  ;
+
+
 
 
 

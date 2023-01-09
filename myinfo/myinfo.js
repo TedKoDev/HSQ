@@ -69,8 +69,10 @@
       const user_korean = userinfo_parse.user_korean; 
       const user_teacher = userinfo_parse.teacher_regis_check; 
       const user_intro = userinfo_parse.user_intro; 
+
+      const teacher_t_intro = userinfo_parse.teacher_intro;
+      const teacher_payment_link = userinfo_parse.payment_link;      
       
-      console.log("source : "+user_p_img);
       // 프로필 이미지, 이름, 나이, 성별, 출신국가, 거주국가 대입, 구사 가능 언어, 한국어 구사 수준 대입
       let p_img = document.getElementById("profile_image");
       let name = document.getElementById("name"); 
@@ -82,6 +84,9 @@
       let language = document.getElementById("language");
       let korean = document.getElementById("korean");
 
+      let teacher_intro = document.getElementById("t_intro");
+      let payment_div = document.getElementById("payment_div");
+
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;    
       setInfo(p_img, user_p_img, "image");
@@ -92,7 +97,26 @@
       setInfo(intro, user_intro, "");
       setInfo(korean, user_korean, "")
       // intro.innerText = user_intro;      
-      setLanguage(language, user_language);
+      setLanguage(language, user_language);     
+
+      // 강사가 아닐 경우 강사 정보 안보이게 표시
+      if (teacher_t_intro == null) {
+        document.getElementById("teacherInfo_div").classList.add('hidden');
+      }
+      else {
+        // 강사 소개랑 결제 링크 대입하기
+        setInfo(teacher_intro, teacher_t_intro, "");
+
+        for (const link of teacher_payment_link) {
+
+          const a = document.createElement("a");
+          a.setAttribute("class", "text-xs text-gray-700 mt-1 text-blue-600");          
+          a.innerHTML = link.payment_link;
+          a.setAttribute("href", a.innerHTML);
+          payment_div.append(a);
+        }
+
+      }
     }
    
     // 값이 있을 경우에만 브라우저에 출력
@@ -146,3 +170,4 @@
         key.innerText = "";
       }
     }
+  
