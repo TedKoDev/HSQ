@@ -722,3 +722,39 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 
+
+// 정규 일정 등록에서 드래그할 때 체크되도록 처리
+for (const label of document.querySelectorAll('.label_upload')) {
+
+    mouseMoveWhilstDown(label, function (event) { 
+
+        const label_id = event.target.id;        
+        const label = document.getElementById(label_id);                 
+        
+        const input_id = label_id.replace("_u_l", "_u");
+        const input = document.getElementById(input_id);
+
+        label.classList.replace("bg-gray-400", "bg-blue-600");
+        input.checked = true;
+        const value = input.value;
+
+        array_for_upload.push(value);  
+        
+     });
+}
+
+function mouseMoveWhilstDown(target, whileMove) {
+    let endMove = function () {
+
+        array_for_upload = [...new Set(array_for_upload)];        
+
+        window.removeEventListener('mousemove', whileMove);
+        window.removeEventListener('mouseup', endMove);        
+    };
+
+    target.addEventListener('mousedown', function (event) {
+        event.stopPropagation(); // remove if you do want it to propagate ..
+        window.addEventListener('mousemove', whileMove);
+        window.addEventListener('mouseup', endMove);   
+    });
+}

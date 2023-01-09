@@ -234,13 +234,7 @@
                 id="overlay_upload">
                 <div class="bg-gray-200 max-w-2xl py-2 px-3 rounded shadow-xl text-gray-800">
                     <div class="flex justify-between items-center">
-                        <h4 class="text-lg font-bold">수업 가능 시간 추가</h4>
-                        <!-- <svg class="h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full"
-                        id="close-modal" fill="currentColor" viewbox="0 0 20 20"> <path
-                        fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0
-                        111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293
-                        4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path> </svg> -->
+                        <h4 class="text-lg font-bold">수업 가능 시간 추가</h4>                        
                         <div class="flex flex-col">
                             <div class="mt-3 flex justify-end space-x-3 mb-3">
                                 <button
@@ -325,7 +319,7 @@
                                     <label
                                         for="<?php echo $num; ?>_u"
                                         id="<?php echo $num; ?>_u_l"
-                                        class="px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
+                                        class="label_upload px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white
                                                         rounded border"
                                         name="schedule_label"></label>
                                 </div>
