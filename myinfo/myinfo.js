@@ -115,7 +115,6 @@
           a.setAttribute("href", a.innerHTML);
           payment_div.append(a);
         }
-
       }
     }
    

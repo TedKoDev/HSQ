@@ -22,15 +22,15 @@
       <div class = "flex flex-col w-1/3 bg-gray-50 px-4 py-4 shadow rounded-lg">
         <div class = "mx-auto">                  
           <img id = "profile_image" class = "w-24 h-24 border-3 border-gray-900 rounded-full" src = "<?php echo $hs_url; ?>images_forHS/userImage_default.png"></img>            
-        </div><br>
-        <div id = "name" class = "text-lg"></div><br>
+        </div>
+        <div id = "name" class = "text-lg"></div>
         <div class = "text-sm">
           <a id = "age"></a> <a id = "sex"></a><a id = "country"></a><a id = "residence"></a>
         </div>        
       </div>
       <!-- 우측의 유저 정보 (자기소개, 국적, 언어 구사수준등등) -->
       <div class = "flex flex-col w-2/3 ml-5">
-        <div class = "bg-gray-50 px-6 py-4 shadow rounded-lg">
+        <div class = "bg-gray-50 px-6 py-4 shadow rounded-lg mb-6">
           <div class = "flex justify-between">
             <span class = " text-xl">프로필</span>
             <a href = "../editprofile/" class = "py-1 px-3 bg-gray-300 text-gray-900 hover:bg-gray-400
@@ -40,7 +40,8 @@
           </div><br>
             <a class = "text-sm mb-2">구사 가능 언어 : </a> <a id = "language" class = "text-sm ml-4"></a>
             <br>
-            <a class = "text-sm mb-2 ">한국어 구사 능력 : </a> <a id = "korean" class = "text-sm ml-4"></a>           
+            <a class = "text-sm mb-2">한국어 구사 능력 : </a> <a id = "korean" class = "text-sm ml-4"></a>
+            <br>           
         </div>        
       </div>                        
     </div>

@@ -64,13 +64,11 @@
       const user_residence = userinfo_parse.user_residence;   
       const user_timezone = userinfo_parse.user_timezone;    
       const user_language = userinfo_parse.user_language; 
-      const user_korean = userinfo_parse.uesr_korean;       
+      const user_korean = userinfo_parse.user_korean;       
       const user_intro = userinfo_parse.user_intro; 
-
-      // const user_intro_parsing = user_intro.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
-
-      // console.log(user_name);
-      // console.log(user_bday);                 
+      
+      const teacher_t_intro = userinfo_parse.teacher_intro;
+      const teacher_payment_link = userinfo_parse.payment_link;                        
 
       // 프로필이미지, 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
       let p_img = document.getElementById("profile_image");
@@ -83,6 +81,9 @@
       let intro = document.getElementById("intro");
       let language = document.getElementById("language");
       let korean = document.getElementById("korean");
+
+      let teacher_intro = document.getElementById("t_intro");
+      let payment_div = document.getElementById("payment_div");
 
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;   
@@ -104,7 +105,25 @@
       console.log("first : "+language_can);
 
       // utc도 별도의 함수로 출력
-      setTimezone(utc, user_timezone)                        
+      setTimezone(utc, user_timezone)       
+      
+      // 강사가 아닐 경우 강사 정보 안보이게 표시
+      if (teacher_t_intro == null) {
+        document.getElementById("teacherInfo_div").classList.add('hidden');
+      }
+      else {
+        // 강사 소개랑 결제 링크 대입하기
+        setInfo(teacher_intro, teacher_t_intro, "");
+
+        for (const link of teacher_payment_link) {
+
+          const a = document.createElement("a");
+          a.setAttribute("class", "text-sm text-gray-700 mb-1 text-blue-600");          
+          a.innerHTML = link.payment_link;
+          a.setAttribute("href", a.innerHTML);
+          payment_div.append(a);
+        }
+      }
     }
 
     // 값이 있을 경우에만 브라우저에 출력
@@ -873,53 +892,7 @@
             // 새롭게 생성한 json 랜더링
             language_render(index_after, new_json);
         }       
-    }
-
-    // function language_render_setting(json, select_language, select_level) {
-
-    //   // 새로운 json 생성
-    //   json = new Object();
-    //   json[select_language] = select_level;
-
-    //   // 전역 변수에 새로운 json string으로 변환해서 대입
-    //   language_can = JSON.stringify(new_json);
-
-    //   // 서버에 저장 요청
-    //   post_edit(tokenValue, "language", language_can);
-
-    //   console.log(language_can);
-
-    //   // 1)저장,취소 버튼 안보이게 하고 2)더추가 버튼 보이게하고 3) select 삭제
-    //   const add_language = document.getElementById('add_language');
-    //   const save_btn = document.getElementById('save_language_btn');
-    //   const cancel_btn = document.getElementById('cancel_language_btn');
-    //   const select_box = document.getElementById('select_box');
-
-    //   add_language.style.display = 'block';
-    //   save_btn.style.display = 'none';
-    //   cancel_btn.style.display = 'none';           
-    //   // select용 div 안에 자식 요소 (이 경우 select) 모두 삭제
-    //   while (select_box.hasChildNodes()) {
-
-    //     select_box.removeChild(select_box.firstChild);
-    //   }
-
-      
-    //     // 변경 사항에 맞추어 재 렌더링
-    //     // 구사 가능 언어 div의 id값을 다르게 주기 위한 index
-    //     let index_after = 0;        
-
-    //     // 구사 가능한 언어 목록 표시용 div 가져오기
-    //     let now_select = document.getElementById('now_select');  
-    //     // now_select의 값 초기화     
-    //     while (now_select.hasChildNodes()) {
-
-    //       now_select.removeChild(now_select.firstChild);
-    //     }        
-
-    //     // 새롭게 생성한 json 랜더링
-    //     language_render(index_after, json);
-    // }
+    }    
 
     // 구사가능언어 수정 취소 (구사가능언어에서는 아예 취소되는게 아니라 select하던 것만 취소되는 형태)
     function edit_cancel_language() {        
@@ -1033,11 +1006,7 @@
     }
 
     // 돌아가기 버튼
-    function language_return() {
-
-      // 언어 삭제 버튼 안 보이게
-      // const delete_l = document.getElementsByName('delete_l');
-      // delete_l.style.display = 'block';
+    function language_return() {      
 
       // 리턴 버튼 안 보이게
       const return_btn = document.getElementById('language_return_btn');
@@ -1106,7 +1075,62 @@
     }
 
         
-    // 수정 사항 서버에 전달하는 함수 (백엔드 부분 처리될 때까지 보류)
+    // 7. 강사 소개 수정
+    // 현재 자기소개 가져오기
+    let now_t_intro = document.getElementById('t_intro');
+    // 자기소개 입력 id 가져오기
+    let input_t_intro = document.getElementById('t_input_intro');        
+    // 자기소개랑 편집 아이콘 있는 div 가져오기
+    let t_intro_not_edit_div = document.getElementById('t_introdiv_not_edit');
+    // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+    let t_intro_click_edit_div = document.getElementById('t_introdiv_click_edit');
+
+
+    // 강사소개 수정   
+    function editing_t_intro() {           
+                                   
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      t_intro_click_edit_div.style.display = 'block';
+      // 이름이랑 편집 아이콘 안보이게 처리
+      t_intro_not_edit_div.style.display = 'none';          
+
+      // 자기소개 값이 있을 경우에만 현재 자기소개 입력창에 넣기
+      if (now_t_intro.innerHTML != '') {
+
+        input_t_intro.value = now_t_intro.innerHTML.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+      } 
+    }
+
+    // 자기소개 수정 취소
+    function edit_cancel_t_intro() {              
+
+      // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+      t_intro_click_edit_div.style.display = 'none';
+      // 이름이랑 편집 아이콘 다시 보이게 처리
+      t_intro_not_edit_div.style.display = 'block'; 
+    }
+
+    // 자기소개 수정 완료
+    function edit_done_t_intro() {           
+
+      // 입력창에서 수정한 값을 자기소개에 적용하기
+      now_t_intro.innerHTML = input_t_intro.value.replace(/(\n|\r\n)/g, '<br>');
+
+      // 줄바꿈 치환해서 서버에 저장
+      let string = now_t_intro.innerHTML.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      t_intro_click_edit_div.style.display = 'none';
+      // 이름이랑 편집 아이콘 안보이게 처리
+      t_intro_not_edit_div.style.display = 'block';       
+      
+      // 서버에 저장 요청
+      post_edit(tokenValue, "teacher_intro", string);
+      
+    }
+
+        
+    // 수정 사항 서버에 전달하는 함수 
     async function post_edit(token, position, desc) {
 
       const body = {
