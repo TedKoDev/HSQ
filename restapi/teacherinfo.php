@@ -68,8 +68,7 @@ $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     
 // 강사상세 출력인지 목록 출력인지 
 if ($tusid != null) {
   //해당 tusid에 해당하는 상세정보를 가져옴 
-  //tusid 가 있으면 작동
-  echo "tusid 가 있음";
+  
   if ($kind == null) {
     //토큰 해체 
     $data = $jwt->dehashing($token);

@@ -534,7 +534,7 @@ async function getTeacherinfo(U_id) {
 
     const response = await res.json();    
         
-    // console.log(response);
+    console.log(response);
 
     const result = response.result[0];
 
