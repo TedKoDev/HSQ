@@ -41,10 +41,10 @@ $student_review_star = json_decode(file_get_contents("php://input"))->{"student_
 
 // $User_ID = 324; //강사or 학생의 userid
 // $kind = 'teacher'; //kind
-// $kind = 'student'; //kind
+// // $kind = 'student'; //kind
 // $teacher_review = '선생님텍스트리뷰12'; //teacher_review 텍스트 
 // $student_review = '학생텍스트리뷰1222'; //teacher_review 텍스트 
-// $class_register_id = 258; //class_register_id
+// $class_register_id = 358; //class_register_id
 // $student_review_star = '1';
 
 $hour = 3600000; // 시간의 밀리초 
@@ -55,13 +55,17 @@ $hour = 3600000; // 시간의 밀리초
 
 
 
-$Sql3 = "SELECT Class_Add.user_id_teacher, Class_Add.schedule_list FROM Class_Add where Class_Add.class_register_id =  '$class_register_id'";
+$Sql3 = "SELECT Class_Add.user_id_teacher, Class_Add.user_id_student, Class_Add.schedule_list FROM Class_Add where Class_Add.class_register_id =  '$class_register_id'";
 $SRCList_Result3 = mysqli_query($conn, $Sql3);
 
 $row3 = mysqli_fetch_array($SRCList_Result3);
 
 $send['user_id_teacher'] = $row3['user_id_teacher']; //강사의 유저 번호  
 $user_id_teacher = $row3['user_id_teacher']; //강사의 유저 번호  
+
+
+$send['user_id_student'] = $row3['user_id_student']; //학생의 유저 번호  
+$user_id_student = $row3['user_id_student']; //학생의 유저 번호  
 
 $send['schedule_list'] = $row3['schedule_list']; //수업일정
 $schedule_list = $row3['schedule_list']; //수업일정
@@ -73,7 +77,6 @@ $schedule_list = $row3['schedule_list']; //수업일정
 if ($kind == 'teacher') {
 
   $class_register_review = '1';
-
 
 
   $select = "UPDATE Teacher_Schedule INNER JOIN Class_Add ON Teacher_Schedule.user_id_teacher = Class_Add.user_id_teacher SET 
@@ -116,7 +119,7 @@ if ($kind == 'teacher') {
 
 
 
-    $select1 = "INSERT INTO Class_Teacher_Review (class_register_id, teacher_review, teacher_review_date) VALUES ('$class_register_id', '$teacher_review' ,'$teacher_review_date') ";
+    $select1 = "INSERT INTO Class_Teacher_Review (class_register_id,user_id_teacher, user_id_student , teacher_review, teacher_review_date) VALUES ('$class_register_id','$user_id_teacher','$user_id_student','$teacher_review' ,'$teacher_review_date') ";
     $response1 = mysqli_query($conn, $select1);
     mysqli_close($conn);
 
@@ -180,8 +183,7 @@ if ($kind == 'teacher') {
     $student_review_date2 = date("Y-m-d H:i:s ", $timezone적용);
     // echo  $student_review_date3 = date("Y-m-d H:i:s ", $timezone적용2);
 
-
-    $select1 = "INSERT INTO Class_Student_Review (class_register_id, user_id_teacher, student_review, student_review_star, student_review_date) VALUES ('$class_register_id','$user_id_teacher', '$student_review','$student_review_star', '$student_review_date' )";
+    $select1 = "INSERT INTO Class_Student_Review (class_register_id, user_id_teacher, user_id_student , student_review, student_review_star, student_review_date) VALUES ('$class_register_id','$user_id_teacher','$user_id_student', '$student_review','$student_review_star', '$student_review_date' )";
     $response1 = mysqli_query($conn, $select1);
     mysqli_close($conn);
 

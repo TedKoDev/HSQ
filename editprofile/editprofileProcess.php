@@ -13,7 +13,7 @@
 //  "desc"     : "내용" 
 // }
 
-//항목 
+//position 키값 
 //이미지     -  "p_img"   
 //이름       -  "name"
 //생일       -  "bday"
@@ -25,7 +25,7 @@
 //한국어수준 -  "korean"
 //자기소개   -  "intro"
 //강사자기소개   -  "teacher_intro"
-//강사자기소개   -  "payment_link"
+//강사결제링크   -  "payment_link"
 
 //시간대 - "utc"
 

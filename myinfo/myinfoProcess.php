@@ -144,25 +144,25 @@ foreach ($response4 as $row4) {
 
 
 // 값 변수 설정 
-$send['user_id']                    = $row['user_id'];
-$send['user_name']                    = $row['user_name'];
-$send['user_email']                    = $row['user_email'];
-$send['user_img']                    = $row['user_img'];
-$send['user_birthday']                    = $row['user_birthday'];
-$send['user_sex']                    = $row['user_sex'];
-$send['user_contact']                    = $row['user_contact'];
-$send['user_country']                    = $row['user_country'];
-$send['user_residence']                    = $row['user_residence'];
-$send['user_point']                    = $row['user_point'];
-$send['user_timezone']                    = $row['user_timezone'];
-$send['user_language']                    = $row['user_language'];
-$send['user_korean']                    = $row['user_korean'];
+$send['user_id']                              = $row['user_id'];
+$send['user_name']                             = $row['user_name'];
+$send['user_email']                            = $row['user_email'];
+$send['user_img']                               = $row['user_img'];
+$send['user_birthday']                            = $row['user_birthday'];
+$send['user_sex']                               = $row['user_sex'];
+$send['user_contact']                              = $row['user_contact'];
+$send['user_country']                              = $row['user_country'];
+$send['user_residence']                             = $row['user_residence'];
+$send['user_point']                              = $row['user_point'];
+$send['user_timezone']                              = $row['user_timezone'];
+$send['user_language']                              = $row['user_language'];
+$send['user_korean']                                  = $row['user_korean'];
 $send['teacher_register_check']                    = $row['teacher_register_check'];
-$send['user_intro']                    = $row['user_intro'];
-$send['teacher_intro']                    = $row['teacher_intro'];
+$send['user_intro']                                  = $row['user_intro'];
+$send['teacher_intro']                                 = $row['teacher_intro'];
 
-$send['payment_link']                 = $result1['payment_linkarray'];
-$send['review_score']    = $row2['review_score'];
+$send['payment_link']                               = $result1['payment_linkarray'];
+$send['review_score']                             = $row2['review_score'];
 $send['class_register_status_count_as_teacher']    = $result2['class_countArray'];
 $send['class_register_status_count_as_student']    = $result3['class_countArray_as_student'];
 
