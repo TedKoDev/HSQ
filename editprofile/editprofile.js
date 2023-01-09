@@ -14,7 +14,9 @@
     
     
     // 구사 가능 언어 재사용하기 위한 전역 변수
-    var language_can;    
+    let language_can;
+    // 결제링크 전역변수
+    let link_array;    
 
     // 쿠기 값(토큰) 가져오기
     let tokenValue = getCookie(cookieName);   
@@ -98,6 +100,8 @@
 
       // 구사 가능 언어 전역 변수에 서버에서 가져온 string 대입   
       language_can = user_language;      
+      // 결제링크 전역변수
+      link_array = teacher_payment_link;
       
       // 구사 가능 언어는 별도의 함수로 출력
       setLanguage(language, language_can);     
@@ -1129,7 +1133,96 @@
       
     }
 
-        
+
+    // 결제링크 수정
+    // 수정 클릭하기 전 div
+    const linkDiv_notEdit = document.getElementById("paymentdiv_not_edit");
+    // 수정 클릭한 후 보여지는 div
+    const linkDiv_clickEdit = document.getElementById("paymentdiv_click_edit");
+    // 결제링크 수정 버튼
+    const edit_link_btn = document.getElementById("link_edit");
+    // 현재 저장된 결제링크 표시하는 div
+    const now_link_div = document.getElementById("now_link_div");
+    // 결제 링크 추가(+더 추가) 버튼
+    const add_link_btn = document.getElementById("add_link");
+    // 더추가 버튼 눌렀을 때 input 태그 달리는 div
+    const input_link_div = document.getElementById('input_link_div');
+    // 돌아가기 버튼
+    const link_return_btn = document.getElementById("link_return_btn");
+    // 링크 저장버튼, 취소버튼
+    const save_link_btn = document.getElementById("save_link_btn");
+    const cancel_link_btn = document.getElementById("cancel_link_btn");
+
+    // 결제링크 수정 클릭 시
+    function editing_link() {
+      // 기존div 안보이게 하고 수정시 나오는 div 보이게 처리
+      linkDiv_notEdit.classList.add('hidden');
+      linkDiv_clickEdit.classList.remove('hidden');
+      // 링크 갯수만큼 now_link_div 아래에 표시
+      // 우선 기존 값들 없애기
+      while (now_link_div.hasChildNodes() )
+      {
+        now_link_div.removeChild(now_link_div.firstChild );       
+      }
+
+      let index = 0;
+      for (const link of link_array) {
+          
+          // index값 1 증가
+          index = index + 1;
+          
+          const div = document.createElement('div');
+          // div의 id에 인덱스값 부여
+          div.setAttribute("id", "link_"+index);
+          // 배치를 위한 속성 부여
+          div.setAttribute("class", "flex justify-between mb-1");                   
+                            
+          // 텍스트 담을 input 태그 생성
+          const input = document.createElement('input');
+          // span의 id에 인덱스값 부여
+          input.setAttribute("id", "input_"+index);        
+          input.setAttribute("class", "text-sm text-gray-500 border shadow rounded-lg px-1 w-3/4");                
+          input.value = link.payment_link;               
+
+          //// 삭제용 버튼 생성
+          const delete_btn = document.createElement('a');          
+          // 버튼에 id, class, 이름 값 부여
+          delete_btn.setAttribute("id", 'del_'+index);
+          delete_btn.setAttribute("class", "del_link_btn px-2 my-1 font-semibold bg-gray-500 text-xs text-white hover:bg-gray-700 hover:text-white rounded-full border");
+          // delete_btn.setAttribute("name", "delete_l");          
+
+          delete_btn.innerHTML = "삭제";         
+          // div에 span이랑 a(버튼) 연결
+          div.append(input);
+          div.append(delete_btn);
+          // 새롭게 생성한 div 연결
+          now_link_div.appendChild(div); 
+          
+          // 삭제 버튼 클릭 시 link_array에서 해당 값 삭제하고 해당 div 지운뒤 서버에 삭제요청
+          function delete_link() {          
+            
+            for(let i = 0; i < link_array.length; i++){               
+              if (link_array[i].payment_link == input.value) { 
+                link_array.splice(i, 1); 
+                i--; 
+              }
+            }
+            div.remove();         
+            console.log(link_array);   
+            post_edit(tokenValue, "payment_link", link_array);
+          }
+          delete_btn.addEventListener('click', () => {
+            delete_link();
+          })
+      }     
+    }
+    // 링크 추가하는 함수
+    function add_select_link() {
+
+
+    }
+
+
     // 수정 사항 서버에 전달하는 함수 
     async function post_edit(token, position, desc) {
 

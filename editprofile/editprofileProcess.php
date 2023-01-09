@@ -368,7 +368,8 @@ else if ($position == "payment_link") {
     $payment_link_array = array(); //검사 해야할 시간 기준 
 
 
-    echo json_encode($desc);
+    // echo json_encode($desc);
+    
     //sql delete
     $select = "DELETE FROM Payment_Link where user_id_payment = '$user_id' ";
 

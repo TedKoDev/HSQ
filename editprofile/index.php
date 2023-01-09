@@ -277,7 +277,7 @@
         <div id = "teacherInfo_div">
           <div class = "text-base mt-8 px-4">강사 정보 
             <span id = "language_return_btn" onclick = "language_return()" class = "hidden px-2 float-right font-semibold bg-gray-500 text-xs text-white
-                  hover:bg-gray-700 hover:text-white rounded-full border">X
+                  hover:bg-gray-700 hover:text-white rounded-full border">돌아가기
             </span>   
           </div><br>
           <div class = "flex-col w-full px-4 pt-4">
@@ -304,23 +304,29 @@
           </div>
           <div class = "flex justify-between my-auto mx-4 py-2">
             <div class = "text-sm w-3/12">결제 링크</div>                             
-            <div id = "" class = "w-9/12 justify-between">                            
-              <!-- 결제링크 수정 클릭 안했을 때 -->              
+            <div id = "" class = "w-9/12">                            
+              <!-- 결제링크 수정 클릭 안했을 때 -->                           
               <div id = "paymentdiv_not_edit" class = "flex justify-between text-sm text-gray-500">
-                <div id = "payment_div" class = "flex flex-col"></div>                                   
-                <span><svg id = "language_edit" onclick = "editing_language()" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div id = "payment_div" class = "w-3/4 flex flex-col"></div>                                   
+                <span><svg id = "link_edit" onclick = "editing_link()" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
                   002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
-                </span>                
-              </div>                            
+                </span>                                        
+              </div>             
+                                       
               <!-- 결제링크 수정 클릭했을 때 -->                             
-              <div id = "languagediv_click_edit" class = "hidden flex-col">                               
-                <div id = "now_select"></div>
-                <div id = "select_box"></div>
-                <span id = "add_language" class = "text-sm" onclick="add_select()">+ 더 추가</span>
+              <div id = "paymentdiv_click_edit" class = "hidden flex-col">                               
+                <div id = "now_link_div" class = "flex flex-col"></div>
+                <div id = "input_link_div"></div>
+                <div class = "flex justify-between">
+                  <span id = "add_link" class = "text-sm" onclick="add_select_link()">+ 더 추가</span>
+                  <span id = "link_return_btn" onclick = "link_return()" class = "px-3 my-2 font-semibold bg-gray-500 text-xs text-white
+                    hover:bg-gray-700 hover:text-white rounded-full border">돌아가기
+                  </span> 
+                </div>     
                 <div class = "flex mt-2">
-                  <button id = "save_language_btn" onclick = "edit_done_language()" class = "mr-3 py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
-                  <button id = "cancel_language_btn" onclick = "edit_cancel_language()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
+                  <button id = "save_link_btn" onclick = "edit_done_link()" class = "hidden mr-3 py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                  <button id = "cancel_link_btn" onclick = "edit_cancel_link()" class = "hidden py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
                 </div>                                
               </div>   
             </div>             
