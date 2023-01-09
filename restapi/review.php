@@ -5,9 +5,10 @@
 //   #요구되는 파라미터 
 //  token 
 //  kind (teacher 또는 student 또는 myreview) 
-//강사페이지 - 강사유저가 '나의피드백'의 값을 얻으려면     'teacher'
-//강사페이지 - 강사유저가 '학생 후기'에 대한 값을 얻으려면 'student' 
-//학생유저가 자신이 쓴 후기 목록을 얻으려면     'myreview'
+//강사페이지 - 강사유저가 '나의피드백'의 값을 얻으려면     'feedback_teacher'
+//강사페이지 - 강사유저가 '학생 후기'에 대한 값을 얻으려면 'review_teacher' 
+//학생유저가 자신이 쓴 후기 목록을 얻으려면              'review_student'  
+//학생유저가 강사가 학생에게 후기 목록을 얻으려면         'feedback_student'
 //  plus     // 더보기 페이징용 5개씩 페이징됨 
 
 
@@ -121,7 +122,7 @@ $i = 0;
 $start =  $i + (5 * $plus);
 $till = 5;
 
-if ($kind == 'teacher') {
+if ($kind == 'feedback_teacher') {
 
 
   echo $Sql = "SELECT * FROM Class_Add  join Class_Teacher_Review 
@@ -176,7 +177,7 @@ if ($kind == 'teacher') {
     $출력값["message"]   =  "sql문에 이상이있음";
     echo json_encode($출력값);
   }
-} else if ($kind == 'student') {
+} else if ($kind == 'review_teacher') {
 
 
 
@@ -236,7 +237,7 @@ if ($kind == 'teacher') {
     $출력값["message"]   =  "sql문에 이상이있음";
     echo json_encode($출력값);
   }
-} else if ($kind == 'myreview') {
+} else if ($kind == 'review_student') {
 
   echo $Sql = "SELECT * FROM Class_Add  join Class_Student_Review 
   on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till";
@@ -294,4 +295,5 @@ if ($kind == 'teacher') {
     $출력값["message"]   =  "sql문에 이상이있음";
     echo json_encode($출력값);
   }
+} else if ($kind == 'feedback_student') {
 }
