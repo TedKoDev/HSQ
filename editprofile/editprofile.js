@@ -1145,8 +1145,8 @@
     const now_link_div = document.getElementById("now_link_div");
     // 결제 링크 추가(+더 추가) 버튼
     const add_link_btn = document.getElementById("add_link");
-    // 더추가 버튼 눌렀을 때 input 태그 달리는 div
-    const input_link_div = document.getElementById('input_link_div');
+    // 더추가 버튼 눌렀을 때 생기는 input 태그
+    const input_link = document.getElementById('input_link_div');
     // 돌아가기 버튼
     const link_return_btn = document.getElementById("link_return_btn");
     // 링크 저장버튼, 취소버튼
@@ -1219,12 +1219,65 @@
     // 링크 추가하는 함수
     function add_select_link() {
 
-      input_link_div.classList.remove('hidden');
+      input_link.classList.remove('hidden');
       save_link_btn.classList.remove('hidden');
       cancel_link_btn.classList.remove('hidden');
-      add_link_btn.classList.add('invisible');
+      add_link_btn.classList.add('hidden');
+      link_return_btn.classList.add('hidden');
+    }
+    // 링크 추가하는거 취소하는 버튼
+    function edit_cancel_link() {      
+      
+      link_init();
     }
 
+    // 돌아가기 버튼
+    function link_return() {
+
+      linkDiv_notEdit.classList.remove('hidden');
+      linkDiv_clickEdit.classList.add('hidden');
+
+      render_link();
+    }
+    // 링크 추가하고 서버에 저장 요청
+    function edit_done_link() {
+
+      // link_array에 값 추가
+      const json = {payment: input_link.value};
+      link_array.push(json);
+      // 서버에 저장 요청
+      post_edit(tokenValue, "payment_link", link_array);
+      // 초기화하고 재렌더링
+      link_init();
+      render_link();
+    }
+    // 저장/취소 버튼 누를 때 원래대로
+    function link_init() {
+
+      input_link.value = "";
+      input_link.classList.add('hidden');
+      save_link_btn.classList.add('hidden');
+      cancel_link_btn.classList.add('hidden');
+      add_link_btn.classList.remove('hidden');
+      link_return_btn.classList.remove('hidden');
+    }
+    // link_array 재 렌더링
+    function render_link() {
+     
+      while (now_link_div.hasChildNodes() )
+      {
+        now_link_div.removeChild(now_link_div.firstChild );       
+      }
+
+      for (const link of link_array) {
+
+        const a = document.createElement("a");
+        a.setAttribute("class", "text-sm text-gray-700 mb-1 text-blue-600");          
+        a.innerHTML = link.payment_link;
+        a.setAttribute("href", a.innerHTML);
+        now_link_div.append(a);
+      }
+    }
 
     // 수정 사항 서버에 전달하는 함수 
     async function post_edit(token, position, desc) {
