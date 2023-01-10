@@ -47,40 +47,47 @@
       </div>
     </div>
   </div>
-  </div>
   <!-- 수업 내역 -->
-  <div class="flex  max-w-5xl justify-end mx-auto">
+  <div class="flex max-w-5xl justify-end mx-auto">
     <div class="flex flex-col w-1/3">
     </div>
-    <!-- 내 활동 -->
-    <div class="flex max-w-5xl justify-end mx-auto">
-      <div class="flex flex-col w-1/3">
-      </div>
-      <div class="flex flex-col w-2/3 ml-5">
-        <div class="bg-gray-50 px-6 py-4 shadow rounded-lg">
-          <div class="flex justify-between">
-            <span class=" text-xl">내 활동</span>
-          </div><br>
+    <div class="flex flex-col w-2/3 ml-5">
+      <div class="bg-gray-50 px-6 py-4 shadow rounded-lg">
+        <div class="flex justify-between">
+          <span class=" text-xl">수업 내역</span>
         </div><br>
-      </div>
+      </div><br>
     </div>
-    <!-- 강사(해당 유저가 강사일 경우에만 표시)  -->
-    <div id="teacherInfo_div" class="flex max-w-5xl justify-end mx-auto">
-      <div class="flex flex-col w-1/3">
-      </div>
-      <div class="flex flex-col w-2/3 ml-5">
-        <div class="bg-gray-50 px-6 py-4 shadow rounded-lg">
-          <div class="flex justify-between">
-            <span class=" text-xl">강사 정보</span>
-          </div><br>
-          <div id="t_intro" class="text-sm">강사입니다
-          </div>
-          <br>
-          <a class="text-sm mb-2 pt-1">결제 링크 : </a>
-          <div id="payment_div" class="flex flex-col text-sm"></div>
+  </div>
+  <!-- 내 활동 -->
+  <div class="flex max-w-5xl justify-end mx-auto">
+    <div class="flex flex-col w-1/3">
+    </div>
+    <div class="flex flex-col w-2/3 ml-5">
+      <div class="bg-gray-50 px-6 py-4 shadow rounded-lg">
+        <div class="flex justify-between">
+          <span class=" text-xl">내 활동</span>
         </div><br>
-      </div>
+      </div><br>
     </div>
+  </div>
+  <!-- 강사(해당 유저가 강사일 경우에만 표시)  -->
+  <div id="teacherInfo_div" class="flex max-w-5xl justify-end mx-auto">
+    <div class="flex flex-col w-1/3">
+    </div>
+    <div class="flex flex-col w-2/3 ml-5">
+      <div class="bg-gray-50 px-6 py-4 shadow rounded-lg">
+        <div class="flex justify-between">
+          <span class=" text-xl">강사 정보</span>
+        </div><br>
+        <div id="t_intro" class="text-sm">강사입니다
+        </div>
+        <br>
+        <a class="text-sm mb-2 pt-1">결제 링크 : </a>
+        <div id="payment_div" class="flex flex-col text-sm"></div>
+      </div><br>
+    </div>
+  </div>
 </body><br><br><br><br><br><br>
 
 </html>
