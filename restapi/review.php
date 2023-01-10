@@ -9,7 +9,7 @@
 //강사페이지 - 강사유저가 '학생 후기'에 대한 값을 얻으려면 'review_teacher' 
 //학생유저가 자신이 쓴 후기 목록을 얻으려면                'review_student'  
 //학생유저가 강사가 학생에게 남긴 피드백 목록을 얻으려면   'feedback_student'
-//  plus     // 더보기 페이징용 5개씩 페이징됨 
+//  plus     // 더보기 페이징용 20개씩 페이징됨 
 
 
 
@@ -125,12 +125,12 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
 
-// $User_ID = 320; //강사or 학생의 userid
+// $User_ID = 324; //강사or 학생의 userid
 // $kind = 'feedback_teacher'; //kind?
 // $kind = 'review_teacher'; //kind
 // $kind = 'review_student'; //kind
 // $kind =  'feedback_student'; //kind
-// $User_ID = 324;
+// $User_ID = 320;
 $hour = 3600000; // 시간의 밀리초 
 
 
@@ -139,20 +139,42 @@ $hour = 3600000; // 시간의 밀리초
 
 
 $i = 0;
-$start =  $i + (5 * $plus);
-$till = 5;
+$start =  $i + (20 * $plus);
+$till = 20;
 
 if ($kind == 'feedback_teacher') {
   //강사가 자신이 작성한 피드백을 보려면 
   // $User_ID = 324;
 
-  $Sql = "SELECT * FROM Class_Add  join Class_Teacher_Review 
+
+  // "SELECT * FROM Class_Add  join Class_Teacher_Review   on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID' 전체 몇개인지 알기 
+
+  $출력값['result'] = array();
+  // $출력값['result'] = array();
+
+  $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Teacher_Review 
+  on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID'  ";
+  $countResult = mysqli_query($conn, $countSql);
+
+  $row0 = mysqli_fetch_array($countResult);
+
+  $출력값["length"]  = $row0['cnt'];
+
+
+
+
+
+
+  $Sql = "SELECT  * FROM Class_Add  join Class_Teacher_Review 
   on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till ";
   $SRCList_Result3 = mysqli_query($conn, $Sql);
 
-  $출력값['result'] = array();
+  // $출력값['result'] = array();
 
   while ($row = mysqli_fetch_array($SRCList_Result3)) {
+
+
+
     $class_id = $row['class_id'];
 
     //sql 문으로 class_id를 이용해서 class_name을 가져온다.
@@ -204,11 +226,28 @@ if ($kind == 'feedback_teacher') {
   //강사가 학생이 자신에게쓴 후기를 보려면 
   // $User_ID = 324;
 
+  $출력값['result'] = array();
+
+  $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Student_Review 
+  on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID'  ";
+  $countResult = mysqli_query($conn, $countSql);
+
+  $row0 = mysqli_fetch_array($countResult);
+
+  $출력값["length"]  = $row0['cnt'];
+
+
+
+
+
+
+
+
   $Sql = "SELECT * FROM Class_Add  join Class_Student_Review 
   on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till";
   $SRCList_Result3 = mysqli_query($conn, $Sql);
 
-  $출력값['result'] = array();
+
   while ($row = mysqli_fetch_array($SRCList_Result3)) {
     $class_id = $row['class_id'];
 
@@ -264,11 +303,25 @@ if ($kind == 'feedback_teacher') {
   //학생이 자신이 쓴 후기를 보려면 
   // $User_ID = 320;
 
+  $출력값['result'] = array();
+
+  $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Student_Review 
+  on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID'  ";
+  $countResult = mysqli_query($conn, $countSql);
+
+  $row0 = mysqli_fetch_array($countResult);
+
+  $출력값["length"]  = $row0['cnt'];
+
+
+
+
+
   $Sql = "SELECT * FROM Class_Add  join Class_Student_Review 
   on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till";
   $SRCList_Result3 = mysqli_query($conn, $Sql);
 
-  $출력값['result'] = array();
+
   while ($row = mysqli_fetch_array($SRCList_Result3)) {
     $class_id = $row['class_id'];
 
@@ -321,11 +374,22 @@ if ($kind == 'feedback_teacher') {
 } else if ($kind == 'feedback_student') {
   // 학생이 강사가 자신에게 쓴 후기가 필요할때 
   // $User_ID = 320;
+
+  $출력값['result'] = array();
+
+  $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Teacher_Review 
+  on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID'  ";
+  $countResult = mysqli_query($conn, $countSql);
+
+  $row0 = mysqli_fetch_array($countResult);
+
+  $출력값["length"]  = $row0['cnt'];
+
+
   $Sql = "SELECT * FROM Class_Add  join Class_Teacher_Review 
   on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till ";
   $SRCList_Result3 = mysqli_query($conn, $Sql);
 
-  $출력값['result'] = array();
 
   while ($row = mysqli_fetch_array($SRCList_Result3)) {
     $class_id = $row['class_id'];

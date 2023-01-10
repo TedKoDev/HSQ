@@ -52,9 +52,7 @@ async function showFeedbackList($container) {
       const ImgLink = s3_url + "Profile_Image/" + student_img;
 
       const start_time = dayjs(parseInt(class_schedule_time));
-      const end_time = start_time.add(30, "minute");
-      // start_time = start_time.format('HH:mm');
-      // end_time = end_time.format('HH:mm');
+      const end_time = start_time.add(parseInt(class_time), "minute");      
       
       const div = document.createElement("div");
       div.innerHTML = `
