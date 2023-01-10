@@ -125,7 +125,7 @@ $till = 5;
 if ($kind == 'feedback_teacher') {
 
 
-  echo $Sql = "SELECT * FROM Class_Add  join Class_Teacher_Review 
+  $Sql = "SELECT * FROM Class_Add  join Class_Teacher_Review 
   on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till ";
   $SRCList_Result3 = mysqli_query($conn, $Sql);
 

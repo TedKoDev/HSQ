@@ -1243,7 +1243,7 @@
     function edit_done_link() {
 
       // link_array에 값 추가
-      const json = {payment: input_link.value};
+      const json = {payment_link: input_link.value};
       link_array.push(json);
       // 서버에 저장 요청
       console.log(link_array);
