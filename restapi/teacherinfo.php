@@ -169,10 +169,9 @@ if ($tusid != null) {
     $send['class_register_status_1_cnt']    = $row2['b'] / 2;
     $send['class_register_status_2_cnt']    = $row2['c'] / 2;
     $send['class_register_status_3_cnt']    = $row2['d'] / 2;
+    echo json_encode($send);
+    mysqli_close($conn);
   }
-
-  echo json_encode($send);
-  mysqli_close($conn);
 } else {
   //tusid 가 없으면 작동 전체 목록 
 
