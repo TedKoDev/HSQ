@@ -7,8 +7,8 @@
 //  kind (teacher 또는 student 또는 myreview) 
 //강사페이지 - 강사유저가 '나의피드백'의 값을 얻으려면     'feedback_teacher'
 //강사페이지 - 강사유저가 '학생 후기'에 대한 값을 얻으려면 'review_teacher' 
-//학생유저가 자신이 쓴 후기 목록을 얻으려면              'review_student'  
-//학생유저가 강사가 학생에게 후기 목록을 얻으려면         'feedback_student'
+//학생유저가 자신이 쓴 후기 목록을 얻으려면                'review_student'  
+//학생유저가 강사가 학생에게 후기 목록을 얻으려면           'feedback_student'
 //  plus     // 더보기 페이징용 5개씩 페이징됨 
 
 
@@ -107,9 +107,10 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
 // $User_ID = 320; //강사or 학생의 userid
-// $kind = 'teacher'; //kind
-// $kind = 'student'; //kind
-// $kind = 'myreview'; //kind
+// $kind = 'feedback_teacher'; //kind
+// $kind = 'review_teacher'; //kind
+// $kind = 'review_student'; //kind
+// $kind =  'feedback_student'; //kind
 
 $hour = 3600000; // 시간의 밀리초 
 
@@ -123,7 +124,8 @@ $start =  $i + (5 * $plus);
 $till = 5;
 
 if ($kind == 'feedback_teacher') {
-
+  //강사가 자신이 작성한 피드백을 보려면 
+  // $User_ID = 324;
 
   $Sql = "SELECT * FROM Class_Add  join Class_Teacher_Review 
   on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till ";
@@ -179,7 +181,8 @@ if ($kind == 'feedback_teacher') {
   }
 } else if ($kind == 'review_teacher') {
 
-
+  //강사가 학생이 자신에게쓴 후기를 보려면 
+  // $User_ID = 324;
 
   $Sql = "SELECT * FROM Class_Add  join Class_Student_Review 
   on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till";
@@ -238,8 +241,10 @@ if ($kind == 'feedback_teacher') {
     echo json_encode($출력값);
   }
 } else if ($kind == 'review_student') {
+  //학생이 자신이 쓴 후기를 보려면 
+  // $User_ID = 320;
 
-  echo $Sql = "SELECT * FROM Class_Add  join Class_Student_Review 
+  $Sql = "SELECT * FROM Class_Add  join Class_Student_Review 
   on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till";
   $SRCList_Result3 = mysqli_query($conn, $Sql);
 
@@ -255,13 +260,12 @@ if ($kind == 'feedback_teacher') {
 
 
 
-    $user_id_student = $row['user_id_student'];
+    $user_id_teacher = $row['user_id_teacher'];
     //sql 문으로 user_id_student를 이용해서 student_name을 가져온다.
-    $Sql = "SELECT User.user_id,User.user_name,User_Detail.user_img FROM User join User_Detail on User.user_id = User_Detail.user_id where User.user_id = '$user_id_student'";
+    $Sql = "SELECT User.user_id,User.user_name,User_Detail.user_img FROM User join User_Detail on User.user_id = User_Detail.user_id where User.user_id = '$user_id_teacher'";
     $SRCList_Result5 = mysqli_query($conn, $Sql);
 
     $row2 = mysqli_fetch_array($SRCList_Result5);
-    $send["user_id"] = $row2['user_id'];
     $send["user_name"] = $row2['user_name'];
     $send["user_img"] = $row2['user_img'];
 
@@ -296,4 +300,58 @@ if ($kind == 'feedback_teacher') {
     echo json_encode($출력값);
   }
 } else if ($kind == 'feedback_student') {
+  // 학생이 강사가 자신에게 쓴 후기가 필요할때 
+  // $User_ID = 320;
+  $Sql = "SELECT * FROM Class_Add  join Class_Teacher_Review 
+  on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID' order by Class_Add.class_register_id DESC LIMIT $start, $till ";
+  $SRCList_Result3 = mysqli_query($conn, $Sql);
+
+  $출력값['result'] = array();
+
+  while ($row = mysqli_fetch_array($SRCList_Result3)) {
+    $class_id = $row['class_id'];
+
+    //sql 문으로 class_id를 이용해서 class_name을 가져온다.
+    $Sql = "SELECT * FROM Class where class_id = '$class_id'";
+    $SRCList_Result4 = mysqli_query($conn, $Sql);
+    $row2 = mysqli_fetch_array($SRCList_Result4);
+    $class_name = $row2['class_name'];
+
+
+
+    $user_id_teacher = $row['user_id_teacher'];
+    //sql 문으로 user_id_teacher 이용해서 teacher_name을 가져온다.
+    $Sql = "SELECT User.user_id,User.user_name,User_Detail.user_img FROM User join User_Detail on User.user_id = User_Detail.user_id where User.user_id = '$user_id_teacher'";
+    $SRCList_Result5 = mysqli_query($conn, $Sql);
+
+    $row2 = mysqli_fetch_array($SRCList_Result5);
+
+    $send["user_name"] = $row2['user_name'];
+    $send["user_img"] = $row2['user_img'];
+
+
+
+    $send["class_register_id"] = $row['class_register_id'];
+    $send["user_id_student"] = $row['user_id_student'];
+    $send["user_id_teacher"] = $row['user_id_teacher'];
+    $send["class_id"] = $row['class_id'];
+    $send["class_time"] = $row['class_time'];
+    $send["schedule_list"] = $row['schedule_list'];
+    $send["teacher_review"] = $row['teacher_review'];
+    $send["teacher_review_date"] = $row['teacher_review_date'];
+    $send["schedule_list"] = $row['schedule_list'];
+
+
+    array_push($출력값['result'], $send);
+  }
+  if ($SRCList_Result3) { //정상적으로 파일 저장되었을때 
+
+    $출력값["success"]   =  "yes";
+    echo json_encode($출력값);
+  } else {
+
+    $출력값["success"]   =  "no";
+    $출력값["message"]   =  "sql문에 이상이있음";
+    echo json_encode($출력값);
+  }
 }
