@@ -156,11 +156,11 @@ if ($kind == 'feedback_teacher') {
     $class_id = $row['class_id'];
 
     //sql 문으로 class_id를 이용해서 class_name을 가져온다.
-    $Sql = "SELECT * FROM Class where class_id = '$class_id'";
+    $Sql = "SELECT * FROM Class_List where class_id = '$class_id'";
     $SRCList_Result4 = mysqli_query($conn, $Sql);
-    $row2 = mysqli_fetch_array($SRCList_Result4);
-    $class_name = $row2['class_name'];
-
+    $row1 = mysqli_fetch_array($SRCList_Result4);
+    $class_name = $row1['class_name'];
+    $send["class_name"] = $row1['class_name'];
 
 
     $user_id_student = $row['user_id_student'];
@@ -179,6 +179,7 @@ if ($kind == 'feedback_teacher') {
     $send["user_id_student"] = $row['user_id_student'];
     $send["user_id_teacher"] = $row['user_id_teacher'];
     $send["class_id"] = $row['class_id'];
+
     $send["class_time"] = $row['class_time'];
     $send["schedule_list"] = $row['schedule_list'];
     $send["teacher_review"] = $row['teacher_review'];
@@ -212,11 +213,11 @@ if ($kind == 'feedback_teacher') {
     $class_id = $row['class_id'];
 
     //sql 문으로 class_id를 이용해서 class_name을 가져온다.
-    $Sql = "SELECT * FROM Class where class_id = '$class_id'";
+    $Sql = "SELECT * FROM Class_List where class_id = '$class_id'";
     $SRCList_Result4 = mysqli_query($conn, $Sql);
-    $row2 = mysqli_fetch_array($SRCList_Result4);
-    $class_name = $row2['class_name'];
-
+    $row1 = mysqli_fetch_array($SRCList_Result4);
+    $class_name = $row1['class_name'];
+    $send["class_name"] = $row1['class_name'];
 
 
     $user_id_student = $row['user_id_student'];
@@ -272,10 +273,11 @@ if ($kind == 'feedback_teacher') {
     $class_id = $row['class_id'];
 
     //sql 문으로 class_id를 이용해서 class_name을 가져온다.
-    $Sql = "SELECT * FROM Class where class_id = '$class_id'";
+    $Sql = "SELECT * FROM Class_List where class_id = '$class_id'";
     $SRCList_Result4 = mysqli_query($conn, $Sql);
-    $row2 = mysqli_fetch_array($SRCList_Result4);
-    $class_name = $row2['class_name'];
+    $row1 = mysqli_fetch_array($SRCList_Result4);
+    $class_name = $row1['class_name'];
+    $send["class_name"] = $row1['class_name'];
 
 
 
@@ -287,8 +289,6 @@ if ($kind == 'feedback_teacher') {
     $row2 = mysqli_fetch_array($SRCList_Result5);
     $send["user_name"] = $row2['user_name'];
     $send["user_img"] = $row2['user_img'];
-
-
 
     $send["class_register_id"] = $row['class_register_id'];
     $send["user_id_student"] = $row['user_id_student'];
@@ -331,10 +331,11 @@ if ($kind == 'feedback_teacher') {
     $class_id = $row['class_id'];
 
     //sql 문으로 class_id를 이용해서 class_name을 가져온다.
-    $Sql = "SELECT * FROM Class where class_id = '$class_id'";
+    $Sql = "SELECT * FROM Class_List where class_id = '$class_id'";
     $SRCList_Result4 = mysqli_query($conn, $Sql);
-    $row2 = mysqli_fetch_array($SRCList_Result4);
-    $class_name = $row2['class_name'];
+    $row1 = mysqli_fetch_array($SRCList_Result4);
+    $class_name = $row1['class_name'];
+    $send["class_name"] = $row1['class_name'];
 
 
 
@@ -347,7 +348,6 @@ if ($kind == 'feedback_teacher') {
 
     $send["user_name"] = $row2['user_name'];
     $send["user_img"] = $row2['user_img'];
-
 
 
     $send["class_register_id"] = $row['class_register_id'];

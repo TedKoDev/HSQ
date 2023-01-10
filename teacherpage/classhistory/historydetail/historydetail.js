@@ -298,8 +298,8 @@ function setClassTimeAndDate(class_time, class_date) {
     $('.class_date').innerText = date_format;
 
     // 수업 시간 표시  
-    const firstDateParsing = date.format('hh:mm');
-    const lastDateParsing = dayjs(dateToint).format('hh:mm');
+    const firstDateParsing = date.format('HH:mm');
+    const lastDateParsing = dayjs(dateToint).format('HH:mm');
     $('.class_time').innerText = firstDateParsing+" / "+lastDateParsing;
 }
 

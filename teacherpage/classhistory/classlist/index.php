@@ -18,7 +18,6 @@
         let key_time_from = "<?php echo $_GET['time_from']; ?>";
         let key_time_to = "<?php echo $_GET['time_to']; ?>";        
     </script>
-
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
         <?php include '../../../components/navbar/navbar.php' ?>

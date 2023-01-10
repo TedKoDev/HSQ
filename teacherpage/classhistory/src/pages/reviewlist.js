@@ -21,9 +21,33 @@ export function reviewlist($container) {
     this.render();
 }
 
-const showReviewList = ($container) => {
+async function showReviewList($container) {
 
   $container.innerHTML = "";
+  $container.setAttribute("class", "bg-gray-50 rounded-lg");
+
+  const reviewList = await getreviewlist();
+}
+
+async function getreviewlist() { 
+        
+  let body = {
+
+      token: getCookie(cookieName),
+      kind: 'review_teacher',        
+  };   
+  
+  const res = await fetch('/restapi/review.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(body)
+  });    
+  
+  const response = await res.json();        
+  
+  return response.result;  
 }
 
 export default reviewlist;

@@ -33,6 +33,7 @@ let week = new Array('일', '월', '화', '수', '목', '금', '토');
 async function showClassList($container) {
 
     $container.innerHTML = "";
+    $container.setAttribute("class", "");
 
     const classList = await getClasslist();       
     
@@ -150,10 +151,9 @@ async function getClasslist() {
         class_reserve_check: "all", 
     };
     
-    
     if (key_class_type != "") {
-        filterObject.filter_class_status_check = key_class_type;    
-        classType.value = key_class_type;
+    filterObject.filter_class_status_check = key_class_type;    
+    classType.value = key_class_type;
     }
     if (key_user_name != "") {
         filterObject.filter_user_name = key_user_name;    
@@ -193,7 +193,7 @@ async function getClasslist() {
 
 
 // 수업 상세 화면으로 이동
-function goClassDetail(class_id, user_id, url) {
+export function goClassDetail(class_id, user_id, url) {
         
     const form = document.createElement('form');
     form.setAttribute('method', 'get');    

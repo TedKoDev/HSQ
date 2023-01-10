@@ -13,8 +13,7 @@ export function Router($container) {
     currentPage = null;    
     
     const TargetPage = findMatchedRoute()?.element || notfound;    
-    currentPage = new TargetPage(this.$container);      
-    console.log(currentPage); 
+    currentPage = new TargetPage(this.$container);          
   };
 
   const init = () => {
