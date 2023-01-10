@@ -1,16 +1,12 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie } from "/commenJS/cookie_modules.js";
-import selectHistoryType from "./src/selectHistoryType.js";
-
-export let classList_json;
+import {selectHistoryType} from "./src/selectHistoryType.js";
 
 // 수업 목록 가져오기
 getClasslist();
 
 async function getClasslist() {
-
-    console.log("get");
-
+    
     const classType = $('.classType');
     const className = $('.className');
     const userName = $('.userName');
@@ -61,10 +57,9 @@ async function getClasslist() {
     });    
     
     classList_json = await res.json();    
-
-    console.log(classList_json);
     
     new selectHistoryType($('#List'));
+    
 }
 
 

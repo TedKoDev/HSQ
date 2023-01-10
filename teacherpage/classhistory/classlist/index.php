@@ -10,13 +10,14 @@
     </style>
     <script type="module" defer="defer" src="../classhistory.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-
-    <script>
+    <script>        
         let key_user_name = "<?php echo $_GET['user_name']; ?>";
         let key_class_type = "<?php echo $_GET['class_type']; ?>";
         let key_class_name = "<?php echo $_GET['class_name']; ?>";
         let key_time_from = "<?php echo $_GET['time_from']; ?>";
-        let key_time_to = "<?php echo $_GET['time_to']; ?>";        
+        let key_time_to = "<?php echo $_GET['time_to']; ?>";
+        // 수업 목록 json;
+        let classList_json;
     </script>
 
     <body class="bg-gray-100 w-full">
@@ -87,7 +88,7 @@
                     </form><br>
                     <div class="bg-sky-500 text-white text-xs pl-2 py-1 mx-2">UTC
                         <span class="utc">09:00</span></div>
-                </div>
+                </div>                
                 <div id="List"></div>
             </div>
         </div>

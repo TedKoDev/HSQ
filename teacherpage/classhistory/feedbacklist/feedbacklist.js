@@ -1,11 +1,13 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
-import selectHistoryType from "../src/selectHistoryType.js";
+import {selectHistoryType} from "../src/selectHistoryType.js";
+
+// let selectType = selectHistoryType;
 
 // 수업 목록 가져오기
 getfeedbacklist();
 
-async function getfeedbacklist() {
+async function getfeedbacklist() { 
         
     let body = {
 
@@ -25,5 +27,5 @@ async function getfeedbacklist() {
     
     console.log(response);
 
-    new selectHistoryType($('#List'));
+    new selectHistoryType($('#List'));    
 }

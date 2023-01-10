@@ -4,11 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/dist/output.css" rel="stylesheet">
-    </head>    
-    <!-- <script type = "module" defer = "defer" src="../classhistory.js"></script> -->
+    </head>        
     <script type = "module" defer = "defer" src="./feedbacklist.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-    <script></script>
+    <script>       
+        
+    </script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->
         <?php include '../../../components/navbar/navbar.php' ?>
@@ -18,9 +19,9 @@
         <?php include '../selecthistory.php' ?>
         <br>
         <div class="flex flex-col w-3/4 mx-auto ">
-            <!-- <div class = "filter">
+            <div class = "filter">
                 
-            </div> -->
+            </div>            
             <div id = "List">  
                 <div class = "">
 

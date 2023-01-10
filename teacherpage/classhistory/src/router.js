@@ -1,7 +1,7 @@
 import { routes } from "./constants/routeInfo.js";
 import { notfound } from "./pages/notfound.js";
 
-function Router($container) {
+export function Router($container) {
   this.$container = $container;
   let currentPage = undefined;  
     
@@ -12,9 +12,9 @@ function Router($container) {
   const route = () => {
     currentPage = null;    
     
-    const TargetPage = findMatchedRoute()?.element || notfound;
-    currentPage = new TargetPage(this.$container);    
-
+    const TargetPage = findMatchedRoute()?.element || notfound;    
+    currentPage = new TargetPage(this.$container);      
+    console.log(currentPage); 
   };
 
   const init = () => {
@@ -39,4 +39,3 @@ function Router($container) {
   route();
 }
 
-export default Router;

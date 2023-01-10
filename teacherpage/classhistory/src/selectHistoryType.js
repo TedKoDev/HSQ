@@ -1,13 +1,14 @@
 import { navigate } from "./navigate.js";
 import { $, $_all } from "/utils/querySelector.js";
 import { BASE_URL } from "./constants/routeInfo.js";
-import Router from "./router.js";
+import {Router} from "./router.js";
 
 
-function selectHistoryType($container) {
+export function selectHistoryType($container) {
   this.$container = $container;  
-  
+    
   const init = () => {
+    
     $(".selectHistoryType").addEventListener("click", (e) => {
       const target = e.target.closest("a");
       if (!(target instanceof HTMLAnchorElement)) return;
@@ -26,4 +27,3 @@ function selectHistoryType($container) {
   init();
   
 }
-export default selectHistoryType;

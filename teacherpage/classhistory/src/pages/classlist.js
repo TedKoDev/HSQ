@@ -1,6 +1,6 @@
 import {changeSelectBtnStyle, getFilterInit} from "./pages.js";
 import {$, $_all} from "/utils/querySelector.js";
-import {classList_json} from "../../classhistory.js";
+// import {classList_json} from "../../classhistory.js";
 import {s3_url} from "../../../../commenJS/cookie_modules.js";
 
 
@@ -34,9 +34,7 @@ const showClassList = ($container, response) => {
 
     $container.innerHTML = "";
 
-    const classList = response.result;
-
-    console.log(classList);
+    const classList = response.result;    
 
     // 값이 있을 경우에만 화면에 뿌려주기
     if (classList.length != 0) {
