@@ -55,7 +55,7 @@ $desc = json_decode(file_get_contents("php://input"))->{"class_description"};  /
 // date_default_timezone_set('Asia/Seoul');
 // $time_now = date("Y-m-d H:i:s");
 
-// error_log("$time_now, $position, $desc\n", "3", "/php.log");
+error_log("$token, $position, $desc\n", "3", "/php.log");
 
 
 
@@ -371,9 +371,14 @@ else if ($position == "payment_link") {
     // echo json_encode($desc);
     
     //sql delete
-    $select = "DELETE FROM Payment_Link where user_id_payment = '$user_id' ";
-
-    $response = mysqli_query($conn, $select);
+    if ($desc != null) {
+        $select = "DELETE FROM Payment_Link where user_id_payment = '$user_id' ";
+        $response = mysqli_query($conn, $select);
+        $send["desc"]   =  "값있음";
+    }
+    if ($desc == null) {
+        $send["desc"]   =  "값없음";
+    }
 
     foreach ($desc as $val) {
         // echo $val;

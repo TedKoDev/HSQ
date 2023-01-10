@@ -1204,7 +1204,7 @@
             for(let i = 0; i < link_array.length; i++){               
               if (link_array[i].payment_link == input.value) { 
                 link_array.splice(i, 1); 
-                i--; 
+                // i--; 
               }
             }
             div.remove();         
@@ -1246,6 +1246,7 @@
       const json = {payment: input_link.value};
       link_array.push(json);
       // 서버에 저장 요청
+      console.log(link_array);
       post_edit(tokenValue, "payment_link", link_array);
       // 초기화하고 재렌더링
       link_init();
@@ -1282,6 +1283,9 @@
     // 수정 사항 서버에 전달하는 함수 
     async function post_edit(token, position, desc) {
 
+      console.log(token);
+      console.log(position);
+      console.log(desc);
       const body = {
         token: token,
         position: position,
