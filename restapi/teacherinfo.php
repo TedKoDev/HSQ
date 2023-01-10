@@ -49,7 +49,6 @@ $utc      =   json_decode(file_get_contents("php://input"))->{"user_timezone"}; 
 $kind =   json_decode(file_get_contents("php://input"))->{"kind"}; // 강사의 detail 정보를 얻기위함 
 // $tusid = 324;
 // $kind  = 'detail';
-// $token      =  '11'; // 토큰 
 
 
 $timg           =   json_decode(file_get_contents("php://input"))->{"teacher_img"};     // 강사이미지
@@ -71,40 +70,40 @@ $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     
 if ($tusid != null) {
   //해당 tusid에 해당하는 상세정보를 가져옴 
   //tusid 가 있으면 작동
-  // echo "tusid 가 있음";
+
+
+  //토큰 해체 
+  $data = $jwt->dehashing($token);
+  $parted = explode('.', base64_decode($token));
+  $payload = json_decode($parted[1], true);
+  $User_ID =  base64_decode($payload['User_ID']);
+  $U_Name  = base64_decode($payload['U_Name']);
+  $U_Email = base64_decode($payload['U_Email']);
+
+
+  //배열생성 
+  $result3['result'] = array();
+  $result1['data'] = array();
+  $result2['timeprice'] = array();
+
+
+  if ($token != null) {
+
+    //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
+    $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
+    $response1 = mysqli_query($conn, $sql);
+    $row1 = mysqli_fetch_array($response1);
+
+
+    $timezone = $row1['0'];
+    $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
+  } else {
+
+    $timezone = $utc;
+    $send['CONNECT_USER_TIMEZONE'] = $utc;
+  }
+
   if ($kind == null) {
-    //토큰 해체 
-    $data = $jwt->dehashing($token);
-    $parted = explode('.', base64_decode($token));
-    $payload = json_decode($parted[1], true);
-    $User_ID =  base64_decode($payload['User_ID']);
-    $U_Name  = base64_decode($payload['U_Name']);
-    $U_Email = base64_decode($payload['U_Email']);
-
-
-    //배열생성 
-    $result3['result'] = array();
-    $result1['data'] = array();
-    $result2['timeprice'] = array();
-
-
-    if ($token != null) {
-
-      //현재 로그인한 유저의 U_D_Timeze 값을 가져옴   
-      $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
-      $response1 = mysqli_query($conn, $sql);
-      $row1 = mysqli_fetch_array($response1);
-
-
-      $timezone = $row1['0'];
-      $send['CONNECT_USER_TIMEZONE'] = $row1['0'];
-    } else {
-
-      $timezone = $utc;
-      $send['CONNECT_USER_TIMEZONE'] = $utc;
-    }
-
-
     //Class_List에 수업 목록확인  
     $sql = "SELECT 
        User.user_name, 
@@ -122,6 +121,8 @@ if ($tusid != null) {
          ON User_Teacher.user_id = User_Detail.user_id 
         where User.user_id = '$tusid' ";
     $response1 = mysqli_query($conn, $sql);
+
+
 
     $row1 = mysqli_fetch_array($response1);
 
@@ -141,6 +142,7 @@ if ($tusid != null) {
     // $result1["success"] = "1";
     $result3["success"] = "1";
     echo json_encode($result3);
+
     mysqli_close($conn);
   } else if ($kind == "detail") {
     // 강사의 user_id로 검색해서 강사의 평점,  수업수, 학생수 정보 가져오기
@@ -167,11 +169,10 @@ if ($tusid != null) {
     $send['class_register_status_1_cnt']    = $row2['b'] / 2;
     $send['class_register_status_2_cnt']    = $row2['c'] / 2;
     $send['class_register_status_3_cnt']    = $row2['d'] / 2;
-
-
-    echo json_encode($send);
-    mysqli_close($conn);
   }
+
+  echo json_encode($send);
+  mysqli_close($conn);
 } else {
   //tusid 가 없으면 작동 전체 목록 
 

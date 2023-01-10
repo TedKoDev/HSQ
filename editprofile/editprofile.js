@@ -14,7 +14,9 @@
     
     
     // 구사 가능 언어 재사용하기 위한 전역 변수
-    var language_can;    
+    let language_can;
+    // 결제링크 전역변수
+    let link_array;    
 
     // 쿠기 값(토큰) 가져오기
     let tokenValue = getCookie(cookieName);   
@@ -64,13 +66,11 @@
       const user_residence = userinfo_parse.user_residence;   
       const user_timezone = userinfo_parse.user_timezone;    
       const user_language = userinfo_parse.user_language; 
-      const user_korean = userinfo_parse.uesr_korean;       
+      const user_korean = userinfo_parse.user_korean;       
       const user_intro = userinfo_parse.user_intro; 
-
-      // const user_intro_parsing = user_intro.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
-
-      // console.log(user_name);
-      // console.log(user_bday);                 
+      
+      const teacher_t_intro = userinfo_parse.teacher_intro;
+      const teacher_payment_link = userinfo_parse.payment_link;                        
 
       // 프로필이미지, 이름, 나이, 성별, 출신국가, 거주국가 대입 (구사 가능 언어, 한국어 구사 수준은 프로필 편집 이후에 다시)
       let p_img = document.getElementById("profile_image");
@@ -83,6 +83,9 @@
       let intro = document.getElementById("intro");
       let language = document.getElementById("language");
       let korean = document.getElementById("korean");
+
+      let teacher_intro = document.getElementById("t_intro");
+      let payment_div = document.getElementById("payment_div");
 
       // 이름, 자기소개는 그냥 출력하고 나이, 성별, 출신/거주 국가는 값이 있을 때만 출력
       name.innerText = user_name;   
@@ -97,6 +100,8 @@
 
       // 구사 가능 언어 전역 변수에 서버에서 가져온 string 대입   
       language_can = user_language;      
+      // 결제링크 전역변수
+      link_array = teacher_payment_link;
       
       // 구사 가능 언어는 별도의 함수로 출력
       setLanguage(language, language_can);     
@@ -104,7 +109,25 @@
       console.log("first : "+language_can);
 
       // utc도 별도의 함수로 출력
-      setTimezone(utc, user_timezone)                        
+      setTimezone(utc, user_timezone)       
+      
+      // 강사가 아닐 경우 강사 정보 안보이게 표시
+      if (teacher_t_intro == null) {
+        document.getElementById("teacherInfo_div").classList.add('hidden');
+      }
+      else {
+        // 강사 소개랑 결제 링크 대입하기
+        setInfo(teacher_intro, teacher_t_intro, "");
+
+        for (const link of teacher_payment_link) {
+
+          const a = document.createElement("a");
+          a.setAttribute("class", "text-sm text-gray-700 mb-1 text-blue-600");          
+          a.innerHTML = link.payment_link;
+          a.setAttribute("href", a.innerHTML);
+          payment_div.append(a);
+        }
+      }
     }
 
     // 값이 있을 경우에만 브라우저에 출력
@@ -873,53 +896,7 @@
             // 새롭게 생성한 json 랜더링
             language_render(index_after, new_json);
         }       
-    }
-
-    // function language_render_setting(json, select_language, select_level) {
-
-    //   // 새로운 json 생성
-    //   json = new Object();
-    //   json[select_language] = select_level;
-
-    //   // 전역 변수에 새로운 json string으로 변환해서 대입
-    //   language_can = JSON.stringify(new_json);
-
-    //   // 서버에 저장 요청
-    //   post_edit(tokenValue, "language", language_can);
-
-    //   console.log(language_can);
-
-    //   // 1)저장,취소 버튼 안보이게 하고 2)더추가 버튼 보이게하고 3) select 삭제
-    //   const add_language = document.getElementById('add_language');
-    //   const save_btn = document.getElementById('save_language_btn');
-    //   const cancel_btn = document.getElementById('cancel_language_btn');
-    //   const select_box = document.getElementById('select_box');
-
-    //   add_language.style.display = 'block';
-    //   save_btn.style.display = 'none';
-    //   cancel_btn.style.display = 'none';           
-    //   // select용 div 안에 자식 요소 (이 경우 select) 모두 삭제
-    //   while (select_box.hasChildNodes()) {
-
-    //     select_box.removeChild(select_box.firstChild);
-    //   }
-
-      
-    //     // 변경 사항에 맞추어 재 렌더링
-    //     // 구사 가능 언어 div의 id값을 다르게 주기 위한 index
-    //     let index_after = 0;        
-
-    //     // 구사 가능한 언어 목록 표시용 div 가져오기
-    //     let now_select = document.getElementById('now_select');  
-    //     // now_select의 값 초기화     
-    //     while (now_select.hasChildNodes()) {
-
-    //       now_select.removeChild(now_select.firstChild);
-    //     }        
-
-    //     // 새롭게 생성한 json 랜더링
-    //     language_render(index_after, json);
-    // }
+    }    
 
     // 구사가능언어 수정 취소 (구사가능언어에서는 아예 취소되는게 아니라 select하던 것만 취소되는 형태)
     function edit_cancel_language() {        
@@ -1033,11 +1010,7 @@
     }
 
     // 돌아가기 버튼
-    function language_return() {
-
-      // 언어 삭제 버튼 안 보이게
-      // const delete_l = document.getElementsByName('delete_l');
-      // delete_l.style.display = 'block';
+    function language_return() {      
 
       // 리턴 버튼 안 보이게
       const return_btn = document.getElementById('language_return_btn');
@@ -1106,9 +1079,213 @@
     }
 
         
-    // 수정 사항 서버에 전달하는 함수 (백엔드 부분 처리될 때까지 보류)
+    // 7. 강사 소개 수정
+    // 현재 자기소개 가져오기
+    let now_t_intro = document.getElementById('t_intro');
+    // 자기소개 입력 id 가져오기
+    let input_t_intro = document.getElementById('t_input_intro');        
+    // 자기소개랑 편집 아이콘 있는 div 가져오기
+    let t_intro_not_edit_div = document.getElementById('t_introdiv_not_edit');
+    // 편집 아이콘 클릭했을 때 나오는 div 가져오기
+    let t_intro_click_edit_div = document.getElementById('t_introdiv_click_edit');
+
+
+    // 강사소개 수정   
+    function editing_t_intro() {           
+                                   
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      t_intro_click_edit_div.style.display = 'block';
+      // 이름이랑 편집 아이콘 안보이게 처리
+      t_intro_not_edit_div.style.display = 'none';          
+
+      // 자기소개 값이 있을 경우에만 현재 자기소개 입력창에 넣기
+      if (now_t_intro.innerHTML != '') {
+
+        input_t_intro.value = now_t_intro.innerHTML.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+      } 
+    }
+
+    // 자기소개 수정 취소
+    function edit_cancel_t_intro() {              
+
+      // 편집 아이콘 클릭했을 때 나오는 div 안 보이게 처리
+      t_intro_click_edit_div.style.display = 'none';
+      // 이름이랑 편집 아이콘 다시 보이게 처리
+      t_intro_not_edit_div.style.display = 'block'; 
+    }
+
+    // 자기소개 수정 완료
+    function edit_done_t_intro() {           
+
+      // 입력창에서 수정한 값을 자기소개에 적용하기
+      now_t_intro.innerHTML = input_t_intro.value.replace(/(\n|\r\n)/g, '<br>');
+
+      // 줄바꿈 치환해서 서버에 저장
+      let string = now_t_intro.innerHTML.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+
+      // 편집 아이콘 클릭했을 때 나오는 div 보이게 처리
+      t_intro_click_edit_div.style.display = 'none';
+      // 이름이랑 편집 아이콘 안보이게 처리
+      t_intro_not_edit_div.style.display = 'block';       
+      
+      // 서버에 저장 요청
+      post_edit(tokenValue, "teacher_intro", string);
+      
+    }
+
+
+    // 결제링크 수정
+    // 수정 클릭하기 전 div
+    const linkDiv_notEdit = document.getElementById("paymentdiv_not_edit");
+    // 수정 클릭한 후 보여지는 div
+    const linkDiv_clickEdit = document.getElementById("paymentdiv_click_edit");
+    // 결제링크 수정 버튼
+    const edit_link_btn = document.getElementById("link_edit");
+    // 현재 저장된 결제링크 표시하는 div
+    const now_link_div = document.getElementById("now_link_div");
+    // 결제 링크 추가(+더 추가) 버튼
+    const add_link_btn = document.getElementById("add_link");
+    // 더추가 버튼 눌렀을 때 생기는 input 태그
+    const input_link = document.getElementById('input_link_div');
+    // 돌아가기 버튼
+    const link_return_btn = document.getElementById("link_return_btn");
+    // 링크 저장버튼, 취소버튼
+    const save_link_btn = document.getElementById("save_link_btn");
+    const cancel_link_btn = document.getElementById("cancel_link_btn");
+
+    // 결제링크 수정 클릭 시
+    function editing_link() {
+      // 기존div 안보이게 하고 수정시 나오는 div 보이게 처리
+      linkDiv_notEdit.classList.add('hidden');
+      linkDiv_clickEdit.classList.remove('hidden');
+      // 링크 갯수만큼 now_link_div 아래에 표시
+      // 우선 기존 값들 없애기
+      while (now_link_div.hasChildNodes() )
+      {
+        now_link_div.removeChild(now_link_div.firstChild );       
+      }
+
+      let index = 0;
+      for (const link of link_array) {
+          
+          // index값 1 증가
+          index = index + 1;
+          
+          const div = document.createElement('div');
+          // div의 id에 인덱스값 부여
+          div.setAttribute("id", "link_"+index);
+          // 배치를 위한 속성 부여
+          div.setAttribute("class", "flex justify-between mb-1");                   
+                            
+          // 텍스트 담을 input 태그 생성
+          const input = document.createElement('input');
+          // span의 id에 인덱스값 부여
+          input.setAttribute("id", "input_"+index);        
+          input.setAttribute("class", "text-sm text-gray-500 border shadow rounded-lg px-1 w-3/4");                
+          input.value = link.payment_link;               
+
+          //// 삭제용 버튼 생성
+          const delete_btn = document.createElement('a');          
+          // 버튼에 id, class, 이름 값 부여
+          delete_btn.setAttribute("id", 'del_'+index);
+          delete_btn.setAttribute("class", "del_link_btn px-2 my-1 font-semibold bg-gray-500 text-xs text-white hover:bg-gray-700 hover:text-white rounded-full border");
+          // delete_btn.setAttribute("name", "delete_l");          
+
+          delete_btn.innerHTML = "삭제";         
+          // div에 span이랑 a(버튼) 연결
+          div.append(input);
+          div.append(delete_btn);
+          // 새롭게 생성한 div 연결
+          now_link_div.appendChild(div); 
+          
+          // 삭제 버튼 클릭 시 link_array에서 해당 값 삭제하고 해당 div 지운뒤 서버에 삭제요청
+          function delete_link() {          
+            
+            for(let i = 0; i < link_array.length; i++){               
+              if (link_array[i].payment_link == input.value) { 
+                link_array.splice(i, 1); 
+                // i--; 
+              }
+            }
+            div.remove();         
+            console.log(link_array);   
+            post_edit(tokenValue, "payment_link", link_array);
+          }
+          delete_btn.addEventListener('click', () => {
+            delete_link();
+          })
+      }     
+    }
+    // 링크 추가하는 함수
+    function add_select_link() {
+
+      input_link.classList.remove('hidden');
+      save_link_btn.classList.remove('hidden');
+      cancel_link_btn.classList.remove('hidden');
+      add_link_btn.classList.add('hidden');
+      link_return_btn.classList.add('hidden');
+    }
+    // 링크 추가하는거 취소하는 버튼
+    function edit_cancel_link() {      
+      
+      link_init();
+    }
+
+    // 돌아가기 버튼
+    function link_return() {
+
+      linkDiv_notEdit.classList.remove('hidden');
+      linkDiv_clickEdit.classList.add('hidden');
+
+      render_link();
+    }
+    // 링크 추가하고 서버에 저장 요청
+    function edit_done_link() {
+
+      // link_array에 값 추가
+      const json = {payment_link: input_link.value};
+      link_array.push(json);
+      // 서버에 저장 요청
+      console.log(link_array);
+      post_edit(tokenValue, "payment_link", link_array);
+      // 초기화하고 재렌더링
+      link_init();
+      render_link();
+    }
+    // 저장/취소 버튼 누를 때 원래대로
+    function link_init() {
+
+      input_link.value = "";
+      input_link.classList.add('hidden');
+      save_link_btn.classList.add('hidden');
+      cancel_link_btn.classList.add('hidden');
+      add_link_btn.classList.remove('hidden');
+      link_return_btn.classList.remove('hidden');
+    }
+    // link_array 재 렌더링
+    function render_link() {
+     
+      while (now_link_div.hasChildNodes() )
+      {
+        now_link_div.removeChild(now_link_div.firstChild );       
+      }
+
+      for (const link of link_array) {
+
+        const a = document.createElement("a");
+        a.setAttribute("class", "text-sm text-gray-700 mb-1 text-blue-600");          
+        a.innerHTML = link.payment_link;
+        a.setAttribute("href", a.innerHTML);
+        now_link_div.append(a);
+      }
+    }
+
+    // 수정 사항 서버에 전달하는 함수 
     async function post_edit(token, position, desc) {
 
+      console.log(token);
+      console.log(position);
+      console.log(desc);
       const body = {
         token: token,
         position: position,

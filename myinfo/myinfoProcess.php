@@ -143,6 +143,53 @@ foreach ($response4 as $row4) {
 
 
 
+//수업횟수
+$sql = "SELECT class_register_status, COUNT(*) AS cnt FROM Class_Add where user_id_teacher = '{$User_ID}' GROUP BY class_register_status;";
+$response3 = mysqli_query($conn, $sql);
+
+$result2['class_countArray'] = array();
+//배열생성
+foreach ($response3 as $row3) {
+  $send2['class_register_status'] = $row3['class_register_status'];
+
+  $send2['cnt'] = $row3['cnt'];
+
+  array_push($result2['class_countArray'], $send2);
+}
+
+
+
+//수업횟수
+$sql = "SELECT class_register_status, COUNT(*) AS cnt FROM Class_Add where user_id_student = '{$User_ID}' GROUP BY class_register_status";
+$response4 = mysqli_query($conn, $sql);
+
+$result3['class_countArray_as_student'] = array();
+//배열생성
+foreach ($response4 as $row4) {
+  $send3['class_register_status'] = $row4['class_register_status'];
+
+  $send3['cnt'] = $row4['cnt'];
+
+  array_push($result3['class_countArray_as_student'], $send3);
+}
+
+
+//수업횟수
+$sql = "SELECT class_register_status, COUNT(*) AS cnt FROM Class_Add where user_id_student = '{$User_ID}' GROUP BY class_register_status";
+$response4 = mysqli_query($conn, $sql);
+
+$result3['class_countArray_as_student'] = array();
+//배열생성
+foreach ($response4 as $row4) {
+  $send3['class_register_status'] = $row4['class_register_status'];
+
+  $send3['cnt'] = $row4['cnt'];
+
+  array_push($result3['class_countArray_as_student'], $send3);
+}
+
+
+
 // 값 변수 설정 
 $send['user_id']                              = $row['user_id'];
 $send['user_name']                             = $row['user_name'];
@@ -158,15 +205,13 @@ $send['user_timezone']                              = $row['user_timezone'];
 $send['user_language']                              = $row['user_language'];
 $send['user_korean']                                  = $row['user_korean'];
 $send['teacher_register_check']                    = $row['teacher_register_check'];
-$send['user_intro']                                  = $row['user_intro'];
-$send['teacher_intro']                                 = $row['teacher_intro'];
+$send['user_intro']                    = $row['user_intro'];
+$send['teacher_intro']                    = $row['teacher_intro'];
 
-$send['payment_link']                               = $result1['payment_linkarray'];
-$send['review_score']                             = $row2['review_score'];
+$send['payment_link']                 = $result1['payment_linkarray'];
+$send['review_score']    = $row2['review_score'];
 $send['class_register_status_count_as_teacher']    = $result2['class_countArray'];
 $send['class_register_status_count_as_student']    = $result3['class_countArray_as_student'];
-
-
 
 
 

@@ -9,6 +9,8 @@ let scheduleReserve_array_sm = new Array();
 let schedule_string_sm;
 // 스케줄의 상태 전역으로 선언
 let schedule_string_status_sm;
+// 스케줄의 시간 전역으로 선언
+let schedule_class_time_sm;
 
 // 서버에서 받아온 유저의 timezone 전역으로 쓰기 위해 선언
 let timezone_cs;
@@ -57,6 +59,7 @@ async function getclassSchedule_sm() {
 
         schedule_string_sm = response.teacher_schedule_list;
         schedule_string_status_sm = response.teacher_schedule_list_status;  
+        schedule_class_time_sm = response.schedule_time;
         const timezone = response.user_timezone;
 
         // 전역으로 사용할 타임존 대입
@@ -202,6 +205,8 @@ async function setschedule_sm(type, for_modal, schedule) {
     const classList = schedule.split('_');   
     // 일정의 상태 배열로 전환
     const statusList = schedule_string_status_sm.split('_');
+    // 수업 시간 배열로 전환
+    const classTimeList = schedule_class_time_sm.split('_');
     
     // 디폴트로 일단 회색으로 칠해놓고 name도 uncheck로 두기
     let default_label = document.querySelectorAll(".label_sm");
@@ -234,9 +239,20 @@ async function setschedule_sm(type, for_modal, schedule) {
                 // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하고 checkbox 비활성화
                 // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
                 if (!(statusList[j] == 9 || statusList[j] == 2)) {
-                                                                    
-                    label.classList.replace("bg-blue-600", "bg-gray-600");                         
-                    input.disabled = true;             
+                                                                
+                    if (classTimeList[j] == 60) {
+                        // label.style.backgroundColor = '#6B7280';     
+                        label.classList.replace("bg-blue-600", "bg-gray-600");                     
+                        const label_b = getLabel_b(label.id);     
+                        label_b.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-600 text-white rounded border");  
+                        const input_b = getInput_b(input.id);
+                        input_b.disabled = true;                                                 
+                    }
+                    else {
+                        label.classList.replace("bg-blue-600", "bg-gray-600");                         
+                        input.disabled = true;             
+                    }
+                   
                 }                             
             }              
                                 

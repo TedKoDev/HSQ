@@ -55,7 +55,17 @@ $desc = json_decode(file_get_contents("php://input"))->{"class_description"};  /
 // date_default_timezone_set('Asia/Seoul');
 // $time_now = date("Y-m-d H:i:s");
 
-// error_log("$time_now, $position, $desc\n", "3", "/php.log");
+
+if ($desc != null) {
+    $answer =  "값있음";
+}
+if ($desc == null) {
+    $answer =   "값없음";
+}
+
+
+
+
 
 
 
@@ -368,22 +378,36 @@ else if ($position == "payment_link") {
     $payment_link_array = array(); //검사 해야할 시간 기준 
 
 
-    echo json_encode($desc);
+    // echo json_encode($desc);
+
     //sql delete
-    $select = "DELETE FROM Payment_Link where user_id_payment = '$user_id' ";
-
-    $response = mysqli_query($conn, $select);
-
-    foreach ($desc as $val) {
-        // echo $val;
-
-
-
-        // $select = "UPDATE Payment_Link SET payment_link = '$desc' where user_id = '$user_id' ";
-        $result = "INSERT INTO Payment_Link (user_id_payment, payment_link) VALUES ('$user_id','$val') ";
-
-        $response = mysqli_query($conn, $result);
+    if ($desc != null) {
+        $select = "DELETE FROM Payment_Link where user_id_payment = '$user_id' ";
+        $response = mysqli_query($conn, $select);
+        $send["desc"]   =  "값있음";
+        $send["desc1"]   =  $desc;
     }
+    if ($desc == null) {
+        $send["desc"]   =  "값없음";
+    }
+    // $decoded_array = json_decode($desc, true);
+    // // payment_link 키값으로 val 값 배열에서 꺼내기
+
+
+    error_log("'11', $position,  $paymen_value \n", "3", "./php.log");
+
+
+    foreach ($desc as $element) {
+        foreach ($element as $key => $value) {
+            //   echo  $value . "\n";
+            error_log("'11', $value \n", "3", "./php.log");
+
+            $result = "INSERT INTO Payment_Link (user_id_payment, payment_link) VALUES ('$user_id','$value') ";
+
+            $response = mysqli_query($conn, $result);
+        }
+    }
+
 
 
 

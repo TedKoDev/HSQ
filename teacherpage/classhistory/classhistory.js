@@ -4,12 +4,12 @@ import selectHistoryType from "./src/selectHistoryType.js";
 
 export let classList_json;
 
-
-
 // 수업 목록 가져오기
 getClasslist();
 
 async function getClasslist() {
+
+    console.log("get");
 
     const classType = $('.classType');
     const className = $('.className');
