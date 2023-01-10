@@ -8,33 +8,33 @@
 //강사페이지 - 강사유저가 '나의피드백'의 값을 얻으려면     'feedback_teacher'
 //강사페이지 - 강사유저가 '학생 후기'에 대한 값을 얻으려면 'review_teacher' 
 //학생유저가 자신이 쓴 후기 목록을 얻으려면                'review_student'  
-//학생유저가 강사가 학생에게 후기 목록을 얻으려면           'feedback_student'
+//학생유저가 강사가 학생에게 남긴 피드백 목록을 얻으려면   'feedback_student'
 //  plus     // 더보기 페이징용 5개씩 페이징됨 
 
 
 
 //반환되는값 
-// teacher인경우 
+// feedback_teacher인경우 -  강사유저가 '나의피드백'의 값을 얻으려면
 // {
 //   "result": [
 //       {
 //           "user_id": "320",
 //           "user_name": "김학생",
 //           "user_img": "P_IMG_320.PNG",
-//           "class_register_id": "359",
+//           "class_register_id": "357",
 //           "user_id_student": "320",
 //           "user_id_teacher": "324",
 //           "class_id": "196",
 //           "class_time": "30",
-//           "schedule_list": "1673431200000",
-//           "teacher_review": "2222уадйиflqb리뷰",
-//           "teacher_review_date": "2023-01-09 04:09:11"
+//           "schedule_list": "1673332200000",
+//           "teacher_review": "잘했어요~~",
+//           "teacher_review_date": "2023-01-09 11:29:21"
 //       }
 //   ],
 //   "success": "yes"
 // }
 
-// student인경우
+// review_teacher인경우 - 강사유저가 '학생 후기'에 대한 값을 얻으려면
 // {
 //   "result": [
 //       {
@@ -47,33 +47,52 @@
 //           "class_id": "196",
 //           "class_time": "30",
 //           "schedule_list": "1673332200000",
-//           "student_review": "ㅠㄴ",
+//           "student_review": "쌤 수업 잼나요",
 //           "student_review_star": "10",
-//           "student_review_date": "2023-01-09 04:03:13"
+//           "student_review_date": "2023-01-10 03:26:19"
 //       }
 //   ],
 //   "success": "yes"
+// }
 
-// myreview인경우
+// review_teacher인경우   학생이 자신이 쓴 강사에대한 후기 목록을 얻으려면     
 // {
 //   "result": [
 //       {
-//           "user_id": "320",
-//           "user_name": "김학생",
-//           "user_img": "P_IMG_320.PNG",
+//           "user_name": "박선생2",
+//           "user_img": "P_IMG_324.png",
 //           "class_register_id": "357",
 //           "user_id_student": "320",
 //           "user_id_teacher": "324",
 //           "class_id": "196",
 //           "class_time": "30",
 //           "schedule_list": "1673332200000",
-//           "student_review": "ㅠㄴ",
+//           "student_review": "쌤 수업 잼나요",
 //           "student_review_star": "10",
-//           "student_review_date": "2023-01-09 04:03:13"
+//           "student_review_date": "2023-01-10 03:26:19"
 //       }
 //   ],
 //   "success": "yes"
+// }
 
+// feedback_student인경우  학생유저가 강사가 학생에게 남긴 피드백 목록을 얻으려면   
+// {
+//   "result": [
+//       {
+//           "user_name": "박선생2",
+//           "user_img": "P_IMG_324.png",
+//           "class_register_id": "357",
+//           "user_id_student": "320",
+//           "user_id_teacher": "324",
+//           "class_id": "196",
+//           "class_time": "30",
+//           "schedule_list": "1673332200000",
+//           "teacher_review": "잘했어요~~",
+//           "teacher_review_date": "2023-01-09 11:29:21"
+//       }
+//   ],
+//   "success": "yes"
+// }
 
 include("../conn.php");
 include("../jwt.php");
@@ -107,11 +126,11 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 
 
 // $User_ID = 320; //강사or 학생의 userid
-// $kind = 'feedback_teacher'; //kind
+// $kind = 'feedback_teacher'; //kind?
 // $kind = 'review_teacher'; //kind
 // $kind = 'review_student'; //kind
 // $kind =  'feedback_student'; //kind
-
+// $User_ID = 324;
 $hour = 3600000; // 시간의 밀리초 
 
 
