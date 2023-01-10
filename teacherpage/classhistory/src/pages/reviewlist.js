@@ -2,6 +2,8 @@ import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import { changeSelectBtnStyle, getFilterInit } from "./pages.js";
 import { $, $_all } from "/utils/querySelector.js";
 import { goClassDetail } from "./classlist.js";
+import { paging } from "./feedbacklist.js";
+import { btnCheck } from "./feedbacklist.js";
 
 export function reviewlist($container) {
     this.$container = $container;    
@@ -35,6 +37,8 @@ async function showReviewList($container) {
 
   // 값이 있을 경우에만 화면에 뿌려주기
   if (reviewList.result.length != 0) {
+
+    let totalLength = reviewList.length; // 전체 개수
 
     const result = reviewList.result;
     
@@ -112,6 +116,22 @@ async function showReviewList($container) {
                             </div>`;
         
     $container.appendChild(pagingDiv);
+
+    // 이전/다음 버튼 클릭 시 이벤트
+    $('.prevBtn').addEventListener('click', () => {
+
+      page_review = page_review - 1;
+      paging('page', page_review, '/teacherpage/classhistory/reviewlist/');
+
+    })
+    $('.nextBtn').addEventListener('click', () => {
+
+      page_review = page_review + 1;
+      paging('page', page_review, '/teacherpage/classhistory/reviewlist/');
+
+    })
+
+    btnCheck(page_review, $('.prevBtn'), $('.nextBtn'), parseInt(totalLength), result);
   }
   else {
 
@@ -120,10 +140,15 @@ async function showReviewList($container) {
 
 async function getreviewlist() { 
         
+  if (page_review == null) {
+    page_review = 0;
+  }
+
   let body = {
 
       token: getCookie(cookieName),
-      kind: 'review_teacher',        
+      kind: 'review_teacher',      
+      plus: page_review  
   };   
   
   const res = await fetch('/restapi/review.php', {

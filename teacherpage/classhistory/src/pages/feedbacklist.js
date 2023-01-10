@@ -34,10 +34,8 @@ async function showFeedbackList($container) {
 
   // 값이 있을 경우에만 화면에 뿌려주기
   if (feedbackList.result.length != 0) {
-
-    let nowPage; // 현재 페이지
+    
     let totalLength = feedbackList.length; // 전체 개수
-    console.log(totalLength);
 
     const result = feedbackList.result;
     
@@ -101,18 +99,87 @@ async function showFeedbackList($container) {
                               </div>`;
           
       $container.appendChild(pagingDiv);
+
+      // 이전/다음 버튼 클릭 시 이벤트
+      $('.prevBtn').addEventListener('click', () => {
+
+        page_feedback = page_feedback - 1;
+        paging('page', page_feedback, '/teacherpage/classhistory/feedbacklist/');
+
+      })
+      $('.nextBtn').addEventListener('click', () => {
+
+        page_feedback = page_feedback + 1;
+        paging('page', page_feedback, '/teacherpage/classhistory/feedbacklist/');
+
+      })
+      
+      console.log("page_feedback : "+page_feedback);
+      btnCheck(page_feedback, $('.prevBtn'), $('.nextBtn'), parseInt(totalLength), result);
   }
   else {
 
   }
 }
 
-async function getfeedbacklist() { 
+export function paging(type, page, url) {
         
+  const form = document.createElement('form');
+  form.setAttribute('method', 'get');    
+  form.setAttribute('action', url);
+
+  const hiddenField_page = document.createElement('input');
+  hiddenField_page.setAttribute('type', 'hidden');
+  hiddenField_page.setAttribute('name', type);
+  hiddenField_page.setAttribute('value', page);  
+  form.appendChild(hiddenField_page); 
+
+  document.body.appendChild(form);
+
+  form.submit();      
+  
+}
+
+// 이전/다음 버튼 보이는 여부 체크
+export function btnCheck(page, $prev_btn, $next_btn, totalLength) {
+
+  if (page == '' || page == null) {
+    page = 0;
+
+  }
+    
+  if (page == 0) {
+    $prev_btn.setAttribute("class", "prevBtn hidden px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow mr-1");
+    console.log("prev_x");
+  }
+  else {
+    $prev_btn.setAttribute("class", "prevBtn px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow mr-1");
+    console.log("prev_o");
+  }
+  if ((parseInt(totalLength / 20) == parseInt(page))) {
+    $next_btn.setAttribute("class", "nextBtn hidden px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow ml-1");
+    console.log("next_x");
+  }
+  else if ((parseInt(totalLength / 20) == (parseInt(page)+1)) && (parseInt(totalLength) % 20 == 0)) {
+    $next_btn.setAttribute("class", "nextBtn hidden px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow ml-1");
+    console.log("next_x");
+  }
+  else {
+    $next_btn.setAttribute("class", "nextBtn px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow ml-1");
+    console.log("next_o");
+  }
+}
+
+async function getfeedbacklist() {   
+        
+  if (page_feedback == null) {
+    page_feedback = 0;
+  }
   let body = {
 
       token: getCookie(cookieName),
-      kind: 'feedback_teacher',        
+      kind: 'feedback_teacher',     
+      plus: page_feedback,   
       
   };   
   

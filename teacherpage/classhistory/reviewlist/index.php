@@ -16,6 +16,9 @@
         let key_class_name = "";
         let key_time_from = "";
         let key_time_to = "";
+
+        let page_feedback;
+        let page_review = "<?php echo $_GET['page']; ?>";
     </script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->

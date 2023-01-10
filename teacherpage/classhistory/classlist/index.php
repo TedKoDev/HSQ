@@ -16,7 +16,10 @@
         let key_class_type = "<?php echo $_GET['class_type']; ?>";
         let key_class_name = "<?php echo $_GET['class_name']; ?>";
         let key_time_from = "<?php echo $_GET['time_from']; ?>";
-        let key_time_to = "<?php echo $_GET['time_to']; ?>";        
+        let key_time_to = "<?php echo $_GET['time_to']; ?>";   
+        
+        let page_feedback;
+        let page_review;
     </script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->

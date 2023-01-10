@@ -107,6 +107,7 @@ $kind = json_decode(file_get_contents("php://input"))->{"kind"}; //kind
 
 // 더보기 (페이징)처리 용 
 $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
+// $plus       =   1;     // 더보기 
 
 
 
@@ -130,7 +131,7 @@ $timezone = base64_decode($payload['TimeZone']); //사용자(학생)의 TimeZone
 // $kind = 'review_teacher'; //kind
 // $kind = 'review_student'; //kind
 // $kind =  'feedback_student'; //kind
-// $User_ID = 320;
+// $User_ID = 324;
 $hour = 3600000; // 시간의 밀리초 
 
 
@@ -142,6 +143,9 @@ $i = 0;
 $start =  $i + (20 * $plus);
 $till = 20;
 
+$출력값['result'] = array();
+$출력값["page"]  = $plus;
+
 if ($kind == 'feedback_teacher') {
   //강사가 자신이 작성한 피드백을 보려면 
   // $User_ID = 324;
@@ -149,7 +153,6 @@ if ($kind == 'feedback_teacher') {
 
   // "SELECT * FROM Class_Add  join Class_Teacher_Review   on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID' 전체 몇개인지 알기 
 
-  $출력값['result'] = array();
   // $출력값['result'] = array();
 
   $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Teacher_Review 
@@ -159,6 +162,7 @@ if ($kind == 'feedback_teacher') {
   $row0 = mysqli_fetch_array($countResult);
 
   $출력값["length"]  = $row0['cnt'];
+
 
 
 
@@ -226,7 +230,7 @@ if ($kind == 'feedback_teacher') {
   //강사가 학생이 자신에게쓴 후기를 보려면 
   // $User_ID = 324;
 
-  $출력값['result'] = array();
+
 
   $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Student_Review 
   on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_teacher =  '$User_ID'  ";
@@ -303,7 +307,7 @@ if ($kind == 'feedback_teacher') {
   //학생이 자신이 쓴 후기를 보려면 
   // $User_ID = 320;
 
-  $출력값['result'] = array();
+
 
   $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Student_Review 
   on Class_Student_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID'  ";
@@ -375,7 +379,7 @@ if ($kind == 'feedback_teacher') {
   // 학생이 강사가 자신에게 쓴 후기가 필요할때 
   // $User_ID = 320;
 
-  $출력값['result'] = array();
+
 
   $countSql = "SELECT COUNT(*)AS cnt FROM Class_Add  join Class_Teacher_Review 
   on Class_Teacher_Review.class_register_id  = Class_Add.class_register_id  where Class_Add.user_id_student =  '$User_ID'  ";
