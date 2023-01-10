@@ -8,16 +8,15 @@
     <style>
         select:invalid { color: gray; }
     </style>
-    <script type="module" defer="defer" src="../classhistory.js"></script>
+    <!-- <script type="module" defer="defer" src="../classhistory.js"></script> -->
+    <script type="module" defer="defer" src="./classlist.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <script>        
         let key_user_name = "<?php echo $_GET['user_name']; ?>";
         let key_class_type = "<?php echo $_GET['class_type']; ?>";
         let key_class_name = "<?php echo $_GET['class_name']; ?>";
         let key_time_from = "<?php echo $_GET['time_from']; ?>";
-        let key_time_to = "<?php echo $_GET['time_to']; ?>";
-        // 수업 목록 json;
-        let classList_json;
+        let key_time_to = "<?php echo $_GET['time_to']; ?>";        
     </script>
 
     <body class="bg-gray-100 w-full">

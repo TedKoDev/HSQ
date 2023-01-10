@@ -1,7 +1,7 @@
+import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {changeSelectBtnStyle, getFilterInit} from "./pages.js";
 import {$, $_all} from "/utils/querySelector.js";
 // import {classList_json} from "../../classhistory.js";
-import {s3_url} from "../../../../commenJS/cookie_modules.js";
 
 
 export function classhistorylist($container) {
@@ -12,7 +12,7 @@ export function classhistorylist($container) {
     };
 
     this.render = () => {        
-
+        
         changeSelectBtnStyle($('#classList'), $_all(".historyType"));
         
 
@@ -20,7 +20,7 @@ export function classhistorylist($container) {
         // getFilterblock($('.filter'));
         $('.filter').classList.remove('hidden');
         // 수업 목록 표시
-        showClassList($container, classList_json);      
+        showClassList($container);      
 
     };
 
@@ -30,12 +30,12 @@ export function classhistorylist($container) {
 
 let week = new Array('일', '월', '화', '수', '목', '금', '토');
 // 담아온 수업 리스트 json 파싱해서 화면에 표시
-const showClassList = ($container, response) => {
+async function showClassList($container) {
 
     $container.innerHTML = "";
 
-    const classList = response.result;    
-
+    const classList = await getClasslist();       
+    
     // 값이 있을 경우에만 화면에 뿌려주기
     if (classList.length != 0) {
 
@@ -132,6 +132,65 @@ const showClassList = ($container, response) => {
 
     }
 }
+
+// 수업 목록 가져오기
+async function getClasslist() {
+    
+    const classType = $('.classType');
+    const className = $('.className');
+    const userName = $('.userName');
+    const classStart = $('.classStart');
+    const classEnd = $('.classEnd');
+
+    
+    let filterObject = {
+
+        token: getCookie(cookieName),
+        kind: "tclist",
+        class_reserve_check: "all", 
+    };
+    
+    
+    if (key_class_type != "") {
+        filterObject.filter_class_status_check = key_class_type;    
+        classType.value = key_class_type;
+    }
+    if (key_user_name != "") {
+        filterObject.filter_user_name = key_user_name;    
+        userName.value = key_user_name;
+        console.log(className);
+    }
+    if (key_class_name != "") {
+        filterObject.filter_class_name = key_class_name;
+        className.value = key_class_name;
+    }
+    if (key_time_from != "") {
+
+       filterObject.filter_class_resister_time_from = dayjs(key_time_from).valueOf();
+       classStart.value = key_time_from;
+    }
+    
+    if (key_time_to != "") {
+        filterObject.filter_class_resister_time_to = dayjs(key_time_to).valueOf();
+        classEnd.value = key_time_to;
+    }
+
+    console.log(filterObject);
+
+    const res = await fetch('/restapi/classinfo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(filterObject)
+    });    
+    
+    const classList_json = await res.json();      
+
+    return classList_json.result;
+}
+
+
 
 // 수업 상세 화면으로 이동
 function goClassDetail(class_id, user_id, url) {

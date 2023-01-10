@@ -6,3 +6,4 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
     new selectHistoryType($('#List'));   
   });
+
