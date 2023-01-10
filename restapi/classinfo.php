@@ -329,10 +329,10 @@ $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 
 // $kind = 'clist';
 // $clReserveCheck = 'all'; //안해도됨
 // $User_ID = 320; //학생의 userid
-$kind = 'tclist';
-$clReserveCheck = 'all'; //안해도됨
-$User_ID = 324; //학생의 userid
-$plus = 1; //안해도됨
+// $kind = 'tclist';
+// $clReserveCheck = 'all'; //안해도됨
+// $User_ID = 324; //학생의 userid
+// $plus = 1; //안해도됨
 // $user_id_teacher = 320;
 
 // 수업상세 출력인지 목록 출력인지 
