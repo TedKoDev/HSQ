@@ -51,10 +51,10 @@
                         for ($j = 0; $j < 7; $j++) {
                             $num = $num + 1;
                             ?>
-                            <div class = "schedule_block flex flex-col border-b-2 border-r-2 w-full py-1 text-gray-700 px-3 min-h-max"
+                            <div class = "schedule_block flex flex-col border-b-2 border-r-2 w-full py-1 text-gray-700 px-2"
                                 id = "<?php echo $num; ?>_block">
                                 <span class = "schedule_date text-sm" id = "<?php echo $num; ?>_date"></span>
-                                <div class = "schedule_list flex flex-col justify-center" id = "<?php echo $num; ?>_list">
+                                <div class = "schedule_list flex flex-col overflow-auto max-h-48" id = "<?php echo $num; ?>_list">
 
                                 </div>                                                                                             
                             </div>

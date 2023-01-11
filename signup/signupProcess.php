@@ -13,26 +13,33 @@
 // # 요청사항 
 // 회원가입 완료시  로그인 페이지로 이동 
 
-
-include("../conn.php"); 
+include("../conn.php");
 include("../jwt.php");
 
- file_get_contents("php://input")."<br/>";
- $name = json_decode(file_get_contents("php://input"))->{"user_name"};
- $email = json_decode(file_get_contents("php://input"))->{"user_email"};
- $password = json_decode(file_get_contents("php://input"))->{"password"};
- $utc = json_decode(file_get_contents("php://input"))->{"user_timezone"};
+require '../phpmailer/src/Exception.php';
+require '../phpmailer/src/PHPMailer.php';
+require '../phpmailer/src/SMTP.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+
+
+file_get_contents("php://input") . "<br/>";
+$name = json_decode(file_get_contents("php://input"))->{"user_name"};
+$email = json_decode(file_get_contents("php://input"))->{"user_email"};
+$password = json_decode(file_get_contents("php://input"))->{"password"};
+$utc = json_decode(file_get_contents("php://input"))->{"user_timezone"};
+$name = '홍태의';
+$email = 'hte9002@hotmail.com';
+$password = '12345678';
 
 date_default_timezone_set('Asia/Seoul');
 $time_now = date("Y-m-d H:i:s");
 
 // error_log("$time_now, $name, $email,$password \n", "3", "/php.log");
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-
-
-
 
 
 //아이디 중복 체크 
@@ -43,27 +50,23 @@ $checkresult = mysqli_query($conn, $check);
 //중복 값이 있는지 없는지 확인한다
 if ($checkresult->num_rows > 0) {
     // 중복값이 있을 때 실행할 내용
-   
-      $send["message"] = "no";
-      $send["message1"] = "no";
-    
+
+    $send["message"] = "no";
+    $send["message1"] = "no";
+
     echo json_encode($send);
     mysqli_close($conn);
-
-} else 
-{
+} else {
     // 값이 없을 때 실행할 내용
-
-
-
     $sql = " INSERT INTO User (user_email, user_password, user_name, user_google_key, user_facebook_key, user_meta_id, user_meta_nickname, user_active, user_register_date)
- VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null','0','0','0', NOW() )";
+     VALUES('{$email}', '{$hashedPassword}','{$name}', 'null', 'null','0','0','0', NOW() )";
     // echo $sql;
     $result = mysqli_query($conn, $sql);
     if ($result === false) {
         echo "저장에 문제가 생겼습니다. 관리자에게 문의해주세요.";
         echo mysqli_error($conn);
     } else {
+        echo '저장에 성공했습니다.';
 
 
         $sql = "SELECT * FROM User WHERE user_email = '{$email}'";
@@ -81,74 +84,98 @@ if ($checkresult->num_rows > 0) {
 
         $to      = $email; // Send email to our user
         $subject = 'Signup | Verification'; // Give the email a subject 
+
+
+        $link = sprintf('<a href="http://localhost/signup/signup_verify.php?email=%s&hash=%s">Verify your email address</a>', $email, $hashedPassword);
         $message = '
          
         Thanks for signing up!
-        Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.
+        Your account has been created, you can login with the following credentials after you have activated your account by pressing the url below.' . "<br/>" . '
          
-        ------------------------
-        Username: '.$name.'
-        Password: '.$password.'
-        ------------------------
+        ------------------------' . "<br/>" . '
+        Username: ' . $name . '' . "<br/>" . '
+        Password: ' . $password . '' . "<br/>" . '
+        ------------------------' . "<br/>" . '
          
-        Please click this link to activate your account:
-        localhost/signupvertifyProcess.php?email='.$email.'&hash='.$hashedPassword.'
+        Please click this link to activate your account:' . "<br/>" . '' . "<br/>" . '
+        ' . $link . "<br/>" . '
          
         '; // Our message above including the link
-                             
-        $headers = 'From:noreply@yourwebsite.com' . "\r\n"; // Set from headers
-        mail($to, $subject, $message, $headers); // Send our email
+        try {
+            $mail = new PHPMailer(true);
+            $mail->CharSet = "utf-8";   //한글이 안깨지게 CharSet 설정
+            $mail->Encoding = "base64";
+            $mail->isSMTP();
+            $mail->SMTPAuth = true;
+
+            $mail->Host = "smtp.gmail.com";
+            $mail->Username = "apswtrare@gmail.com";
+            $mail->Password = "caofvauzywfzrbxv";
+            $mail->Password = "caofvauzywfzrbxv";
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port = 465;
+            $mail->setFrom('apswtrare@gmail.com');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $message;
+
+            $mail->send();
+
+            echo '메일보내기정상일떄';
+            $data = array(
+
+                'success'           => "yes",
+                'user_name'           => $name
+            );
+            // echo json_encode($data);
+            // mysqli_close($conn);
+        } catch (Exception $e) {
+            echo '메일보내기 비정상일떄';
+            $data = array(
+
+                'success'           => "Message could not be sent . Mailer Error: {
+              $mail->ErrorInfo}"
+            );
+            // echo json_encode($data);
+            // mysqli_close($conn);;
+        }
 
 
+        // DB 정보 가져오기 
+        $sql = "SELECT * FROM User WHERE user_email = '{$email}'";
+        $result = mysqli_query($conn, $sql);
+
+        $row = mysqli_fetch_array($result);
+        $hashedPassword = $row['user_password'];
 
 
+        //토큰화를 base64인코딩을 진행 
+        $tokenemail = $row['user_email'];
+        $tokenemail = base64_encode($tokenemail);
+
+        $tokenuserid = $row['user_id'];
+        $tokenuserid = base64_encode($tokenuserid);
+
+        $tokenusername = $row['user_name'];
+        $name = $row['user_name'];
+        $tokenusername = base64_encode($tokenusername);
 
 
+        $jwt = new JWT();
 
-
-
-
-// DB 정보 가져오기 
-$sql = "SELECT * FROM User WHERE user_email = '{$email}'";
-$result = mysqli_query($conn, $sql);
-
-$row = mysqli_fetch_array($result);
-$hashedPassword = $row['user_password'];
-
-
-//토큰화를 base64인코딩을 진행 
- $tokenemail = $row['user_email'];
- $tokenemail = base64_encode($tokenemail);
-
- $tokenuserid = $row['user_id'];
- $tokenuserid = base64_encode($tokenuserid);
-
- $tokenusername = $row['user_name'];
- $name = $row['user_name'];
- $tokenusername = base64_encode($tokenusername);
-
-
-
-
-// DB 정보를 가져왔으니 
-// 비밀번호 검증 로직을 실행하면 된다.
-  $jwt = new JWT();
-
-    // 로그인 성공
-    // 토큰 생성  id, name, email 값 저장
-  
-    $token = $jwt->hashing(array(
-        'User_ID' => $tokenuserid,
-        'U_Name'  =>  $tokenusername,
-        'U_Email' => $tokenemail,      
-    ));
+        $token = $jwt->hashing(array(
+            'User_ID' => $tokenuserid,
+            'U_Name'  =>  $tokenusername,
+            'U_Email' => $tokenemail,
+        ));
 
         $send["token"] = "$token";
         $send["user_name"] = "$name";
         $send["success"] = "yes";
-        
+        $send["message"] =    $mailfail;
+        $send["mail"] =    $data;
         echo json_encode($send);
         mysqli_close($conn);
-
     }
 }

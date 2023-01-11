@@ -39,6 +39,8 @@ export function calendarInit(scheduleInfo) {
 
     async function renderCalender(thisMonth) {
 
+        console.log(dayjs(thisMonth).format('YYYY/MM/DD HH:mm:ss'));
+
         // 해당 array의 class_start_time 타임스탬프의 월을 가져온 뒤 currentMonth와 일치하는 array만 추출해서 새로운 array 만들기
         let monthSchedule = new Array();
         
@@ -46,7 +48,7 @@ export function calendarInit(scheduleInfo) {
         for (const schedule of allScheduleList) {            
 
             if (dayjs(parseInt(schedule.class_start_time)).get('month') == dayjs(thisMonth).get('month')) {
-                console.log("pas");
+                console.log(dayjs(parseInt(schedule.class_start_time)).format('YYYY/MM/DD HH:mm:ss'))
                 monthSchedule.push(schedule);
             }
         } 
@@ -117,7 +119,7 @@ export function calendarInit(scheduleInfo) {
 
             // 이번달의 경우 schedule_block의 value값에 날짜 세팅 (ex : 2022-12-05)
             let date_block = document.getElementById(num+"_block");
-            date_block.value = currentYear+"-"+(currentMonth+1)+"-"+('00'+i).slice(-2);
+            date_block.value = currentYear+"-"+('00'+(currentMonth+1)).slice(-2)+"-"+('00'+i).slice(-2);
 
             // 스케줄 리스트 넣을 div 선언
             let schedule_list_div = document.getElementById(num+"_list");
@@ -135,6 +137,8 @@ export function calendarInit(scheduleInfo) {
             for (const schedule of monthSchedule) {
 
                 if (dayjs(parseInt(schedule.class_start_time)).format('YYYY-MM-DD') == date_block.value) {
+
+                    console.log("pass");
 
                     const classId = schedule.class_register_id;                    
                     const teacherNmae = schedule.user_name;
@@ -167,7 +171,7 @@ export function calendarInit(scheduleInfo) {
                     }
                     // 완료된 수업일 경우
                     else if (status == 3) {
-                        schedule_item.classList.add('bg-violet-600');
+                        schedule_item.classList.add('bg-gray-600');
                     }
 
                     // 해당 수업 클릭 시 수업 id post로 전송하고 수업 상세 화면으로 이동

@@ -39,7 +39,13 @@ include("../jwt.php");
 file_get_contents("php://input") . "<br/>";
 
 $email = json_decode(file_get_contents("php://input"))->{"user_email"};
+
 $password = json_decode(file_get_contents("php://input"))->{"password"};
+
+// $email = 'ghdxodmleeee@naver.com';
+// $password = '12345678';
+
+
 
 
 //아이디 비교와 비밀번호 비교가 필요한 시점이다.
@@ -54,17 +60,34 @@ $result = mysqli_query($conn, $sql);
 
 $row = mysqli_fetch_array($result);
 $hashedPassword = $row['user_password'];
+$user_active = $row['user_active'];
+
+
+
+if ($user_active == 0) {
+
+    $message              = "비활성화된 계정입니다. 이메일을 확인하세요 .";
+    $user_active          = "0";
+    $send["message"]     =  $message;
+    $send["user_active"] =  $user_active;
+} else if ($user_active == 1) {
+
+    $message      = "활성화된 계정입니다.";
+    $user_active  = "1";
+    $send["message"] = $message;
+    $send["user_active"] =  $user_active;
+}
 
 
 //토큰화를 base64인코딩을 진행 
- $email = $row['user_email'];
+$email = $row['user_email'];
 $tokenemail = base64_encode($email);
 
- $userid = $row['user_id'];
+$userid = $row['user_id'];
 $tokenuserid = base64_encode($userid);
 
 
- $name = $row['user_name'];
+$name = $row['user_name'];
 $tokenusername = base64_encode($name);
 
 
@@ -90,19 +113,19 @@ $tokentimezone = base64_encode($timezone);
 // 비밀번호 검증 로직을 실행하면 된다.
 $jwt = new JWT();
 $passwordResult = password_verify($password, $hashedPassword);
-if ($passwordResult === true) {
+if ($passwordResult === true && $user_active == 1) {
     // 로그인 성공
     // 토큰 생성  id, name, email 값 저장
 
     $time = time();
     $token = $jwt->hashing(
         array(
-            'exp' => $time + (60*360), // 만료기간
+            'exp' => $time + (60 * 360), // 만료기간
             'iat' => $time, // 생성일
-              'User_ID' => $tokenuserid,
-        'U_Name'  =>  $tokenusername,
-        'U_Email' => $tokenemail,   
-        'TimeZone' => $tokentimezone 
+            'User_ID' => $tokenuserid,
+            'U_Name'  =>  $tokenusername,
+            'U_Email' => $tokenemail,
+            'TimeZone' => $tokentimezone
         )
     );
 
@@ -110,21 +133,17 @@ if ($passwordResult === true) {
     $send["token"] = "$token";
     $send["user_name"] = "$name";
     $send["success"] = "yes";
-
+    $send["message"] = $message;
+    $send["user_active"] =  $user_active;
     echo json_encode($send);
     mysqli_close($conn);
-
 } else {
     // 로그인 실패 
     $send["token"] = "no";
     $send["user_name"] = "no";
     $send["success"] = "no";
-
+    $send["message"] = $message;
+    $send["user_active"] =  $user_active;
     echo json_encode($send);
     mysqli_close($conn);
-
 }
-
-?>
-
-

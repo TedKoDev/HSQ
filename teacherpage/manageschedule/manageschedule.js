@@ -11,7 +11,8 @@ let timezone;
 let schedule_string;
 // 서버에서 받은 일정의 상태 (승인대기/미완료/완료/취소된 수업)
 let schedule_string_status;
-
+// 서버에서 받은 수업 시간의 상태 (0 : 없음, 30분 : 30분짜리 수업, 60분 : 60분짜리 수업)
+let schedule_class_time;
 // 모달창에서 수정할 때 일정 담긴 string을 배열로 변환하는 변수 선언
 let array_for_edit = new Array();
 
@@ -78,6 +79,8 @@ function getDate(header_date, timezone, for_modal) {
     now.setMinutes(0);
     now.setSeconds(0);
 
+    console.log(dayjs(now).format('YYYY/MM/DD HH:mm:ss'));
+
     // UTC 시간과의 차이 계산하고 적용 (UTC 시간으로 만들기 위해)
     const offset = (now.getTimezoneOffset()/60);
     now.setHours(now.getHours() + offset);
@@ -85,6 +88,8 @@ function getDate(header_date, timezone, for_modal) {
     // 날짜 표시하기 전에 받아온 타임존 적용 
     const string_to_int = parseInt(timezone);
     now.setHours(now.getHours() + string_to_int);
+
+    console.log(dayjs(now).format('YYYY/MM/DD HH:mm:ss'));
     
     // 현재 타임스탬프 전역 변수에 대입
     time = now.getTime();
@@ -201,6 +206,8 @@ function setDate_Value(header_s, for_modal) {
                     let add_dayjs = test_dayjs.set("m", 30*j);
                     // 체크박스의 value에 더한 값의 타임스탬프를 넣어주기
                     checkbox.setAttribute("value", add_dayjs.valueOf());
+
+                    // console.log(dayjs(add_dayjs).format('YYYY/MM/DD HH:mm:ss'));
                                                           
                     if (for_modal == "_m") {
 
@@ -237,11 +244,11 @@ async function setschedule(type, for_modal) {
     
     const response = await res.json();   
 
-    console.log(response);
+    // console.log(response);
     const check = response.success; 
     schedule_string = response.teacher_schedule_list;  
     schedule_string_status = response.teacher_schedule_list_status;
-      
+    schedule_class_time = response.schedule_time;
 
     // 값이 있을 경우에만 추출해서 대입
     if (check == "yes") {
@@ -249,6 +256,7 @@ async function setschedule(type, for_modal) {
         // 서버에서 받아온 string 배열로 변환
         const classList = schedule_string.split('_');
         const statusList = schedule_string_status.split('_');
+        const classTimeList = schedule_class_time.split('_');
 
         // 현재 모달창에서 체크하고 있는 배열 가져오기
         let check_array = new Array();
@@ -257,7 +265,7 @@ async function setschedule(type, for_modal) {
         // 디폴트로 일단 회색으로 칠해놓기
         let default_label = document.getElementsByName("schedule_label");
         for (label of default_label) {
-            label.style.backgroundColor = '#9CA3AF';
+            label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");
         }
         
 
@@ -279,13 +287,22 @@ async function setschedule(type, for_modal) {
     
                         // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
                         input.checked = true;
-                        label.style.backgroundColor = '#2563EB';
+                        label.classList.replace("bg-gray-400", "bg-blue-600"); 
 
                          // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하기
                         // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함
                         if (!(statusList[j] == 9 || statusList[j] == 2)) {
                                                                         
-                            label.style.backgroundColor = '#6B7280';                   
+                            if (classTimeList[j] == 60) {                        
+                                label.classList.replace("bg-blue-600", "bg-gray-600");
+                                const label_b_seq = parseInt(label.id.replace("_l", ""))+1;
+                                const label_b = document.getElementById(label_b_seq+"_l");     
+                                    
+                                label_b.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-600 text-white rounded border");                   
+                              }
+                              else {                         
+                                label.classList.replace("bg-blue-600", "bg-gray-600");                        
+                              }                      
                         }
                     }               
                 }
@@ -295,26 +312,34 @@ async function setschedule(type, for_modal) {
                 // 현재 체크하고 있는 array 개수만큼 반복문 돌려서 체크 (현재 편집중인 사항 표시하기 위해)
                 for (let z = 0; z < check_array.length; z++) {
                                                 
-                    if (input_i == check_array[z]) {
-                        
-                        // console.log("input_i : "+input_i);
-                        // console.log("test_array[j] : "+test_array[j]);
-                        
+                    if (input_i == check_array[z]) {                        
+                                             
                         let label = document.getElementById(i + type);
                         // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
                         let input = document.getElementById(i+"_m");
 
-                        input.checked = true;
-                        label.style.backgroundColor = '#2563EB';
-
+                        input.checked = true;                       
+                        label.classList.replace("bg-gray-400", "bg-blue-600"); 
                         // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하고 checkbox 비활성화
                         // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
                         if (!(statusList[z] == 9 || statusList[z] == 2)) {
-                                                                            
-                            label.style.backgroundColor = '#6B7280';      
-                            input.disabled = true;             
-                        }
+                                                    
+                            if (classTimeList[z] == 60) {                                 
+                                label.classList.replace("bg-blue-600", "bg-gray-600");                     
+                                const label_b_seq = parseInt(label.id.replace("_m_l", ""))+1;
+                                const label_b = document.getElementById(label_b_seq+"_m_l");         
+                                label_b.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-600 text-white rounded border");  
+                                
+                                const input_b_seq = parseInt(input.id.replace("_m", ""))+1;
+                                const input_b = document.getElementById(input_b_seq+"_m");        
+                                input_b.disabled = true;                                                 
                             }
+                            else {
+                                label.classList.replace("bg-blue-600", "bg-gray-600");                         
+                                input.disabled = true;             
+                            }                                        
+                        }
+                    }
                                 
                 }
             }            
@@ -331,31 +356,33 @@ function test_click(event) {
     
     let result = event.target.value;
 
+    console.log(dayjs(parseInt(result)).valueOf());
+    // console.log(dayjs(parseInt(result)).format('YYYY/MM/DD HH:mm:ss'));
+
     // 일정 편집일 경우
     if (event.target.name == "edit") {
 
         // 체크할 경우 배열에 추가
         if (event.target.checked) {
-            // result = event.target.value;
-                
-            label.style.backgroundColor = '#2563EB';
+           
+            label.classList.replace("bg-gray-400", "bg-blue-600");
     
             // 일정 저장을 위한 array에 해당 value 추가
             array_for_edit.push(result);    
 
-            console.log(array_for_edit);
+            // console.log(array_for_edit);
                 
         } 
         // 체크 풀를 경우 해당 인덱스 배열에서 제외
         else {        
-    
-            label.style.backgroundColor = '#9CA3AF';
-            
+              
+            label.classList.replace("bg-blue-600", "bg-gray-400");
+
             const delete_index = array_for_edit.indexOf(result)
                 
             array_for_edit.splice(delete_index, 1);
 
-            console.log(array_for_edit);
+            // console.log(array_for_edit);
             
         }
     }
@@ -363,19 +390,16 @@ function test_click(event) {
     else if (event.target.name == "upload"){
 
         if (event.target.checked) {
-            // result = event.target.value;
-                
-            label.style.backgroundColor = '#2563EB';
-    
+            
+            label.classList.replace("bg-gray-400", "bg-blue-600");
             // 일정 저장을 위한 array에 해당 value 추가
             array_for_upload.push(result);    
 
             console.log(array_for_upload);
                 
         } else {        
-    
-            label.style.backgroundColor = '#9CA3AF';
-            
+                
+            label.classList.replace("bg-blue-600", "bg-gray-400");
             const delete_index = array_for_upload.indexOf(result)
                 
             array_for_upload.splice(delete_index, 1);
@@ -698,3 +722,39 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 
+
+// 정규 일정 등록에서 드래그할 때 체크되도록 처리
+for (const label of document.querySelectorAll('.label_upload')) {
+
+    mouseMoveWhilstDown(label, function (event) { 
+
+        const label_id = event.target.id;        
+        const label = document.getElementById(label_id);                 
+        
+        const input_id = label_id.replace("_u_l", "_u");
+        const input = document.getElementById(input_id);
+
+        label.classList.replace("bg-gray-400", "bg-blue-600");
+        input.checked = true;
+        const value = input.value;
+
+        array_for_upload.push(value);  
+        
+     });
+}
+
+function mouseMoveWhilstDown(target, whileMove) {
+    let endMove = function () {
+
+        array_for_upload = [...new Set(array_for_upload)];        
+
+        window.removeEventListener('mousemove', whileMove);
+        window.removeEventListener('mouseup', endMove);        
+    };
+
+    target.addEventListener('mousedown', function (event) {
+        event.stopPropagation(); // remove if you do want it to propagate ..
+        window.addEventListener('mousemove', whileMove);
+        window.addEventListener('mouseup', endMove);   
+    });
+}

@@ -85,7 +85,8 @@ async function postToken(tokenValue) {
       // 프로필 이미지일 경우
       if (text == 'image') {
         
-        key.src = "../editprofile/image/"+value;
+        // key.src = "../editprofile/image/"+value;
+        key.src = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/Profile_Image/"+value;
       }
 
       else {
@@ -234,7 +235,7 @@ function submitForm() {
   })
   .then(
     alert("강사 등록되었습니다."),
-    location.replace('../teacherpage/t_myclass.php')    
+    location.replace('../myinfo/index.php')    
   );
 }
 

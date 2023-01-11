@@ -274,38 +274,64 @@
             </div>     
           </div>                          
         </div>   
-
-    </div>       
-    <!-- <custom-input id = ""></custom-input>
-
-    <template id = 'template1'>
-      <label class = "text-red-500">이메일 입력</label><input>
-    </template>
-
-    
-    <script>
-      class 클래스 extends HTMLElement {
-
-        constructor() {
-          super();
-          this.name = 'hihi';
-
-          console.log('constructor : '+this.name);
-
-          this.innerHTML = this.name;
-          this.append(template1.content.cloneNode(true))
-        }
-        connectedCallback() {
-
-          let 라벨 = document.createElement('label');
-          라벨.innerHTML = name;
-          this.appendChild(라벨);
-
-          
-        }       
-      }
-      customElements.define('custom-input', 클래스);
-    </script> -->
-      
+        <div id = "teacherInfo_div">
+          <div class = "text-base mt-8 px-4">강사 정보 
+            <span id = "language_return_btn" onclick = "language_return()" class = "hidden px-2 float-right font-semibold bg-gray-500 text-xs text-white
+                  hover:bg-gray-700 hover:text-white rounded-full border">돌아가기
+            </span>   
+          </div><br>
+          <div class = "flex-col w-full px-4 pt-4">
+            <div class = "flex justify-between items-center my-auto py-2">
+              <div class = "text-sm w-3/12">강사 소개</div>
+                <div id = "" class = "flex flex-col w-9/12 justify-between">
+                  <!-- 강사소개 수정 클릭 안했을 때 -->
+                  <div id = "t_introdiv_not_edit" class = "flex justify-between text-sm text-gray-500">
+                    <span id = "t_intro" class = "w-80"></span>                                   
+                    <span onclick = "editing_t_intro()" ><svg id = "t_intro_edit" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
+                      002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
+                    </span>
+                  </div>
+                  <!-- 강사소개 수정 클릭했을 때 -->
+                  <div id = "t_introdiv_click_edit" class = "hidden">
+                    <div><textarea rows = "5" id = "t_input_intro" class = "w-80 text-sm px-1 py-1 rounded border border-gray-200 mb-3"
+                    ></textarea></div>
+                    <button onclick = "edit_done_t_intro()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                    <button onclick = "edit_cancel_t_intro()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
+                  </div> 
+              </div>     
+            </div>
+          </div>
+          <div class = "flex justify-between my-auto mx-4 py-2">
+            <div class = "text-sm w-3/12">결제 링크</div>                             
+            <div id = "" class = "w-9/12">                            
+              <!-- 결제링크 수정 클릭 안했을 때 -->                           
+              <div id = "paymentdiv_not_edit" class = "flex justify-between text-sm text-gray-500">
+                <div id = "payment_div" class = "w-3/4 flex flex-col"></div>                                   
+                <span><svg id = "link_edit" onclick = "editing_link()" class="float-right w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 
+                  002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>                
+                </span>                                        
+              </div>             
+                                       
+              <!-- 결제링크 수정 클릭했을 때 -->                             
+              <div id = "paymentdiv_click_edit" class = "hidden flex-col">                               
+                <div id = "now_link_div" class = "flex flex-col"></div>
+                <input id = "input_link_div" class = "hidden text-sm text-gray-500 border shadow rounded-lg px-1 w-3/4"/>
+                <div class = "flex justify-between">
+                  <span id = "add_link" class = "text-sm" onclick="add_select_link()">+ 더 추가</span>
+                  <span id = "link_return_btn" onclick = "link_return()" class = "px-3 my-2 font-semibold bg-gray-500 text-xs text-white
+                    hover:bg-gray-700 hover:text-white rounded-full border">돌아가기
+                  </span> 
+                </div>     
+                <div class = "flex mt-2">
+                  <button id = "save_link_btn" onclick = "edit_done_link()" class = "hidden mr-3 py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
+                  <button id = "cancel_link_btn" onclick = "edit_cancel_link()" class = "hidden py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>
+                </div>                                
+              </div>   
+            </div>             
+          </div> 
+        </div>        
+    </div>          
     </body><br><br><br><br><br><br>
 </html>

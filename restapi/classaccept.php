@@ -9,8 +9,8 @@
 
 // 반환되는 값 
 // {"class_register_status":"approved",
-  // "class_register_answer_date":1671338833000,
-  // "success":"yes"}
+// "class_register_answer_date":1671338833000,
+// "success":"yes"}
 
 
 
@@ -40,9 +40,9 @@ $class_register_id      =   json_decode(file_get_contents("php://input"))->{"cla
 $class_register_status      =   json_decode(file_get_contents("php://input"))->{"class_register_status"}; // 
 error_log("$kind ,   $token,  $class_register_id,   $class_register_status, \n", "3", "../php.log");
 
-if($class_register_status == '1'){
+if ($class_register_status == '1') {
   $status = 'approved';
-} else if ($class_register_status == '2'){
+} else if ($class_register_status == '2') {
   $status = 'cancel';
 }
 
@@ -66,64 +66,60 @@ $schedule_list = $row3['schedule_list']; //수업일정
 
 
 
- $answerTime =    time();
- $class_register_answer_date =     $answerTime * 1000;
+$answerTime =    time();
+$class_register_answer_date =     $answerTime * 1000;
 //  $date = date('Y-m-d H:i:s', $answerTime);
 
 
-if($kind == 'teacher'){
+if ($kind == 'teacher') {
 
 
   $select2 = "UPDATE Teacher_Schedule INNER JOIN Class_Add ON Teacher_Schedule.user_id_teacher = Class_Add.user_id_teacher SET Teacher_Schedule.teacher_schedule_status = '$class_register_status', 
   Class_Add.class_register_status = '$class_register_status' , Class_Add.class_register_answer_date = '$class_register_answer_date'
   where Class_Add.class_register_id = '$class_register_id' and Class_Add.user_id_teacher = '$user_id_teacher' and Class_Add.schedule_list = '$schedule_list' and Teacher_Schedule.schedule_list = '$schedule_list' and Teacher_Schedule.user_id_teacher = '$user_id_teacher'";
-$response2 = mysqli_query($conn, $select2);
-mysqli_close($conn);
+  $response2 = mysqli_query($conn, $select2);
+  mysqli_close($conn);
 
 
 
 
 
- if ($response2) { //정상적으로 파일 저장되었을때 
-  $send["class_register_status"]   =  $status;
-  $send["class_register_answer_date"]   =  $class_register_answer_date;
-  $send["class_register_id"]   =  $class_register_id;
-
-  $send["success"]   =  "yes";
-  echo json_encode($send);
-
-} else {
-  $send["status"]   =  $status;
-  $send["class_register_answer_date"]   =  $class_register_answer_date;
-  $send["success"]   =  "no22";
-  echo json_encode($send);
- 
-}
-}else if($kind == 'student'){
+  if ($response2) { //정상적으로 파일 저장되었을때 
+    $send["class_register_status"]   =  $status;
+    $send["class_register_answer_date"]   =  $class_register_answer_date;
+    $send["class_register_id"]   =  $class_register_id;
+    $send["user_name"]   =  $U_Name;
+    $send["success"]   =  "yes";
+    echo json_encode($send);
+  } else {
+    $send["status"]   =  $status;
+    $send["class_register_answer_date"]   =  $class_register_answer_date;
+    $send["success"]   =  "no22";
+    $send["user_name"]   =  $U_Name;
+    echo json_encode($send);
+  }
+} else if ($kind == 'student') {
 
 
   $select = "UPDATE Teacher_Schedule INNER JOIN Class_Add ON Teacher_Schedule.user_id_teacher = Class_Add.user_id_teacher SET Teacher_Schedule.teacher_schedule_status = '$class_register_status', 
   Class_Add.class_register_status = '$class_register_status' , Class_Add.class_register_answer_date = '$class_register_answer_date'
   where Class_Add.class_register_id = '$class_register_id' and Class_Add.user_id_teacher = '$user_id_teacher' and Class_Add.schedule_list = '$schedule_list' and Teacher_Schedule.schedule_list = '$schedule_list' and Teacher_Schedule.user_id_teacher = '$user_id_teacher'";
-$response = mysqli_query($conn, $select);
-// mysqli_close($conn);
- 
- 
+  $response = mysqli_query($conn, $select);
+  // mysqli_close($conn);
+
+
   if ($response) { //정상적으로 파일 저장되었을때 
-   $send["class_register_status"]   =  $status;
-   $send["class_register_answer_date"]   =  $class_register_answer_date;
-   $send["class_register_id"]   =  $class_register_id;
-   $send["success"]   =  "yes";
-   echo json_encode($send);
- 
- } else {
-   $send["status"]   =  $status;
-   $send["class_register_answer_date"]   =  $class_register_answer_date;
-   $send["success"]   =  "no";
-   echo json_encode($send);
-  
- }
-
-
+    $send["class_register_status"]   =  $status;
+    $send["class_register_answer_date"]   =  $class_register_answer_date;
+    $send["class_register_id"]   =  $class_register_id;
+    $send["user_name"]   =  $U_Name;
+    $send["success"]   =  "yes";
+    echo json_encode($send);
+  } else {
+    $send["status"]   =  $status;
+    $send["class_register_answer_date"]   =  $class_register_answer_date;
+    $send["user_name"]   =  $U_Name;
+    $send["success"]   =  "no";
+    echo json_encode($send);
+  }
 }
- 

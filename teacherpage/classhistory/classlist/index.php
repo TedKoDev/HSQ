@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/dist/output.css" rel="stylesheet">
     </head>
+    <style>
+        select:invalid { color: gray; }
+    </style>
     <script type="module" defer="defer" src="../classhistory.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 
@@ -13,7 +16,7 @@
         let key_class_type = "<?php echo $_GET['class_type']; ?>";
         let key_class_name = "<?php echo $_GET['class_name']; ?>";
         let key_time_from = "<?php echo $_GET['time_from']; ?>";
-        let key_time_to = "<?php echo $_GET['time_to']; ?>";
+        let key_time_to = "<?php echo $_GET['time_to']; ?>";        
     </script>
 
     <body class="bg-gray-100 w-full">
@@ -32,10 +35,9 @@
                     <form action='/teacherpage/classhistory/classlist/' method='get'>
                         <div class="flex w-full">
                             <select
-                                class="classType text-gray-500 selectClassType w-1/3 px-1 py-1 rounded border border-gray-200 mb-3 mx-1"
-                                name="class_type">
-                                <option
-                                    class="text-gray-500"
+                                id = "selector" class="classType selectClassType w-1/3 px-1 py-1 rounded border border-gray-200 mb-3 mx-1"
+                                name="class_type" required>
+                                <option                                    
                                     value=""
                                     disabled="disabled"
                                     selected="selected"

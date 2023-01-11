@@ -44,7 +44,7 @@ Table User_Teacher.
  utspec  =   teacher_special (전문가 여부 ) 
  utdate  =   teacher_register_date (강사 신청일) 
 
-*/
+ */
 
 
 include("../conn.php");
@@ -102,33 +102,6 @@ $utagree      =   json_decode(file_get_contents("php://input"))->{"teacher_agree
 $utspec       =   json_decode(file_get_contents("php://input"))->{"teacher_special"};   // teacher_special (전문가 여부 ) 
 $utdate       =   json_decode(file_get_contents("php://input"))->{"teacher_register_date"};   // teacher_register_date (강사 신청일) 
 
-// $uemail       =  1;  // user_email (Email)
-// $uname        =  1;  // user_name (이름)
-// $uchar        =  1;  // user_character (메타버스 캐릭터)
-// $uactive      =  1;  // user_active (활성화 여부)
-// $udate        =  1;  // user_register_date (최초등록일시)
-
-// $udimg        =  1;  // user_img (이미지)
-// $udbday       =  1;  // user_birthday (생일)
-// $udsex        =  1;  // user_sex (성별)
-// $udcon        =  1;  // user_contact (연락처)
-// $udcoun       =  1;  // user_country (국적)
-// $udresi       =  1;  // user_residence (거주지)
-// $udlang       =  1;  // user_language (사용가능언어)
-// $udkore       =  1;  // user_korean (한국어수준)
-// $udtadd       =  1;  // teacher_register_check (강사신청여부)
-// $udintro      =  1;  // user_intro (자기소개)
-// $udtz         =  1;  // user_timezone (사용자 타임존) 
-
-// $utintro      =  1;  // teacher_intro (강사 자기소개)
-// $utcerti      =  1;  // teacher_certification (자격증정보)
-// $utagree      =  1;  // teacher_agreement (강사 허가 여부) 
-// $utspec       =  1;  // teacher_special (전문가 여부 ) 
-// $utdate       =  1;  // teacher_register_date (강사 신청일) 
-
-
-
-
 
 
 $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
@@ -146,8 +119,8 @@ if ($kind == 'udetail') {
 
 
   $list = array();
-     array_push($list, 'User.user_id');
- 
+  array_push($list, 'User.user_id');
+
   if ($uemail != null) {
     array_push($list, 'User.user_email');
   }
@@ -160,58 +133,58 @@ if ($kind == 'udetail') {
   if ($uactive != null) {
     array_push($list, 'User.user_active');
   }
-   if ($udate != null) {
+  if ($udate != null) {
     array_push($list, 'User.user_register_date');
   }
-   if ($udimg != null) {
+  if ($udimg != null) {
     array_push($list, 'User_Detail.user_img');
   }
-   if ($udbday != null) {
+  if ($udbday != null) {
     array_push($list, 'User_Detail.user_birthday');
   }
-   if ($udsex != null) {
+  if ($udsex != null) {
     array_push($list, 'User_Detail.user_sex');
   }
-   if ($udcon != null) {
+  if ($udcon != null) {
     array_push($list, 'User_Detail.user_contact');
   }
-   if ($udcoun != null) {
+  if ($udcoun != null) {
     array_push($list, 'User_Detail.user_country');
   }
-   if ($udresi != null) {
+  if ($udresi != null) {
     array_push($list, 'User_Detail.user_residence');
   }
-   if ($udlang != null) {
+  if ($udlang != null) {
     array_push($list, 'User_Detail.user_language');
   }
-   if ($udkore != null) {
+  if ($udkore != null) {
     array_push($list, 'User_Detail.user_korean');
   }
-   if ($udtadd != null) {
+  if ($udtadd != null) {
     array_push($list, 'User_Detail.teacher_register_check');
   }
-   if ($udintro != null) {
+  if ($udintro != null) {
     array_push($list, 'User_Detail.user_intro');
   }
-   if ($udtz != null) {
+  if ($udtz != null) {
     array_push($list, 'User_Detail.user_timezone');
   }
-   if ($utintro != null) {
+  if ($utintro != null) {
     array_push($list, 'User_Teacher.teacher_intro');
   }
-   if ($utcerti != null) {
+  if ($utcerti != null) {
     array_push($list, 'User_Teacher.teacher_certification');
   }
-   if ($utagree != null) {
+  if ($utagree != null) {
     array_push($list, 'User_Teacher.teacher_agreement');
   }
-   if ($utspec != null) {
+  if ($utspec != null) {
     array_push($list, 'User_Teacher.teacher_special');
   }
-   if ($utdate != null) {
+  if ($utdate != null) {
     array_push($list, 'User_Teacher.teacher_register_date');
   }
- 
+
 
   $string = implode(",", $list);
 
@@ -230,28 +203,25 @@ if ($kind == 'udetail') {
 
 
 
-  
+
   $row1 = mysqli_fetch_array($response1);
 
 
   foreach ($response1 as $key) {
-      
-  
+
+
     // echo key($key); // 키
     // echo current($key); // 값
     // $clid = current($key); // 값
-   
-      array_push($result1['result'], $key);
+
+    array_push($result1['result'], $key);
   }
 
 
 
   echo json_encode($result1);
   mysqli_close($conn);
-
-
-
-}  else if ($kind == 'ulist') {
+} else if ($kind == 'ulist') {
   //필요한 값이 fusid 이면  
 
 
@@ -263,8 +233,8 @@ if ($kind == 'udetail') {
 
 
   $list = array();
-     array_push($list, 'User.user_id');
- 
+  array_push($list, 'User.user_id');
+
   if ($uemail != null) {
     array_push($list, 'User.user_email');
   }
@@ -277,58 +247,58 @@ if ($kind == 'udetail') {
   if ($uactive != null) {
     array_push($list, 'User.user_active');
   }
-   if ($udate != null) {
+  if ($udate != null) {
     array_push($list, 'User.user_register_date');
   }
-   if ($udimg != null) {
+  if ($udimg != null) {
     array_push($list, 'User_Detail.user_img');
   }
-   if ($udbday != null) {
+  if ($udbday != null) {
     array_push($list, 'User_Detail.user_birthday');
   }
-   if ($udsex != null) {
+  if ($udsex != null) {
     array_push($list, 'User_Detail.user_sex');
   }
-   if ($udcon != null) {
+  if ($udcon != null) {
     array_push($list, 'User_Detail.user_contact');
   }
-   if ($udcoun != null) {
+  if ($udcoun != null) {
     array_push($list, 'User_Detail.user_country');
   }
-   if ($udresi != null) {
+  if ($udresi != null) {
     array_push($list, 'User_Detail.user_residence');
   }
-   if ($udlang != null) {
+  if ($udlang != null) {
     array_push($list, 'User_Detail.user_language');
   }
-   if ($udkore != null) {
+  if ($udkore != null) {
     array_push($list, 'User_Detail.user_korean');
   }
-   if ($udtadd != null) {
+  if ($udtadd != null) {
     array_push($list, 'User_Detail.teacher_register_check');
   }
-   if ($udintro != null) {
+  if ($udintro != null) {
     array_push($list, 'User_Detail.user_intro');
   }
-   if ($udtz != null) {
+  if ($udtz != null) {
     array_push($list, 'User_Detail.user_timezone');
   }
-   if ($utintro != null) {
+  if ($utintro != null) {
     array_push($list, 'User_Teacher.teacher_intro');
   }
-   if ($utcerti != null) {
+  if ($utcerti != null) {
     array_push($list, 'User_Teacher.teacher_certification');
   }
-   if ($utagree != null) {
+  if ($utagree != null) {
     array_push($list, 'User_Teacher.teacher_agreement');
   }
-   if ($utspec != null) {
+  if ($utspec != null) {
     array_push($list, 'User_Teacher.teacher_special');
   }
-   if ($utdate != null) {
+  if ($utdate != null) {
     array_push($list, 'User_Teacher.teacher_register_date');
   }
- 
+
   $string = implode(",", $list);
 
   $result1['result'] = array();
@@ -344,7 +314,7 @@ if ($kind == 'udetail') {
   $response1 = mysqli_query($conn, $sql);
 
   foreach ($response1 as $key) {
-  
+
     array_push($result1['result'], $key);
   }
   // echo json_encode($result4);
@@ -352,8 +322,7 @@ if ($kind == 'udetail') {
 
 
 
-$result1["success"] = "1";
-echo json_encode($result1);
-mysqli_close($conn);
-
+  $result1["success"] = "1";
+  echo json_encode($result1);
+  mysqli_close($conn);
 }

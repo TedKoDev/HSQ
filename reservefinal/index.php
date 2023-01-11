@@ -31,11 +31,11 @@
         <!-- 결제 정보 -->
         <br>
         <div></div>
-        <div class = "bg-gray-50 w-1/3 py-4 mx-auto rounded-lg shadow">
+        <div class = "bg-gray-50 w-72 py-4 mx-auto rounded-lg shadow">
             <div class = "flex flex-col ">
                 <div class = "flex justify-between w-4/5 mx-auto">
-                    <img id = "timg" class = "mx-1 w-20 h-20 border-2 border-gray-900 rounded-full" src = "../images_forHS/userImage_default.png"></img>
-                    <div class = "flex flex-col mx-1 ">
+                    <img id = "timg" class = "mx-1 w-16 h-16 border-2 border-gray-900 rounded-full" src = "../images_forHS/userImage_default.png"></img>
+                    <div class = "flex flex-col mx-1 w-2/3">
                         <div id = "tname" class = "font-semibold">강사 이름</div>
                         <div>-</div>
                         <div id = "clname" class = "my-1">수업 이름</div>

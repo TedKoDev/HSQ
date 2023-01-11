@@ -13,7 +13,7 @@
 //  "desc"     : "내용" 
 // }
 
-//항목 
+//position 키값 
 //이미지     -  "p_img"   
 //이름       -  "name"
 //생일       -  "bday"
@@ -25,6 +25,7 @@
 //한국어수준 -  "korean"
 //자기소개   -  "intro"
 //강사자기소개   -  "teacher_intro"
+//강사결제링크   -  "payment_link"
 
 //시간대 - "utc"
 
@@ -46,13 +47,25 @@ $jwt = new JWT();
 file_get_contents("php://input") . "<br/>";
 $token = json_decode(file_get_contents("php://input"))->{"token"}; // 토큰 
 $position = json_decode(file_get_contents("php://input"))->{"position"}; //항목
+// $position = 'payment_link'; //항목
 $desc = json_decode(file_get_contents("php://input"))->{"class_description"};  //내용
+// $desc = array("1671667200000", "1671753600000");  //내용
+// $filter_date       =  ;
+
+// date_default_timezone_set('Asia/Seoul');
+// $time_now = date("Y-m-d H:i:s");
 
 
-date_default_timezone_set('Asia/Seoul');
-$time_now = date("Y-m-d H:i:s");
+if ($desc != null) {
+    $answer =  "값있음";
+}
+if ($desc == null) {
+    $answer =   "값없음";
+}
 
-error_log("$time_now, $position, $desc\n", "3", "/php.log");
+
+
+
 
 
 
@@ -70,11 +83,12 @@ $payload = json_decode($parted[1], true);
 
 $user_id    =   base64_decode($payload['User_ID']);
 
+
 $user_name  = base64_decode($payload['U_Name']);
 
 $U_Email    =  base64_decode($payload['U_Email']);
 
-error_log("$time_now, $user_id, $user_name, $U_Email \n", "3", "/php.log");
+// error_log("$time_now, $user_id, $user_name, $U_Email \n", "3", "/php.log");
 
 
 
@@ -88,12 +102,8 @@ $checkresult = mysqli_query($conn, $check);
 
 
 // U_D에 해당 user _ID로 등록된것이 있는지  확인
-if ($checkresult->num_rows <1) {
-    date_default_timezone_set('Asia/Seoul');
-    $time_now = date("Y-m-d H:i:s");
-    error_log("$time_now,'???', $user_id, $user_name, $U_Email \n", "3", "../php.log");
-    // error_log("$time_now, 's'\n", "3", "../php.log");
-    
+if ($checkresult->num_rows < 1) {
+
     // 중복값이 없을때 때 실행할 내용
     // 없으면 insert로  data 만들고  
     // 아래의 update로 data 삽입 
@@ -106,11 +116,6 @@ if ($checkresult->num_rows <1) {
     // mysqli_close($conn);
 }
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 840d2b340c6718220355d7007cd3d0d50c58f4fd
 
 // 있으면 update 시작 
 
@@ -118,44 +123,12 @@ if ($checkresult->num_rows <1) {
 
 
 // data update 부분 
-//프로필이미지 변경
-//$desc 가 '프로필이미지'인경우 
-if ($position === "p_img") {
-  
-
-    //인스턴스내 www/html/image 폴더 내에 이미지 저장됨 (임시 추후 S3로 변경할 예정)
-    // image 저장되는 루트 
-    $saveroot = "image"; // 저장되는 루트 
-
-    $imagestore = rand() . "_" . time() . ".jpeg";
-    $saveroot = $saveroot . "/" . $imagestore;
-    file_put_contents($saveroot, base64_decode($desc));
-
-
-
-    $select = "UPDATE User_Detail SET U_D_Img = '$imagestore' where user_id = '$user_id' ";
-
-    $response = mysqli_query($conn, $select);
-
-
-
-
-    if ($response) { //정상적으로 이미지가 저장되었을때 
-        $send["position"]   =  "p_img";
-        $send["success"]   =  "yes";
-        echo json_encode($send);
-        mysqli_close($conn);
-    } else {
-        $send["position"]   =  "p_img";
-        $send["success"]   =  "no";
-        echo json_encode($send);
-        mysqli_close($conn);
-    }
-}//이름변경
+//이름변경
 //$desc 가 '이름'인경우 
-else if ($position === "name") {
+if ($position === "name") {
 
-
+    $user_name = mysqli_real_escape_string($conn, $desc);
+    // $select = "UPDATE User SET user_name = '$desc' where user_id = '$user_id' ";
     $select = "UPDATE User SET user_name = '$desc' where user_id = '$user_id' ";
 
 
@@ -175,9 +148,9 @@ else if ($position === "name") {
         echo json_encode($send);
         mysqli_close($conn);
     }
-}//생일변경
+} //생일변경
 //$desc 가 '생일'인경우 
- else if ($position === "bday") {
+else if ($position === "bday") {
     $select = "UPDATE User_Detail SET user_birthday = '$desc' where user_id = '$user_id' ";
 
 
@@ -197,11 +170,9 @@ else if ($position === "name") {
         echo json_encode($send);
         mysqli_close($conn);
     }
-
-
-}//성별변경
+} //성별변경
 //$desc 가 '성별'인경우 
- else if ($position === "sex") {
+else if ($position === "sex") {
     $select = "UPDATE User_Detail SET user_sex = '$desc' where user_id = '$user_id' ";
 
 
@@ -221,12 +192,9 @@ else if ($position === "name") {
         echo json_encode($send);
         mysqli_close($conn);
     }
-
-
-    
-}//연락처 변경
+} //연락처 변경
 //$desc 가 '연락처'인경우 
- else if ($position === "contact") {
+else if ($position === "contact") {
     $select = "UPDATE User_Detail SET user_contact = '$desc' where user_id = '$user_id' ";
 
 
@@ -290,12 +258,9 @@ else if ($position === "residence") {
         echo json_encode($send);
         mysqli_close($conn);
     }
-
-
-
-}//사용가능언어변경
+} //사용가능언어변경
 //$desc 가 '사용가능언어'인경우 
- else if ($position === "language") {
+else if ($position === "language") {
     $select = "UPDATE User_Detail SET user_language = '$desc' where user_id = '$user_id' ";
 
 
@@ -315,7 +280,6 @@ else if ($position === "residence") {
         echo json_encode($send);
         mysqli_close($conn);
     }
-
 } //한국어수준변경
 //$desc 가 '한국어수준'인경우 
 else if ($position === "korean") {
@@ -407,7 +371,60 @@ else if ($position == "teacher_intro") {
         echo json_encode($send);
         mysqli_close($conn);
     }
+} // 강사 결제 링크 수정 
+//$desc 가 'teacher_intro '인경우 
+else if ($position == "payment_link") {
+
+    $payment_link_array = array(); //검사 해야할 시간 기준 
+
+
+    // echo json_encode($desc);
+
+    //sql delete
+    if ($desc != null) {
+        $select = "DELETE FROM Payment_Link where user_id_payment = '$user_id' ";
+        $response = mysqli_query($conn, $select);
+        $send["desc"]   =  "값있음";
+        $send["desc1"]   =  $desc;
+    }
+    if ($desc == null) {
+        $send["desc"]   =  "값없음";
+    }
+    // $decoded_array = json_decode($desc, true);
+    // // payment_link 키값으로 val 값 배열에서 꺼내기
+
+
+    error_log("'11', $position,  $paymen_value \n", "3", "./php.log");
+
+
+    foreach ($desc as $element) {
+        foreach ($element as $key => $value) {
+            //   echo  $value . "\n";
+            error_log("'11', $value \n", "3", "./php.log");
+
+            $result = "INSERT INTO Payment_Link (user_id_payment, payment_link) VALUES ('$user_id','$value') ";
+
+            $response = mysqli_query($conn, $result);
+        }
+    }
+
+
+
+
+
+    if ($response) { //정상적으로 이름이 저장되었을때 
+        $send["position"]   =  "payment_link";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        mysqli_close($conn);
+    } else {
+        $send["position"]   =  "payment_link";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+        mysqli_close($conn);
+    }
 }
+
 
 
 //2022.12.14 대공사 수정완료 db 테이블 칼럼 및  입출 변수 수정완료 .

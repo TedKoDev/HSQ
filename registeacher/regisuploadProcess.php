@@ -20,7 +20,23 @@
 
 include("../conn.php");
 include("../jwt.php");
+require '../aws/aws-autoloader.php';
 
+
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+use Aws\S3\MultipartUploader;
+use Aws\Exception\MultipartUploadException;
+
+
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => 'ap-northeast-2',
+    'credentials' => [
+        'key'    => 'AKIAWBRH4IMAJ3QJ45UC',
+        'secret' => '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',
+    ]
+]);
 
 $jwt = new JWT();
 
@@ -125,9 +141,45 @@ if (isset($_POST['teacher_certification'])) {
 
 
 
+//결제링크 (결제링크)
+
+if (isset($_POST['payment_link'])) {
+
+    $payment_link = $_POST['payment_link'];
+
+
+
+    foreach ($payment_link as $val) {
+        // echo $val;
+
+
+        $result = "INSERT INTO Payment_Link (user_id_payment, payment_link) VALUES ('$User_ID','$val') ";
+
+        $response = mysqli_query($conn, $result);
+    }
+
+
+
+
+    if ($response) { //정상적으로 Payment_Link 저장되었을때 
+        $send["position"]   =  "Payment_Link";
+        $send["success"]   =  "yes";
+        echo json_encode($send);
+        $check2 = 1;
+    } else {
+        $send["position"]   =  "Payment_Link";
+        $send["success"]   =  "no";
+        echo json_encode($send);
+    }
+}
+
+
+
 
 
 //첨부파일 
+
+
 
 if (isset($_FILES['img'])) {
 
@@ -154,8 +206,27 @@ if (isset($_FILES['img'])) {
 
             // Moving files to zip.
             $zip->addFromString($_FILES['img']['name'][$i], file_get_contents($_FILES['img']['tmp_name'][$i]));
+
+            // // moving files to the target folder.
+            // move_uploaded_file($_FILES['img']['tmp_name'][$i], './uploads/' . $newname);
         }
         $zip->close();
+
+
+
+        $s3_path = 'Teacher_Request_File/' . $zip_name2; // 업로드할 위치와 파일명 입니다.               
+
+        $file_data = $zip_name1; // Form 전송을 통해 받은 데이터 입니다.
+        $result = $s3Client->putObject(array(
+            'Bucket' => 'hangle-square',
+            'Key'    => $s3_path,
+            'SourceFile' => $file_data,
+
+        ));
+
+        unlink($zip_name1);
+
+
 
         // Create HTML Link option to download zip
         // $success = basename($zip_name1);
@@ -163,8 +234,9 @@ if (isset($_FILES['img'])) {
         $error = '<strong>Error!! </strong> Please select a file.';
     }
 
+    $q = 'https://hangle-square.s3.ap-northeast-2.amazonaws.com/' . $s3_path;
 
-    $select = "UPDATE User_Teacher SET U_T_FILE = '$zip_name2' where User_Id = '$User_ID'";
+    $select = "UPDATE User_Teacher SET teacher_file = '$q'  where user_id = '$User_ID'";
     $result8 = mysqli_query($conn, $select);
 
 

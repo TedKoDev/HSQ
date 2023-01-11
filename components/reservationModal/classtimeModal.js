@@ -45,7 +45,7 @@ async function getclassPrice_tm() {
     const body = {
 
         kind: 'cdetail',
-        class_id: classid,          
+        class_id: C_id,          
         class_price: 1
     };
     const res = await fetch('../restapi/classinfo.php', {
@@ -54,12 +54,14 @@ async function getclassPrice_tm() {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
-    });
+    });   
 
     const response = await res.json();
     const result = response.result[0];
     const price30 = result.tp[0];
     const price60 = result.tp[1];
+
+    console.log(result);
 
     // 가격 대입
     price30_1.innerHTML = price30+" $";
@@ -118,19 +120,23 @@ function classtimeClick(price_and_number, price) {
             
             if (price_and_number.getAttribute("name") == "30_1") {
                 string = "30분 - 1회";      
-                localStorage.setItem("class_times", 1);          
+                localStorage.setItem("class_times", 1);        
+                select_class_time = 30;                
             }
             else if (price_and_number.getAttribute("name") == "30_5") {
                 string = "30분 - 5회";    
                 localStorage.setItem("class_times", 5);      
+                select_class_time = 30;     
             }
             else if (price_and_number.getAttribute("name") == "60_1") {
                 string = "60분 - 1회";    
-                localStorage.setItem("class_times", 1);      
+                localStorage.setItem("class_times", 1);     
+                select_class_time = 60;      
             }
             else if (price_and_number.getAttribute("name") == "60_5") {
                 string = "60분 - 5회"; 
-                localStorage.setItem("class_times", 5);        
+                localStorage.setItem("class_times", 5);       
+                select_class_time = 60;      
             }
 
             name.innerHTML = string;

@@ -35,6 +35,9 @@ let timezone;
 let schedule_string;
 // 서버에서 받은 일정의 상태 (승인대기/미완료/완료/취소된 수업)
 let schedule_string_status;
+// 서버에서 받은 수업 시간의 상태 (0 : 없음, 30분 : 30분짜리 수업, 60분 : 60분짜리 수업)
+let schedule_class_time;
+
 // 모달창에서 수업 신청할 때 일정 담긴 string을 배열로 변환하는 변수 선언
 let array_for_edit = new Array();
 // 타임스탬프 담을 전역 변수 선언
@@ -60,7 +63,7 @@ async function getSchedule(teacher_id, tokenvalue) {
   // 로컬 타임존도 보내기
   const date = new Date();    
   const utc = -(date.getTimezoneOffset() / 60);  
-
+  
   const body = {
     
     user_id_teacher : teacher_id,
@@ -77,7 +80,7 @@ async function getSchedule(teacher_id, tokenvalue) {
   });  
 
   const response = await res.json(); 
-  
+
   console.log(response);
 
   if (response.success == "yes") {
@@ -86,11 +89,12 @@ async function getSchedule(teacher_id, tokenvalue) {
     schedule_string = response.teacher_schedule_list;
     // 일정의 상태 대입
     schedule_string_status = response.teacher_schedule_list_status;  
+    // 수업 시간의 상태 대입
+    schedule_class_time = response.schedule_time;
     // 전역으로 선언한 timezone 값 대입
-    timezone = response.user_timezone;
+    timezone = response.user_timezone;   
 
-    console.log("STRING : "+schedule_string);
-
+    console.log(schedule_class_time)
     // 세팅
     // header_s : (모달창이 아닌)웹페이지에 있는 날짜
     // timezone : 받아온 시간대 or 로컬 시간대
@@ -252,14 +256,13 @@ function setDate_Value(header_s, for_modal) {
 // 일정 등록에 세팅하는 함수
 async function setschedule(type, for_modal, schedule_string) {      
 
-    console.log("yes");
-    // let test_string = "54_62_88";
-
     // 서버에서 받아온 string 배열로 변환
     const scheduleList = schedule_string.split('_');
     // 일정의 상태 배열로 변환
     const statusList = schedule_string_status.split('_');
-    
+    // 수업 시간 배열로 전환
+    const classTimeList = schedule_class_time.split('_');
+
 
     // 현재 모달창에서 체크하고 있는 배열 가져오기
     let check_array = new Array();
@@ -268,7 +271,8 @@ async function setschedule(type, for_modal, schedule_string) {
     // 디폴트로 일단 회색으로 칠해놓기
     let default_label = document.getElementsByName("schedule_label");
     for (label of default_label) {
-        label.style.backgroundColor = '#9CA3AF';
+      label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");
+      
     }
     
 
@@ -284,22 +288,31 @@ async function setschedule(type, for_modal, schedule_string) {
 
             for (let j = 0; j < scheduleList.length; j++) {
                             
-                if (input_i == scheduleList[j]) {                                      
-                                                                         
-                    label.style.backgroundColor = '#2563EB';
+                if (input_i == scheduleList[j]) {                                   
+                                                                      
+                    label.classList.replace("bg-gray-400", "bg-blue-600"); 
 
                     // 예약 불가능한 상태일 경우 색깔 다른색으로 칠하기
                     // 9 : 예약 가능한 상태. 2 : 수업 취소된 상태 -> 9나 2가 아닐 경우 수업 신청 못함                    
                     if (!(statusList[j] == 9 || statusList[j] == 2)) {
-                                                                      
-                      label.style.backgroundColor = '#6B7280';                   
+                               
+                      if (classTimeList[j] == 60) {                        
+                        label.classList.replace("bg-blue-600", "bg-gray-600");
+                        const label_b_seq = parseInt(label.id.replace("_l", ""))+1;
+                        const label_b = document.getElementById(label_b_seq+"_l");     
+                            
+                        label_b.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-600 text-white rounded border");                   
+                      }
+                      else {                         
+                        label.classList.replace("bg-blue-600", "bg-gray-600");                        
+                      }                                      
                     }
                 }               
             }
             // 현재 시간 이전 날짜일 경우에는 디폴트 색인 회색으로 두기
             if(checkNow_forSchedule(input_i)) {
                 
-              label.style.backgroundColor = '#9CA3AF';
+              label.setAttribute("class", "label_sm px-3 py-1 mx-auto w-full h-5 font-semibold bg-gray-400 text-white rounded border");
             } 
         }
         // 모달창이면 서버에서 받아온거 바로 뿌려주지 말고 모달창 켰을 때 담은 배열에 있는값들 뿌려주기
@@ -307,17 +320,14 @@ async function setschedule(type, for_modal, schedule_string) {
             // 현재 체크하고 있는 array 개수만큼 반복문 돌려서 체크 (현재 편집중인 사항 표시하기 위해)
             for (let z = 0; z < check_array.length; z++) {
                                             
-                if (input_i == check_array[z]) {
+                if (input_i == check_array[z]) {                                       
                     
-                    // console.log("input_i : "+input_i);
-                    // console.log("test_array[j] : "+test_array[j]);
-                    
-                    let label = document.getElementById(i + type);
-                    // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
-                    let input = document.getElementById(i+"_m");
+                    // let label = document.getElementById(i + type);
+                    // // 모달창에 있는 값들은 check로 표시해놓기 (메인 화면은 그냥 보여주는 용도이므로 굳이 check로 표시할 필요 없음)
+                    // let input = document.getElementById(i+"_m");
 
-                    input.checked = true;
-                    label.style.backgroundColor = '#2563EB';
+                    // input.checked = true;
+                    // label.style.backgroundColor = '#2563EB';
                 }
                             
             }
@@ -429,9 +439,7 @@ function checkNow_forSchedule(value) {
   }
 }
 
-async function getClassinfo(C_id) {
-
-    console.log("class_id : "+C_id);
+async function getClassinfo(C_id) {    
 
     const body = {
     
@@ -458,8 +466,6 @@ async function getClassinfo(C_id) {
     // console.log(response.result);
 
     const result = response.result[0];
-
-    // console.log(result);
 
     const clname = result.class_name;
     const cldisc = result.class_description;
@@ -528,7 +534,7 @@ async function getTeacherinfo(U_id) {
 
     const response = await res.json();    
         
-    // console.log(response);
+    console.log(response);
 
     const result = response.result[0];
 

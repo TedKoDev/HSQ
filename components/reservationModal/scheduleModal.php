@@ -39,7 +39,8 @@
                                 <a class = "bg-gray-500 rounded-full px-1 py-1 ml-2"></a>
                                 <span class = "mx-1">예약됨</span>   
                             </div>                    
-                        </div>
+                        </div>      
+                        <!-- <div class = "test">테스트</div>                   -->
                         <div class="flex ml-auto">
                             <button id = "beforeDate_btn_cs" onclick = "change_schedule_sm('before', 'header_s_sm', '_sm_l', '_sm')" class = "disabled: border-2 border-gray-200 bg-gray-200 text-gray-50 px-1 py-1 rounded ml-1 mr-1">이전</button>
                             <button id = "afterDate_btn_cs" onclick = "change_schedule_sm('after', 'header_s_sm', '_sm_l', '_sm')" class = "border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 px-1 py-1 rounded ml-1 mr-1">다음</button>
@@ -89,10 +90,10 @@
                                             $num = $num + 1; 
                                         ?>
                                             <div class="flex items-center w-20">
-                                                <input
+                                                <input                                                    
                                                     type="checkbox"
                                                     id="<?php echo $num; ?>_sm"
-                                                    name=""
+                                                    name="uncheck"
                                                     value="<?php echo $num; ?>"
                                                     class="hidden"  
                                                     onclick = "scheduleClick(this);"                                                  

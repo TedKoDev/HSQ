@@ -32,7 +32,7 @@ $jwt = new JWT();
 // 토큰값, 항목,내용   전달 받음 
 file_get_contents("php://input") . "<br/>";
 // 토큰 
-$token      =   json_decode(file_get_contents("php://input"))->{"token"}; 
+$token      =   json_decode(file_get_contents("php://input"))->{"token"};
 
 
 
@@ -49,10 +49,10 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'].'</br>';
+// $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '$User_ID'";
+// $response1 = mysqli_query($conn, $sql);
+// $row1 = mysqli_fetch_array($response1); 
+// $timezone = $row1['0'].'</br>';
 
 
 
@@ -69,63 +69,63 @@ $review_resultarray = array();
 
 while ($row1 = mysqli_fetch_array($response2)) {
 
- $schedule = $row1['0'];
- $status = $row1['1'];
- $review = $row1['2'];
- $schedule2 = $schedule + $hour*$timezone;
+  $schedule = $row1['0'];
+  $status = $row1['1'];
+  $review = $row1['2'];
+  //  $schedule2 = $schedule + $hour*$timezone;
+  $schedule2 = $schedule;
 
   array_push($resultarray, $schedule2);
   array_push($status_resultarray, $status);
   array_push($review_resultarray, $review);
 }
- $string = implode("_",$resultarray);
- $string_status = implode("_",$status_resultarray);
- $string_review = implode("_",$review_resultarray);
+$string = implode("_", $resultarray);
+$string_status = implode("_", $status_resultarray);
+$string_review = implode("_", $review_resultarray);
 
- 
 
- 
- $sql = "SELECT * FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID' and  teacher_schedule_status = '1'";
- $response2 = mysqli_query($conn, $sql);
-  
- // 1시간 = 3600;
- $hour = 3600000;
- $예약된스케쥴 = array();
- 
- while ($row1 = mysqli_fetch_array($response2)) {
- 
+
+
+$sql = "SELECT * FROM Teacher_Schedule WHERE user_id_teacher = '$User_ID' and  teacher_schedule_status = '1'";
+$response2 = mysqli_query($conn, $sql);
+
+// 1시간 = 3600;
+$hour = 3600000;
+$예약된스케쥴 = array();
+
+while ($row1 = mysqli_fetch_array($response2)) {
+
   $schedule = $row1['2'];
   $status = $row1['3'];
- 
- 
-   $schedule2 = $schedule + $hour*$timezone;
- 
- 
- 
-   array_push($예약된스케쥴, $schedule2);
- }
- 
-  $string2 = implode("_",$예약된스케쥴);
 
-  
-     
- if ($response1) { //정상일떄  
+
+  // $schedule2 = $schedule + $hour * $timezone;
+  $schedule2 = $schedule;
+
+
+
+  array_push($예약된스케쥴, $schedule2);
+}
+
+$string2 = implode("_", $예약된스케쥴);
+
+
+
+if ($response1) { //정상일떄  
   $data = array(
-    'schedule_list'	=>	$string,
-    'schedule_list_status'	=>	$ $string_status,
-    'schedule_list_review'	=>	$ $string_review,
-    'reserved_schedule_list'	=>	$string2,
-    'success'        	=>	'yes'
+    'schedule_list'  =>  $string,
+    'schedule_list_status'  =>  $$string_status,
+    'schedule_list_review'  =>  $$string_review,
+    'reserved_schedule_list'  =>  $string2,
+    'success'          =>  'yes'
   );
   echo json_encode($data);
   mysqli_close($conn);
-} else {//비정상일떄 
+} else { //비정상일떄 
   $data = array(
-    'schedule_list'	=>	'no',
-    'success'        	=>	'no'
+    'schedule_list'  =>  'no',
+    'success'          =>  'no'
   );
   echo json_encode($data);
   mysqli_close($conn);
 }
-  
- 

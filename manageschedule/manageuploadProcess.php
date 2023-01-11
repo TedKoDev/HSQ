@@ -50,10 +50,10 @@ $plan      =   json_decode(file_get_contents("php://input"))->{"schedule_list"};
 // $utc       = 9;  // 일정 
 
 // 1시간 = 3600;
- $hour = 3600000;
+$hour = 3600000;
 
 // 1주 = 604800
- $week = 604800000;
+$week = 604800000;
 
 
 //토큰 해체 
@@ -67,39 +67,39 @@ $U_Email = base64_decode($payload['U_Email']);
 
 
 
+
 //U_D_Timeze 값을 가져옴   
-$sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
-$response1 = mysqli_query($conn, $sql);
-$row1 = mysqli_fetch_array($response1); 
-$timezone = $row1['0'].'</br>';
+// $sql = "SELECT user_timezone FROM User_Detail WHERE user_id = '{$User_ID}'";
+// $response1 = mysqli_query($conn, $sql);
+// $row1 = mysqli_fetch_array($response1); 
+// $timezone = $row1['0'].'</br>';
 
 
 // $result = "DELETE FROM Teacher_Schedule   WHERE User_Id = '{$User_ID}' ";
 // $response = mysqli_query($conn, $result);
-  
+
 
 // 프론트단에서 전달받은 시간별 칸 값을 _ 기호를 기준으로 분리한다. 
 $result = (explode("_", $plan));
 
 
-$resultarray= array();
-foreach($result as $val){
+$resultarray = array();
+foreach ($result as $val) {
 
- 'utc00: 변환  '.$save = $val - $timezone* $hour;
+  // 'utc00: 변환  ' . $save = $val - $timezone * $hour;
+  'utc00: 변환  ' . $save = $val;
 
-array_push($resultarray,$save);
+  array_push($resultarray, $save);
 
-$i = 1;
-while ($i <$repeat){
+  $i = 1;
+  while ($i < $repeat) {
 
-  // $save;
- $i.'주후'.$save = $save + $week;
-  $i = $i +1;
+    // $save;
+    $i . '주후' . $save = $save + $week;
+    $i = $i + 1;
 
-  array_push($resultarray,$save);
-}
-
-
+    array_push($resultarray, $save);
+  }
 }
 
 json_encode($resultarray);
@@ -107,29 +107,27 @@ json_encode($resultarray);
 
 
 
- foreach($resultarray as $val){
+foreach ($resultarray as $val) {
 
   $val;
 
 
   $result = "INSERT INTO Teacher_Schedule (user_id_teacher, schedule_list) VALUES ('{$User_ID}', '$val') ";
   $response = mysqli_query($conn, $result);
-
-
 }
 
-     
- if ($response) { //정상일떄  
+
+if ($response) { //정상일떄  
   $data = array(
     'schedule_list'            =>   $resultarray,
-    'success'        	=>	'yes'
+    'success'          =>  'yes'
   );
   echo json_encode($data);
   mysqli_close($conn);
-} else {//비정상일떄 
+} else { //비정상일떄 
   $data = array(
- 
-    'success'        	=>	'no'
+
+    'success'          =>  'no'
   );
   echo json_encode($data);
   mysqli_close($conn);
