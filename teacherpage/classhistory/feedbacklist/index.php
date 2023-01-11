@@ -17,6 +17,7 @@
         let key_time_from = "";
         let key_time_to = "";
 
+        let page_classList;
         let page_feedback = "<?php echo $_GET['page']; ?>";
         let page_review;
     </script>

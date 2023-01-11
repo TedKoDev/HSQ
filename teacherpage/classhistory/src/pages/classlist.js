@@ -2,7 +2,7 @@ import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import {changeSelectBtnStyle, getFilterInit} from "./pages.js";
 import {$, $_all} from "/utils/querySelector.js";
 // import {classList_json} from "../../classhistory.js";
-
+import { paging } from "./feedbacklist.js";
 
 export function classhistorylist($container) {
     this.$container = $container;
@@ -35,23 +35,27 @@ async function showClassList($container) {
     $container.innerHTML = "";
     $container.setAttribute("class", "");
 
-    const classList = await getClasslist();       
+    const classList = await getClasslist();
+    const result = classList.result;       
     
     // 값이 있을 경우에만 화면에 뿌려주기
-    if (classList.length != 0) {
+    if (result.length != 0) {
 
-       //  for (let i = 0; i < classList.length; i++) {
-        for (let i = 0; i < classList.length; i++) {
+        let totalLength = classList.length;
+
+        console.log(totalLength);   
+       
+        for (let i = 0; i < result.length; i++) {
             //예약한 수업의 응답 상태  0(신청후 대기중 wait),1(승인 approved),2(취소 cancel),3(완료 done)
-            const status = classList[i].class_register_status;
-            const classDate = classList[i].schedule_list;
-            const className = classList[i].class_name;
-            const classTime = classList[i].class_time;
-            const teacherImage = classList[i].user_img;
-            const classId = classList[i].class_register_id;
-            const userName = classList[i].user_name;
-            const price = classList[i].class_price;
-            const userId = classList[i].user_id;
+            const status = result[i].class_register_status;
+            const classDate = result[i].schedule_list;
+            const className = result[i].class_name;
+            const classTime = result[i].class_time;
+            const teacherImage = result[i].user_img;
+            const classId = result[i].class_register_id;
+            const userName = result[i].user_name;
+            const price = result[i].class_price;
+            const userId = result[i].user_id;
             
 
             // 수업일 int로 변환
@@ -105,9 +109,6 @@ async function showClassList($container) {
             })
             
         }
-
-        // 일단 처음에는 20개만 화면에 출력
-        displayRow(0, $_all('.classList'), 20);
         
         // 페이징 뷰 표시하는 로직
         const pagingDiv = document.createElement("div");  
@@ -126,7 +127,7 @@ async function showClassList($container) {
             
         $container.appendChild(pagingDiv);
 
-        paging();
+        setpageNumber(totalLength);
     } 
     // 없으면 수업이 없다는 뷰 뿌려주기;
     else {
@@ -143,12 +144,15 @@ async function getClasslist() {
     const classStart = $('.classStart');
     const classEnd = $('.classEnd');
 
-    
+    if (page_classList == null) {
+        page_classList = 0;
+      }
     let filterObject = {
 
         token: getCookie(cookieName),
         kind: "tclist",
         class_reserve_check: "all", 
+        plus: page_classList,  
     };
     
     if (key_class_type != "") {
@@ -185,9 +189,11 @@ async function getClasslist() {
         body: JSON.stringify(filterObject)
     });    
     
-    const classList_json = await res.json();      
+    const classList_json = await res.json();    
+    
+    console.log(classList_json);
 
-    return classList_json.result;
+    return classList_json;
 }
 
 
@@ -228,38 +234,34 @@ const statusChange = (status, $classStyle) => {
     } else if (status == "2") {
         status = "취소됨"
     } else if (status == "3") {
-        status = "완료됨"
-        // $classStyle.setAttribute("class", "text-sm text-gray-400");
+        status = "완료됨"        
     }
     return status;
 }
 
 
 
-function paging() {
-
-    const rowsPerPage = 20;
+function setpageNumber(totalLength) {
+    
     const rows = $_all('.classList');
-    const rowsCount = rows.length;    
-    const pageCount = Math.ceil(rowsCount/rowsPerPage);
+          
+    const pageCount = Math.ceil(totalLength/20);
     const numbers = $('#numbers');
 
     const prevPageBtn = $('.prevBtn');
-    const nextPageBtn = $('.nextBtn');
-    let pageActiveIdx = 0; // 현재 보고 있는 페이지그룹 번호
-    let currentPageNum = 0; // 현재 보고 있는 페이지네이션 번호
+    const nextPageBtn = $('.nextBtn');    
     let maxPageNum = 10; // 페이지 그룹 최대 갯수    
     
     // console.log(pageCount);
     for (let i = 1; i <= pageCount; i++) {
         const li = document.createElement("li");
-        li.setAttribute("class", "float-left");
-        
-        if (i == 1) {
-            li.innerHTML = `<li ><a id = ${i-1}_page class = " bg-gray-500 mx-1 px-2">${i}</a></li>`;            
+        li.setAttribute("class", "float-left");     
+               
+        if ((i-1) == page_classList) {
+            li.innerHTML = `<li ><a id = ${i-1}_page class = " bg-gray-500 mx-1 px-2">${i}</a></li>`;        
         }
         else {
-            li.innerHTML = `<li ><a id = ${i-1}_page class = " mx-1 px-2">${i}</a></li>`;            
+            li.innerHTML = `<li ><a id = ${i-1}_page class = " mx-1 px-2">${i}</a></li>`;
         }
 
         numbers.appendChild(li);        
@@ -273,88 +275,35 @@ function paging() {
     }
     
     numberBtn.forEach((item, idx) => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            for (const nb of numberBtn) {
-                nb.setAttribute("class", "mx-1 px-2");
-            }
-            e.target.setAttribute("class", "bg-gray-500 mx-1 px-2");
+        item.addEventListener('click', (e) => {            
 
-            // console.log(idx);
-
-            displayRow(idx, rows, rowsPerPage);
-
-            scrolltoTop();
+            page_classList = e.target.id.replace("_page", "");
+            paging('page', page_classList, '/teacherpage/classhistory/classlist/');           
         })
     })
 
     nextPageBtn.addEventListener('click', () => {
-
-        let nextPageNum = pageActiveIdx*maxPageNum + maxPageNum;        
-        displayRow(nextPageNum, rows, rowsPerPage);
-        ++pageActiveIdx;
-        displayPage(pageActiveIdx, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx);
-
-        // 이전/다음 버튼 눌렀을 때 표시되는 게시글에 맞게 클릭 표시 처리
-        next_prev_clickCheck(nextPageNum);
-
-        scrolltoTop();
-    })
-
-    prevPageBtn.addEventListener('click', () => {
         
-        let nextPageNum = pageActiveIdx*maxPageNum - 1;        
-        displayRow(nextPageNum, rows, rowsPerPage);
-        --pageActiveIdx;
-        displayPage(pageActiveIdx, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx);
-
-        // 이전/다음 버튼 눌렀을 때 표시되는 게시글에 맞게 클릭 표시 처리
-        next_prev_clickCheck(nextPageNum);
-
-        scrolltoTop();
+        page_classList = page_classList + 1;
+        paging('page', page_classList, '/teacherpage/classhistory/classlist/');
     })
 
-    displayPage(0, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx);
+    prevPageBtn.addEventListener('click', () => {        
+        
+        page_classList = page_classList + 1;
+        paging('page', page_classList, '/teacherpage/classhistory/classlist/');
+    })
+
+    displayPage(0, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, totalLength);
 }
-
-// 이전/다음 버튼 눌렀을 때 표시되는 게시글에 맞게 클릭 표시 처리
-function next_prev_clickCheck(idx) {
-
-    const numbers = $('#numbers');
-    const numberBtn = numbers.querySelectorAll('a');
-    for (const nb of numberBtn) {
-        nb.setAttribute("class", "mx-1 px-2");
-    }
-    document.getElementById(idx+"_page").setAttribute("class", "bg-gray-500 mx-1 px-2");
-}
-
-function displayRow(idx, rows, rowsPerPage) {
-
-    let start = idx*rowsPerPage;
-    let end = start+rowsPerPage;
-    let rowsArray = [...rows];
-    
-    for (const ra of rowsArray) {
-        ra.style.display = 'none';
-    }
-
-    let newRows = rowsArray.slice(start, end);
-    
-    for (const nr of newRows) {
-        nr.style.display = 'block';
-    }    
-}
-
 
 // 페이지 그룹 표시 함수
-function displayPage(num, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, pageActiveIdx) {
+function displayPage(num, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPageBtn, totalLength) {
 
      // 모든 페이지네이션 번호 감추기
      for (const nb of numberBtn) {
         nb.style.display = 'none';
-    }
-    
-    let totalPageCount = Math.ceil(pageCount/maxPageNum);
+    }        
 
     let pageArr = [...numberBtn];
     let start = num*maxPageNum;
@@ -366,32 +315,23 @@ function displayPage(num, pageCount, maxPageNum, numberBtn, prevPageBtn, nextPag
     }        
 
     // 이전 버튼 안보이게
-    if(pageActiveIdx == 0) {        
+    if (page_classList == 0) {
         prevPageBtn.style.display = 'none';
-        
     }
     else {
         prevPageBtn.style.display = 'block';
-        
-    }
+    }    
 
-    // 다음 버튼 안보이게
-    if(pageActiveIdx == totalPageCount - 1) {
+    // 다음 버튼 안보이게     
+    if ((parseInt(totalLength / 20) == parseInt(page_classList))) {
+        nextPageBtn.style.display = 'none';
+    }
+    else if ((parseInt(totalLength / 20) == (parseInt(page_classList)+1)) && (parseInt(totalLength) % 20 == 0)) {
         nextPageBtn.style.display = 'none';
     }
     else {
         nextPageBtn.style.display = 'block';
     }
-}
-
-// 클릭 시 맨 위로 올리는 함수
-function scrolltoTop() {
-    
-    window.scrollTo({
-
-        top:0,
-        left:0
-    });
 }
 
 

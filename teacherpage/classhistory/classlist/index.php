@@ -18,6 +18,7 @@
         let key_time_from = "<?php echo $_GET['time_from']; ?>";
         let key_time_to = "<?php echo $_GET['time_to']; ?>";   
         
+        let page_classList = "<?php echo $_GET['page']; ?>";
         let page_feedback;
         let page_review;
     </script>
