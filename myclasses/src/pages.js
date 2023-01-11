@@ -142,6 +142,7 @@ const changeSelectBtnStyle = (target) => {
 // 담아온 수업 리스트 json 파싱해서 화면에 표시
 const showClassList = ($container, response) => {
 
+  console.log("sss1234");
   $container.innerHTML = "";
   
   const classList = response.result; 
@@ -170,14 +171,13 @@ const showClassList = ($container, response) => {
 
       // 이미지 경로 
       const teacherImgeLink = s3_url+"Profile_Image/"+teacherImage;
-      
-      console.log(teacherImage);
+            
       // a 태그 생성
-      const a = document.createElement("a");
+      const button = document.createElement("button");
       // 속성 값에 해당 수업의 id 대입
-      a.setAttribute("id", classId);
-      a.setAttribute("class", "my-1")
-      a.innerHTML = `<div class = "flex w-full bg-gray-50 rounded-lg shadow border border-gray-200 py-2 hover:shadow">
+      button.setAttribute("id", classId);
+      button.setAttribute("class", "my-1")
+      button.innerHTML = `<div class = "flex w-full bg-gray-50 rounded-lg shadow border border-gray-200 py-2 hover:shadow hover:bg-gray-200">
                         <div class = "flex flex-col w-1/5 text-center">
                             <span class = "text-xs text-gray-500">`+statusChange(status)+`</span><span class = "text-lg font-semibold">`+date+`</span><span class = "text-xs text-gray-700">`+month+`</span>
                         </div>
@@ -185,18 +185,21 @@ const showClassList = ($container, response) => {
                             <div class = "flex flex-col">
                                 <span  class = "text-lg font-semibold">`+hourAndMin+`</span><span  class = "text-xs text-gray-500">`+className+`<a>`+classTime+`</a></span>
                             </div>
-                            <div class = "group-hover:hidden">
+                            <div class = "">
                                 <img id = "profile_image" class = "mx-auto w-10 h-10 border-3 border-gray-900 rounded-full"
                                     src = `+teacherImgeLink+`>
                                 </img>
-                            </div>                
-                            <div class = "absolute right-4">
-                                <button class = "bg-blue-600 rounded-lg text-white px-3 py-1 hidden group-hover:block">수업 후기</button>
-                            </div>                                        
+                            </div>               
+                                                             
                         </div>
                       </div>`;
 
-      $container.appendChild(a);
+      $container.appendChild(button);
+
+      button.addEventListener('click', () => {
+
+        goClassDetail(classId, '/myclass/')
+      })
     }
 
   }
@@ -204,6 +207,24 @@ const showClassList = ($container, response) => {
   else {
 
   }
+}
+
+// 캘린더 안에 수업 클릭 시 수업 상세로 이동
+function goClassDetail(class_id, url) {
+        
+  const form = document.createElement('form');
+  form.setAttribute('method', 'get');        
+  form.setAttribute('action', url);
+
+  const hiddenField = document.createElement('input');
+  hiddenField.setAttribute('type', 'hidden');
+  hiddenField.setAttribute('name', 'class_id');
+  hiddenField.setAttribute('value', class_id);
+  form.appendChild(hiddenField);
+
+  document.body.appendChild(form);
+
+  form.submit();
 }
 
 const statusChange = (status) => {

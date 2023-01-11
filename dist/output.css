@@ -603,10 +603,6 @@ video {
   bottom: 0px;
 }
 
-.right-4 {
-  right: 1rem;
-}
-
 .z-10 {
   z-index: 10;
 }
@@ -1116,6 +1112,10 @@ video {
 
 .flex-col-reverse {
   flex-direction: column-reverse;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .items-center {
@@ -2061,10 +2061,6 @@ video {
   display: block;
 }
 
-.group:hover .group-hover\:hidden {
-  display: none;
-}
-
 @media (prefers-color-scheme: dark) {
   .dark\:bg-gray-700 {
     --tw-bg-opacity: 1;
@@ -2090,5 +2086,9 @@ video {
 @media (min-width: 1280px) {
   .xl\:w-80 {
     width: 20rem;
+  }
+
+  .xl\:w-60 {
+    width: 15rem;
   }
 }

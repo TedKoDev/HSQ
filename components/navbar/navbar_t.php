@@ -8,7 +8,7 @@
                         href="/teacherpage/t_myclass/"
                         class="py-1 px-2 text-white  hover:bg-gray-600 rounded">내 수업</a>
                     <a
-                        href="#"
+                        href="/teacherpage/mystudent/"
                         class="py-1 px-2  text-white  hover:bg-gray-600 rounded">학생 관리</a>
                     <a
                         href="/teacherpage/teacherschedule/"

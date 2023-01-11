@@ -194,25 +194,7 @@ export function calendarInit(scheduleInfo) {
             date.innerText = i;
         }      
             
-    }
-
-    // 캘린더 안에 수업 클릭 시 수업 상세로 이동
-    function goClassDetail(class_id, url) {
-        
-        const form = document.createElement('form');
-        form.setAttribute('method', 'get');        
-        form.setAttribute('action', url);
-
-        const hiddenField = document.createElement('input');
-        hiddenField.setAttribute('type', 'hidden');
-        hiddenField.setAttribute('name', 'class_id');
-        hiddenField.setAttribute('value', class_id);
-        form.appendChild(hiddenField);
-
-        document.body.appendChild(form);
-
-        form.submit();
-    }
+    }    
 
     // 이전/다음 버튼 눌러서 캘린더 날짜 변경할 때 다시 재 렌더링하는 함수
     async function changeMonth(number) {
@@ -231,6 +213,24 @@ export function calendarInit(scheduleInfo) {
     $('.next_btn').addEventListener('click', () =>{
         changeMonth(1);
     });
+}
+
+// 캘린더 안에 수업 클릭 시 수업 상세로 이동
+function goClassDetail(class_id, url) {
+        
+    const form = document.createElement('form');
+    form.setAttribute('method', 'get');        
+    form.setAttribute('action', url);
+
+    const hiddenField = document.createElement('input');
+    hiddenField.setAttribute('type', 'hidden');
+    hiddenField.setAttribute('name', 'class_id');
+    hiddenField.setAttribute('value', class_id);
+    form.appendChild(hiddenField);
+
+    document.body.appendChild(form);
+
+    form.submit();
 }
 
 
