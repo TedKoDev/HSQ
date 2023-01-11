@@ -8,7 +8,7 @@
   </head>    
  
   <script src = "../commenJS/cookie.js"></script> 
-  <script src = "./registeacher.js"></script>  
+  <script defer = "defer" src = "./registeacher.js"></script>  
   
   <body class = "bg-gray-100">   
     <!-- 네비바 -->
@@ -53,15 +53,24 @@
                     </div>
                 </div>
                 <div class = "flex my-2 mx-auto">
-                    <div>
-                        <div class = "w-48 text-sm mb-1">결제 링크</div>                        
+                    <div class = "w-48">
+                        <div class = "w-48 text-sm mb-1">결제 링크</div>
+                        <div class = "w-40 text-xs text-gray-600">학생이 수업을 신청할 경우 등록한 결제링크를 전송할 수 있습니다.</div>                        
                     </div>
-                    <div class = "w-96">
-
-                    </div>                             
+                    <div class = "w-96">                                                    
+                        <div id = "paymentdiv_click_edit" class = "flex-col">                               
+                            <div id = "now_link_div" class = "flex flex-col">
+                                <input id = "input_link_div" placeholder = "결제 링크" class = "payment_link_input py-1 text-sm text-gray-500 border shadow rounded-lg px-1 w-4/5 mb-1"/>
+                            </div>                            
+                            <button id = "add_link" class = "text-sm mt-1" onclick="add_select_link()">+ 더 추가
+                            </button>
+                                                              
+                        </div>
+                    </div>                              
+                                       
                 </div>             
                 <div class = "flex my-2 mx-auto">                
-                    <div class = "w-48 text-sm">전문강사 인증 (선택)</div>                   
+                    <div class = "w-48 text-sm mt-1">전문강사 인증 (선택)</div>                   
                     <div class = "flex flex-col w-96">    
                         <div class="flex">
                             <label for = "file_upload" class="px-3 py-1 mx-auto font-semibold bg-gray-400 text-white hover:bg-gray-600
@@ -86,9 +95,7 @@
                     </div>                                
                 </div>    
                 <button type = "button" class = " mx-auto py-2 px-4 border-2 rounded-lg bg-blue-500  hover:bg-blue-700 text-white" onclick = "submitForm()">등록</button>
-                <!-- <div class=" mx-auto py-2 px-4 border-2 rounded-lg bg-blue-500  hover:bg-blue-700">
-                    <input type="submit" class="font-semibold text-white" value="등록">
-                </div>     -->
+                
                 <br><br>            
             </div> 
         </div>        

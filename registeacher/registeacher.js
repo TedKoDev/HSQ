@@ -214,18 +214,25 @@ function validation(obj){
 
 function submitForm() {
 
+  let link_array = new Array();
+
+  for (const link of document.querySelectorAll('.payment_link_input')) {
+
+    link_array.push(link.value);
+  }  
+
   let formData = new FormData();
   formData.append('token', document.getElementById('token_value').value);
   formData.append('teacher_intro', document.getElementById('intro_t').value);
   formData.append('teacher_certification', document.getElementById('certi').value);
-  // formData.append('img', document.getElementById('file_upload').files[0]);
+  formData.append('payment_link', link_array);
 
     for (var i = 0; i < filesArr.length; i++) {
       // 삭제되지 않은 파일만 폼데이터에 담기
       if (!filesArr[i].is_delete) {
           formData.append("img", filesArr[i]);
       }
-  }
+  }  
 
   // 같은 사이트에서 한번 새로고침
   fetch('#',{
@@ -238,6 +245,39 @@ function submitForm() {
   );
 }
 
+// 결제 링크 추가
+const link_div = document.getElementById("now_link_div");
+function add_select_link() {
+  
+  const div = document.createElement('div');
+  // div의 id에 인덱스값 부여  
+  // 배치를 위한 속성 부여
+  div.setAttribute("class", "flex justify-between");                   
+                    
+  // 텍스트 담을 input 태그 생성
+  const input = document.createElement('input');
+  // span의 id에 인덱스값 부여    
+  input.setAttribute("class", "payment_link_input text-sm text-gray-500 border shadow rounded-lg px-1 w-4/5");   
+  input.setAttribute("placeholder", "결제 링크");            
+          
 
+  //// 삭제용 버튼 생성
+  const delete_btn = document.createElement('a');         
+  delete_btn.setAttribute("class", "del_link_btn px-2 py-2 font-semibold bg-gray-500 text-xs text-white hover:bg-gray-700 hover:text-white rounded-full border");
+        
+
+  delete_btn.innerHTML = "삭제";         
+  // div에 span이랑 a(버튼) 연결
+  div.append(input);
+  div.append(delete_btn);
+  // 새롭게 생성한 div 연결
+  link_div.append(div); 
+
+  delete_btn.addEventListener('click', () => {
+
+    div.remove();
+  })
+  
+}
 
 
