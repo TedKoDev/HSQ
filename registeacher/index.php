@@ -52,6 +52,14 @@
                     ></textarea>
                     </div>
                 </div>
+                <div class = "flex my-2 mx-auto">
+                    <div>
+                        <div class = "w-48 text-sm mb-1">결제 링크</div>                        
+                    </div>
+                    <div class = "w-96">
+
+                    </div>                             
+                </div>             
                 <div class = "flex my-2 mx-auto">                
                     <div class = "w-48 text-sm">전문강사 인증 (선택)</div>                   
                     <div class = "flex flex-col w-96">    

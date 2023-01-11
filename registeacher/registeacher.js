@@ -85,7 +85,7 @@ async function postToken(tokenValue) {
       // 프로필 이미지일 경우
       if (text == 'image') {
         
-        key.src = "../editprofile/image/"+value;
+        key.src = s3_url+"Profile_Image/"+value;;
       }
 
       else {

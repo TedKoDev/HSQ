@@ -266,7 +266,7 @@
                   <option value = 'B2'>B2 : 중상급</option>
                   <option value = 'C1'>C1 : 고급</option>
                   <option value = 'C2'>C2 : 고급 이상</option>
-                  <option value = 'native'>원어민</option>
+                  <option value = '원어민'>원어민</option>
                 </select><br>                  
                 <button onclick = "edit_done_korean()" class = "py-1 px-2 font-semibold bg-blue-500 text-white hover:bg-blue-700 hover:text-white rounded border">저장</button>
                 <button onclick = "edit_cancel_korean()" class = "py-1 px-2 font-semibold bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-600 rounded border">취소</button>               
