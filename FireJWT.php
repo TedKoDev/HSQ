@@ -1,24 +1,22 @@
 <?php
 require_once './vendor/autoload.php';
-use Firebase\JWT\JWT;
-$secret_key = "this-is-the-secret";
 
-// µ•¿Ã≈Õ ¿‘∑¬
-$id = "sysdocu";
-$email = "sysdocu@sysdocu.tistory.com";
-$addr = "seoul";
-$phone = "010-1111-2222";
- 
-$data = array(
-    'id' => $id,
-    'email' => $email,
-    'addr' => $addr,
-    'phone' => $phone
-);
- 
-$jwt = JWT::encode($data, $secret_key);
-echo "encoded jwt: " . $jwt . "<br>";
- 
-//$decoded = JWT::decode($jwt, $secret_key, array('HS256'));
-//print_r($decoded);
-?>
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+$key = 'example_key';
+$payload = [
+    'iss' => 'http://example.org',
+    'aud' => 'http://example.com',
+    'iat' => 1356999524,
+    'nbf' => 1357000000
+];
+
+//secret base64 encoded Ï†ÅÏö© 
+// $jwt = JWT::encode($payload, $key, 'HS256');
+// echo $jwt = JWT::encode($payload, $key, 'HS256');
+// $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
+
+
+//base64 encoded Ï†ÅÏö©
+echo $jwt = JWT::encode($payload, base64_encode($key), 'HS256');
