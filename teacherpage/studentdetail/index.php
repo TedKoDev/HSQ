@@ -45,8 +45,7 @@
                         </span>
                         <span class="user_language text-gray-600"></span>
                         <span class="text-xs my-1 mt-2">한국어 레벨 : <span class = "user_korean text-gray-600"></span></span>                       
-                        <span class="text-xs my-1 mt-2">수업 횟수 : <span class="class_count text-gray-600">5<span>회</span></span></span>
-                        
+                        <span class="text-xs my-1 mt-2">수업 횟수 : <span class="class_count text-gray-600">5</span>회</span></span>
                     </div>
                     <div
                         class="showSendmsgModal_btn mt-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg border-gray-900 px-1 py-1 my-1">학생에게 연락하기</div>

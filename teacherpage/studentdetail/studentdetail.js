@@ -1,5 +1,6 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
+import { goClassDetail } from "../classhistory/src/pages/classlist.js";
 
 // 해당 유저 정보 가져오기
 getUserInfo();
@@ -74,6 +75,8 @@ if (response.success == 'yes') {
 
     console.log(response);
     const result = response.result;   
+
+    $('.class_count').innerHTML = result.length;
     
     for (let i = 0; i < result.length; i++) {
 
@@ -94,32 +97,61 @@ if (response.success == 'yes') {
 
         const div = document.createElement('div');
         div.innerHTML = `
-                <div class = "flex flex-col border-b-2 py-2">
-                    <div class = "flex text-xs mb-3">
-                        <span>${class_name} </span><span class = "mx-1">|</span><span class = "text-gray-600">${date}</span>
-                    </div>                    
-                    <span class="text-xs text-gray-800">강의 피드백</span>                       
-                    <div class = "flex flex-col text-xs bg-gray-200 rounded-lg mt-1 px-2 py-2 mb-2">
-                        <span>수고하셨습니다~</span>
-                        <span class = "date text-xs mt-1 text-gray-600">2022년 1월 22일 12:32</span>
+                <div class = "flex flex-col border-b-2 pt-2 pb-4">
+                    <button class = "btn_${i} hover:bg-gray-300 rounded-lg mb-3 py-2 px-1">
+                        <div class = "flex text-xs">
+                            <span>${class_name} </span><span class = "mx-1">|</span><span class = "text-gray-600">${date}</span>
+                        </div>   
+                    </button>                 
+                    <span class="text-xs text-gray-800 px-1">강의 피드백</span>                       
+                    <div id = feedback_${i} class = "flex flex-col text-xs bg-gray-200 rounded-lg mt-1 px-2 py-2 mb-2">
+                        
                     </div>           
                     <div class = "flex flex-col mt-2">
-                        <span class="text-xs text-gray-800">수업 후기</span>   
-                        <div class="flex flex-col bg-gray-200 rounded-lg px-2 pb-2 mt-1">   
-                            <div class = "">      
-                                <span class="relative text-gray-400 text-xl">
-                                    ★★★★★
-                                    <span class = "addStar text-xl w-0 absolute left-0 text-orange-500 overflow-hidden pointer-events-none">★★★★★</span>
-                                    <input class = "addStar_value w-full h-full absolute left-0 opacity-0 cursor-pointer" type="range" value="" step="1" min="0" max="10">
-                                </span>
-                            </div>                     
-                            <span class = "text-xs text-gray-800">잘 들었습니다</span>
-                            <span class = "date text-xs mt-1 text-gray-600">2022년 1월 22일 12:32</span>
+                        <span class="text-xs text-gray-800 px-1">수업 후기</span>   
+                        <div id = review_${i} class="flex flex-col bg-gray-200 rounded-lg px-2 mt-1">   
+                            
                         </div>                     
                     </div>
                 </div>`;
         
-            $('.classList').appendChild(div);   
+            $('.classList').appendChild(div);  
+        
+        if (student_review == null) {
+            $('#review_'+i).innerHTML = `            
+            <span class = "mx-auto text-xs text-gray-700 py-3">등록된 후기가 없습니다</span>                                         
+            `;
+        }
+        else {
+            $('#review_'+i).innerHTML = `
+            <div class = "flex flex-col mt-1 mb-2">      
+                <span class="relative text-gray-400 text-xl">
+                    ★★★★★
+                    <span class = "addStar_${i} text-xl w-0 absolute left-0 text-orange-500 overflow-hidden pointer-events-none">★★★★★</span>
+                    <input class = "addStar_value_${i} w-full h-full absolute left-0 opacity-0 cursor-pointer" type="range" value=${student_review_star} step="1" min="0" max="10">
+                </span>
+                <span class = "text-xs text-gray-800">${student_review}</span>
+                <span class = "date text-xs mt-1 text-gray-600">${dayjs(parseInt(student_review_date)).format('YYYY년 MM월 DD일 HH:mm')}</span>
+            </div>                     
+            `;
+
+            $('.addStar_'+i).style.width = `${$('.addStar_value_'+i).value * 10}%`;
+        }
+        if (teacher_review == null) {
+            $('#feedback_'+i).innerHTML = `            
+            <span class = "mx-auto text-xs text-gray-700 hover:bg-blue-600 py-3">등록된 피드백이 없습니다</span>                                         
+            `;
+        }
+        else {
+            $('#feedback_'+i).innerHTML = `
+            <span>${teacher_review}</span>
+            <span class = "date text-xs mt-1 text-gray-600">${dayjs(parseInt(teacher_review_date)).format('YYYY년 MM월 DD일 HH:mm')}</span>`;
+        } 
+
+        $('.btn_'+i).addEventListener('click', () => {
+
+            goClassDetail(class_register_id, user_id, '/teacherpage/classhistory/historydetail/');
+        })
     }
     
 }
