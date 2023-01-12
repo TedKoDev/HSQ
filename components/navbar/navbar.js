@@ -6,7 +6,6 @@ import {$, $_all} from '/utils/querySelector.js';
 
 // 쿠키 값 가져오기   
 let checkCookie = getCookie("user_info");
-
     
 
 // 화면 모두 로드되면 쿠키 여부에 따라 메뉴바 우측 상단의 뷰 결정
@@ -70,13 +69,13 @@ async function postToken_nav(tokenValue) {
   const user_name = userinfo_parse.user_name;
   const user_teacher = userinfo_parse.teacher_register_check;
  
+ 
   // 강사일 경우 드롭다운 메뉴에 '강사페이지'라고 표시
   if (user_teacher == 'yes') {
 
     document.getElementById("teacher_page").innerHTML = '강사페이지';
   }
   
-
   // 프로필 이미지 가져오기
   let p_img = document.getElementById("user_image");
   setInfo(p_img, user_p_img, "image");
@@ -90,8 +89,7 @@ async function postToken_nav(tokenValue) {
       
       // 프로필 이미지일 경우
       if (text == 'image') {      
-          
-          // key.src = "../editprofile/image/"+value;        
+                           
           key.src = "https://hangle-square.s3.ap-northeast-2.amazonaws.com/Profile_Image/"+value;     
       }   
          

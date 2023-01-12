@@ -59,6 +59,7 @@ const body = {
     
     token: getCookie(cookieName),       
     user_id_student: user_id,
+    row:20
   };
 
 const res = await fetch('/restapi/studentinfo.php', {

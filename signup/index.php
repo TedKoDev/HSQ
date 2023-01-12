@@ -77,14 +77,16 @@
               type="button" onclick = "postData()">
                   회원가입
               </button>
-              <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+              <button class="showfindpwModal inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" type = "button">
                   비밀번호를 잊으셨나요?
-              </a>
+              </button>
             </div><br>
             <div class = "text-sm">계정을 만들면 <a href = "" class = "text-blue-500 hover:text-blue-800">이용 약관</a> 및 
             <a href = "" class = "text-blue-500 hover:text-blue-800">개인정보 보호정책</a>에 동의하시게 됩니다.</div>
           </form>        
         </div>              
-      </div>    
+      </div>   
+      <!-- 비밀번호 찾기 모달 -->
+      <?php include '../components/findpw/findpw.php'?>  
     </body>        
 </html>

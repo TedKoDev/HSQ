@@ -11,11 +11,15 @@
     <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
     <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>
     <script defer="defer" src="../components/reservationModal/streamingtoolModal.js"></script>    
+    <script type = "module" defer = "defer" src="./setReview.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
         .scrollLock {
             height: 100%;
             overflow: hidden;
+        }
+        .small_text {
+        font-size: 12px;
         }
     </style>
      <script>
@@ -198,8 +202,20 @@
                 </div>                 
                 <div class = "text-center">시간대 <a id = "utc"></a></div>     
                 <div class = "text-sm text-gray-500 text-center">(내정보 -> 프로필 편집에서 원하는 UTC 시간대를 설정할 수 있습니다.)</div>          
+            </div>            
+        </div>
+        <div class="flex flex-col mt-3 mb-2 max-w-4xl mx-auto">
+            <div class="w-3/4 mb-1">강사 후기</div>           
+            <!-- 수업 후기 표시 표시 -->
+            <div class = "flex flex-col bg-gray-50 rounded-lg w-3/4 py-2 shadow">
+                <div class="reviewList flex flex-wrap w-full py-2">                         
+                </div>
+                <button class = "see_more mx-auto hover:bg-gray-100 my-5 py-2 w-1/6 text-center bg-gray-50 rounded-md 
+                    border-gray-400 shadow">더 보기
+                </button>   
+            <div>
+                 
             </div>
-            <br><br><br><br>
         </div>
         <!-- 수업 상세 정보 모달창 -->
         <div
@@ -238,7 +254,7 @@
                 </div>
                 <a class = "w-16 mt-2 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded float-right">예약하기</a>               
             </div>               
-        </div> 
+        </div>         
         <!-- 수업 목록 모달창(예약) -->       
         <?php include '../components/reservationModal/classlistModal.php'?>
         <!-- 수업 시간 모달창(예약) -->   

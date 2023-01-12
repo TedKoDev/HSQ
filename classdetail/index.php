@@ -10,6 +10,7 @@
     <script defer="defer" src="../components/reservationModal/classtimeModal.js"></script>
     <script defer="defer" src="../components/reservationModal/scheduleModal.js"></script>
     <script defer="defer" src="../components/reservationModal/streamingtoolModal.js"></script>
+    <script type = "module" defer = "defer" src="../teacherdetail/setReview.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <style>
         .scrollLock {
@@ -169,8 +170,20 @@
                 </div>                 
                 <div class = "text-center">시간대 <a id = "utc"></a></div>     
                 <div class = "text-sm text-gray-500 text-center">(내정보 -> 프로필 편집에서 원하는 UTC 시간대를 설정할 수 있습니다.)</div>          
-            </div>            
-            <br><br><br><br>
+            </div>           
+        </div>
+        <div class="flex flex-col mt-3 mb-2 max-w-4xl mx-auto">
+            <div class="w-3/4 mb-1">강사 후기</div>           
+            <!-- 수업 후기 표시 표시 -->
+            <div class = "flex flex-col bg-gray-50 rounded-lg w-3/4 py-2 shadow">
+                <div class="reviewList flex flex-wrap w-full py-2">                         
+                </div>
+                <button class = "see_more mx-auto hover:bg-gray-100 my-5 py-2 w-1/6 text-center bg-gray-50 rounded-md 
+                    border-gray-400 shadow">더 보기
+                </button>   
+            <div>
+                 
+            </div>
         </div>
         <!-- 모달창 -->
         <div

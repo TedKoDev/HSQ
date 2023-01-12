@@ -50,13 +50,12 @@
                     <svg class = "" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 1c-6.338 0-12 4.226-12 10.007 0 2.05.739 4.063 2.047 5.625l-1.993 6.368 6.946-3c1.705.439 3.334.641 4.864.641 7.174 0 12.136-4.439 12.136-9.634 0-5.812-5.701-10.007-12-10.007zm0 1c6.065 0 11 4.041 11 9.007 0 4.922-4.787 8.634-11.136 8.634-1.881 0-3.401-.299-4.946-.695l-5.258 2.271 1.505-4.808c-1.308-1.564-2.165-3.128-2.165-5.402 0-4.966 4.935-9.007 11-9.007zm-5 7.5c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5-1.5-.672-1.5-1.5.672-1.5 1.5-1.5zm5 0c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5-1.5-.672-1.5-1.5.672-1.5 1.5-1.5zm5 0c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5-1.5-.672-1.5-1.5.672-1.5 1.5-1.5z"/></svg>
                 </a>
                 
-                <!-- 유저아이콘 -->
-                     
+                <!-- 유저아이콘 -->                     
                 <div id = "id_user_info" class = "ml-1 w-20 relative flex justify-center items-center focus:outline-none rounded group
                   ">                              
                     <img
                       id="user_image"
-                      class="mx-auto w-8 h-8 border-2 border-gray-900 rounded-full"
+                      class="mx-auto w-8 h-8 rounded-full shadow"
                       src="<?php echo $hs_url; ?>images_forHS/userImage_default.png">
                     </img>  
                     <div class = "absolute hidden group-hover:block top-full min-w-full w-max bg-white rounded delay-1000 hover:block">
@@ -68,7 +67,20 @@
                         </ul>
                     </div>                  
                 </div>                
-                
+                <!-- 유저 이름 -->
+                <!-- <div id = "id_user_info" class = "w-20 relative flex justify-center items-center focus:outline-none rounded group
+                  ">                              
+                    <button id = "user_name" class = "ml-1 mx-auto text-base text-gray-800"></button> 
+                    <div class = "absolute hidden group-hover:block top-full min-w-full w-max bg-white rounded delay-1000 hover:block">
+                        <ul class = "text-left border rounded">
+                        <li id = "myinfo" class = "text-sm px-2 py-2 border-b border-gray-100 text-gray-700 hover:bg-gray-200">내 정보</li>
+                        <li id = "teacher_page" class = "text-sm px-2 py-1 border-b border-gray-100 text-gray-700 hover:bg-gray-200">강사 되기</li>
+                        <li id = "setting" class = "text-sm px-2 py-1 border-b border-gray-100 text-gray-700 hover:bg-gray-200">설정</li>
+                        <li id = "logout" class = "text-sm px-2 py-1 border-b border-gray-100 text-gray-700 hover:bg-gray-200">로그아웃</li>                      
+                        </ul>
+                    </div>                  
+                </div> -->
+
                 <!-- 유저 아이콘
                 <div id="test" class="relative inline-block text-left">
                     <a

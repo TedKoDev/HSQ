@@ -55,17 +55,6 @@ async function postData() {
     }
 }    
 
-
-// // 쿠키 생성 함수
-// function setCookie(cName, cValue, cDay){
-
-// const expire = new Date();
-// expire.setDate(expire.getDate() + cDay);
-// cookies = cName + '=' + escape(cValue) + '; path=/ '; // 한글 깨짐을 막기위해 escape(cValue)
-// if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
-// document.cookie = cookies;
-// }
-
 // 이메일 입력값 실시간 확인
 function printEmail() {
 

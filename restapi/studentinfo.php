@@ -36,6 +36,7 @@ $susid      =   json_decode(file_get_contents("php://input"))->{"user_id_student
 
 
 $plus          =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
+$page_row          =   json_decode(file_get_contents("php://input"))->{"row"};     // 페이징 개수 
 
 
 //토큰 해체 
@@ -51,8 +52,8 @@ $U_Email = base64_decode($payload['U_Email']);
 // $plus          = 1;
 
 $i = 0;
-$start =  $i + (20 * $plus);
-$till = 20;
+$start =  $i + ($page_row * $plus);
+$till = $page_row;
 
 
 // 강사상세 출력인지 목록 출력인지 

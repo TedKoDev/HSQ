@@ -29,11 +29,11 @@
                 </div>
             </div>
             <div class = "flex justify-end">
-                <select class = "w-52 px-1 py-1 text-sm text-gray-500 border-gray-200 rounded border mb-3">
+                <!-- <select class = "w-52 px-1 py-1 text-sm text-gray-500 border-gray-200 rounded border mb-3">
                   <option value = ''>순서 변경</option>
                   <option value = ''>최근에 수강한 학생 순</option>
                   <option value = ''>가장 많이 수강한 학생 순</option>                  
-                </select>                  
+                </select>                   -->
             </div>
             <div class = "studentList_div flex bg-gray-50 rounded-lg px-2 py-2 flex-wrap">                                                   
             </div>

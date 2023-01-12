@@ -109,6 +109,7 @@ $kind = json_decode(file_get_contents("php://input"))->{"kind"}; //kind
 $plus       =   json_decode(file_get_contents("php://input"))->{"plus"};     // 더보기 
 // $plus       =   1;     // 더보기 
 
+$page_row          =   json_decode(file_get_contents("php://input"))->{"row"};     // 페이징 개수 
 
 
 
@@ -140,8 +141,8 @@ $hour = 3600000; // 시간의 밀리초
 
 
 $i = 0;
-$start =  $i + (20 * $plus);
-$till = 20;
+$start =  $i + ($page_row * $plus);
+$till = $page_row;
 
 $출력값['result'] = array();
 $출력값["page"]  = $plus;
@@ -200,7 +201,7 @@ if ($kind == 'feedback_teacher') {
     $send["user_img"] = $row2['user_img'];
 
 
-
+    $send["class_teacher_review_id"] = $row['class_teacher_review_id'];
     $send["class_register_id"] = $row['class_register_id'];
     $send["user_id_student"] = $row['user_id_student'];
     $send["user_id_teacher"] = $row['user_id_teacher'];
@@ -275,6 +276,7 @@ if ($kind == 'feedback_teacher') {
 
 
 
+    $send["class_student_review_id"] = $row['class_student_review_id'];
     $send["class_register_id"] = $row['class_register_id'];
     $send["user_id_student"] = $row['user_id_student'];
     $send["user_id_teacher"] = $row['user_id_teacher'];
@@ -346,7 +348,7 @@ if ($kind == 'feedback_teacher') {
     $row2 = mysqli_fetch_array($SRCList_Result5);
     $send["user_name"] = $row2['user_name'];
     $send["user_img"] = $row2['user_img'];
-
+    $send["class_student_review_id"] = $row['class_student_review_id'];
     $send["class_register_id"] = $row['class_register_id'];
     $send["user_id_student"] = $row['user_id_student'];
     $send["user_id_teacher"] = $row['user_id_teacher'];
@@ -417,7 +419,7 @@ if ($kind == 'feedback_teacher') {
     $send["user_name"] = $row2['user_name'];
     $send["user_img"] = $row2['user_img'];
 
-
+    $send["class_teacher_review_id"] = $row['class_teacher_review_id'];
     $send["class_register_id"] = $row['class_register_id'];
     $send["user_id_student"] = $row['user_id_student'];
     $send["user_id_teacher"] = $row['user_id_teacher'];

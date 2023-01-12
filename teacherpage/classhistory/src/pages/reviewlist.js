@@ -120,18 +120,19 @@ async function showReviewList($container) {
     // 이전/다음 버튼 클릭 시 이벤트
     $('.prevBtn').addEventListener('click', () => {
 
-      page_review = page_review - 1;
+      page_review = parseInt(page_review) - 1;
       paging('page', page_review, '/teacherpage/classhistory/reviewlist/');
 
     })
     $('.nextBtn').addEventListener('click', () => {
 
-      page_review = page_review + 1;
+      page_review = parseInt(page_review) + 1;
+      console.log(page_review);
       paging('page', page_review, '/teacherpage/classhistory/reviewlist/');
 
     })
 
-    btnCheck(page_review, $('.prevBtn'), $('.nextBtn'), parseInt(totalLength), result);
+    btnCheck(page_review, $('.prevBtn'), $('.nextBtn'), parseInt(totalLength), 10);
   }
   else {
 
@@ -148,7 +149,8 @@ async function getreviewlist() {
 
       token: getCookie(cookieName),
       kind: 'review_teacher',      
-      plus: page_review  
+      plus: page_review,
+      row: 10,
   };   
   
   const res = await fetch('/restapi/review.php', {

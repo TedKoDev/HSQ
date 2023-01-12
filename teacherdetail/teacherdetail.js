@@ -4,9 +4,6 @@
 const {id} = JSON.parse(localStorage.getItem("user_id"));
 let U_id = id;
 
-console.log(U_id);
-// localStorage.removeItem("user_id");
-
 // 수업 예약할 때 강사 상세인지, 수업 상세인지 표시 (나중에 수업 시간 모달 띄울 때 분기처리 하기 위해)
 let checkStartpoint = "teacher";
 
@@ -60,8 +57,7 @@ async function get_utc(tokenValue) {
       const timezone_s = response.user_timezone;      
 
       timezone = timezone_s;
-     
-      console.log("success : "+success);
+   
       if (success == "yes") {
 
         getDate("header_s", timezone, "");
@@ -140,8 +136,6 @@ async function setschedule(type, for_modal) {
   const date = new Date();
   const utc = -(date.getTimezoneOffset() / 60);
 
-  console.log("t_id : "+U_id);
-
   // 토큰, 로컬 시간대, 강사id 전송해서 해당 강사의 스케줄 받아오기
   const body = {
 
@@ -160,7 +154,6 @@ async function setschedule(type, for_modal) {
   const response = await res.json(); 
   const check = response.success; 
 
-  console.log(response);
   schedule_string = response.teacher_schedule_list;
   schedule_string_status = response.teacher_schedule_list_status;  
   schedule_class_time = response.schedule_time;
@@ -400,9 +393,7 @@ async function getTeacherdatail(tokenValue, usid) {
       const response = await res.json(); 
       
       const result = response.result[0];
-      console.log(response);      
-
-      // console.log(result);
+      
       const name = result.user_name;
       const certi = result.user_Special;
       const language = result.user_language;

@@ -89,18 +89,18 @@ async function showFeedbackList($container) {
       // 이전/다음 버튼 클릭 시 이벤트
       $('.prevBtn').addEventListener('click', () => {
 
-        page_feedback = page_feedback - 1;
+        page_feedback = parseInt(page_feedback) - 1;
         paging('page', page_feedback, '/teacherpage/classhistory/feedbacklist/');
 
       })
       $('.nextBtn').addEventListener('click', () => {
 
-        page_feedback = page_feedback + 1;
+        page_feedback = parseInt(page_feedback) + 1;
         paging('page', page_feedback, '/teacherpage/classhistory/feedbacklist/');
 
       })
             
-      btnCheck(page_feedback, $('.prevBtn'), $('.nextBtn'), parseInt(totalLength), result);
+      btnCheck(page_feedback, $('.prevBtn'), $('.nextBtn'), totalLength, 10);
   }
   else {
 
@@ -146,13 +146,13 @@ export function paging(type, page, url) {
 }
 
 // 이전/다음 버튼 보이는 여부 체크
-export function btnCheck(page, $prev_btn, $next_btn, totalLength) {
+export function btnCheck(page, $prev_btn, $next_btn, totalLength, row) {
 
   if (page == '' || page == null) {
     page = 0;
 
-  }
-    
+  }  
+
   if (page == 0) {
     $prev_btn.setAttribute("class", "prevBtn hidden px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow mr-1");
     console.log("prev_x");
@@ -161,11 +161,11 @@ export function btnCheck(page, $prev_btn, $next_btn, totalLength) {
     $prev_btn.setAttribute("class", "prevBtn px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow mr-1");
     console.log("prev_o");
   }
-  if ((parseInt(totalLength / 20) == parseInt(page))) {
+  if ((parseInt(totalLength / row) == parseInt(page))) {
     $next_btn.setAttribute("class", "nextBtn hidden px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow ml-1");
     console.log("next_x");
   }
-  else if ((parseInt(totalLength / 20) == (parseInt(page)+1)) && (parseInt(totalLength) % 20 == 0)) {
+  else if ((parseInt(totalLength / row) == (parseInt(page)+1)) && (parseInt(totalLength) % row == 0)) {
     $next_btn.setAttribute("class", "nextBtn hidden px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow ml-1");
     console.log("next_x");
   }
@@ -185,6 +185,8 @@ async function getfeedbacklist() {
       token: getCookie(cookieName),
       kind: 'feedback_teacher',     
       plus: page_feedback,   
+      row: 10,
+      
       
   };   
   
@@ -197,7 +199,7 @@ async function getfeedbacklist() {
   });    
   
   const response = await res.json();        
-    
+  console.log(response);
   return response;  
 }
 
