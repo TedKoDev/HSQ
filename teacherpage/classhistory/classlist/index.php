@@ -31,7 +31,6 @@
         <?php include '../selecthistory.php' ?>
         <!-- 수업 목록 div -->
         <br>
-
         <div class="flex flex-col w-3/4 mx-auto ">
             <div class="body">
                 <div class="filter">

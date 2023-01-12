@@ -97,11 +97,11 @@ if ($susid == null) {
   User_Detail.user_img, 
   (SELECT COUNT(*) FROM Class_Add WHERE user_id_student = Class_Add_1.user_id_student AND user_id_teacher = '{$User_ID}' AND class_register_status = 3) as class_count, 
   (SELECT schedule_list FROM Class_Add WHERE user_id_student = Class_Add_1.user_id_student AND user_id_teacher = '{$User_ID}' AND class_register_status = 3 ORDER BY schedule_list DESC LIMIT 1) as last_class_date
-FROM 
-  (SELECT DISTINCT Class_Add.user_id_student FROM Class_Add WHERE class_register_status = 3) Class_Add_1
-  LEFT JOIN User ON User.user_id = Class_Add_1.user_id_student 
-  LEFT JOIN User_Detail ON User.user_id = User_Detail.user_id 
-order by  last_class_date DESC ";
+  FROM 
+    (SELECT DISTINCT Class_Add.user_id_student FROM Class_Add WHERE class_register_status = 3) Class_Add_1
+    LEFT JOIN User ON User.user_id = Class_Add_1.user_id_student 
+    LEFT JOIN User_Detail ON User.user_id = User_Detail.user_id 
+  order by  last_class_date DESC ";
   } else {
     // plus가 있으면 페이징  
     $sql = "SELECT SQL_CALC_FOUND_ROWS
@@ -175,6 +175,7 @@ order by  last_class_date DESC ";
     $sql = "SELECT SQL_CALC_FOUND_ROWS
   class_time,
   Class_Add.class_id,
+  Class_Add.class_register_id,
   Class_List.class_name,
   schedule_list, 
   Class_Teacher_Review.teacher_review,
@@ -196,6 +197,7 @@ ORDER BY schedule_list DESC ";
     $sql = "SELECT SQL_CALC_FOUND_ROWS
     class_time,
     Class_Add.class_id,
+    Class_Add.class_register_id,
     Class_List.class_name,
     schedule_list, 
     Class_Teacher_Review.teacher_review,
@@ -236,6 +238,7 @@ ORDER BY schedule_list DESC ";
 
     $send['class_time'] = $r['class_time'];
     $send['class_id'] = $r['class_id'];
+    $send['class_register_id'] = $r['class_register_id'];
     $send['class_name'] = $r['class_name'];
     $send['schedule_list'] = $r['schedule_list'];
     $send['teacher_review'] = $r['teacher_review'];
