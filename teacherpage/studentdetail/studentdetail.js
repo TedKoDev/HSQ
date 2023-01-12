@@ -1,6 +1,7 @@
 import { $, $_all } from "/utils/querySelector.js";
 import { cookieName, getCookie, s3_url } from "/commenJS/cookie_modules.js";
 import { goClassDetail } from "../classhistory/src/pages/classlist.js";
+import { settingPaging, btnCheck } from "../classhistory/src/pages/feedbacklist.js";
 
 // 해당 유저 정보 가져오기
 getUserInfo();
@@ -74,7 +75,8 @@ const response = await res.json();
 if (response.success == 'yes') {
 
     console.log(response);
-    const result = response.result;   
+    const result = response.result;  
+    const totalLength = response.length; 
 
     $('.class_count').innerHTML = result.length;
     
@@ -153,8 +155,50 @@ if (response.success == 'yes') {
             goClassDetail(class_register_id, user_id, '/teacherpage/classhistory/historydetail/');
         })
     }
+
+    // 페이징 버튼 세팅
+    settingPaging($('.classList'));
+
+    // 이전/다음 버튼 클릭 시 이벤트
+    $('.prevBtn').addEventListener('click', () => {
+
+    page = page - 1;
+    paging('page', page, '/teacherpage/studentdetail/', user_id);
+
+    })
+    $('.nextBtn').addEventListener('click', () => {
+
+    page = page + 1;
+    paging('page', page, '/teacherpage/studentdetail/', user_id);
+
+    })
+        
+    btnCheck(page, $('.prevBtn'), $('.nextBtn'), parseInt(totalLength), result);
     
 }
 else {
     console.log('통신 오류');
+}
+
+function paging(key, value, url, user_id) {
+
+  const form = document.createElement('form');
+  form.setAttribute('method', 'get');    
+  form.setAttribute('action', url);
+
+  const hiddenField_page = document.createElement('input');
+  hiddenField_page.setAttribute('type', 'hidden');
+  hiddenField_page.setAttribute('name', key);
+  hiddenField_page.setAttribute('value', value);  
+  form.appendChild(hiddenField_page); 
+
+  const hiddenField_user = document.createElement('input');
+  hiddenField_user.setAttribute('type', 'hidden');
+  hiddenField_user.setAttribute('name', 'user_id');
+  hiddenField_user.setAttribute('value', user_id);  
+  form.appendChild(hiddenField_user); 
+
+  document.body.appendChild(form);
+
+  form.submit();   
 }

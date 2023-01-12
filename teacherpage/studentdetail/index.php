@@ -15,6 +15,7 @@
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>    
     <script>
         let user_id = "<?php echo $_GET['user_id']; ?>";
+        let page = "<?php echo $_GET['page']; ?>";
     </script>
     <body class="bg-gray-100 w-full">
         <!-- 네비바 -->

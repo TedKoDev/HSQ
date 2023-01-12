@@ -84,21 +84,7 @@ async function showFeedbackList($container) {
 
     
       // 페이징 뷰 표시하는 로직
-      const pagingDiv = document.createElement("div");  
-      pagingDiv.setAttribute("class", "flex mt-5");      
-      pagingDiv.innerHTML = ` <div class = "pagination flex ml-auto pr-2 mb-1">
-                                  <span class = "prevBtn px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow mr-1">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg>
-                                  </span>
-                                  <ol id = "numbers">
-                                      
-                                  </ol>
-                                  <span class = "nextBtn px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow ml-1">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"/></svg>
-                                  </span>
-                              </div>`;
-          
-      $container.appendChild(pagingDiv);
+      settingPaging($container);
 
       // 이전/다음 버튼 클릭 시 이벤트
       $('.prevBtn').addEventListener('click', () => {
@@ -113,14 +99,33 @@ async function showFeedbackList($container) {
         paging('page', page_feedback, '/teacherpage/classhistory/feedbacklist/');
 
       })
-      
-      console.log("page_feedback : "+page_feedback);
+            
       btnCheck(page_feedback, $('.prevBtn'), $('.nextBtn'), parseInt(totalLength), result);
   }
   else {
 
   }
 }
+
+export function settingPaging($container) {
+
+  const pagingDiv = document.createElement("div");  
+      pagingDiv.setAttribute("class", "flex mt-5");      
+      pagingDiv.innerHTML = ` <div class = "pagination flex ml-auto pr-2 mb-1">
+                                  <span class = "prevBtn px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow mr-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg>
+                                  </span>
+                                  <ol id = "numbers">
+                                      
+                                  </ol>
+                                  <span class = "nextBtn px-2 py-2 bg-gray-200 hover:bg-gray-400 rounded-md shadow ml-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"/></svg>
+                                  </span>
+                              </div>`;
+          
+      $container.appendChild(pagingDiv);
+}     
+
 
 export function paging(type, page, url) {
         
